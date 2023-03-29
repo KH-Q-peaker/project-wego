@@ -171,3 +171,14 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,maven,macos,windows,java
+<<<<<<< HEAD
+=======
+
+
+###################################################################################
+
+# Wego 설정
+# API키 보안을 위한 .properties 파일 추가
+
+**/main/resources/config/
+>>>>>>> main
