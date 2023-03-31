@@ -1,0 +1,391 @@
+@charset "utf-8";
+
+/* common */
+body {
+  margin: 0px;
+  background: url(../img/bg-wego.png);
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  
+  font-family: 'Nanum Gothic', sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:link,
+a:visited,
+a:active,
+a:hover {
+  color: #000;
+}
+
+ul {
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+.total-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  margin: auto;
+
+  min-width: 375px;
+  max-width: 1024px;
+}
+
+section {
+  width: 96%;
+}
+
+.blind {
+  display: none;
+}
+
+/* header */
+header {
+  width: 100%;
+
+  margin-bottom: 32px;
+}
+
+.header {
+  display: flex;
+  position: relative;
+
+  justify-content: space-around;
+  align-items: center;
+
+  height: 100px;
+
+  background-color: #DEEDCB;
+}
+
+.header div.logoDiv,
+.header .user {
+  width: 160px;
+  height: 50px;
+
+  transition: all 400ms ease;
+}
+
+.header div.logoDiv {
+  display: flex;
+
+  justify-content: flex-start;
+
+  margin: 0 0 0 10px;
+}
+
+.header div.logoDiv>a {
+  display: flex;
+
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.wegoLogo {
+  display: block;
+  width: 90px;
+  height: 50px;
+  background: url(../img/WEGOLOGO찐찐.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position-y: bottom;
+  cursor: pointer;
+}
+
+.wogoTitle {
+  display: block;
+  width: 70px;
+  height: 50px;
+  background: url(../img/WEGOtile.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position-y: bottom;
+  cursor: pointer;
+}
+
+.logoDiv:hover {
+  z-index: 3;
+  transform: scale(1.05);
+  transition: all 400ms ease;
+
+}
+
+.navbar {
+  display: flex;
+
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+
+  gap: 10px;
+}
+
+.navbar li {
+  box-sizing: border-box;
+
+  display: flex;
+
+  justify-content: center;
+
+  width: 85px;
+
+  padding: 0 15px;
+  margin: 0 5px;
+
+  font-weight: bold;
+  font-size: 14px;
+
+  transition: all 400ms ease;
+}
+
+.navbar li:hover {
+  border-radius: 20px;
+  padding: 12px 15px;
+  background-color: #fff;
+
+  z-index: 3;
+  transform: scale(1.1);
+  transition: all 400ms ease;
+}
+
+.user {
+  display: flex;
+  position: relative;
+
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.user>img,
+.user>button {
+  margin: 0px 10px 0px 0;
+
+  transition: all 400ms ease;
+}
+
+.user>img:hover,
+.user>button:hover {
+  z-index: 1;
+  transform: scale(1.1);
+  transition: all 400ms ease;
+}
+
+.menubar {
+  display: none;
+  width: 120px;
+  height: 180px;
+  border: 0px;
+  border-radius: 5px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
+  padding: 10px 10px 30px;
+  position: absolute;
+  top: 25px;
+  right: 30px;
+  background-color: #fff;
+  z-index: 2;
+}
+
+.menubar li {
+  margin: 15px 5px;
+}
+
+.menubar li a {
+  padding: 5px 5px;
+  border-radius: 10px;
+
+  transition: all 400ms ease;
+}
+
+.menubar li a:hover {
+  z-index: 3;
+
+  background-color: rgba(78, 197, 61, 1);
+  color: #fff;
+
+  transition: all 400ms ease;
+}
+
+.menubar li:nth-last-of-type(1)>a {
+  display: inline-block;
+  margin-top: 20px;
+  color: #F14A4A;
+
+  transition: all 400ms ease;
+}
+
+.menubar li:nth-last-of-type(1)>a:hover {
+  background-color: #F14A4A;
+  color: #fff;
+
+  transition: all 400ms ease;
+}
+
+.user-profile-img {
+  /* display: none; */
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.login-btn {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  background: url(../svg/login.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.search-bar {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 5px;
+}
+
+.search-bar>div {
+  display: flex;
+
+  align-items: center;
+
+  width: 280px;
+  border-radius: 30px;
+  padding: 12px 20px;
+  background-color: #e7e7e7;
+}
+
+.search-bar form {
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  gap: 10px;
+}
+
+#search {
+  width: 190px;
+  border: 0;
+  padding: 0 10px;
+  font-size: 15px;
+  outline: none;
+  background: none;
+}
+
+.search-bar .search-icon {
+  width: 20px;
+  height: 25px;
+  border: 0;
+  color: gray;
+  display: inline-block;
+  background: url(../svg/search.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.search-bar .cancel {
+  display: none;
+  width: 25px;
+  height: 25px;
+  border: 0;
+  background: url(../svg/cancle.svg);
+  background-repeat: no-repeat;
+}
+
+.search-bar button:hover {
+  z-index: 1;
+  transform: scale(1.20);
+
+  transition: all 400ms ease;
+}
+
+
+@media screen and (max-width: 768px) {
+  header {
+    margin-bottom: 0px;
+  }
+  .header div.logoDiv,
+  .header .user {
+    width: 50px;
+    height: 50px;
+  }
+
+  .wegoLogo {
+    width: 50px;
+    height: 50px;
+    background: url(../img/WEGOLOGO찐찐san.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-y: center;
+    cursor: pointer;
+  }
+
+  .wogoTitle {
+    display: none;
+  }
+
+  .navbar {
+    gap: 5px
+  }
+
+  .navbar li {
+    padding: 0 5px;
+    width: 65px;
+  }
+
+  .user-profile-img {
+    /* display: none; */
+    width: 33px;
+    height: 33px;
+  }
+
+  .login-btn {
+    width: 33px;
+    height: 33px;
+    border: 0;
+    background: url(../svg/login.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  .navbar li:hover {
+    border-radius: 10px;
+    padding: 5px 5px;
+    background-color: #fff;
+
+    transition: all 400ms ease;
+  }
+
+  .search-bar {
+    margin-top: 0px;
+    margin-bottom: 32px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navbar {
+    gap: 0px;
+  }
+
+  .navbar li {
+    padding: 0 5px;
+    margin: 0px;
+  }
+
+}
