@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!-- mapperStatement를 생성할 때 사용할 namespace -->
+  <!-- 각 쿼리문은 id로 접근함  -->
+  <mapper namespace = "org.zerock.myapp.mapper.CommentMapper">
+  	
+<!--   	<select id="selectAllComments"  -->
+<!--   			resultType = "org.zerock.myapp.domain.CommentVO"> -->
+  		
+<!--   		<![CDATA[ -->
+<!--   			SELECT  -->
+<!--   				comment_id,  -->
+<!--   				target_gb,  -->
+<!--   				target_cd, -->
+<!--   				comment_gb, -->
+<!--   				mention_id, -->
+<!--   				user_id, -->
+<!--   				nickname, -->
+<!--   				user_pic,  -->
+<!--   				created_dt, -->
+<!--   				modified_dt, -->
+<!--   				contents,  -->
+<!--   				status, -->
+<!--   				report_cnt -->
+<!--   			FROM  -->
+<!--   				comment_v -->
+<!--   		]]> -->
+<!--   	</select> -->
+  	
+  	<!-- *********** 타겟 댓글 총합 ************ -->
+  	 
+  	<select
+    	id="selectCommentCnt" 
+    	resultType="Integer">
+    	
+    	SELECT 
+  			COUNT(comment_id)
+  		FROM 
+  			comment_tb
+         <where>
+         target_gb = #{targetGb}
+         AND 
+         target_cd = #{targetCd}
+         </where>
+    </select> 
+  	
+  	
+  	
+  	<!-- ***********타겟으로 댓글 전체 조회************ -->
+  	<select
+    	id="selectCommentsByTarget" 
+    	resultType="org.zerock.myapp.domain.CommentVO">
+    	
+    	SELECT 
+  				*
+  		FROM 
+  			comment_v
+         	
+         <where>
+         target_gb = #{targetGb}
+         AND 
+         target_cd = #{targetCd}
+         </where>
+         ORDER BY
+         	NVL(MENTION_ID, comment_id),
+         	mention_id NULLS FIRST,
+         	COMMENT_ID
+    </select> 
+
+    
+  	<!-- ***********타겟으로 댓글 오프셋 조회************ -->
+      	<select
+    	id="selectCommentsOffsetByTarget" 
+    	resultType="org.zerock.myapp.domain.CommentVO">
+    	
+    	SELECT 
+  				*
+  		FROM 
+  			comment_v
+         	
+        <where>
+	         target_gb = #{cri.targetGb}
+    	     AND 
+        	 target_cd = #{cri.targetCd}
+<!--         	 AND -->
+<!--         	 report_cnt &lt; 5 -->
+        </where>
+        ORDER BY
+         	NVL(MENTION_ID, comment_id),
+         	mention_id NULLS FIRST,
+         	COMMENT_ID
+        
+        OFFSET (#{cri.currPage} -1) * #{cri.amount} ROWS
+        FETCH NEXT #{cri.amount} ROWS ONLY
+    </select> 
+    
+     
+     
+  	<!-- ***********댓글 코드로 댓글 조회************ -->
+     <select
+    	id="selectCommentByCommentId" 
+    	resultType="org.zerock.myapp.domain.CommentVO">
+    	
+    	SELECT 
+  				*
+  		FROM 
+  			comment_v
+         	
+         <where>
+         comment_id = #{commentId}
+         </where>
+    </select> 
+    
+    
+  	<!-- ***********댓글 코드로 멘션 유무 조회 ************ -->
+    <select
+    	id="selectMentionsByComment" 
+    	resultType="Integer">
+    		
+    	SELECT 1
+    	FROM dual
+    	WHERE EXISTS(
+  				SELECT 1
+  				FROM comment_tb
+  				WHERE mention_id = #{commentId})
+    </select> 
+    
+    
+  	<!-- ***********유저 코드로 댓글 조회************ -->
+    <select
+    	id="selectCommentByUser" 
+    	resultType="org.zerock.myapp.domain.CommentVO">
+    	
+    	SELECT 
+  				comment_id, 
+  				target_gb, 
+  				target_cd,
+  				comment_gb,
+  				mention_id,
+  				user_id,
+  				nickname,
+  				user_pic, 
+  				created_dt,
+  				modified_dt,
+  				contents, 
+  				status,
+  				report_cnt
+  			FROM 
+  				comment_v
+         	
+         <where>
+         user_id = #{userId}
+         </where>
+    </select>
+    
+    <!-- ***************** 댓글 삭제 ******************** -->
+    <delete
+    	id="deleteCommentByCommentId">
+    	
+    	DELETE
+    	FROM 
+    		comment_tb
+    	
+    	<where>
+    	comment_id = #{commentId}
+    	</where>
+    
+    </delete>
+    
+    
+    <delete
+    	id="deleteCommentByUserId">
+    	
+    	DELETE
+    	FROM
+    		comment_tb
+    	
+    	<where>
+    	user_id = #(userId)
+    	</where>	
+    </delete>
+    
+    <!-- ***************** 댓글 작성 ******************** -->
+    <insert
+    	id="insertComment">
+    	
+    	INSERT INTO comment_tb(
+    		target_gb,
+    		target_cd,
+    		user_id, 
+    		contents)
+    	VALUES(
+    		#{targetGb},
+    		#{targetCd},
+    		#{userId},
+    		#{contents}	
+	    	)
+    </insert>
+    
+    
+    <!-- ***************** 멘션 작성 ******************** -->
+    <insert
+    	id="insertMention">
+    	
+    	INSERT INTO comment_tb(
+    		target_gb,
+    		target_cd,
+    		user_id,
+    		mention_id,
+    		comment_gb, 
+    		contents)
+    	VALUES(
+    		#{targetGb},
+    		#{targetCd},
+    		#{userId},
+    		#{mentionId},
+    		'MENTION',
+    		#{contents}	
+	    	)
+    </insert>
+    
+    
+    
+    <!-- ***************** 댓글 수정 ******************** -->
+    <!--  댓글은 수정이랄게 내용밖에 없지? 맞아 ..아니었어   -->
+    <update
+    	id="updateComment">
+    	
+    	UPDATE 
+    		comment_tb
+    	SET
+    		contents = #{contents},
+    		modified_dt = current_timestamp,
+    		
+    		<if test="#{status} != null">
+    		status = #{status}
+    		</if>
+    	WHERE
+    		comment_id = #{commentId}
+    </update>
+    
+    
+    
+    <!-- ***************** 댓글 신고  ******************** -->
+    
+  </mapper>
+  
+  
+  
+  
+  
+  												

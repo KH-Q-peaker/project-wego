@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!-- mapperStatement를 생성할 때 사용할 namespace -->
+  <!-- 각 쿼리문은 id로 접근함  -->
+  <mapper namespace = "org.zerock.myapp.mapper.ReviewMapper">
+  	
+  	<select id="selectAllReviews" 
+  			resultType = "org.zerock.myapp.domain.ReviewVO">
+  		
+  		SELECT
+  			san_review_id,
+  			san_name,
+  			user_id,
+  			nickname,
+  			user_pic,
+  			created_dt,
+  			modified_dt,
+  			title,
+  			contents,
+  			like_cnt,
+  			report_cnt
+  		FROM
+  			san_review_v
+  			
+  	</select>
+  	
+  	
+  	<select id="selectReviewByReviewId" 
+  			resultType = "org.zerock.myapp.domain.ReviewVO">
+  		
+  		SELECT
+  			san_review_id,
+  			san_name,
+  			user_id,
+  			nickname,
+  			user_pic,
+  			created_dt,
+  			modified_dt,
+  			title,
+  			contents,
+  			like_cnt,
+  			report_cnt
+  		FROM
+  			san_review_v
+  			
+  		<where>
+  		san_review_id = #{reviewId}
+  		</where>
+  			
+  	</select>
+  	
+  	 <select id="selectReviewByUserId" 
+  			resultType = "org.zerock.myapp.domain.ReviewVO">
+  		
+  		SELECT
+  			san_review_id,
+  			san_name,
+  			user_id,
+  			nickname,
+  			user_pic,
+  			created_dt,
+  			modified_dt,
+  			title,
+  			contents,
+  			like_cnt,
+  			report_cnt
+  		FROM
+  			san_review_v
+  			
+  		<where>
+  		user_id = #{userId}
+  		</where>
+  			
+  	</select>
+  	
+  	<select id="selectReviewsByTitle" 
+  			resultType = "org.zerock.myapp.domain.ReviewVO">
+  		
+  		SELECT
+  			san_review_id,
+  			san_name,
+  			user_id,
+  			nickname,
+  			user_pic,
+  			created_dt,
+  			modified_dt,
+  			title,
+  			contents,
+  			like_cnt,
+  			report_cnt
+  		FROM
+  			san_review_v
+  			
+  		<where>
+  		title = #{title}
+  		</where>
+  			
+  	</select>
+  	<select id="selectReviewsBySanName" 
+  			resultType = "org.zerock.myapp.domain.ReviewVO">
+  		
+  		SELECT
+  			san_review_id,
+  			san_name,
+  			user_id,
+  			nickname,
+  			user_pic,
+  			created_dt,
+  			modified_dt,
+  			title,
+  			contents,
+  			like_cnt,
+  			report_cnt
+  		FROM
+  			san_review_v
+  			
+  		<where>
+  		san_name = #{sanName}
+  		</where>
+  			
+  	</select>
+  	
+  	<!--  ************* 후기글 삭제 *************** -->
+  	
+  	<delete
+  		id="deleteReviewByReviewId">
+  		
+  		DELETE 
+  		FROM
+  			san_review_tb
+  		<where>
+  			san_review_id = #{reviewId}
+  		</where>
+  		
+  	</delete>
+  	
+    
+  </mapper>
+  
+  
+  
+  
+  
+  												
