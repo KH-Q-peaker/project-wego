@@ -21,7 +21,12 @@
 
 	<interceptors>
 		<interceptor>
+<<<<<<< HEAD
 			<mapping path="/sample/doA" />
+=======
+			<mapping path="/sample/**" />
+			<exclude-mapping path="/info/**"/>
+>>>>>>> 113d9dc0196c44f00670737ed809cb84508a9f90
 	
 			<beans:ref bean="sampleInterceptor" />
 		</interceptor>
