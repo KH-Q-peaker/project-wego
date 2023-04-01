@@ -3,7 +3,7 @@
 /* common */
 body {
   margin: 0px;
-  background: url(../img/bg-wego.png);
+  background: url(../img/WegoBG.png);
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
@@ -97,7 +97,7 @@ header {
   display: block;
   width: 90px;
   height: 50px;
-  background: url(../img/WEGOLOGO찐찐.png);
+  background: url(../img/WegoLogo.png);
   background-repeat: no-repeat;
   background-size: contain;
   background-position-y: bottom;
@@ -108,7 +108,7 @@ header {
   display: block;
   width: 70px;
   height: 50px;
-  background: url(../img/WEGOtile.png);
+  background: url(../img/WegoTitle.png);
   background-repeat: no-repeat;
   background-size: contain;
   background-position-y: bottom;
@@ -329,7 +329,7 @@ header {
   .wegoLogo {
     width: 50px;
     height: 50px;
-    background: url(../img/WEGOLOGO찐찐san.png);
+    background: url(../img/WegoLogoSan.png);
     background-repeat: no-repeat;
     background-size: contain;
     background-position-y: center;
