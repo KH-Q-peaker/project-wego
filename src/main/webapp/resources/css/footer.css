@@ -1,35 +1,5 @@
 @charset "utf-8";
 
-body {
-  margin: 0px;
-  background: url(../img/bg-wego.png);
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  
-  font-family: 'Nanum Gothic', sans-serif;
-}
-
-a {
-  text-decoration: none;
-}
-
-a:link,
-a:visited,
-a:active,
-a:hover {
-  color: #000;
-}
-
-ul {
-  padding: 0;
-}
-
-li {
-  list-style: none;
-}
-
 footer {
   width: 100%;
   background-color: #43a047;
