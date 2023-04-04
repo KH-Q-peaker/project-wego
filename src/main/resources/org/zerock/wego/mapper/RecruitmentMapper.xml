@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.zerock.wego.mapper.RecruitmentMapper">
+
+	<select id="selectRandom10"
+		resultType="org.zerock.wego.domain.RecruitmentViewVO">
+		SELECT *
+		FROM
+			(
+			SELECT *
+			FROM san_party_v
+			ORDER BY dbms_random.random
+			)
+		WHERE rownum &lt;= 10
+	</select>
+
+	<select id="select"
+		resultType="org.zerock.wego.domain.RecruitmentViewVO">
+		SELECT *
+		FROM san_party_v
+		WHERE san_party_id = #{sanPartyId}
+	</select>
+
+	<delete id="delete">
+		DELETE FROM san_party_tb
+		WHERE san_party_id = #{sanPartyId}
+	</delete>
+
+	<insert id="insert" parameterType="org.zerock.wego.domain.RecruitmentDTO">
+		INSERT INTO
+			san_party_tb(
+				san_info_id, user_id, title, contents,
+				party_dt, party_max, items, condition
+				)
+			VALUES(
+				#{sanInfoId}, #{userId}, #{title}, #{contents},
+				#{partyDt}, #{partyMax}, #{items}, #{condition}
+			)
+			<selectKey keyProperty="sanPartyId" resultType="int" order="AFTER">
+				SELECT max(san_party_id)
+				FROM san_party_tb
+			</selectKey>
+	</insert>
+
+	<update id="update">
+		UPDATE san_party_tb
+		SET
+			san_info_id = #{sanInfoId},
+			title = #{title},
+			contents = #{contents},
+			party_dt = #{partyDt},
+			party_max = #{partyMax},
+			items = #{items},
+			condition = #{condition},
+			modified_dt = current_timestamp
+		WHERE
+			san_party_id = #{sanPartyId}
+	</update>
+
+</mapper>
