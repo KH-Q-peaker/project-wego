@@ -24,31 +24,31 @@ window.addEventListener("click", (e) => {
         formData.set("targetGb", "SAN_INFO");
         break;
       case "sanPartyId":
-      formData.set("targetGb", "SAN_PARTY");
+        formData.set("targetGb", "SAN_PARTY");
         break;
       case "sanReviewId":
-      formData.set("targetGb", "SAN_REVIEW");
+        formData.set("targetGb", "SAN_REVIEW");
         break;
     } // switch
 
     formData.set("targetCd", postId);
-    formData.set("userId", 9); // TEST용 USER_ID
-    
-    if(e.target.classList.toggle("on")) {
-		formData.set("status", "Y");
-		favoriteCount.innerText = Number(favoriteCount.innerText) + 1
-	} else {
-		formData.set("status", "N");
-		favoriteCount.innerText = Number(favoriteCount.innerText) - 1
-	} // if-else
-    
+    formData.set("userId", 10); // TEST용 USER_ID
+
+    if (e.target.classList.toggle("on")) {
+      formData.set("status", "Y");
+      favoriteCount.innerText = Number(favoriteCount.innerText) + 1;
+    } else {
+      formData.set("status", "N");
+      favoriteCount.innerText = Number(favoriteCount.innerText) - 1;
+    } // if-else
+
     setTimeout(() => request(formData), 1000);
   } // if
 });
 
 function request(formData) {
-	fetch("/favorite", {
-    	method: "POST",
-    	body: formData,
+  fetch("/favorite", {
+    method: "POST",
+    body: formData,
   });
 }
