@@ -42,6 +42,7 @@ window.addEventListener("click", (e) => {
 		favoriteCount.innerText = Number(favoriteCount.innerText) - 1
 	} // if-else
     
+    formData.forEach((value, key) => console.log(`key: ${key}, value: ${value}`));
     setTimeout(() => request(formData), 1000);
   } // if
 });
