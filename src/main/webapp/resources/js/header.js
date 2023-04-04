@@ -28,3 +28,6 @@ selector("#userImg").addEventListener("click", () => {
     selector(".menubar").style.display = "none";
   }
 });
+
+// header에서 검색바를 제거하는 함수
+const removeSearch = () => selector(".search-bar").remove();
