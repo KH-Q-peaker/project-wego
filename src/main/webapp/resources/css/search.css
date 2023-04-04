@@ -1,0 +1,424 @@
+@charset "UTF-8";
+
+.total-wrap {
+	min-width: 320px;
+	max-width: 1024px;
+	margin: auto;
+	padding: 0 2.5%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font-size: 15px;
+}
+/* container */
+.container {
+	width: 100%;
+	border: 1px solid lightgray;
+	border-radius: 10px;
+	box-sizing: border-box;
+	background-color: #fff;
+	border: 1px solid lightgray;
+	padding: 30px;
+}
+
+.container>hr {
+	border-top: 1px solid lightgray;
+	border-bottom: 0;
+	border-radius: 35px;
+	margin-bottom: 10px;
+}
+/* container child - common */
+.recruit {
+	margin: 0 0 30px;
+}
+
+.info-title {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.wrap {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.item {
+	width: 100%;
+	margin-bottom: 20px;
+	text-align: center;
+	background-color: #fff;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.item-info {
+	width: 100%;
+	text-align: left;
+}
+
+#itemContent {
+	display: -webkit-box;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: normal;
+	-webkit-line-clamp: 5;
+	-webkit-box-orient: vertical;
+	margin: 0;
+}
+
+.itemDetail {
+	height: 100px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+#itemImg {
+	display: inline-block;
+	border-radius: 10px;
+}
+/* recruit */
+.wrap-recruit {
+	display: grid;
+	grid-template-columns: repeat(10, 1fr);
+	grid-auto-flow: column;
+	gap: 10px;
+	overflow: scroll;
+	white-space: nowrap;
+	user-select: none;
+	padding-bottom: 32px;
+	scroll-behavior: auto;
+}
+
+.wrap-recruit::-webkit-scrollbar {
+	display: none;
+}
+
+.recruit-item {
+	width: 200px;
+	height: 330px;
+	padding: 15px;
+	border: 0;
+	border-radius: 10px;
+	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25), 0 3px 3px rgba(0, 0, 0, 0.22);
+	background-color: #fff;
+	text-align: center;
+	display: grid;
+	grid-template-rows: 35px 140px 35px 30px 30px 30px 30px;
+	grid-template-columns: 40px 40px 40px 10px 70px;
+	grid-template-areas:
+		"recruitUserImg recruitUserName recruitUserName recruitUserName recruitMountainName"
+		"recruitImg recruitImg recruitImg recruitImg recruitImg"
+		"recruitTitle recruitTitle recruitTitle recruitTitle recruitTitle"
+		"recruitScheduleSchedule recruitSchedule recruitSchedule recruitSchedule recruitSchedule"
+		"recruitScheduleTime recruitTime recruitTime recruitTime recruitTime"
+		"recruitScheduleMember recruitScheduleMember recruitMember recruitMember recruitMember"
+		"recruitLike recruitLike recruitLike recruitLike recruitDate";
+	align-items: center;
+	justify-items: center;
+}
+
+.recruit-item>p {
+	margin: 0;
+	justify-self: left;
+}
+
+.recruit-item>.user-img {
+	grid-area: recruitUserImg;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	justify-self: left;
+}
+
+.recruit-item>.user-name {
+	grid-area: recruitUserName;
+	font-size: 14px;
+	justify-self: left;
+}
+
+.recruit-item>.mountain-name {
+	grid-area: recruitMountainName;
+	font-size: 14px;
+	justify-self: right;
+}
+
+.recruit-item>.recruit-img {
+	grid-area: recruitImg;
+	width: 130px;
+	height: 130px;
+	border-radius: 50%;
+	justify-self: center;
+}
+
+.recruit-item>.recruit-title {
+	grid-area: recruitTitle;
+	font-size: 20px;
+	margin: 0;
+	justify-self: center;
+	display: -webkit-box;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: normal;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical
+}
+
+.recruit-item>.recruit-schedule-schedule {
+	grid-area: recruitScheduleSchedule;
+	font-size: 15px;
+}
+
+.recruit-schedule {
+	grid-area: recruitSchedule;
+	font-size: 15px;
+}
+
+.recruit-schedule-time {
+	grid-area: recruitScheduleTime;
+	font-size: 15px;
+}
+
+.recruit-time {
+	grid-area: recruitTime;
+	font-size: 15px;
+}
+
+.recruit-schedule-member {
+	grid-area: recruitScheduleMember;
+	font-size: 15px;
+}
+
+.recruit-member {
+	grid-area: recruitMember;
+	font-size: 15px;
+}
+
+.recruit-item>.recruit-like {
+	grid-area: recruitLike;
+	text-align: left;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	justify-self: left;
+}
+
+.recruit-like>.favorite {
+	width: 30px;
+	height: 30px;
+	border: 0;
+	background: url(../svg/favorite-off.svg);
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+.recruit-like>.favorite-count {
+	font-size: 12px;
+}
+
+.recruit-item>.recruit-date {
+	grid-area: recruitDate;
+	font-size: 12px;
+	justify-self: right;
+}
+
+/* review */
+.review-item {
+	width: 200px;
+	height: 330px;
+	padding: 15px;
+	border: 0;
+	border-radius: 10px;
+	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25), 0 3px 3px rgba(0, 0, 0, 0.22);
+	background-color: #fff;
+	text-align: center;
+	display: grid;
+	grid-template-rows: 35px 140px 35px 90px 30px;
+	grid-template-columns: 40px 80px 10px 70px;
+	grid-template-areas:
+		"reviewUserImg reviewUserName reviewUserName reviewMountainName"
+		"reviewImg reviewImg reviewImg reviewImg"
+		"reviewTitle reviewTitle reviewTitle reviewTitle"
+		"reviewContents reviewContents reviewContents reviewContents"
+		"reviewLike reviewLike . reviewDate";
+	align-items: center;
+	justify-items: center;
+}
+
+.review-item>p {
+	margin: 0;
+	justify-self: left;
+}
+
+.review-item>.user-img {
+	grid-area: reviewUserImg;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	justify-self: left;
+}
+
+.review-item>.user-name {
+	grid-area: reviewUserName;
+	font-size: 14px;
+	margin: 0;
+	justify-self: left;
+}
+
+.review-item>.mountain-name {
+	grid-area: reviewMountainName;
+	font-size: 14px;
+	margin: 0;
+	justify-self: right;
+}
+
+.review-item>.review-img {
+	grid-area: reviewImg;
+	width: 130px;
+	height: 130px;
+	border-radius: 50%;
+	justify-self: center;
+}
+
+.review-item>.review-title {
+	grid-area: reviewTitle;
+	font-size: 20px;
+	margin: 0;
+	justify-self: center;
+}
+
+.review-item>.review-contents {
+	grid-area: reviewContents;
+	width: 195px;
+	margin: 0;
+	font-size: 15px;
+	justify-self: center;
+	text-align: left;
+	white-space: nowrap;
+	display: -webkit-box;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: normal;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+}
+
+.review-item>.review-like {
+	grid-area: reviewLike;
+	text-align: left;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	justify-self: left;
+}
+
+.review-like>.favorite {
+	width: 30px;
+	height: 30px;
+	border: 0;
+	background: url(../svg/favorite.svg);
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+.review-like>.favorite-count {
+	font-size: 12px;
+}
+
+.review-item>.review-date {
+	grid-area: reviewDate;
+	font-size: 12px;
+	justify-self: right;
+}
+
+.scrollToTop {
+	width: 50px;
+	height: 50px;
+	z-index: 5;
+	position: fixed;
+	right: 5%;
+	bottom: 12%;
+	display: none;
+}
+
+.chat {
+	width: 50px;
+	height: 50px;
+	z-index: 5;
+	position: fixed;
+	right: 5%;
+	bottom: 5%;
+	display: none;
+}
+
+#itemTitle, .itemDetail {
+	margin: 0 0 15px;
+}
+/* Add - Favorite On / OFf */
+.on.favorite {
+	width: 30px;
+	height: 30px;
+	border: 0;
+	background: url(../svg/favorite-on.svg);
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+@media screen and (max-width: 480px) {
+	.container {
+		border-radius: 10px;
+		padding: 0 20px;
+		background-color: #fff;
+	}
+	/* recruit */
+	.wrap-recruit {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 10px;
+	}
+	.recruit .item {
+		display: inline-block;
+		width: 250px;
+		border: 1px solid gray;
+		border-radius: 10px;
+		padding: 20px;
+		text-align: center;
+		background-color: #fff;
+	}
+	#itemImg {
+		display: inline-block;
+		width: 100%;
+		border-radius: 10px;
+	}
+	.info-title>h2 {
+		font-size: 24px;
+	}
+	.info-title>h3 {
+		font-size: 15px;
+		font-weight: bold;
+	}
+	.itemDetail {
+		height: 350px;
+		display: flex;
+		flex-direction: column-reverse;
+		justify-content: center;
+		align-items: center;
+	}
+	#itemContent {
+		display: -webkit-box;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: normal;
+		-webkit-line-clamp: 5;
+		-webkit-box-orient: vertical;
+	}
+}

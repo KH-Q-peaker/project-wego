@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.zerock.wego.mapper.SearchMapper">
+
+	<select id="selectSearchMountainInfo"
+		resultType="org.zerock.wego.domain.MountainInfoViewVO">
+		SELECT *
+		FROM san_info_v
+		WHERE
+			(
+			san_name LIKE '%'||#{search}||'%'
+			OR details LIKE '%'||#{search}||'%'
+			)
+			AND rownum &lt;= 3
+	</select>
+
+	<select id="selectSearchRecruitment"
+		resultType="org.zerock.wego.domain.RecruitmentViewVO">
+		SELECT *
+		FROM san_party_v
+		WHERE
+			(
+			title LIKE '%'||#{search}||'%'
+			OR contents LIKE '%'||#{search}||'%'
+			)
+			AND rownum &lt;= 3
+	</select>
+
+	<select id="selectSearchReview"
+		resultType="org.zerock.wego.domain.ReviewViewVO">
+		SELECT *
+		FROM san_review_v
+		WHERE
+			(
+			title LIKE '%'||#{search}||'%'
+			OR contents LIKE '%'||#{search}||'%'
+			)
+			AND rownum &lt;= 3
+	</select>
+
+</mapper>
