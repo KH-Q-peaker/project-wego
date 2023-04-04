@@ -32,7 +32,7 @@ window.addEventListener("click", (e) => {
     } // switch
 
     formData.set("targetCd", postId);
-    formData.set("userId", 10); // TEST용 USER_ID
+    formData.set("userId", 9); // TEST용 USER_ID
 
     if (e.target.classList.toggle("on")) {
       formData.set("status", "Y");
