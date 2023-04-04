@@ -30,18 +30,20 @@
 		/> </interceptor> </interceptors> -->
 
 	<!-- 파일 업로드를 위한 빈 설정 -->
+	<!-- 
 	<beans:bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<beans:property name="defaultEncoding" value="UTF-8" />
-		<beans:property name="maxInMemorySize" value="20971520" /> <!-- 20MB -->
-		<beans:property name="maxUploadSize" value="20971520" /> <!-- 20MB -->
+		<beans:property name="maxInMemorySize" value="20971520" /> 
+		<beans:property name="maxUploadSize" value="20971520" /> 
 		<beans:property name="maxUploadSizePerFile"
-			value="20971520" /> <!-- 20MB -->
+			value="20971520" /> 
 		<beans:property name="preserveFilename" value="true" />
 		<beans:property name="uploadTempDir"
 			value="file:/C:/upload/" />
 	</beans:bean>
 
 	<resources mapping="/img/**" location="file:///C:/upload/" />
+	 -->
 
 </beans:beans>
