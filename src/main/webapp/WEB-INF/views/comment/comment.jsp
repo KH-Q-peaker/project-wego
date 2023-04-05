@@ -13,13 +13,10 @@
 
 <script>
 var target = JSON.parser('${target}');
-var userId = sessionScope.__AUTH__;
 </script>
-<!-- </head> -->
-<!-- <body> -->
 
 
-			<!-- 댓글 전체 컨테이너  -->
+	<!-- 댓글 전체 컨테이너  -->
 	<div class="cmtcontainer">
 	
 			

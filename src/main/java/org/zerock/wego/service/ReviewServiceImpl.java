@@ -8,6 +8,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zerock.wego.domain.ReviewDTO;
+import org.zerock.wego.domain.ReviewVO;
 import org.zerock.wego.domain.ReviewViewVO;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.ReviewMapper;
@@ -67,23 +68,32 @@ public class ReviewServiceImpl
 	} // getList
 	
 	
+	// 특정 후기글 조회 
 	@Override
-	public ReviewViewVO get(Integer sanReviewId) throws ServiceException {
+	public ReviewViewVO getReviewByReviewId(Integer sanReviewId) throws ServiceException {
 		log.trace("get({}) invoked.", sanReviewId);	
 		
 		try {
-			return this.mapper.select(sanReviewId);
+			ReviewViewVO review = this.mapper.selectReviewByReviewId(sanReviewId);
+			Objects.requireNonNull(review);
+
+			
+			return review;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
 	} // get
 	
+	
+	// 특정 후기글 삭제
 	@Override
-	public boolean remove(Integer sanReviewId) throws ServiceException {
+	public boolean isReviewRemove(Integer sanReviewId) throws ServiceException {
 		log.trace("remove({}) invoked.", sanReviewId);
 		
 		try {
-			return this.mapper.delete(sanReviewId) == 1;
+			
+			return this.mapper.deleteReviewByReviewId(sanReviewId) == 1;
+			
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch

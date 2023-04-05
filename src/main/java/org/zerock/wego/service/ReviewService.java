@@ -18,10 +18,10 @@ public interface ReviewService {
 	public abstract Set<ReviewViewVO> getRandom10List() throws ServiceException;
 
 	// 특정 게시물 상세조회(READ)
-	public abstract ReviewViewVO get(Integer sanReviewId) throws ServiceException;
+	public abstract ReviewViewVO getReviewByReviewId(Integer sanReviewId) throws ServiceException;
 
 	// 특정 게시물 삭제(DELETE)
-	public abstract boolean remove(Integer sanReviewId) throws ServiceException;
+	public abstract boolean isReviewRemove(Integer sanReviewId) throws ServiceException;
 
 	// 새로운 게시물 등록(CREATE)
 	public abstract boolean register(ReviewDTO dto) throws ServiceException;
