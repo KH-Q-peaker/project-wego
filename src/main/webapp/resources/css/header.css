@@ -141,7 +141,7 @@ header {
 
   justify-content: center;
 
-  width: 85px;
+  width: 90px;
 
   padding: 0 15px;
   margin: 0 5px;
@@ -350,7 +350,7 @@ header {
 
   .navbar li {
     padding: 0 5px;
-    width: 65px;
+    width: 70px;
   }
 
   .user-profile-img {
