@@ -162,7 +162,7 @@
 				<h2>❤️ 산 ❤️</h2>
 				<div class="wrap">
 					<c:forEach var="item" items="${mountainInfoList}">
-						<a href="/info/detail?sanInfoId=${item.sanInfoId}">
+						<a href="/info/detail/${item.sanInfoId}">
 							<div class="mountain-item">
 								<img class="mountain-img" src="${item.img}" alt="img" />
 								<h3 class="mountain-name" id="mountainName">${item.sanName}</h3>
@@ -189,7 +189,7 @@
 				<h2>❤️ 모집 글 ❤️</h2>
 				<div class="wrap">
 					<c:forEach var="item" items="${recruitmentList}">
-						<a href="/recruit/detail?sanPartyId=${item.sanPartyId}">
+						<a href="/recruit/detail/${item.sanPartyId}">
 							<div class="recruit-item">
 								<img class="user-img" src="${item.userPic}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
@@ -234,7 +234,7 @@
 				<h2>❤️ 후기 글 ❤️</h2>
 				<div class="wrap">
 					<c:forEach var="item" items="${reviewList}">
-						<a href="/review/detail?sanReviewId=${item.sanReviewId}">
+						<a href="/review/detail/${item.sanReviewId}">
 							<div class="review-item">
 								<img class="user-img" src="${item.userPic}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>

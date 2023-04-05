@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.zerock.wego.mapper.FileMapper">
+
+	<select id="select" resultType="org.zerock.wego.domain.FileVO">
+		SELECT *
+		FROM file_tb
+		WHERE
+			target_gb = #{targetGb} AND target_cd = #{targetCd}
+	</select>
+
+	<insert id="insert">
+		INSERT INTO
+			file_tb(target_gb, target_cd, file_name, uuid, path)
+			VALUES(#{targetGb}, #{targetCd}, #{fileName}, #{uuid}, #{path})
+	</insert>
+
+	<update id="update">
+		UPDATE file_tb
+		SET
+			file_name = #{fileName}
+		WHERE
+			target_gb = #{targetGb}
+			AND target_cd = #{targetCd}
+			AND file_id = #{fileId}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM file_tb
+		WHERE
+			target_gb = #{targetGb} AND target_cd = #{targetCd}
+	</delete>
+
+</mapper>
