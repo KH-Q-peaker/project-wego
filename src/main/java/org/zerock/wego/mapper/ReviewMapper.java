@@ -1,22 +1,34 @@
 package org.zerock.wego.mapper;
 
-import java.util.List;
-import java.util.Set;
+import java.util.concurrent.LinkedBlockingDeque;
 
-import org.apache.ibatis.annotations.Select;
-import org.zerock.wego.domain.ReviewDTO;
-import org.zerock.wego.domain.ReviewViewVO;
+import org.apache.ibatis.annotations.Param;
+import org.zerock.wego.domain.ReviewVO;
 
+public interface ReviewMapper {
 
-public interface ReviewMapper { 
-
-	@Select("SELECT * FROM san_review_v ORDER BY created_dt DESC")
-	public abstract List<ReviewViewVO> selectAll(); // 전체목록조회
 	
-	public abstract Set<ReviewViewVO> selectRandom10(); // 10개의 게시글 랜덤 조회
-	public abstract ReviewViewVO select(Integer sanReviewId); // 상세조회
-	public abstract Integer insert(ReviewDTO dto); // 신규게시물등록
-	public abstract Integer update(ReviewDTO dto); // 기존게시물수정
-	public abstract Integer delete(Integer sanReviewId); // 게시물삭제
+	// 후기글 전체 조회 
+//	public abstract LinkedBlockingDeque<ReviewVO> selectAllReviews();
 	
-} // end interface
+	// 특정 후기글 조회 
+	public abstract ReviewVO selectReviewByReviewId(@Param("reviewId")Long reviewId);
+	
+	// 특정 유저 후기글 조회 
+	public abstract LinkedBlockingDeque<ReviewVO> selectReviewsByUserId(@Param("userId")Long userId);
+	
+	
+	
+	// 제목 키워드로 후기글 조회 
+	public abstract LinkedBlockingDeque<ReviewVO> selectReviewsByTitle(@Param("title")String title);
+	
+	// 산 이름으로 후기글 조회 
+	public abstract LinkedBlockingDeque<ReviewVO> selectReviewsBySanName(@Param("sanName")String sanName);
+	
+	
+	
+	// 특정 후기글 삭제 
+	public abstract Integer deleteReviewByReviewId(@Param("reviewId")Long reviewId);
+	
+
+}// end interface

@@ -12,18 +12,14 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 	
 	<!-- properties -->
-	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<value>classpath:config/wego.properties</value>
-		</property>
-	</bean>
+	<context:property-placeholder location="classpath:config/wego.properties"/>
 	
 	<!-- DB -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
-		<property name = "jdbcUrl" value = "${db.url}"/>
-		<property name = "username" value = "${db.user.name}"/>
-		<property name = "password" value = "${db.password}"/>
+		<property name = "jdbcUrl" value = "${DB_URL}"/>
+		<property name = "username" value = "${DB_USER_NAME}"/>
+		<property name = "password" value = "${DB_PASSWORD}"/>
 
 		<property name="maximumPoolSize" value="10" />
 		<property name="minimumIdle" value="2" />

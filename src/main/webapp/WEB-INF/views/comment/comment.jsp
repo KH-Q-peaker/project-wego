@@ -7,16 +7,14 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 
+<%-- <link rel="stylesheet" type="text/css" href="${path}/resources/css/comment.css" /> --%>
 <script type="text/javascript" src="${path}/resources/js/comment.js" defer ></script>
 <script type="text/javascript" src="${path}/resources/js/delete.js" defer ></script>
 <script type="text/javascript" src="${path}/resources/js/report.js" defer ></script>
 
 <script>
-var target = JSON.parser('${target}');
-var userId = sessionScope.__AUTH__;
+var cri = JSON.parser('${cri}');
 </script>
-<!-- </head> -->
-<!-- <body> -->
 
 
 			<!-- 댓글 전체 컨테이너  -->
@@ -34,22 +32,30 @@ var userId = sessionScope.__AUTH__;
 			<c:forEach items="${comments}" var="c">
 				<!-- 멘션일 경우와 아닐경우 분리 -->
 				<c:if test="${c.status != 'Y' }">
-<%-- 				<c:choose> --%>
-<%-- 					<c:when test="${c.mentionId == null}"> --%>
-						<div class="comments ${c.mentionId == null ? 'mention' : ''}">
-<%-- 					</c:when> --%>
-<%-- 					<c:otherwise> --%>
-<!-- 						<div class="comments mention"> -->
-<%-- 					</c:otherwise> --%>
-<%-- 				</c:choose> --%>
+				<div class="comments ${c.mentionId == null ? '' : 'mention'}">
 				
+<%-- 				<input type="hidden" id="commentGb" value="${c.commentGb }"/> --%>
+				<c:if test="${c.mentionId != null }">
 				<input type="hidden" id="mentionId" value="${c.mentionId }"/>
+				</c:if>
+				<!--  댓글 내부 (유저닉네임, 작성일, 수정/삭제/신고버튼, 내용, 답글버튼, 수정상태 시 수정/취소버튼)  -->
 				<c:if test="${c.status == 'N' }">
+<%-- 				<img class="cmtuserPic" src="${c.userPic}"/> --%>
 				<img class="cmtuserPic" src="${c.userPic}"/>
 				<div class="cmtuser">${c.status != 'N' ? '알수없음' : c.nickname }</div>
 				<div class="cmtdate">
+<%-- 				</c:if> --%>
+<%-- 					<c:choose> --%>
+<%-- 					<c:when test="${c.modifiedDt == null}"> --%>
 						<fmt:formatDate pattern="MM-dd HH:mm" value="${c.modifiedDt == null? c.createdDt : c.modifiedDt}"></fmt:formatDate>
+						${c.modifiedDt != null ? '수정됨' : ''}
+<%-- 					</c:when> --%>
+<%-- 					<c:otherwise> --%>
+<%-- 						<fmt:formatDate pattern="MM-dd HH:mm" value="${c.modifiedDt}"></fmt:formatDate> 수정됨 --%>
+<%-- 					</c:otherwise> --%>
+<%-- 				</c:choose> --%>
 				</div>
+<%-- 				<c:if test="${c.status == 'N'}"> --%>
 				<div class="btns">
 					<input type="hidden" id= "commentId" name="commentId" value="${c.commentId}">
 					<c:if test="${c.userId == sessionScope.__AUTH__ && c.reportCnt < 5 }"> <!--  이거 조건 바꿔야된다!!!! -->
@@ -80,6 +86,7 @@ var userId = sessionScope.__AUTH__;
 				
 			<!--  멘션 작성 폼 -->  
 			<c:if test="${c.mentionId == null}">
+				<!-- <div class="mentionwrite"> -->
 				<div class="cmtwrite mentionwrite">
 					<input type="hidden" id= "mentionId" name="mentionId" value="${c.commentId}">
 					<textarea  id="mcontents" class="mcontents" name="contents" placeholder="답글을 작성해주세요." maxlength="1000" required></textarea>
@@ -92,3 +99,7 @@ var userId = sessionScope.__AUTH__;
 		</c:forEach>
 	
 		</div>
+
+	
+<!-- </body> -->
+<!-- </html> -->

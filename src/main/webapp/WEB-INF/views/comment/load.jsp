@@ -15,15 +15,10 @@
 			<c:forEach items="${comments}" var="c">
 				<!-- 멘션일 경우와 아닐경우 분리 -->
 				<c:if test="${c.status != 'Y' }">
-				<c:choose>
-					<c:when test="${c.mentionId == null}">
-						<div class="comments">
-					</c:when>
-					<c:otherwise>
-						<div class="comments mention">
-						<input type="hidden" id="mentionId" value="${c.mentionId }"/>
-					</c:otherwise>
-				</c:choose>
+				<div class="comments ${c.mentionId == null ? '' : 'mention'}">
+				<c:if test="${c.mentionId != null }">
+				<input type="hidden" id="mentionId" value="${c.mentionId }"/>
+				</c:if>
 				
 <%-- 				<input type="hidden" id="commentGb" value="${c.commentGb }"/> --%>
 				<!--  댓글 내부 (유저닉네임, 작성일, 수정/삭제/신고버튼, 내용, 답글버튼, 수정상태 시 수정/취소버튼)  -->

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+
+  <mapper namespace = "org.zerock.wego.mapper.PartyMapper">
+  	
+  	
+  	<!-- ************ 모집글 전체조회 ************ -->
+  	<select id="selectAllParties" 
+  			resultType = "org.zerock.wego.domain.PartyVO">
+  		
+  		SELECT
+  			*
+  		FROM
+  			san_party_v
+  			
+  	</select>
+  	
+  	
+  	<!-- *********** 식별로 모집글 조회  ************ -->
+  	<select id="selectPartyByPartyId" 
+  			resultType = "org.zerock.wego.domain.PartyVO">
+  		
+  		SELECT
+  			*
+  		FROM
+  			san_party_v
+  			
+  		<where>
+  		san_party_id = #{partyId}
+  		</where>
+  			
+  	</select>
+  	
+  	
+  	<!-- ************ 작성자로 모집글 조회  ************ -->
+  	 <select id="selectPartiesByUserId" 
+  			resultType = "org.zerock.wego.domain.PartyVO">
+  		
+  		SELECT
+  			*
+  		FROM
+  			san_party_v
+  			
+  		<where>
+  		user_id = #{userId}
+  		</where>
+  			
+  	</select>
+  	
+  	
+  	<!-- ************ 산이름으로 모집글 조회 ************ -->
+  	<select id="selectPartiesBySanName" 
+  			resultType = "org.zerock.wego.domain.PartyVO">
+  		
+  		SELECT
+  			*
+  		FROM
+  			san_party_v
+  			
+  		<where>
+  		san_name = #{sanName}
+  		</where>
+  			
+  	</select>
+  	
+  	
+  
+  	
+  	<!-- ************ 모집글 삭제 ************ -->
+  	<delete id="deletePartyByPartyId">
+  	
+  		DELETE
+  		FROM
+  			san_party_tb
+  		<where>
+  		san_party_id = #{partyId}
+  		</where>
+  	</delete>
+  	
+    
+    
+    
+    	<!-- ************ 모집글 이미지 조회  ************ -->
+  	<select id="selectPartyImgByPartyId" resultType="String">
+  		
+  		SELECT
+  			path
+  		FROM
+  			file_tb
+  		<where>
+  			target_gb = 'SAN_PARTY'
+  			AND
+  			target_cd = #{partyId}
+  		</where>
+  	</select>
+  	
+  	<!-- ************ 모집글 이미지 삭제  ************ -->
+  	<delete id="deletePartyImgByPartyId">
+  		DELETE
+  		FROM
+  			file_tb
+  		<where>
+  			target_gb = 'SAN_PARTY'
+  			AND
+  			target_cd = #{partyId}
+  		</where>
+  	</delete>
+  	
+  	
+  	
+  	
+  	
+    <!-- ************ 참여 여부 확인  ************ -->
+    <select id="selectJoinByPartyIdUserId" resultType="Integer">
+    	
+    	SELECT 1
+    	FROM dual
+    	WHERE EXISTS(
+    			SELECT 1 
+    			FROM join_tb
+    			WHERE san_party_id = #{partyId}
+    			AND user_id = #{userId})
+    </select>
+    
+    
+	<!-- ************ 참여 신청 ************ -->
+    <insert id="insertJoinByPartyIdUserId">
+    	
+    	INSERT INTO join_tb
+    		(san_party_id, user_id)
+    	VALUES
+    		(#{partyId}, #{userId})
+    </insert>
+    
+    
+    <!-- ************ 참여 취소 ************ -->
+    <delete id="deleteJoinByPartyIdUserId">
+    	DELETE
+    	FROM
+    		join_tb
+    		
+    	<where>
+    		san_party_id = #{partyId}
+    		
+    		<if test = "#{userId} != null" >
+    		AND
+    		user_id = #{userId}
+    		</if>
+    	</where>
+    </delete>
+    
+    
+    
+  </mapper>
+  
+  
+  
+  
+  
+  												
