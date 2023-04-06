@@ -4,38 +4,124 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.LinkedBlockingDeque;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.wego.domain.CommentViewVO;
 import org.zerock.wego.domain.FileDTO;
 import org.zerock.wego.domain.FileVO;
+import org.zerock.wego.domain.PageInfo;
 import org.zerock.wego.domain.PartyDTO;
 import org.zerock.wego.domain.PartyViewVO;
 import org.zerock.wego.exception.ControllerException;
+import org.zerock.wego.service.CommentService;
 import org.zerock.wego.service.FileService;
-import org.zerock.wego.service.SanInfoService;
+import org.zerock.wego.service.JoinService;
 import org.zerock.wego.service.PartyService;
+import org.zerock.wego.service.SanInfoService;
 
-import lombok.AllArgsConstructor;
+import com.google.gson.Gson;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-@AllArgsConstructor
+@RequiredArgsConstructor
 
 @RequestMapping("/party") // BASE URL
 @Controller
 public class PartyController {
-	private PartyService service;
-	private SanInfoService mountainService;
-	private FileService fileService;
+	
+	private final PartyService partyService;
+	private final CommentService commentService;
+	private final JoinService joinService;
+	private final SanInfoService mountainService;
+	private final FileService fileService;
 
+	
+	
+	@ModelAttribute("target")
+	PageInfo createPageInfo() {
+		log.trace("createPageInfo() invoked.");
+		
+		PageInfo target = new PageInfo();
+
+		target.setTargetGb("SAN_PARTY");
+		target.setCurrPage(1);
+		target.setAmount(5);
+		
+		return target;
+	}// createdBoardDTO
+	
+	
+	
+	// 모집글 상세 조회 
+	@GetMapping("/{partyId}") 
+	public ModelAndView showDetailById(@PathVariable("partyId")Integer partyId, 
+										@SessionAttribute("__AUTH__")Integer userId,
+										PageInfo target) throws ControllerException{
+		log.trace("showDetailById({}, {}) invoked.", partyId, target);
+		
+		try {
+			target = this.createPageInfo();
+			target.setTargetCd(partyId);
+			
+			
+			ModelAndView mav = new ModelAndView();
+			
+
+			PartyViewVO party = this.partyService.getById(partyId);
+			Objects.requireNonNull(party);
+			
+			boolean isJoin = this.joinService.isUserJoined(partyId, userId);
+//			boolean isLike = this.likeService.isUserLiked(target, userId);
+			
+			int totalCnt = this.commentService.getCommentsCount(target);
+			
+
+			LinkedBlockingDeque<CommentViewVO> comments = commentService.getCommentsOffsetByTarget(target);
+
+			
+			mav.addObject("party", party);
+			mav.addObject("isJoin", isJoin);
+//			mav.addObject("isLike", isLike);
+			mav.addObject("totalCnt", totalCnt);
+//			mav.addObject("userPic", userPic);
+//			mav.addObject("partyImg", partyImg);
+			
+			if(comments != null) {
+				
+				mav.addObject("comments", comments);
+			}// if
+			
+			// 수정 예정 ***************************
+			Gson gson = new Gson();
+			String targetJson = gson.toJson(target);
+			mav.addObject("target", targetJson);
+
+			mav.setViewName("/party/party-detail");
+
+			return mav;
+
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	}// viewReviewDetail
+	
+	
 	@GetMapping(
 			path = "/modify/{sanPartyId}"
 			)
@@ -48,7 +134,7 @@ public class PartyController {
 		//       일치하지 않으면, Error 접근권한없음(페이지 보여줘야됨)
 
 		try {
-			PartyViewVO vo = this.service.get(partyId);
+			PartyViewVO vo = this.partyService.getById(partyId);
 			model.addAttribute("party", vo);
 			
 			return "/party/modify";
@@ -57,24 +143,29 @@ public class PartyController {
 		} // try-catch
 	} // detailAndModify
 
-//	@GetMapping("/remove") // DeleteMapping으로 해야함
-//	public String remove(Integer sanPartyId, RedirectAttributes rttrs) 
-//			throws ControllerException { // 모집글 삭제 요청처리
-//		log.trace("remove({}, {}) invoked.", sanPartyId, rttrs);
-//
-//		try {
-//			boolean success = this.service.remove(sanPartyId);
-//			boolean fileRemoveSuccess = fileService.remove("SAN_PARTY", sanPartyId);
-//			log.info("fileRemoveSuccess: {}", fileRemoveSuccess);
-//
-//			rttrs.addAttribute("result", success ? "success" : "failure");
-//
-//			return "redirect:/recruit";
-//
-//		} catch (Exception e) {
-//			throw new ControllerException(e);
-//		} // try-catch
-//	} // remove
+	
+
+	// 모집글 삭제 
+	@DeleteMapping("/{partyId}")
+	public String removeById(@PathVariable Integer partyId,
+										@SessionAttribute("__AUTH__") Integer userId,
+										RedirectAttributes rttrs) throws ControllerException{
+		log.trace("removePartyByPartyId({}, {}) invoked.", partyId, userId);
+		
+		try {
+			boolean isSuccess = this.partyService.isRemovedById(partyId, userId);
+
+			rttrs.addFlashAttribute("partyId", partyId); // 얘는 어따쓰지? 
+			rttrs.addAttribute("result", isSuccess ? "success" : "failure");
+
+			
+			return "redirect:/party";// 목록이동으로 하기 **** 아마 신영님꺼로 이동 
+
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	}// removeReview
+	
 
 	@PostMapping("/modify")
 	public String modify(Integer sanPartyId, // 모집글 번호
@@ -111,7 +202,7 @@ public class PartyController {
 				log.trace("이미지 파일 수정 성공!!");
 			} // if
 
-			boolean success = this.service.modify(dto);
+			boolean success = this.partyService.modify(dto);
 			log.info("modify- success: {}", success);
 
 			return "redirect:/party/detail/" + dto.getSanPartyId();
@@ -147,7 +238,7 @@ public class PartyController {
 			dto.setPartyDt(dateTime);
 
 			// 첨부파일을 제외한 데이터 저장
-			boolean isSuccess = this.service.register(dto);
+			boolean isSuccess = this.partyService.register(dto);
 			log.info("success: {}", isSuccess);
 
 			// 첨부 이미지가 있다면 저장

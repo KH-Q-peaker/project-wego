@@ -6,9 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.zerock.wego.domain.SanInfoViewVO;
 import org.zerock.wego.domain.PartyViewVO;
 import org.zerock.wego.domain.ReviewViewVO;
+import org.zerock.wego.domain.SanInfoViewVO;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.service.SearchService;
 

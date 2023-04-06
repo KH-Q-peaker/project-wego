@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page import="org.zerock.wego.domain.CommentVO" %>
+<%@page import="org.zerock.wego.domain.CommentViewVO" %>
 <%@page import= "java.util.List" %>
 <%@page import= "java.util.ArrayList"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -7,7 +7,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 
-<%-- <link rel="stylesheet" type="text/css" href="${path}/resources/css/comment.css" /> --%>
 <script type="text/javascript" src="${path}/resources/js/comment.js" defer ></script>
 <script type="text/javascript" src="${path}/resources/js/delete.js" defer ></script>
 <script type="text/javascript" src="${path}/resources/js/report.js" defer ></script>
@@ -30,7 +29,6 @@ var target = JSON.parser('${target}');
 		
 		
 			<c:forEach items="${comments}" var="c">
-				<!-- 멘션일 경우와 아닐경우 분리 -->
 				<c:if test="${c.status != 'Y' }">
 				<div class="comments ${c.mentionId == null ? '' : 'mention'}">
 				

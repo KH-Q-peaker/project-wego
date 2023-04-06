@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page import="org.zerock.wego.domain.CommentVO" %>
+<%@page import="org.zerock.wego.domain.CommentViewVO" %>
 <%@page import= "java.util.List" %>
 <%@page import= "java.util.ArrayList"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -17,7 +17,7 @@
 				<img class="cmtuserPic" src="${c.userPic }"/>
 				<div class="cmtuser">${c.nickname }</div>
 				<div class="cmtdate">
-						<fmt:formatDate pattern="MM-dd HH:mm" value="${c.createdDt}"></fmt:formatDate>
+					<fmt:formatDate pattern="MM-dd HH:mm" value="${c.createdDt}"></fmt:formatDate>
 				</div>
 				<div class="btns">
 					<input type="hidden" id= "commentId" name="commentId" value="${c.commentId}">
