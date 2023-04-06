@@ -18,16 +18,35 @@
 		WHERE rownum &lt;= 10
 	</select>
 
-	<select id="select" resultType="org.zerock.wego.domain.ReviewViewVO">
-		SELECT *
-		FROM san_review_v
-		WHERE san_review_id = #{sanReviewId}
-	</select>
 
-	<delete id="delete">
-		DELETE FROM san_review_tb WHERE san_review_id =
-		#{sanReviewId}
-	</delete>
+	<!--  ************* 특정 후기글 조회  *************** -->
+	<select id="select" 
+  			resultType = "org.zerock.wego.domain.ReviewViewVO">
+  		
+  		SELECT
+  			*
+  		FROM
+  			san_review_v
+  			
+  		<where>
+  		san_review_id = #{reviewId}
+  		</where>
+  			
+  	</select>
+
+	<!--  ************* 후기글 삭제 *************** -->
+	<delete
+  		id="delete">
+  		
+  		DELETE 
+  		FROM
+  			san_review_tb
+  		<where>
+  			san_review_id = #{reviewId}
+  		</where>
+  		
+  	</delete>
+
 
 	<insert id="insert" parameterType="org.zerock.wego.domain.ReviewDTO">
 		INSERT INTO 
@@ -51,3 +70,10 @@
 	</update>
 
 </mapper>
+
+    
+  
+  
+  
+  
+  												

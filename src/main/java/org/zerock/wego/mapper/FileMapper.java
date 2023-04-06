@@ -6,7 +6,7 @@ import java.util.Set;
 import org.apache.ibatis.annotations.Select;
 import org.zerock.wego.domain.FileDTO;
 import org.zerock.wego.domain.FileVO;
-import org.zerock.wego.domain.MountainInfoViewVO;
+import org.zerock.wego.domain.SanInfoViewVO;
 
 
 public interface FileMapper {
