@@ -7,23 +7,18 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%-- <c:set var="path" value="${pageContext.request.contextPath}"/> --%>
 
-<script type="text/javascript" src="${path}/resources/js/comment.js" defer ></script>
-<script type="text/javascript" src="${path}/resources/js/delete.js" defer ></script>
-<script type="text/javascript" src="${path}/resources/js/report.js" defer ></script>
+<script type="text/javascript" src="/resources/js/comment.js" defer ></script>
+<script type="text/javascript" src="/resources/js/delete.js" defer ></script>
+<script type="text/javascript" src="/resources/js/report.js" defer ></script>
 
 	
 			<c:forEach items="${comments}" var="c">
 				<!-- 멘션일 경우와 아닐경우 분리 -->
 				<c:if test="${c.status != 'Y' }">
-				<c:choose>
-					<c:when test="${c.mentionId == null}">
-						<div class="comments">
-					</c:when>
-					<c:otherwise>
-						<div class="comments mention">
-						<input type="hidden" id="mentionId" value="${c.mentionId }"/>
-					</c:otherwise>
-				</c:choose>
+				<div class="comments ${c.mentionId == null ? '' : 'mention'}">
+				<c:if test="${c.mentionId != null }">
+				<input type="hidden" id="mentionId" value="${c.mentionId }"/>
+				</c:if>
 				
 <%-- 				<input type="hidden" id="commentGb" value="${c.commentGb }"/> --%>
 				<!--  댓글 내부 (유저닉네임, 작성일, 수정/삭제/신고버튼, 내용, 답글버튼, 수정상태 시 수정/취소버튼)  -->
@@ -64,14 +59,12 @@
 				
 			<!--  멘션 작성 폼 -->  
 			<c:if test="${c.mentionId == null}">
-				<!-- <div class="mentionwrite"> -->
 				<div class="cmtwrite mentionwrite">
 					<input type="hidden" id= "mentionId" name="mentionId" value="${c.commentId}">
 					<textarea  id="mcontents" class="mcontents" name="contents" placeholder="답글을 작성해주세요." maxlength="1000" required></textarea>
 					<input type="button" value="등록" class="insert men" disabled> 
 					<input type="button" value="취소" class="cancle">
 				</div>
-			<!-- </div> -->
 			</c:if>
 		</c:if>
 		</c:forEach>

@@ -14,18 +14,15 @@ import org.zerock.wego.mapper.ReviewMapper;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
 
-@ToString
 @Log4j2
 @NoArgsConstructor
-
 @Service
-public class ReviewServiceImpl 
-	implements ReviewService, InitializingBean { // POJO(상속X)
-
+public class ReviewServiceImpl implements ReviewService, InitializingBean{
+	
+	
 	@Setter(onMethod_= {@Autowired})
 	private ReviewMapper mapper;
 	
@@ -67,23 +64,32 @@ public class ReviewServiceImpl
 	} // getList
 	
 	
+	// 특정 후기글 조회 
 	@Override
-	public ReviewViewVO get(Integer sanReviewId) throws ServiceException {
+	public ReviewViewVO getReviewByReviewId(Integer sanReviewId) throws ServiceException {
 		log.trace("get({}) invoked.", sanReviewId);	
 		
 		try {
-			return this.mapper.select(sanReviewId);
+			ReviewViewVO review = this.mapper.selectReviewByReviewId(sanReviewId);
+			Objects.requireNonNull(review);
+
+			
+			return review;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
 	} // get
 	
+	
+	// 특정 후기글 삭제
 	@Override
-	public boolean remove(Integer sanReviewId) throws ServiceException {
+	public boolean isReviewRemove(Integer sanReviewId) throws ServiceException {
 		log.trace("remove({}) invoked.", sanReviewId);
 		
 		try {
-			return this.mapper.delete(sanReviewId) == 1;
+			
+			return this.mapper.deleteReviewByReviewId(sanReviewId) == 1;
+			
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -113,4 +119,4 @@ public class ReviewServiceImpl
 		} // try-catch
 	} // modify
 
-} // end class
+}// end class
