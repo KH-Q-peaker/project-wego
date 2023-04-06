@@ -1,0 +1,104 @@
+@charset "UTF-8";
+
+/* 신고 모달 컨테이너 */
+.reportModal {
+	display: none;
+	position : fixed; 
+	/*position : absolute; */
+	top:25vh;
+	left: 50%;
+	transform: translate(-50%, 0);
+	flex-direction: column;
+	align-items: center;
+	width: 300px;
+	height: 450px;
+	border-radius: 10px;
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
+  	border: 0;
+  	background-color: rgb(255,255,255, 1);
+  	z-index: 1;
+}
+
+
+/* 사유 리스트 */
+.reasons {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	flex-direction: column;
+	list-style-type: none;
+}
+.reason{
+	font-size: 14px;
+}
+/* 사유 라디오들 */
+.check {
+	display: flex;
+	width: 90%;
+	height: 15%;
+	margin-left: 15px;
+	justify-content: space-between;
+	align-items: flex-end;
+	border-bottom: 1px solid rgb(195, 195, 195);
+}
+/* 신고 타이틀 */
+.mdtitle {
+	display: flex;
+	margin: 0;
+	color: white;
+	background-color: #F14A4A;
+	border-radius: 10px 10px 0px 0px;
+	justify-content: center;
+	align-items: center;
+	font-size: 17px;
+	width: 300px;
+	height: 80px;
+	align-self: center;
+}
+/* 신고, 취소버튼 랩 */
+.btn {
+	display: flex;
+	margin: 35px;
+	justify-content:center;
+}
+.btn > button {
+	width: 60px;
+	height: 25px;
+	border: none;
+	border-radius: 10px;
+	margin: 0 10px;
+	font-size: 13px;
+}
+.mdcancle:hover{
+	
+	background-color: rgb(178 178 178);
+	color : white;
+}
+.mdreport:hover{
+	
+	background-color: rgba(241, 73, 73, 1);
+	color : white;
+}
+
+/* 체크표시 */
+.check > span {
+	display: none;
+}
+
+.check:hover label {
+	color: #F14A4A;
+}
+
+.check input[type="radio"] {
+	display: none;
+}
+
+.check input[type="radio"]:checked ~ span {
+	display: inline;
+	color: #F14A4A;
+	font-size: 20px;
+}
+
+.check input[type="radio"]:checked ~ label {
+	color: #F14A4A;
+}
