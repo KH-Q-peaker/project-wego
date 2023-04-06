@@ -46,7 +46,7 @@ var target = JSON.parser('${target}');
 				</div>
 				<div class="btns">
 					<input type="hidden" id= "commentId" name="commentId" value="${c.commentId}">
-					<c:if test="${c.userId == sessionScope.__AUTH__ && c.reportCnt < 5 }"> <!--  이거 조건 바꿔야된다!!!! -->
+					<c:if test="${c.userId == sessionScope.__AUTH__.userId && c.reportCnt < 5 }"> <!--  이거 조건 바꿔야된다!!!! -->
 					<input type="button" class="modifycmt" name="modifycmt" value="수정" /> 
 					<input type="button" class="deletecmt" name="deletecmt" value="삭제" /> 
 					</c:if>
