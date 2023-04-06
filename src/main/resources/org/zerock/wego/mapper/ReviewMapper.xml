@@ -20,7 +20,7 @@
 
 
 	<!--  ************* 특정 후기글 조회  *************** -->
-	<select id="selectReviewByReviewId" 
+	<select id="select" 
   			resultType = "org.zerock.wego.domain.ReviewViewVO">
   		
   		SELECT
@@ -29,20 +29,20 @@
   			san_review_v
   			
   		<where>
-  		san_review_id = #{sanReviewId}
+  		san_review_id = #{reviewId}
   		</where>
   			
   	</select>
 
 	<!--  ************* 후기글 삭제 *************** -->
 	<delete
-  		id="deleteReviewByReviewId">
+  		id="delete">
   		
   		DELETE 
   		FROM
   			san_review_tb
   		<where>
-  			san_review_id = #{sanReviewId}
+  			san_review_id = #{reviewId}
   		</where>
   		
   	</delete>

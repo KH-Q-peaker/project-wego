@@ -5,26 +5,23 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zerock.wego.domain.ReviewDTO;
 import org.zerock.wego.domain.ReviewViewVO;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.ReviewMapper;
 
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 
 @Log4j2
-@NoArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class ReviewServiceImpl implements ReviewService, InitializingBean{
 	
 	
-	@Setter(onMethod_= {@Autowired})
-	private ReviewMapper mapper;
+	private final ReviewMapper reviewMapper;
 	
 	
 	@Override
@@ -32,8 +29,8 @@ public class ReviewServiceImpl implements ReviewService, InitializingBean{
 		log.trace("afterPropertiesSet() invoked.");
 		
 		try {
-			Objects.requireNonNull(this.mapper);
-			log.info("this.mapper: {}", this.mapper);
+			Objects.requireNonNull(this.reviewMapper);
+			log.info("this.mapper: {}", this.reviewMapper);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -45,7 +42,7 @@ public class ReviewServiceImpl implements ReviewService, InitializingBean{
 		log.trace("getList() invoked.");
 		
 		try {
-			return this.mapper.selectAll();
+			return this.reviewMapper.selectAll();
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -57,7 +54,7 @@ public class ReviewServiceImpl implements ReviewService, InitializingBean{
 		log.trace("getRandom10List() invoked.");
 		
 		try {
-			return this.mapper.selectRandom10();
+			return this.reviewMapper.selectRandom10();
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -66,11 +63,11 @@ public class ReviewServiceImpl implements ReviewService, InitializingBean{
 	
 	// 특정 후기글 조회 
 	@Override
-	public ReviewViewVO getReviewByReviewId(Integer sanReviewId) throws ServiceException {
-		log.trace("get({}) invoked.", sanReviewId);	
+	public ReviewViewVO getById(Integer reviewId) throws ServiceException {
+		log.trace("getById({}) invoked.", reviewId);	
 		
 		try {
-			ReviewViewVO review = this.mapper.selectReviewByReviewId(sanReviewId);
+			ReviewViewVO review = this.reviewMapper.selectById(reviewId);
 			Objects.requireNonNull(review);
 
 			
@@ -83,12 +80,12 @@ public class ReviewServiceImpl implements ReviewService, InitializingBean{
 	
 	// 특정 후기글 삭제
 	@Override
-	public boolean isReviewRemove(Integer sanReviewId) throws ServiceException {
-		log.trace("remove({}) invoked.", sanReviewId);
+	public boolean isRemoved(Integer reviewId) throws ServiceException {
+		log.trace("isRemoved({}) invoked.", reviewId);
 		
 		try {
 			
-			return this.mapper.deleteReviewByReviewId(sanReviewId) == 1;
+			return this.reviewMapper.delete(reviewId) == 1;
 			
 		} catch (Exception e) {
 			throw new ServiceException(e);
@@ -97,11 +94,11 @@ public class ReviewServiceImpl implements ReviewService, InitializingBean{
 	
 	
 	@Override
-	public boolean register(ReviewDTO dto) throws ServiceException {
+	public boolean isRegistered(ReviewDTO dto) throws ServiceException {
 		log.trace("register({}) invoked.");
 		
 		try {
-			return this.mapper.insert(dto) == 1;
+			return this.reviewMapper.insert(dto) == 1;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -109,11 +106,11 @@ public class ReviewServiceImpl implements ReviewService, InitializingBean{
 	
 	
 	@Override
-	public boolean modify(ReviewDTO dto) throws ServiceException {
+	public boolean isModified(ReviewDTO dto) throws ServiceException {
 		log.trace("modify({}) invoked.");
 		
 		try {
-			return this.mapper.update(dto) == 1;
+			return this.reviewMapper.update(dto) == 1;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
