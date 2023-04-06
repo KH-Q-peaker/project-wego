@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+<beans:beans
+	xmlns="http://www.springframework.org/schema/mvc"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
@@ -10,44 +11,38 @@
 	<annotation-driven />
 
 	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/img/**" location="file:///C:/upload/" />
 
 	<view-resolvers>
-      <jsp prefix="/WEB-INF/views/" suffix=".jsp"/>
+		<jsp prefix="/WEB-INF/views/" suffix=".jsp" />
 	</view-resolvers>
-	
-	<context:component-scan base-package="org.zerock.wego.controller" />
-	<context:component-scan base-package="org.zerock.wego.exception" />
-	<context:component-scan base-package="org.zerock.wego.interceptor" />
 
-	<!-- <interceptors>
-		<interceptor>
-<<<<<<< HEAD
-<<<<<<< HEAD
-			<mapping path="/sample/doA" />
-=======
-			<mapping path="/sample/**" />
-=======
-			<mapping path="/badge/**" />
->>>>>>> 0d44db83bd3656ee0a2693bd532135228b5b775d
-			<exclude-mapping path="/info/**"/>
->>>>>>> 113d9dc0196c44f00670737ed809cb84508a9f90
-	
-			<beans:ref bean="authInterceptor" />
-		</interceptor>
-	</interceptors> -->
-	
-   <!-- <beans:bean id="multipartResolver"
-      class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-      <beans:property name="defaultEncoding" value="UTF-8" />
-      <beans:property name="maxInMemorySize" value="20971520" /> 20MB
-      <beans:property name="maxUploadSize" value="20971520" /> 20MB
-      <beans:property name="maxUploadSizePerFile"
-         value="20971520" /> 20MB
-      <beans:property name="preserveFilename" value="true" />
-      <beans:property name="uploadTempDir"
-         value="file:/C:/upload/" />
-   </beans:bean>
+	<context:component-scan
+		base-package="org.zerock.wego.controller" />
+	<context:component-scan
+		base-package="org.zerock.wego.exception" />
+	<context:component-scan
+		base-package="org.zerock.wego.interceptor" />
 
-   <resources mapping="/img/**" location="file:///C:/upload/" /> -->
-	
+	<!-- <interceptors> <interceptor> <<<<<<< HEAD <<<<<<< HEAD <mapping path="/sample/doA" 
+		/> ======= <mapping path="/sample/**" /> ======= <mapping path="/badge/**" 
+		/> >>>>>>> 0d44db83bd3656ee0a2693bd532135228b5b775d <exclude-mapping path="/info/**"/> 
+		>>>>>>> 113d9dc0196c44f00670737ed809cb84508a9f90 <beans:ref bean="authInterceptor" 
+		/> </interceptor> </interceptors> -->
+
+	<!-- 파일 업로드를 위한 빈 설정 -->
+	<!--
+	<beans:bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="defaultEncoding" value="UTF-8" />
+		<beans:property name="maxInMemorySize" value="20971520" />
+		<beans:property name="maxUploadSize" value="20971520" />
+		<beans:property name="maxUploadSizePerFile"
+			value="20971520" />
+		<beans:property name="preserveFilename" value="true" />
+		<beans:property name="uploadTempDir"
+			value="file:/C:/upload/" />
+	</beans:bean>
+	-->
+
 </beans:beans>

@@ -36,7 +36,7 @@
 					<div class="wrap">
 						<c:forEach var="item" items="${mountainInfoList}">
 							<div class="item">
-								<a id="itemPath" href="/info/detail?sanInfoId=${item.sanInfoId}">
+								<a id="itemPath" href="/info/detail/${item.sanInfoId}">
 									<div class="item-info">
 										<h3 id="itemTitle">${item.sanName}</h3>
 										<div class="itemDetail">
@@ -58,7 +58,7 @@
 					</div>
 					<div class="wrap-recruit">
 						<c:forEach var="item" items="${recruitmentList}">
-							<a href="/recruit/detail?sanPartyId=${item.sanPartyId}">
+							<a href="/recruit/detail/${item.sanPartyId}">
 							<div class="recruit-item">
 								<img class="user-img" src="${item.userPic}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
@@ -107,7 +107,7 @@
 						<c:forEach var="item" items="${reviewList}">
 							<div class="item">
 								<a id="itemPath"
-									href="/review/detail?sanReviewId=${item.sanReviewId}">
+									href="/review/detail/${item.sanReviewId}">
 									<div class="item-info">
 										<h3 id="itemTitle">${item.title}</h3>
 										<div class="itemDetail">

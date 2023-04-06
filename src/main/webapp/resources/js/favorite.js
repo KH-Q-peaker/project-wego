@@ -33,6 +33,7 @@ window.addEventListener("click", (e) => {
 
     formData.set("targetCd", postId);
     formData.set("userId", 9); // TEST용 USER_ID
+<<<<<<< HEAD
 
     if (e.target.classList.toggle("on")) {
       formData.set("status", "Y");
@@ -42,6 +43,18 @@ window.addEventListener("click", (e) => {
       favoriteCount.innerText = Number(favoriteCount.innerText) - 1;
     } // if-else
 
+=======
+    
+    if(e.target.classList.toggle("on")) {
+		formData.set("status", "Y");
+		favoriteCount.innerText = Number(favoriteCount.innerText) + 1
+	} else {
+		formData.set("status", "N");
+		favoriteCount.innerText = Number(favoriteCount.innerText) - 1
+	} // if-else
+    
+    formData.forEach((value, key) => console.log(`key: ${key}, value: ${value}`));
+>>>>>>> branch 'main' of https://github.com/uniyunnnn/project-wego-jiyun.git
     setTimeout(() => request(formData), 1000);
   } // if
 });

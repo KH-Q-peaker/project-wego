@@ -6,56 +6,43 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.zerock.wego.domain.FavoriteVO;
 import org.zerock.wego.domain.MountainInfoViewVO;
 import org.zerock.wego.domain.RecruitmentViewVO;
 import org.zerock.wego.domain.ReviewViewVO;
 import org.zerock.wego.exception.ControllerException;
-import org.zerock.wego.service.FavoriteService;
-import org.zerock.wego.service.MountainInfoService;
-import org.zerock.wego.service.RecruitmentService;
-import org.zerock.wego.service.ReviewService;
 import org.zerock.wego.service.SearchService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+
 
 @Log4j2
 @AllArgsConstructor
 
 @RequestMapping("/") // BASE URL
 @Controller
-public class MainController {
-	private MountainInfoService mountainInfoService;
-	private RecruitmentService recruitmentService;
-	private ReviewService reviewService;
-	private FavoriteService favoriteService;
+public class SearchController {
+	private SearchService service;
 
-	@GetMapping("")
-	public String main(Model model) throws ControllerException {
-		log.trace("main() invoked.");
+	@GetMapping("/search")
+	public void searchResult(String search, Model model) throws ControllerException {
+		log.trace("searchResult({}) invoked.", search);
 
 		try {
-			// === TEST 유저ID 9의 좋아요 목록 ===
-			Set<FavoriteVO> favoriteList = this.favoriteService.getList(9L);
-			model.addAttribute("favoriteList", favoriteList);
-
 			// =========== 산정보 ===========
-			Set<MountainInfoViewVO> mountainInfoList = this.mountainInfoService.getRandom10List();
+			Set<MountainInfoViewVO> mountainInfoList = this.service.selectSearchMountainInfo(search);
 			model.addAttribute("mountainInfoList", mountainInfoList);
 
 			// =========== 모집글 ===========
-			Set<RecruitmentViewVO> recruitmentList = this.recruitmentService.getRandom10List();
+			Set<RecruitmentViewVO> recruitmentList = this.service.selectSearchRecruitment(search);
 			model.addAttribute("recruitmentList", recruitmentList);
 
 			// =========== 후기글 ===========
-			Set<ReviewViewVO> reviewList = this.reviewService.getRandom10List();
+			Set<ReviewViewVO> reviewList = this.service.selectSearchReview(search);
 			model.addAttribute("reviewList", reviewList);
-
-			return "main";
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
-	} // main
 
+	} // searchResult
 } // end class
