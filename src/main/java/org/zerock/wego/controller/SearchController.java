@@ -19,7 +19,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @AllArgsConstructor
 
-@RequestMapping("/") // BASE URL
+@RequestMapping("/")
 @Controller
 public class SearchController {
 	private SearchService service;
@@ -29,16 +29,13 @@ public class SearchController {
 		log.trace("searchResult({}) invoked.", search);
 
 		try {
-			// =========== 산정보 ===========
-			Set<SanInfoViewVO> mountainInfoList = this.service.selectSearchMountainInfo(search);
-			model.addAttribute("mountainInfoList", mountainInfoList);
+			Set<SanInfoViewVO> sanInfoList = this.service.selectSearchSanInfo3(search);
+			model.addAttribute("sanInfoList", sanInfoList);
 
-			// =========== 모집글 ===========
-			Set<PartyViewVO> recruitmentList = this.service.selectSearchRecruitment(search);
-			model.addAttribute("recruitmentList", recruitmentList);
+			Set<PartyViewVO> partyList = this.service.selectSearchParty3(search);
+			model.addAttribute("partyList", partyList);
 
-			// =========== 후기글 ===========
-			Set<ReviewViewVO> reviewList = this.service.selectSearchReview(search);
+			Set<ReviewViewVO> reviewList = this.service.selectSearchReview3(search);
 			model.addAttribute("reviewList", reviewList);
 		} catch (Exception e) {
 			throw new ControllerException(e);

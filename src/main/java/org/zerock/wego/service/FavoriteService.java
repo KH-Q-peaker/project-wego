@@ -21,21 +21,21 @@ public class FavoriteService {
 	private final FavoriteMapper mapper;
 
 	
-	public Set<FavoriteVO> getList(Long userId) throws ServiceException {
-		log.trace("get({}) invoked.", userId);
+	public Set<FavoriteVO> getUserFavoriteOnList(Integer userId) throws ServiceException {
+		log.trace("getUserFavoriteOnList({}) invoked.", userId);
 
 		try {
-			return this.mapper.selectAll(userId);
+			return this.mapper.getUserFavoriteOnList(userId);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
 	} // getList
 
-	public Integer getCount(FavoriteDTO dto) throws ServiceException {
-		log.trace("get({}) invoked.", dto);
+	public boolean isFavoriteInfo(FavoriteDTO dto) throws ServiceException {
+		log.trace("isFavoriteInfo({}) invoked.", dto);
 
 		try {
-			return this.mapper.selectCount(dto);
+			return this.mapper.isFavoriteInfo(dto) == 1;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch

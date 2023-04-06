@@ -16,7 +16,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 
 @Service
-public class SanInfoService { // POJO(상속X)
+public class SanInfoService {
 
 	private final SanInfoMapper mapper;
 
@@ -39,7 +39,7 @@ public class SanInfoService { // POJO(상속X)
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
-	} // getList
+	} // getRandom10List
 	
 	public SanInfoViewVO get(Integer sanInfoId) throws ServiceException {
 		log.trace("get({}) invoked.", sanInfoId);	

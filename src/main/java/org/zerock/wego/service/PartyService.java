@@ -46,7 +46,17 @@ public class PartyService {
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
-	} // getList
+	} // getRandom10List
+	
+	public Integer selectUserIdByPartyId(Integer partyId) {
+		log.trace("selectUserIdByPartyId() invoked.");
+
+		try {
+			return this.partyMapper.selectUserIdByPartyId(partyId);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	} // selectUserIdByPartyId
 
 
 	// 모집글 상세 조회 
