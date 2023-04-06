@@ -6,7 +6,7 @@ import lombok.Value;
 
 
 @Value
-public class RecruitmentVO {
+public class PartyVO {
 	
 	private Integer	sanPartyId; // 모집글 코드 시퀀스
 	private Integer sanInfoId; // 모집글 말머리 FK

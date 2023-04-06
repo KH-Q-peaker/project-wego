@@ -3,7 +3,7 @@ package org.zerock.wego.domain;
 import lombok.Value;
 
 @Value
-public class MountainInfoViewVO {
+public class SanInfoViewVO {
 
 	private Integer sanInfoId; // 산 ID
 	private Integer mountainCd; // 코드

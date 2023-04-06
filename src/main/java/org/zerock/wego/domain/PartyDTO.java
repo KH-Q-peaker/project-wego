@@ -7,7 +7,7 @@ import lombok.Data;
 
 
 @Data
-public class RecruitmentDTO {
+public class PartyDTO {
 	
 	private Integer	sanPartyId; // 모집글 코드 시퀀스
 	private Integer sanInfoId; // 모집글 말머리 FK

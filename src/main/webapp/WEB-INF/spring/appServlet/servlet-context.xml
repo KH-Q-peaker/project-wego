@@ -31,7 +31,7 @@
 		/> </interceptor> </interceptors> -->
 
 	<!-- 파일 업로드를 위한 빈 설정 -->
-	<!-- 
+
 	<beans:bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<beans:property name="defaultEncoding" value="UTF-8" />
@@ -43,6 +43,5 @@
 		<beans:property name="uploadTempDir"
 			value="file:/C:/upload/" />
 	</beans:bean>
-	 -->
 
 </beans:beans>

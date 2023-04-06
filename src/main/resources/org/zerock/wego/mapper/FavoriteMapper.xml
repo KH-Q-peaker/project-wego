@@ -6,13 +6,14 @@
 
 <mapper namespace="org.zerock.wego.mapper.FavoriteMapper">
 	
-	<select id="selectCount" resultType="Integer">
+	<select id="selectFavoriteOn" resultType="Integer">
 		SELECT count(user_id)
 		FROM like_tb
 		WHERE
 			user_id = #{userId}
 			AND target_gb = #{targetGb}
 			AND target_cd = #{targetCd}
+			AND status = "Y";
 	</select>
 
 

@@ -16,12 +16,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.wego.domain.FileDTO;
 import org.zerock.wego.domain.FileVO;
-import org.zerock.wego.domain.RecruitmentDTO;
-import org.zerock.wego.domain.RecruitmentViewVO;
+import org.zerock.wego.domain.PartyDTO;
+import org.zerock.wego.domain.PartyViewVO;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.service.FileService;
-import org.zerock.wego.service.MountainInfoService;
-import org.zerock.wego.service.RecruitmentService;
+import org.zerock.wego.service.SanInfoService;
+import org.zerock.wego.service.PartyService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -29,32 +29,35 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @AllArgsConstructor
 
-@RequestMapping("/recruit") // BASE URL
+@RequestMapping("/party") // BASE URL
 @Controller
-public class RecruitController {
-	private RecruitmentService service;
-	private MountainInfoService mountainService;
+public class PartyController {
+	private PartyService service;
+	private SanInfoService mountainService;
 	private FileService fileService;
 
 	@GetMapping(
 			path = "/modify/{sanPartyId}"
 			)
 	public String modify(
-			@PathVariable("sanPartyId") Integer sanPartyId, Model model) 
+			@PathVariable("partyId") Integer partyId, Model model) 
 			throws ControllerException { // 모집글 수정 요청처리
-		log.trace("detail({}, {}) invoked.", sanPartyId, model);
+		log.trace("detail({}, {}) invoked.", partyId, model);
+		
+		// TODO: 세션에 있는 __AUTH__ 객체를 얻어서 AUTH에 있는 아이디와 게시글 작성자의 ID의 일치여부 판단 필요
+		//       일치하지 않으면, Error 접근권한없음(페이지 보여줘야됨)
 
 		try {
-			RecruitmentViewVO vo = this.service.get(sanPartyId);
-			model.addAttribute("recruitment", vo);
+			PartyViewVO vo = this.service.get(partyId);
+			model.addAttribute("party", vo);
 			
-			return "/recruit/modify";
+			return "/party/modify";
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
 	} // detailAndModify
 
-//	@GetMapping("/remove")
+//	@GetMapping("/remove") // DeleteMapping으로 해야함
 //	public String remove(Integer sanPartyId, RedirectAttributes rttrs) 
 //			throws ControllerException { // 모집글 삭제 요청처리
 //		log.trace("remove({}, {}) invoked.", sanPartyId, rttrs);
@@ -79,11 +82,14 @@ public class RecruitController {
 			MultipartFile imgFile, // 이미지
 			String date, // 등반일
 			String time, // 등반시간
-			RecruitmentDTO dto) 
+			PartyDTO dto) 
 					throws ControllerException { // 모집글 수정 요청처리
 		log.trace("modify({}, {}) invoked.", dto);
 
 		try {
+			// TODO: 세션에 있는 __AUTH__ 객체를 얻어서 AUTH에 있는 아이디와 게시글 작성자의 ID의 일치여부 판단 필요
+			//       일치하지 않으면, Error 접근권한없음(페이지 보여줘야됨)
+			
 			// 산이름으로 산ID 조회
 			Integer sanId = this.mountainService.selectSanName(sanName);
 			dto.setSanInfoId(sanId);
@@ -108,23 +114,23 @@ public class RecruitController {
 			boolean success = this.service.modify(dto);
 			log.info("modify- success: {}", success);
 
-			return "redirect:/recruit/detail/" + dto.getSanPartyId();
+			return "redirect:/party/detail/" + dto.getSanPartyId();
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
 	} // modify
 
-	@GetMapping("/write")
-	public void write(RedirectAttributes rttrs) { // 모집글 작성 요청처리
-		log.trace("write() invoked.");
+	@GetMapping("/register")
+	public void register() { // 모집글 작성 요청처리
+		log.trace("register() invoked.");
 	} // write
 
 	@PostMapping("/register")
-	public String recruitmentUpload(String sanName, // 산이름
+	public String register(String sanName, // 산이름
 			MultipartFile imgFile, // 이미지
 			String date, // 등반일
 			String time, // 등반시간
-			RecruitmentDTO dto, FileDTO fileDto, RedirectAttributes rttrs) throws ControllerException {
+			PartyDTO dto, FileDTO fileDto, RedirectAttributes rttrs) throws ControllerException {
 		log.trace("register({}, {}) invoked.", dto, rttrs);
 
 		try {
@@ -141,8 +147,8 @@ public class RecruitController {
 			dto.setPartyDt(dateTime);
 
 			// 첨부파일을 제외한 데이터 저장
-			boolean success = this.service.register(dto);
-			log.info("success: {}", success);
+			boolean isSuccess = this.service.register(dto);
+			log.info("success: {}", isSuccess);
 
 			// 첨부 이미지가 있다면 저장
 			if (imgFile != null && !"".equals(imgFile.getOriginalFilename())) {
@@ -183,7 +189,7 @@ public class RecruitController {
 
 			rttrs.addFlashAttribute("sanPartyId", dto.getSanPartyId());
 
-			return "redirect:/recruit";
+			return "redirect:/party";
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch

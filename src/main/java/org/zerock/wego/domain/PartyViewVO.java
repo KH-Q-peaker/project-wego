@@ -6,7 +6,7 @@ import lombok.Value;
 
 
 @Value
-public class RecruitmentViewVO {
+public class PartyViewVO {
 	
 	private Integer	sanPartyId; // 모집글 코드 시퀀스
 	private String sanName; // 산이름
