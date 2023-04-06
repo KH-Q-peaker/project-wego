@@ -13,12 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.zerock.wego.domain.CommentVO;
+import org.zerock.wego.domain.CommentViewVO;
 import org.zerock.wego.domain.PageInfo;
 import org.zerock.wego.domain.ReviewViewVO;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.service.CommentService;
-import org.zerock.wego.service.LikeService;
 import org.zerock.wego.service.ReviewService;
 
 import com.google.gson.Gson;
@@ -87,7 +86,7 @@ public class ReviewController {
 				userPic = "/resources/img/default-profile.png";
 			}// if
 			
-			LinkedBlockingDeque<CommentVO> comments = commentService.getCommentsOffsetByTarget(target);
+			LinkedBlockingDeque<CommentViewVO> comments = commentService.getCommentsOffsetByTarget(target);
 
 			Objects.requireNonNull(review);
 

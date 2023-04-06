@@ -10,8 +10,7 @@
 <title>메인페이지</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="shortcut icon" href="/resources/ico/favicon.ico"
-	type="image/x-icon" />
+<link rel="shortcut icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
 <link rel="icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
 <link rel="stylesheet" href="/resources/css/header.css" />
 <link rel="stylesheet" href="/resources/css/footer.css" />
@@ -27,6 +26,7 @@
 <body>
 	<div class="total-wrap">
 		<%@include file="/WEB-INF/views/common/header.jsp"%>
+		
 		<section>
 			<div class="rank">
 				<div class="rankers">
