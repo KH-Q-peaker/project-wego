@@ -14,13 +14,12 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.wego.domain.CommentVO;
+import org.zerock.wego.domain.PageInfo;
 import org.zerock.wego.domain.ReviewViewVO;
-import org.zerock.wego.domain.Target;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.service.CommentService;
 import org.zerock.wego.service.LikeService;
 import org.zerock.wego.service.ReviewService;
-import org.zerock.wego.service.UserService;
 
 import com.google.gson.Gson;
 
@@ -40,23 +39,21 @@ public class ReviewController {
 	@Autowired
 	private CommentService commentService;
 
-	@Autowired
-	private UserService userService;
+//	@Autowired
+//	private UserService userService;
 	
-	@Autowired
-	private LikeService likeService;
+//	@Autowired
+//	private LikeService likeService;
 	
 	
 	
 	@ModelAttribute("target")
-	Target createTarget() {
-		log.trace("createTarget() invoked.");
+	PageInfo createPageInfo() {
+		log.trace("createPageInfo() invoked.");
 		
-		Target target = new Target();
+		PageInfo target = new PageInfo();
 
 		target.setTargetGb("SAN_REVIEW");
-		target.setCurrPage(1);
-		target.setAmount(5);
 		
 		return target;
 	}// createdBoardDTO
@@ -64,28 +61,31 @@ public class ReviewController {
 	
 	
 	@GetMapping("/{reviewId}")
-	public ModelAndView viewReviewDetailByReviewId(@PathVariable("reviewId")Integer reviewId,
-										 			@SessionAttribute("__AUTH__")Long userId,
-										 			Target target) throws ControllerException{
-		log.trace("viewReviewDetail({}, {}) invoked.", reviewId, target);
+	public ModelAndView showDetailById(@PathVariable("reviewId")Integer reviewId,
+									@SessionAttribute("__AUTH__")Integer userId,
+									PageInfo target) throws ControllerException{
+		log.trace("showDetail({}, {}) invoked.", reviewId, target);
 		
 		try {
 			
-			target = this.createTarget();
+			target = this.createPageInfo();
 			target.setTargetCd(reviewId);
 			
 			
 			ModelAndView mav = new ModelAndView();
 
 			
-			ReviewViewVO review = this.reviewService.getReviewByReviewId(reviewId);
+			ReviewViewVO review = this.reviewService.getById(reviewId);
 			
-			boolean isLike = this.likeService.isUserLike(target, userId);
+//			boolean isLike = this.likeService.isUserLike(target, userId);
 			int totalCnt = this.commentService.getCommentsCount(target);
 
 //			String userPic = this.userService.getUserPic(review.getUserPic());
-			String userPic = (review.getUserPic() == null) ? 
-								"/resources/img/default-profile.png" : review.getUserPic();
+			String userPic = review.getUserPic();
+			
+			if(userPic == null) {
+				userPic = "/resources/img/default-profile.png";
+			}// if
 			
 			LinkedBlockingDeque<CommentVO> comments = commentService.getCommentsOffsetByTarget(target);
 
@@ -93,7 +93,7 @@ public class ReviewController {
 
 			/*후기글 사진 넣는거 필요함 */
 			mav.addObject("review", review);
-			mav.addObject("isLike", isLike);
+//			mav.addObject("isLike", isLike);
 			mav.addObject("totalCnt", totalCnt);
 			mav.addObject("userPic", userPic);
 			
@@ -102,7 +102,7 @@ public class ReviewController {
 				mav.addObject("comments", comments);
 			}// if
 			
-			
+			/* 수정 예정 */
 			Gson gson = new Gson();
 			String targetJson = gson.toJson(target);
 			mav.addObject("target", targetJson);
@@ -121,13 +121,13 @@ public class ReviewController {
 	
 	
 	@DeleteMapping("/{reviewId}")
-	public String removeReviewByReviewId(@PathVariable("reviewId")Integer reviewId, 
-										RedirectAttributes rttrs) throws ControllerException{
-		log.trace("removeReviewByReviewId({}) invoked.", reviewId);
+	public String removeById(@PathVariable("reviewId")Integer reviewId, 
+							RedirectAttributes rttrs) throws ControllerException{
+		log.trace("remove({}) invoked.", reviewId);
 
 		try {
 
-			boolean isSuccess = this.reviewService.isReviewRemove(reviewId);
+			boolean isSuccess = this.reviewService.isRemoved(reviewId);
 
 			rttrs.addFlashAttribute("reviewId", reviewId);
 			rttrs.addAttribute("result", isSuccess ? "success" : "failure");
