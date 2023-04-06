@@ -31,3 +31,25 @@ selector("#userImg").addEventListener("click", () => {
 
 // header에서 검색바를 제거하는 함수
 const removeSearch = () => selector(".search-bar").remove();
+
+
+
+$.ajax({
+  type: "GET",
+  url: "/auth/json/session",
+  error: function () {
+      console.log("noUser");
+
+      $(".user #userImg").css("display","none");
+      $(".user .login-btn").css("display","block");
+  },
+
+  success: function (auth) {
+      authJson = auth;
+
+      console.log(authJson);
+
+      $(".user #userImg").css("display","block");
+      $(".user .login-btn").css("display","none");
+  }
+});

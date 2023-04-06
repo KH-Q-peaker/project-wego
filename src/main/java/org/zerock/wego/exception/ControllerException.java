@@ -1,6 +1,6 @@
 package org.zerock.wego.exception;
 
-public class ControllerException extends Exception {
+public class ControllerException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	
 	public ControllerException(String message) {
