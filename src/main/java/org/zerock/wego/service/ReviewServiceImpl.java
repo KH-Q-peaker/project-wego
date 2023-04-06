@@ -8,25 +8,21 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zerock.wego.domain.ReviewDTO;
-import org.zerock.wego.domain.ReviewVO;
 import org.zerock.wego.domain.ReviewViewVO;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.ReviewMapper;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
 
-@ToString
 @Log4j2
 @NoArgsConstructor
-
 @Service
-public class ReviewServiceImpl 
-	implements ReviewService, InitializingBean { // POJO(상속X)
-
+public class ReviewServiceImpl implements ReviewService, InitializingBean{
+	
+	
 	@Setter(onMethod_= {@Autowired})
 	private ReviewMapper mapper;
 	
@@ -123,4 +119,4 @@ public class ReviewServiceImpl
 		} // try-catch
 	} // modify
 
-} // end class
+}// end class

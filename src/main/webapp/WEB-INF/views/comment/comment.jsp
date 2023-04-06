@@ -7,6 +7,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 
+<%-- <link rel="stylesheet" type="text/css" href="${path}/resources/css/comment.css" /> --%>
 <script type="text/javascript" src="${path}/resources/js/comment.js" defer ></script>
 <script type="text/javascript" src="${path}/resources/js/delete.js" defer ></script>
 <script type="text/javascript" src="${path}/resources/js/report.js" defer ></script>
@@ -31,21 +32,19 @@ var target = JSON.parser('${target}');
 			<c:forEach items="${comments}" var="c">
 				<!-- 멘션일 경우와 아닐경우 분리 -->
 				<c:if test="${c.status != 'Y' }">
-<%-- 				<c:choose> --%>
-<%-- 					<c:when test="${c.mentionId == null}"> --%>
-						<div class="comments ${c.mentionId == null ? 'mention' : ''}">
-<%-- 					</c:when> --%>
-<%-- 					<c:otherwise> --%>
-<!-- 						<div class="comments mention"> -->
-<%-- 					</c:otherwise> --%>
-<%-- 				</c:choose> --%>
+				<div class="comments ${c.mentionId == null ? '' : 'mention'}">
 				
+				<c:if test="${c.mentionId != null }">
 				<input type="hidden" id="mentionId" value="${c.mentionId }"/>
+				</c:if>
+				<!--  댓글 내부 (유저닉네임, 작성일, 수정/삭제/신고버튼, 내용, 답글버튼, 수정상태 시 수정/취소버튼)  -->
 				<c:if test="${c.status == 'N' }">
+<%-- 				<img class="cmtuserPic" src="${c.userPic}"/> --%>
 				<img class="cmtuserPic" src="${c.userPic}"/>
 				<div class="cmtuser">${c.status != 'N' ? '알수없음' : c.nickname }</div>
 				<div class="cmtdate">
 						<fmt:formatDate pattern="MM-dd HH:mm" value="${c.modifiedDt == null? c.createdDt : c.modifiedDt}"></fmt:formatDate>
+						${c.modifiedDt != null ? '수정됨' : ''}
 				</div>
 				<div class="btns">
 					<input type="hidden" id= "commentId" name="commentId" value="${c.commentId}">
@@ -83,7 +82,6 @@ var target = JSON.parser('${target}');
 					<input type="button" value="등록" class="insert men" disabled> 
 					<input type="button" value="취소" class="cancle">
 				</div>
-			<!-- </div> -->
 			</c:if>
 		</c:if>
 		</c:forEach>

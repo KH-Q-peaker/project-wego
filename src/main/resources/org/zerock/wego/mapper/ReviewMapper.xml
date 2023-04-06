@@ -21,7 +21,7 @@
 
 	<!--  ************* 특정 후기글 조회  *************** -->
 	<select id="selectReviewByReviewId" 
-  			resultType = "org.zerock.wego.domain.ReviewVO">
+  			resultType = "org.zerock.wego.domain.ReviewViewVO">
   		
   		SELECT
   			*
@@ -70,3 +70,10 @@
 	</update>
 
 </mapper>
+
+    
+  
+  
+  
+  
+  												
