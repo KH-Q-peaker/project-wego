@@ -3,6 +3,8 @@ package org.zerock.wego.service;
 import java.util.Objects;
 import java.util.concurrent.LinkedBlockingDeque;
 
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.zerock.wego.domain.CommentDTO;
 import org.zerock.wego.domain.CommentViewVO;
@@ -28,9 +30,9 @@ public class CommentService {
 		
 		
 		try {
-			int cnt = this.commentMapper.selectTotalCountByTarget(target);
+			int totalCount = this.commentMapper.selectTotalCountByTarget(target);
 			
-			return cnt;
+			return totalCount;
 			
 		}catch(Exception e) {
 			throw new ServiceException(e);
@@ -61,7 +63,7 @@ public class CommentService {
 
 	
 	// 댓글 코드로 조회 
-	public CommentViewVO getCommentByCommentId(Integer commentId) throws ServiceException{
+	public CommentViewVO getById(Integer commentId) throws ServiceException{
 		log.trace("getCommentByCommentId({}}) invoked.", commentId);
 		
 		try {
@@ -78,7 +80,7 @@ public class CommentService {
 	
 
 	// 댓글 작성 
-	public boolean isCommentRegister(CommentDTO dto) throws ServiceException{
+	public boolean isCommentRegistered(CommentDTO dto) throws ServiceException{
 		log.trace("isCommentRegister({}) invoked", dto);
 		
 		try {
@@ -116,10 +118,10 @@ public class CommentService {
 		 
 		 if(originComment.getCommentGb().equals("COMMENT")){
 			 
-			 isRemove = this.isCommentRemove(commentId);
+			 isRemove = this.isCommentRemoved(commentId);
 		 }else {
 			 
-			 isRemove = this.isMentionRemove(commentId);
+			 isRemove = this.isMentionRemoved(commentId);
 		 }// if-else
 		 
 		 
@@ -128,7 +130,7 @@ public class CommentService {
 	
 	
 	// 댓글 삭제
-	public boolean isCommentRemove(Integer commentId) throws ServiceException {
+	public boolean isCommentRemoved(Integer commentId) throws ServiceException {
 
 		
 		CommentDTO comment = new CommentDTO();
@@ -136,7 +138,7 @@ public class CommentService {
 		comment.setContents("삭제된 댓글입니다.");
 		
 		
-		boolean isMentionExist = (this.commentMapper.selectMentionsByCommentId(commentId) != null);
+		boolean isMentionExist = (this.commentMapper.hasMentionById(commentId) != null);
 
 		if (isMentionExist) {
 			
@@ -152,7 +154,7 @@ public class CommentService {
 	
 	
 	// 멘션 삭제
-	public boolean isMentionRemove(Integer commentId) throws ServiceException {
+	public boolean isMentionRemoved(Integer commentId) throws ServiceException {
 
 		CommentDTO comment = new CommentDTO();
 		comment.setCommentId(commentId);
@@ -169,7 +171,7 @@ public class CommentService {
 		
 		
 		boolean isMentionExist = 
-				(this.commentMapper.selectMentionsByCommentId(originComment.getMentionId()) != null);
+				(this.commentMapper.hasMentionById(originComment.getMentionId()) != null);
 		
 			if (!isMentionExist) {
 				
@@ -186,8 +188,8 @@ public class CommentService {
 	
 	
 	// 댓글 수정 
-	public boolean isCommentModify(CommentDTO dto) throws ServiceException{
-		log.trace("isCommentModify({}) invoked", dto);
+	public boolean isModified(CommentDTO dto) throws ServiceException{
+		log.trace("isModified({}) invoked", dto);
 
 		try {
 			
@@ -203,4 +205,20 @@ public class CommentService {
 		}// try-catch
 	}// modifyComment
 
+	// 댓글 영구 삭제
+	@Async
+	@Scheduled(fixedRate = 10000)
+	public boolean isCleared() throws ServiceException{
+		
+		try {
+			boolean isClear = (this.commentMapper.deleteDeadComment() == 1);
+			
+			
+			return isClear;
+			
+		}catch (Exception e) {
+			throw new ServiceException(e);
+		}// try-catch
+	}// isCleared
+	
 }// end class

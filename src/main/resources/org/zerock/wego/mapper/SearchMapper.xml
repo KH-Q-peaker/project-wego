@@ -6,8 +6,8 @@
 
 <mapper namespace="org.zerock.wego.mapper.SearchMapper">
 
-	<select id="selectSearchMountainInfo"
-		resultType="org.zerock.wego.domain.MountainInfoViewVO">
+	<select id="selectSearchSanInfo3"
+		resultType="org.zerock.wego.domain.SanInfoViewVO">
 		SELECT *
 		FROM san_info_v
 		WHERE
@@ -18,8 +18,8 @@
 			AND rownum &lt;= 3
 	</select>
 
-	<select id="selectSearchRecruitment"
-		resultType="org.zerock.wego.domain.RecruitmentViewVO">
+	<select id="selectSearchParty3"
+		resultType="org.zerock.wego.domain.PartyViewVO">
 		SELECT *
 		FROM san_party_v
 		WHERE
@@ -30,7 +30,7 @@
 			AND rownum &lt;= 3
 	</select>
 
-	<select id="selectSearchReview"
+	<select id="selectSearchReview3"
 		resultType="org.zerock.wego.domain.ReviewViewVO">
 		SELECT *
 		FROM san_review_v

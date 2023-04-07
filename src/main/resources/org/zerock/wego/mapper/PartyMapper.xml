@@ -8,7 +8,12 @@
 
   <mapper namespace = "org.zerock.wego.mapper.PartyMapper">
   	
-
+	<select id="selectUserIdByPartyId"
+		resultType="int">
+		SELECT user_id
+		FROM san_party_v
+		WHERE san_party_id = ${partyId}
+	</select>
   	
 
 	<select id="selectRandom10"
@@ -25,7 +30,7 @@
 
 	
   	<!-- *********** 식별자로 모집글 조회  ************ -->
-  	<select id="selectPartyByPartyId" 
+  	<select id="selectById" 
   			resultType = "org.zerock.wego.domain.PartyViewVO">
   		
   		SELECT

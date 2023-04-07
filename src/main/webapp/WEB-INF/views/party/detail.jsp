@@ -67,7 +67,7 @@
 					<img
 						src=" ${party.userPic }"
 						alt="" class="userpic" />
-					<div class="username">${party.nickname}</div>
+					<div class="username">${party.nickName}</div>
 					<!--  좋아요 버튼  -->
 					<div class="likeCnt">
 						<input class="like ${isLike ? 'fill' : '' }" type="button" value="" /><label>${party.likeCnt }</label>
@@ -106,7 +106,7 @@
 					<!--  글 내용  -->
 					<!--  수정, 삭제, 신고 버튼  -->
 					<div class="btns">
-						<c:if test="${party.userId == sessionScope.__AUTH__}"> 
+						<c:if test="${party.userId == sessionScope.__AUTH__.userId}"> 
 						<input type="button" class="modify" name="modify" value="수정" /> 
 						<input type="button" class="delete" name="delete" value="삭제" /> 
 						</c:if>

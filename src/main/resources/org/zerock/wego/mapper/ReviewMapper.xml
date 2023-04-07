@@ -20,7 +20,7 @@
 
 
 	<!--  ************* 특정 후기글 조회  *************** -->
-	<select id="select" 
+	<select id="selectById" 
   			resultType = "org.zerock.wego.domain.ReviewViewVO">
   		
   		SELECT

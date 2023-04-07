@@ -22,7 +22,7 @@ public class JoinService {
 	public boolean isUserJoined(Integer partyId, Integer userId) throws ServiceException {
 		log.trace("isUserJoined({}, {}) invoked.", partyId, userId);
 		
-		return (this.joinMapper.selectById(partyId, userId) == 1); 
+		return (this.joinMapper.selectById(partyId, userId) != null); 
 	}// cancleJoin
 	
 

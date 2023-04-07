@@ -404,7 +404,7 @@ selector(".upload input[type=submit]").onclick = (e) => {
 
   fetch(
 	selector("#upload").innerText == "등록" ? 
-	"/recruit/register" : "/recruit/modify", {
+	"/party/register" : "/party/modify", {
     method: "POST",
     body: formData,
   }).then(res => {

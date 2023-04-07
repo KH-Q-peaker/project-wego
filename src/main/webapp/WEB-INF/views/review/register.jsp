@@ -1,58 +1,50 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<title>모집 글 작성</title>
+<title>후기 글 작성</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="shortcut icon" href="/resources/ico/favicon.ico"
-	type="image/x-icon" />
+<link rel="shortcut icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
 <meta name="description" content="등산멤버 모집 커뮤니티" />
 <link rel="icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
 <link rel="stylesheet" href="/resources/css/header.css" />
 <link rel="stylesheet" href="/resources/css/footer.css" />
-<link rel="stylesheet" href="/resources/css/party-register.css" />
+<link rel="stylesheet" href="/resources/css/review-register.css" />
 <script src="/resources/js/header.js" defer></script>
-<script src="/resources/js/party-register.js" defer></script>
+<script src="/resources/js/review-register.js" defer></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
 </head>
-<body>	
+<body>
 	<div class="total-wrap">
 		<%@include file="/WEB-INF/views/common/header.jsp"%>
 		<section>
-			<form action="/party/modify" method="post"
-				enctype="multipart/form-data" class="container">
-				<input type="hidden" name="sanPartyId"
-					value="${party.sanPartyId}">
+			<form action="#" method="post" class="container">
 				<!-- form 필수값 검증 후 값이 없는 경우 알림 -->
 				<div class="alert-window">
 					<p>
-						말머리, 제목, 날짜, 시간, 참여인원은<br /> 필수사항입니다.
+						산이름, 제목, 내용은<br /> 필수사항입니다.
 					</p>
 					<button type="button">확인</button>
 				</div>
 				<!-- -------------- alert-end -------------- -->
 				<div class="select-mountain">
 					<span>산이름</span> <select name="sanName" required>
-						<option value="${party.sanName}">${party.sanName}</option>
+						<option value="">산이름을 선택하세요.</option>
 					</select>
 				</div>
 				<div class="title">
 					<label for="title">제목</label> <input type="text" name="title"
 						id="title" placeholder="제목을 입력하세요.(최소 2자 ~ 최대 20자 가능)"
-						maxlength="20" value="${party.title}"  required />
+						minlength="2" maxlength="20" required />
 				</div>
 				<div class="detail">
-					<div class="photo">
-						<img src="/img/${fn:substring(party.partyPic, 10, 55)}"></img>
-					</div>
+					<div class="photo"></div>
 					<div class="add-photo">
 						<div class="top">
 							<div class="folder-icon"></div>
@@ -66,40 +58,15 @@
 						</div>
 						<button type="button">등록</button>
 					</div>
-					<div class="wrap">
-						<p>
-							<span>날짜</span><input type="date" name="date" id="date" required
-								value=<fmt:formatDate value="${party.partyDt}" pattern="yyyy-MM-dd" /> />
-						</p>
-						<p>
-							<span>시간</span><input type="time" name="time" id="time" required
-								value=<fmt:formatDate value="${party.partyDt}" pattern="HH:mm" /> />
-						</p>
-						<p>
-							<span>참여인원</span><input type="number" name="partyMax" id="member"
-								min="2" max="45" required value="${party.partyMax}" />
-						</p>
-						<p>
-							<span>준비물</span><input type="text" name="items" id="readyItems"
-								maxlength="1500" value="${party.items }" />
-						</p>
-						<p>
-							<span>등반조건</span><input type="text" name="condition"
-								id="condition" maxlength="1500" value="${party.condition}" />
-						</p>
-					</div>
-				</div>
-				<div class="text">
-					<p>하고 싶은 말</p>
-					<textarea name="contents" id="text" maxlength="2000">${party.contents}</textarea>
+					<div contenteditable="true" name="contents" id="contents"></div>
 				</div>
 				<div class="buttons">
 					<button type="button" id="cancle">취소</button>
-					<button type="button" id="upload">수정</button>
+					<button type="button" id="upload">등록</button>
 				</div>
 				<div class="check-again">
 					<div class="upload">
-						<p>글을 수정하시겠습니까?</p>
+						<p>글을 등록하시겠습니까?</p>
 						<input type="button" value="아니오" /> <input type="submit"
 							value="예" />
 					</div>

@@ -161,10 +161,10 @@
 			<div class="mountain-info">
 				<h2>❤️ 산 ❤️</h2>
 				<div class="wrap">
-					<c:forEach var="item" items="${mountainInfoList}">
+					<c:forEach var="item" items="${sanInfoList}">
 						<a href="/info/detail/${item.sanInfoId}">
 							<div class="mountain-item">
-								<img class="mountain-img" src="${item.img}" alt="img" />
+								<img class="mountain-img" src="/img/${fn:substring(item.img, 10, 55)}" alt="img" />
 								<h3 class="mountain-name" id="mountainName">${item.sanName}</h3>
 								<p class="mountain-contents" id="text">${item.details}</p>
 								<div class="mountain-like">
@@ -188,13 +188,13 @@
 			<div class="recruit">
 				<h2>❤️ 모집 글 ❤️</h2>
 				<div class="wrap">
-					<c:forEach var="item" items="${recruitmentList}">
-						<a href="/recruit/detail/${item.sanPartyId}">
+					<c:forEach var="item" items="${partyList}">
+						<a href="/party/detail/${item.sanPartyId}">
 							<div class="recruit-item">
-								<img class="user-img" src="${item.userPic}" alt="img" />
+								<img class="user-img" src="/img/${fn:substring(item.userPic, 10, 55)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>
-								<img class="recruit-img" src="" alt="img" />
+								<img class="recruit-img" src="/img/${fn:substring(item.partyPic, 10, 55)}" alt="img" />
 								<p class="recruit-title" id="title">${item.title}</p>
 								<p class="recruit-schedule-schedule">날짜:</p>
 								<p class="recruit-schedule" id="schedule">
@@ -221,7 +221,7 @@
 									<span class="favorite-count">${item.likeCnt}</span>
 								</div>
 								<p class="recruit-date" id="date">
-									<fmt:formatDate value="${item.createDt}" pattern="yyyy-MM-dd" />
+									<fmt:formatDate value="${item.createdDt}" pattern="yyyy-MM-dd" />
 								</p>
 							</div> <!-- item -->
 						</a>
@@ -236,7 +236,7 @@
 					<c:forEach var="item" items="${reviewList}">
 						<a href="/review/detail/${item.sanReviewId}">
 							<div class="review-item">
-								<img class="user-img" src="${item.userPic}" alt="img" />
+								<img class="user-img" src="/img/${fn:substring(item.userPic, 10, 55)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>
 								<img class="review-img" src="/img/defaultImg.png" alt="img" />
@@ -256,7 +256,7 @@
 									<span class="favorite-count">${item.likeCnt}</span>
 								</div>
 								<p class="review-date" id="date">
-									<fmt:formatDate value="${item.createDt}" pattern="yyyy-MM-dd" />
+									<fmt:formatDate value="${item.createdDt}" pattern="yyyy-MM-dd" />
 								</p>
 							</div> <!-- review-item -->
 						</a>

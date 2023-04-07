@@ -6,11 +6,11 @@ import lombok.Value;
 @Value
 public class FileVO {
 	
-	private Integer fileId; // 식별자 시퀀스
-	private String targetGb; // 소속 게시판
-	private Integer targetCd; // 소속 게시글
-	private String fileName; // 원본명
-	private String uuid; // UUID
-	private String path; // 절대경로
+	private Integer fileId; 
+	private String targetGb; 
+	private Integer targetCd; 
+	private String fileName; 
+	private String uuid; 
+	private String path; 
 
 } // end class

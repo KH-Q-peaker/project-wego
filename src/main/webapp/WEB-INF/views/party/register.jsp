@@ -12,9 +12,9 @@
 <link rel="icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
 <link rel="stylesheet" href="/resources/css/header.css" />
 <link rel="stylesheet" href="/resources/css/footer.css" />
-<link rel="stylesheet" href="/resources/css/recruitment-write.css" />
+<link rel="stylesheet" href="/resources/css/party-register.css" />
 <script src="/resources/js/header.js" defer></script>
-<script src="/resources/js/recruitment-write.js" defer></script>
+<script src="/resources/js/party-register.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
 </head>
@@ -22,7 +22,7 @@
 	<div class="total-wrap">
 	<%@include file="/WEB-INF/views/common/header.jsp"%>
 		<section>
-			<form action="/recruit/register" method="post" enctype="multipart/form-data" class="container">
+			<form action="/party/register" method="post" enctype="multipart/form-data" class="container">
 				<!-- form 필수값 검증 후 값이 없는 경우 알림 -->
 				<div class="alert-window">
 					<p>
