@@ -117,6 +117,8 @@ document.forms[0].addEventListener("keydown", (e) => {
   } // if
 });
 
+// 통합검색바 제거
+removeSearch();
 // ========================= 취소 이벤트
 
 // 모집글 작성 취소 버튼 이벤트
@@ -374,6 +376,10 @@ const formCheck = () => {
   } // for
 
   // 폼 데이터 저장(산이름, 제목, 내용)
+  if(selector("#upload").innerText == "수정") {
+	// input:hidden으로 수정할 후기글 번호를 전송
+	formData.set("sanReviewId", form.elements.sanReviewId.value);
+  } // if
   formData.set("sanName", form.elements.sanName.value);
   formData.set("title", form.elements.title.value);
   formData.set("contents", contentResult);
@@ -390,9 +396,24 @@ const formCheck = () => {
 // 등록 여부 재확인 -> 예(폼 전송) 이벤트
 selector(".upload input[type=submit]").onclick = (e) => {
   e.preventDefault();
-
-  fetch("/review/register", {
+  
+  fetch(
+	selector("#upload").innerText == "등록" ? 
+	"/review/register" : "/review/modify", {
     method: "POST",
     body: formData,
-  }).then((res) => (window.location.replace = res.url));
+  }).then(res => {
+	self.location = res.url
+	});
 };
+
+// 후기글 수정 시 이미지 경로 삽입
+window.onload = function() {
+    if(selector("#upload").innerText == "수정") {
+        let order = 0;
+        selector("#contents").childNodes.forEach(item => {
+            if(item.nodeName === "IMG") {
+                item.src = fileList[order];
+            }
+        })
+    }}

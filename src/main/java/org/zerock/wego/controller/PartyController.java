@@ -1,6 +1,7 @@
 package org.zerock.wego.controller;
 
 import java.io.File;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -56,6 +57,7 @@ public class PartyController {
 	private final SanInfoService mountainService;
 	private final FileService fileService;
 	private final FavoriteService fatoriteService;
+  
 	
 	@ModelAttribute("target")
 	PageInfo createPageInfo() {
@@ -102,8 +104,6 @@ public class PartyController {
 			favorite.setUserId(userId);
 			
 			boolean isFavorite = this.fatoriteService.isFavoriteInfo(favorite);
-			
-			
 			int totalCnt = this.commentService.getCommentsCount(target);
 			
 
@@ -144,14 +144,12 @@ public class PartyController {
 			@SessionAttribute("__AUTH__")UserVO auth,
 			@PathVariable("partyId") Integer partyId, Model model) 
 			throws ControllerException { 
-		log.trace("detail({}, {}) invoked.", partyId, model);
-
-			// TODO: 게시글 작성 유저와 접속 유저가 동일한지 판단 필요
+		log.trace("modify({}, {}, {}) invoked.", auth, partyId, model);
 
 		try {
 			Integer postUserId = this.partyService.selectUserIdByPartyId(partyId);
 			
-			if(auth == null || auth.getUserId() != postUserId) {
+			if(auth == null || !auth.getUserId().equals(postUserId)) {
 				return "error";
 			} // if
 			
@@ -169,20 +167,20 @@ public class PartyController {
 	// 모집글 삭제 
 	@DeleteMapping("/{partyId}")
 	public String removeById(@PathVariable Integer partyId,
-							@SessionAttribute("__AUTH__") UserVO user,
-							RedirectAttributes rttrs) throws ControllerException{
-		log.trace("removePartyByPartyId({}, {}) invoked.", partyId, user);
+							 @SessionAttribute("__AUTH__") UserVO user,
+							 RedirectAttributes rttrs) throws ControllerException{
+			log.trace("removePartyByPartyId({}, {}) invoked.", partyId, user);
 		
 		try {
 			Integer userId = user.getUserId();
-			
+
 			boolean isPartyRemoved = this.partyService.isRemovedById(partyId, userId);
 			boolean isImgRemoved = this.fileService.remove("SAN_PARTY", partyId);
 //			boolean isJoinRemoved = this.joinService.isJoinCancled(partyId, userId);
-			
-			
+
+
 			boolean isSuccess = (isPartyRemoved && isImgRemoved);
-			
+
 			rttrs.addFlashAttribute("partyId", partyId); // 얘는 어따쓰지? 
 			rttrs.addAttribute("result", isSuccess ? "success" : "failure");
 
@@ -210,7 +208,7 @@ public class PartyController {
 			Integer sanId = this.mountainService.selectSanName(sanName);
 			dto.setSanInfoId(sanId);
 
-			String dateTime = date + " " + time + ":00";
+			Timestamp dateTime = Timestamp.valueOf(date + " " + time + ":00");
 			dto.setPartyDt(dateTime);
 
 
@@ -235,7 +233,7 @@ public class PartyController {
 	@GetMapping("/register")
 	public void register() { 
 		log.trace("register() invoked.");
-	} // write
+	} // register
 
 	@PostMapping("/register")
 	public String register(
@@ -254,7 +252,7 @@ public class PartyController {
 			Integer sanId = this.mountainService.selectSanName(sanName);
 			dto.setSanInfoId(sanId);
 
-			String dateTime = date + " " + time + ":00";
+			Timestamp dateTime = Timestamp.valueOf(date + " " + time + ":00");
 			dto.setPartyDt(dateTime);
 
 			boolean isSuccess = this.partyService.register(dto);
@@ -291,7 +289,52 @@ public class PartyController {
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
-	} // recruitmentUpload
+	} // register
+	
+	// 참여 신청
+		@PostMapping("/join/{partyId}")
+		ResponseEntity<String> offerJoin(@PathVariable Integer partyId, 
+										 @SessionAttribute("__AUTH__") UserVO user) throws ControllerException {
+			log.trace("offerJoin({}, {}) invoked.", partyId, user);
+
+			try {
+				Integer userId = user.getUserId();
+				Objects.nonNull(userId);
+
+				if (this.joinService.isJoinCreated(partyId, userId)) {
+
+					return new ResponseEntity<>("OK", HttpStatus.OK);
+				} // if
+
+				return new ResponseEntity<>("XX", HttpStatus.BAD_REQUEST);
+
+			} catch (Exception e) {
+				throw new ControllerException(e);
+			} // try-catch
+		}// offerJoin
+
+		// 참여 취소
+//		@PostMapping("/cancle")
+		@DeleteMapping("/join/{partyId}")
+		ResponseEntity<String> cancleJoin(@PathVariable Integer partyId, 
+										 @SessionAttribute("__AUTH__") UserVO user) throws ControllerException {
+			log.trace("cancleJoin({}, {}) invoked.", partyId, user);
+
+			try {
+				Integer userId = user.getUserId();
+				Objects.nonNull(userId);
+
+				if (this.joinService.isJoinCancled(partyId, userId)) {
+
+					return new ResponseEntity<>("OK", HttpStatus.OK);
+				} // if
+
+				return new ResponseEntity<>("XX", HttpStatus.BAD_REQUEST);
+
+			} catch (Exception e) {
+				throw new ControllerException(e);
+			} // try-catch
+		}// cancleJoin
 
 	
 	// 참여 신청
