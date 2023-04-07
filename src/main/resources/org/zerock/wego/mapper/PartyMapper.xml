@@ -30,7 +30,7 @@
 
 	
   	<!-- *********** 식별자로 모집글 조회  ************ -->
-  	<select id="selectPartyByPartyId" 
+  	<select id="selectById" 
   			resultType = "org.zerock.wego.domain.PartyViewVO">
   		
   		SELECT

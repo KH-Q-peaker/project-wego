@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.zerock.wego.domain.CommentDTO;
 import org.zerock.wego.domain.CommentViewVO;
 import org.zerock.wego.domain.PageInfo;
+import org.zerock.wego.domain.UserVO;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.service.CommentService;
 
@@ -60,7 +61,7 @@ public class CommentController {
 	// 댓글 작성 
 	@PostMapping("/register")
 	ModelAndView registerComment(CommentDTO dto, 
-								@SessionAttribute("__AUTH__") Integer userId) throws ControllerException{
+								@SessionAttribute("__AUTH__") UserVO user) throws ControllerException{
 		log.trace("registerComment({}) invoked.", dto);
 
 		ModelAndView mav = new ModelAndView();
@@ -69,6 +70,7 @@ public class CommentController {
 		target.setTargetGb(dto.getTargetGb());
 		target.setTargetCd(dto.getTargetCd());
 
+		Integer userId = user.getUserId();
 		dto.setUserId(userId);
 
 		
@@ -97,7 +99,7 @@ public class CommentController {
 	// 멘션 작성 
 	@PostMapping("/reply")
 	ModelAndView registerMention(CommentDTO dto, 
-								@SessionAttribute("__AUTH__") Integer userId) throws ControllerException{
+								@SessionAttribute("__AUTH__") UserVO user) throws ControllerException{
 
 		ModelAndView mav = new ModelAndView();
 
@@ -105,6 +107,7 @@ public class CommentController {
 		target.setTargetGb(dto.getTargetGb());
 		target.setTargetCd(dto.getTargetCd());
 
+		Integer userId = user.getUserId();
 		dto.setUserId(userId);
 
 		try {
@@ -112,7 +115,7 @@ public class CommentController {
 			
 			CommentViewVO comment = this.commentService.getById(dto.getCommentId());
 
-			mav.addObject("c", comment);
+			mav.addObject("comment", comment);
 
 			return mav;
 		} catch (Exception e) {

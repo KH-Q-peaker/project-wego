@@ -8,6 +8,8 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.wego.domain.CommentViewVO;
+import org.zerock.wego.domain.FavoriteDTO;
 import org.zerock.wego.domain.FileDTO;
 import org.zerock.wego.domain.FileVO;
 import org.zerock.wego.domain.PageInfo;
@@ -29,6 +32,7 @@ import org.zerock.wego.domain.PartyViewVO;
 import org.zerock.wego.domain.UserVO;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.service.CommentService;
+import org.zerock.wego.service.FavoriteService;
 import org.zerock.wego.service.FileService;
 import org.zerock.wego.service.JoinService;
 import org.zerock.wego.service.PartyService;
@@ -51,7 +55,7 @@ public class PartyController {
 	private final JoinService joinService;
 	private final SanInfoService mountainService;
 	private final FileService fileService;
-
+	private final FavoriteService fatoriteService;
 	
 	@ModelAttribute("target")
 	PageInfo createPageInfo() {
@@ -71,9 +75,9 @@ public class PartyController {
 	// 모집글 상세 조회 
 	@GetMapping("/{partyId}") 
 	public ModelAndView showDetailById(@PathVariable("partyId")Integer partyId, 
-										@SessionAttribute("__AUTH__")Integer userId,
+										@SessionAttribute("__AUTH__")UserVO user,
 										PageInfo target) throws ControllerException{
-		log.trace("showDetailById({}, {}) invoked.", partyId, target);
+		log.trace("showDetailById({}, {}) invoked.", partyId, user);
 		
 		try {
 			target = this.createPageInfo();
@@ -86,8 +90,19 @@ public class PartyController {
 			PartyViewVO party = this.partyService.getById(partyId);
 			Objects.requireNonNull(party);
 			
+			Integer userId = user.getUserId();
+			Objects.requireNonNull(userId);
+			
 			boolean isJoin = this.joinService.isUserJoined(partyId, userId);
 //			boolean isLike = this.likeService.isUserLiked(target, userId);
+			
+			FavoriteDTO favorite = new FavoriteDTO();
+			favorite.setTargetGb("SAN_PARTY");
+			favorite.setTargetCd(partyId);
+			favorite.setUserId(userId);
+			
+			boolean isFavorite = this.fatoriteService.isFavoriteInfo(favorite);
+			
 			
 			int totalCnt = this.commentService.getCommentsCount(target);
 			
@@ -97,7 +112,7 @@ public class PartyController {
 			
 			mav.addObject("party", party);
 			mav.addObject("isJoin", isJoin);
-//			mav.addObject("isLike", isLike);
+			mav.addObject("isFavorite", isFavorite);
 			mav.addObject("totalCnt", totalCnt);
 //			mav.addObject("userPic", userPic);
 //			mav.addObject("partyImg", partyImg);
@@ -112,7 +127,7 @@ public class PartyController {
 			String targetJson = gson.toJson(target);
 			mav.addObject("target", targetJson);
 
-			mav.setViewName("/party/party-detail");
+			mav.setViewName("/party/detail");
 
 			return mav;
 
@@ -154,13 +169,20 @@ public class PartyController {
 	// 모집글 삭제 
 	@DeleteMapping("/{partyId}")
 	public String removeById(@PathVariable Integer partyId,
-										@SessionAttribute("__AUTH__") Integer userId,
-										RedirectAttributes rttrs) throws ControllerException{
-		log.trace("removePartyByPartyId({}, {}) invoked.", partyId, userId);
+							@SessionAttribute("__AUTH__") UserVO user,
+							RedirectAttributes rttrs) throws ControllerException{
+		log.trace("removePartyByPartyId({}, {}) invoked.", partyId, user);
 		
 		try {
-			boolean isSuccess = this.partyService.isRemovedById(partyId, userId);
-
+			Integer userId = user.getUserId();
+			
+			boolean isPartyRemoved = this.partyService.isRemovedById(partyId, userId);
+			boolean isImgRemoved = this.fileService.remove("SAN_PARTY", partyId);
+//			boolean isJoinRemoved = this.joinService.isJoinCancled(partyId, userId);
+			
+			
+			boolean isSuccess = (isPartyRemoved && isImgRemoved);
+			
 			rttrs.addFlashAttribute("partyId", partyId); // 얘는 어따쓰지? 
 			rttrs.addAttribute("result", isSuccess ? "success" : "failure");
 
@@ -271,4 +293,49 @@ public class PartyController {
 		} // try-catch
 	} // recruitmentUpload
 
+	
+	// 참여 신청
+	@PostMapping("/join/{partyId}")
+	ResponseEntity<String> offerJoin(@PathVariable Integer partyId, 
+									 @SessionAttribute("__AUTH__") UserVO user) throws ControllerException {
+		log.trace("offerJoin({}, {}) invoked.", partyId, user);
+
+		try {
+			Integer userId = user.getUserId();
+			Objects.nonNull(userId);
+
+			if (this.joinService.isJoinCreated(partyId, userId)) {
+
+				return new ResponseEntity<>("OK", HttpStatus.OK);
+			} // if
+
+			return new ResponseEntity<>("XX", HttpStatus.BAD_REQUEST);
+
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	}// offerJoin
+
+	// 참여 취소
+//	@PostMapping("/cancle")
+	@DeleteMapping("/join/{partyId}")
+	ResponseEntity<String> cancleJoin(@PathVariable Integer partyId, 
+									 @SessionAttribute("__AUTH__") UserVO user) throws ControllerException {
+		log.trace("cancleJoin({}, {}) invoked.", partyId, user);
+
+		try {
+			Integer userId = user.getUserId();
+			Objects.nonNull(userId);
+
+			if (this.joinService.isJoinCancled(partyId, userId)) {
+
+				return new ResponseEntity<>("OK", HttpStatus.OK);
+			} // if
+
+			return new ResponseEntity<>("XX", HttpStatus.BAD_REQUEST);
+
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	}// cancleJoin
 } // end class

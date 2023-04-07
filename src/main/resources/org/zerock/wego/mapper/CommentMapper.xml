@@ -96,7 +96,7 @@
     
   	<!-- ***********댓글 코드로 멘션 유무 조회 ************ -->
     <select
-    	id="selectMentionsByCommentId" 
+    	id="hasMentionById" 
     	resultType="Integer">
     		
     	SELECT 1
@@ -232,7 +232,16 @@
 <!--     		comment_id = #{commentId} -->
 <!--     </update> -->
     
+     <!-- ***************** 댓글 영구삭제  ******************** -->
     
+    	<delete id="deleteDeadComment">
+    		DELETE
+    		FROM
+    			comment_tb
+    		<where>
+    			status = 'Y'
+    		</where>		
+    	</delete>
   </mapper>
   
   

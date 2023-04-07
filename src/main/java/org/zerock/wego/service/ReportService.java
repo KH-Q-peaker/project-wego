@@ -1,0 +1,32 @@
+package org.zerock.wego.service;
+
+import org.springframework.stereotype.Service;
+import org.zerock.wego.domain.ReportDTO;
+import org.zerock.wego.exception.ServiceException;
+import org.zerock.wego.mapper.ReportMapper;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
+@RequiredArgsConstructor
+
+@Service
+public class ReportService {
+
+	
+	private final ReportMapper reportMapper;
+
+	// 신고 접수 
+	public boolean create(ReportDTO dto) throws ServiceException {
+		log.trace("create({}) invoked.", dto);
+		
+		try {
+			return (this.reportMapper.insert(dto) == 1);
+			
+		}catch(Exception e) {
+			throw new ServiceException(e);
+		}// try-catch
+	}// modifyComment
+	
+}// end class
