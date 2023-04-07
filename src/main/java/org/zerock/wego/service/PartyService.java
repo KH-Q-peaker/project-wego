@@ -22,13 +22,10 @@ import lombok.extern.log4j.Log4j2;
 public class PartyService {
 	
 	private final PartyMapper partyMapper;
-	private final JoinMapper joinMapper;
-	private final FileMapper fileMapper;
 
 
 	public List<PartyViewVO> getList() throws ServiceException {
 		log.trace("getList() invoked.");
-
 		try {
 			return this.partyMapper.selectAll();
 			
@@ -36,11 +33,9 @@ public class PartyService {
 			throw new ServiceException(e);
 		} // try-catch
 	} // getList
-
 	
 	public Set<PartyViewVO> getRandom10List() throws ServiceException {
 		log.trace("getRandom10List() invoked.");
-
 		try {
 			return this.partyMapper.selectRandom10();
 		} catch (Exception e) {
@@ -50,15 +45,13 @@ public class PartyService {
 	
 	public Integer selectUserIdByPartyId(Integer partyId) {
 		log.trace("selectUserIdByPartyId() invoked.");
-
 		try {
 			return this.partyMapper.selectUserIdByPartyId(partyId);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
 	} // selectUserIdByPartyId
-
-
+	
 	// 모집글 상세 조회 
 	public PartyViewVO getById(Integer partyId) throws ServiceException{
 		log.trace("getById({}) invoked.", partyId);
@@ -66,16 +59,13 @@ public class PartyService {
 		try {
 			PartyViewVO party = this.partyMapper.selectById(partyId);
 			Objects.requireNonNull(party);
-
 			
 			return party;
-
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
 	}// getById
-
-
+	
 	// 모집글 사진 조회
 	// Base64가 필요해질 때를 대비해서 남겨둠 
 //	public String getImgPathById(Integer partyId) throws ServiceException {
@@ -115,21 +105,16 @@ public class PartyService {
 //		}// try-catch
 //	}// getPartyImg
 	
-	
-	
 	public boolean register(PartyDTO dto) throws ServiceException {
 		log.trace("register({}) invoked.", dto);
-
 		try {
 			return this.partyMapper.insert(dto) == 1;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
 	} // register
-
 	public boolean modify(PartyDTO dto) throws ServiceException {
 		log.trace("modify({}) invoked.", dto);
-
 		try {
 			return this.partyMapper.update(dto) == 1;
 		} catch (Exception e) {
@@ -137,19 +122,12 @@ public class PartyService {
 		} // try-catch
 	} // modify
 	
-	
-	
 	// 모집글 삭제 
 	public boolean isRemovedById(Integer partyId, Integer userId) throws ServiceException{
 		log.trace("isRemovedById({}) invoked.", partyId);
-		
+
 		try {
-			boolean isPartyRemoved = (this.partyMapper.deleteById(partyId) == 1);
-			boolean isImgRemoved = (this.fileMapper.delete("SAN_PARTY", partyId) == 1);
-			boolean isJoinRemoved = (this.joinMapper.deleteById(partyId, userId) == 1);
-			
-			return isPartyRemoved && isImgRemoved && isJoinRemoved; 
-			
+			return (this.partyMapper.deleteById(partyId) == 1); 
 		}catch(Exception e) {
 			throw new ServiceException(e);
 		}// try-catch 

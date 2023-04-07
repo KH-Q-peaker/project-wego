@@ -78,7 +78,7 @@ label[for="title"] {
   overflow-x: hidden;
 }
 #contents img {
-  width: 100%;
+  width: 90%;
 }
 .buttons {
   display: flex;
