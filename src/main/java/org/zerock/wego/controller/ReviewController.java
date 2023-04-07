@@ -200,8 +200,8 @@ public class ReviewController {
 				log.trace("isRemoveSuccess: {}", isRemoveSuccess);
 				
 				DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-				String createdDate = dateFormat.format(vo.getCreateDt());
-				log.info("getCreateDt: {}", createdDate);
+				String createdDate = dateFormat.format(vo.getCreatedDt());
+				log.info("getCreatedDt: {}", createdDate);
 
 				String basePath = "C:/upload/" + createdDate;
 				File Folder = new File(basePath);

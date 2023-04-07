@@ -12,7 +12,7 @@ public class PartyDTO {
 	private Integer	sanPartyId;
 	private Integer sanInfoId;
 	private Integer userId;
-	private Timestamp createDt; 
+	private Timestamp createdDt; 
 	private Timestamp modifiedDt; 
 	private String title; 
 	private String contents;

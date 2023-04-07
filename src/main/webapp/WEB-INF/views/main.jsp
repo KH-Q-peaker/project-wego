@@ -221,7 +221,7 @@
 									<span class="favorite-count">${item.likeCnt}</span>
 								</div>
 								<p class="recruit-date" id="date">
-									<fmt:formatDate value="${item.createDt}" pattern="yyyy-MM-dd" />
+									<fmt:formatDate value="${item.createdDt}" pattern="yyyy-MM-dd" />
 								</p>
 							</div> <!-- item -->
 						</a>
@@ -256,7 +256,7 @@
 									<span class="favorite-count">${item.likeCnt}</span>
 								</div>
 								<p class="review-date" id="date">
-									<fmt:formatDate value="${item.createDt}" pattern="yyyy-MM-dd" />
+									<fmt:formatDate value="${item.createdDt}" pattern="yyyy-MM-dd" />
 								</p>
 							</div> <!-- review-item -->
 						</a>
