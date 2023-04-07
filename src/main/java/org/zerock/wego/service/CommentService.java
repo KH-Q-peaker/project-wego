@@ -61,7 +61,7 @@ public class CommentService {
 
 	
 	// 댓글 코드로 조회 
-	public CommentViewVO getCommentByCommentId(Integer commentId) throws ServiceException{
+	public CommentViewVO getById(Integer commentId) throws ServiceException{
 		log.trace("getCommentByCommentId({}}) invoked.", commentId);
 		
 		try {
@@ -78,7 +78,7 @@ public class CommentService {
 	
 
 	// 댓글 작성 
-	public boolean isCommentRegister(CommentDTO dto) throws ServiceException{
+	public boolean isCommentRegistered(CommentDTO dto) throws ServiceException{
 		log.trace("isCommentRegister({}) invoked", dto);
 		
 		try {
@@ -116,10 +116,10 @@ public class CommentService {
 		 
 		 if(originComment.getCommentGb().equals("COMMENT")){
 			 
-			 isRemove = this.isCommentRemove(commentId);
+			 isRemove = this.isCommentRemoved(commentId);
 		 }else {
 			 
-			 isRemove = this.isMentionRemove(commentId);
+			 isRemove = this.isMentionRemoved(commentId);
 		 }// if-else
 		 
 		 
@@ -128,7 +128,7 @@ public class CommentService {
 	
 	
 	// 댓글 삭제
-	public boolean isCommentRemove(Integer commentId) throws ServiceException {
+	public boolean isCommentRemoved(Integer commentId) throws ServiceException {
 
 		
 		CommentDTO comment = new CommentDTO();
@@ -152,7 +152,7 @@ public class CommentService {
 	
 	
 	// 멘션 삭제
-	public boolean isMentionRemove(Integer commentId) throws ServiceException {
+	public boolean isMentionRemoved(Integer commentId) throws ServiceException {
 
 		CommentDTO comment = new CommentDTO();
 		comment.setCommentId(commentId);
@@ -186,8 +186,8 @@ public class CommentService {
 	
 	
 	// 댓글 수정 
-	public boolean isCommentModify(CommentDTO dto) throws ServiceException{
-		log.trace("isCommentModify({}) invoked", dto);
+	public boolean isModified(CommentDTO dto) throws ServiceException{
+		log.trace("isModified({}) invoked", dto);
 
 		try {
 			

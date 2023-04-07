@@ -6,16 +6,12 @@
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 
 <head>
-
 <script type="text/javascript" src="${path}/resources/js/join.js" defer></script>
 <link type="text/css" rel="stylesheet" href="${path}/resources/css/join.css"/>
 </head>
 <body>
 	<div class="joinModal">
-<!-- 		<input type="button" class="clsbtn" value="⤬"/> -->
-		<img
-			src="${partyImg}" 
-			alt="" class="" /><!-- 바꿔야됨  -->
+		<img src="${party.partyPic}"  alt="" class="" /><!-- 바꿔야됨  -->
 		<div class="sanName">${party.sanName }</div>
 		<ul class="joinInfo">
 			<li>날짜 : <fmt:formatDate pattern="yy-MM-dd" value="${party.partyDt}"></fmt:formatDate></li>
@@ -27,22 +23,11 @@
 			<li>등반조건 : ${party.condition }</li>
 			</c:if>
 		</ul>
-<%-- 		<c:choose> --%>
-<%-- 			<c:if test=""> <!-- 이미 참여한 사람이면  --> --%>
-<!-- 				<div id="ment">취소하시겠습니까?</div> -->
-<!-- 				<div class="button"> -->
-<!-- 					<input type="button" class="clsjoinbtn" value="아니오" />  -->
-<!-- 					<input type="button" class="joinbtn" value="예" /> -->
-<!-- 				</div> -->
-<%-- 			</c:if> --%>
-<%-- 			<c:otherwise> --%>
-				<div id="ment">참여하시겠습니까?</div>
-				<div class="button">
-					<input type="button" class="clsbtn" value="취소" />
-					<input type="button" class="joinbtn" value="참여" />
-				</div>
-<%-- 			</c:otherwise> --%>
-<%-- 		</c:choose> --%>
+			<div id="ment">참여하시겠습니까?</div>
+			<div class="button">
+				<input type="button" class="clsbtn" value="취소" />
+				<input type="button" class="joinbtn" value="참여" />
+			</div>
 	</div>
 </body>
 </html>
