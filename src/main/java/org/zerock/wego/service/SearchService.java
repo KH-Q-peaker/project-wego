@@ -22,31 +22,31 @@ public class SearchService {
 	private final SearchMapper mapper;
 
 	
-	public Set<SanInfoViewVO> selectSearchMountainInfo(String search) throws ServiceException {
-		log.trace("selectSearchMountainInfo({}) invoked.", search);
+	public Set<SanInfoViewVO> selectSearchSanInfo3(String search) throws ServiceException {
+		log.trace("selectSearchSanInfo3({}) invoked.", search);
 		
 		try {
-			return this.mapper.selectSearchMountainInfo(search);
+			return this.mapper.selectSearchSanInfo3(search);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
 	} // selectSearchMountainInfo
 
-	public Set<PartyViewVO> selectSearchRecruitment(String search) throws ServiceException {
-		log.trace("selectSearchRecruitment({}) invoked.", search);
+	public Set<PartyViewVO> selectSearchParty3(String search) throws ServiceException {
+		log.trace("selectSearchParty3({}) invoked.", search);
 		
 		try {
-			return this.mapper.selectSearchRecruitment(search);
+			return this.mapper.selectSearchParty3(search);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
 	} // selectSearchRecruitment
 
-	public Set<ReviewViewVO> selectSearchReview(String search) throws ServiceException {
-		log.trace("selectSearchReview({}) invoked.", search);
+	public Set<ReviewViewVO> selectSearchReview3(String search) throws ServiceException {
+		log.trace("selectSearchReview3({}) invoked.", search);
 		
 		try {
-			return this.mapper.selectSearchReview(search);
+			return this.mapper.selectSearchReview3(search);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch

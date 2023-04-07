@@ -4,10 +4,10 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.zerock.wego.mapper.MountainInfoMapper">
+<mapper namespace="org.zerock.wego.mapper.SanInfoMapper">
 
 	<select id="selectRandom10"
-		resultType="org.zerock.wego.domain.MountainInfoViewVO">
+		resultType="org.zerock.wego.domain.SanInfoViewVO">
 		SELECT *
 		FROM
 			(
@@ -19,7 +19,7 @@
 	</select>
 
 	<select id="select"
-		resultType="org.zerock.wego.domain.MountainInfoViewVO">
+		resultType="org.zerock.wego.domain.SanInfoViewVO">
 		SELECT *
 		FROM san_info_v
 		WHERE san_info_id = #{sanInfoId}

@@ -34,7 +34,7 @@
 						<a href="/info" class="more">더보기</a>
 					</div>
 					<div class="wrap">
-						<c:forEach var="item" items="${mountainInfoList}">
+						<c:forEach var="item" items="${sanInfoList}">
 							<div class="item">
 								<a id="itemPath" href="/info/detail/${item.sanInfoId}">
 									<div class="item-info">
@@ -57,8 +57,8 @@
 						<a href="#" class="more">더보기</a>
 					</div>
 					<div class="wrap-recruit">
-						<c:forEach var="item" items="${recruitmentList}">
-							<a href="/recruit/detail/${item.sanPartyId}">
+						<c:forEach var="item" items="${partyList}">
+							<a href="/party/detail/${item.sanPartyId}">
 							<div class="recruit-item">
 								<img class="user-img" src="${item.userPic}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>

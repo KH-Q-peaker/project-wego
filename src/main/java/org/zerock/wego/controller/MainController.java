@@ -6,10 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.zerock.wego.domain.FavoriteVO;
 import org.zerock.wego.domain.PartyViewVO;
 import org.zerock.wego.domain.ReviewViewVO;
 import org.zerock.wego.domain.SanInfoViewVO;
+import org.zerock.wego.domain.UserVO;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.service.FavoriteService;
 import org.zerock.wego.service.PartyService;
@@ -22,32 +24,32 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @AllArgsConstructor
 
-@RequestMapping("/") // BASE URL
+@RequestMapping("/")
 @Controller
 public class MainController {
-	private SanInfoService mountainInfoService;
-	private PartyService recruitmentService;
+	private SanInfoService sanInfoService;
+	private PartyService partyService;
 	private ReviewService reviewService;
 	private FavoriteService favoriteService;
 
 	@GetMapping("")
-	public String main(Model model) throws ControllerException {
-		log.trace("main() invoked.");
+	public String main(
+			@SessionAttribute(value = "__AUTH__", required = false)UserVO auth, Model model) 
+					throws ControllerException {
+		log.trace("main({}, {}) invoked.", auth, model);
 
 		try {
-			// === TEST 유저ID 9의 좋아요 목록 ===
-			Set<FavoriteVO> favoriteList = this.favoriteService.getList(9L);
-			model.addAttribute("favoriteList", favoriteList);
+			if(auth != null) {
+				Set<FavoriteVO> favoriteList = this.favoriteService.getUserFavoriteOnList(auth.getUserId());
+				model.addAttribute("favoriteList", favoriteList);
+			} // if
 
-			// =========== 산정보 ===========
-			Set<SanInfoViewVO> mountainInfoList = this.mountainInfoService.getRandom10List();
-			model.addAttribute("mountainInfoList", mountainInfoList);
+			Set<SanInfoViewVO> sanInfoList = this.sanInfoService.getRandom10List();
+			model.addAttribute("sanInfoList", sanInfoList);
 
-			// =========== 모집글 ===========
-			Set<PartyViewVO> recruitmentList = this.recruitmentService.getRandom10List();
-			model.addAttribute("recruitmentList", recruitmentList);
+			Set<PartyViewVO> partyList = this.partyService.getRandom10List();
+			model.addAttribute("partyList", partyList);
 
-			// =========== 후기글 ===========
 			Set<ReviewViewVO> reviewList = this.reviewService.getRandom10List();
 			model.addAttribute("reviewList", reviewList);
 

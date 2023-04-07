@@ -14,7 +14,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @AllArgsConstructor
 
-@RequestMapping("/") // BASE URL
+@RequestMapping("/")
 @Controller
 public class FavoriteController {
 	private FavoriteService service;
@@ -24,13 +24,12 @@ public class FavoriteController {
 		log.trace("favorite({}) invoked.", dto);
 
 		try {
-			// 기존에 좋아요 정보가 있는지 체크
-			Integer resultCount = this.service.getCount(dto);
-			log.info("resultCount: {}", resultCount);
+			boolean isFavoriteInfo = this.service.isFavoriteInfo(dto);
+			log.info("isFavoriteInfo: {}", isFavoriteInfo);
 			
-			if (resultCount == 1) { // 있는 경우 수정
+			if (isFavoriteInfo) { 
 				this.service.modify(dto);
-			} else { // 없는 경우 등록
+			} else { 
 				this.service.register(dto);
 			} // if-else
 

@@ -161,7 +161,7 @@
 			<div class="mountain-info">
 				<h2>❤️ 산 ❤️</h2>
 				<div class="wrap">
-					<c:forEach var="item" items="${mountainInfoList}">
+					<c:forEach var="item" items="${sanInfoList}">
 						<a href="/info/detail/${item.sanInfoId}">
 							<div class="mountain-item">
 								<img class="mountain-img" src="${item.img}" alt="img" />
@@ -188,7 +188,7 @@
 			<div class="recruit">
 				<h2>❤️ 모집 글 ❤️</h2>
 				<div class="wrap">
-					<c:forEach var="item" items="${recruitmentList}">
+					<c:forEach var="item" items="${partyList}">
 						<a href="/recruit/detail/${item.sanPartyId}">
 							<div class="recruit-item">
 								<img class="user-img" src="${item.userPic}" alt="img" />

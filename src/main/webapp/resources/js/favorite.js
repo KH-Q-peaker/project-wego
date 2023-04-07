@@ -9,30 +9,32 @@ window.addEventListener("click", (e) => {
     // 버튼의 부모의 a태그 href 주소를 가져온다.
     const anchorOfParent = $(e.target).parent().parent().parent()[0].href;
     // href 주소를 사용해서 게시글의 카테고리와 게시글 번호를 추출한다.
-    const postCategory = anchorOfParent.slice(
-      anchorOfParent.indexOf("?") + 1,
-      anchorOfParent.indexOf("=")
-    );
+    let startIndex = 0;
+    for(let count = 1; count <= 3; count++) {
+		startIndex = anchorOfParent.indexOf("/", startIndex + 1);
+	} // for
+    const postCategory = anchorOfParent.slice(startIndex + 1,  
+    anchorOfParent.indexOf("/", startIndex + 1));
     const postId = anchorOfParent.slice(
-      anchorOfParent.indexOf("=") + 1,
+      anchorOfParent.lastIndexOf("/") + 1,
       anchorOfParent.length
     );
     const favoriteCount = $(e.target).next()[0];
 
     switch (postCategory) {
-      case "sanInfoId":
+      case "info":
         formData.set("targetGb", "SAN_INFO");
         break;
-      case "sanPartyId":
-      formData.set("targetGb", "SAN_PARTY");
+      case "party":
+      	formData.set("targetGb", "SAN_PARTY");
         break;
-      case "sanReviewId":
-      formData.set("targetGb", "SAN_REVIEW");
+      case "review":
+      	formData.set("targetGb", "SAN_REVIEW");
         break;
     } // switch
 
     formData.set("targetCd", postId);
-    formData.set("userId", 9); // TEST용 USER_ID
+    formData.set("userId", authJson.userId);
     
     if(e.target.classList.toggle("on")) {
 		formData.set("status", "Y");
