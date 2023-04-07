@@ -57,7 +57,7 @@ public class PartyController {
 	private final SanInfoService mountainService;
 	private final FileService fileService;
 	private final FavoriteService fatoriteService;
-	
+  
 	
 	@ModelAttribute("target")
 	PageInfo createPageInfo() {
@@ -77,7 +77,7 @@ public class PartyController {
 	// 모집글 상세 조회 
 	@GetMapping("/{partyId}") 
 	public ModelAndView showDetailById(@PathVariable("partyId")Integer partyId, 
-									   @SessionAttribute("__AUTH__")UserVO user,
+										@SessionAttribute("__AUTH__")UserVO user,
 										PageInfo target) throws ControllerException{
 		log.trace("showDetailById({}, {}) invoked.", partyId, user);
 		
@@ -102,9 +102,8 @@ public class PartyController {
 			favorite.setTargetGb("SAN_PARTY");
 			favorite.setTargetCd(partyId);
 			favorite.setUserId(userId);
-
-			boolean isFavorite = this.fatoriteService.isFavoriteInfo(favorite);
 			
+			boolean isFavorite = this.fatoriteService.isFavoriteInfo(favorite);
 			int totalCnt = this.commentService.getCommentsCount(target);
 			
 
@@ -337,4 +336,49 @@ public class PartyController {
 			} // try-catch
 		}// cancleJoin
 
+	
+	// 참여 신청
+	@PostMapping("/join/{partyId}")
+	ResponseEntity<String> offerJoin(@PathVariable Integer partyId, 
+									 @SessionAttribute("__AUTH__") UserVO user) throws ControllerException {
+		log.trace("offerJoin({}, {}) invoked.", partyId, user);
+
+		try {
+			Integer userId = user.getUserId();
+			Objects.nonNull(userId);
+
+			if (this.joinService.isJoinCreated(partyId, userId)) {
+
+				return new ResponseEntity<>("OK", HttpStatus.OK);
+			} // if
+
+			return new ResponseEntity<>("XX", HttpStatus.BAD_REQUEST);
+
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	}// offerJoin
+
+	// 참여 취소
+//	@PostMapping("/cancle")
+	@DeleteMapping("/join/{partyId}")
+	ResponseEntity<String> cancleJoin(@PathVariable Integer partyId, 
+									 @SessionAttribute("__AUTH__") UserVO user) throws ControllerException {
+		log.trace("cancleJoin({}, {}) invoked.", partyId, user);
+
+		try {
+			Integer userId = user.getUserId();
+			Objects.nonNull(userId);
+
+			if (this.joinService.isJoinCancled(partyId, userId)) {
+
+				return new ResponseEntity<>("OK", HttpStatus.OK);
+			} // if
+
+			return new ResponseEntity<>("XX", HttpStatus.BAD_REQUEST);
+
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	}// cancleJoin
 } // end class
