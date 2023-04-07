@@ -22,7 +22,7 @@
 	<div class="total-wrap">
 	<%@include file="/WEB-INF/views/common/header.jsp"%>
 		<section>
-			<form action="/recruit/register" method="post" enctype="multipart/form-data" class="container">
+			<form action="/party/register" method="post" enctype="multipart/form-data" class="container">
 				<!-- form 필수값 검증 후 값이 없는 경우 알림 -->
 				<div class="alert-window">
 					<p>
