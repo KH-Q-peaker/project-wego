@@ -3,6 +3,8 @@ package org.zerock.wego.service;
 import java.util.Objects;
 import java.util.concurrent.LinkedBlockingDeque;
 
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.zerock.wego.domain.CommentDTO;
 import org.zerock.wego.domain.CommentViewVO;
@@ -28,9 +30,9 @@ public class CommentService {
 		
 		
 		try {
-			int cnt = this.commentMapper.selectTotalCountByTarget(target);
+			int totalCount = this.commentMapper.selectTotalCountByTarget(target);
 			
-			return cnt;
+			return totalCount;
 			
 		}catch(Exception e) {
 			throw new ServiceException(e);
@@ -136,7 +138,7 @@ public class CommentService {
 		comment.setContents("삭제된 댓글입니다.");
 		
 		
-		boolean isMentionExist = (this.commentMapper.selectMentionsByCommentId(commentId) != null);
+		boolean isMentionExist = (this.commentMapper.hasMentionById(commentId) != null);
 
 		if (isMentionExist) {
 			
@@ -169,7 +171,7 @@ public class CommentService {
 		
 		
 		boolean isMentionExist = 
-				(this.commentMapper.selectMentionsByCommentId(originComment.getMentionId()) != null);
+				(this.commentMapper.hasMentionById(originComment.getMentionId()) != null);
 		
 			if (!isMentionExist) {
 				
@@ -203,4 +205,20 @@ public class CommentService {
 		}// try-catch
 	}// modifyComment
 
+	// 댓글 영구 삭제
+	@Async
+	@Scheduled(fixedRate = 10000)
+	public boolean isCleared() throws ServiceException{
+		
+		try {
+			boolean isClear = (this.commentMapper.deleteDeadComment() == 1);
+			
+			
+			return isClear;
+			
+		}catch (Exception e) {
+			throw new ServiceException(e);
+		}// try-catch
+	}// isCleared
+	
 }// end class

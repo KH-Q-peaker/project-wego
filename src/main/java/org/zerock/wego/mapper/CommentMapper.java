@@ -23,7 +23,7 @@ public interface CommentMapper {
 	
 	
 	// 특정 댓글 멘션 여부 조회 
-	public abstract Integer selectMentionsByCommentId(@Param("commentId")Integer commentId);
+	public abstract Integer hasMentionById(@Param("commentId")Integer commentId);
 	
 	// 특정 회원 댓글 조회 
 	//	public abstract LinkedBlockingDeque<CommentVO> selectCommentByUser(@Param("userId") Long userId);
@@ -32,6 +32,9 @@ public interface CommentMapper {
 	// 댓글 코드로 댓글 삭제 
 	public abstract Integer deleteById(@Param("commentId")Integer commentId);
 	
+	// 댓글 영구 삭제
+	public abstract Integer deleteDeadComment();
+		
 	// 특정 유저 댓글 삭제 
 	//	public abstract Integer deleteCommentByUserId(@Param("userId")Long userId);
 	

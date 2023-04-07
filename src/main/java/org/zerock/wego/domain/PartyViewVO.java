@@ -13,7 +13,7 @@ public class PartyViewVO {
 	private Integer userId; // 작성자 ID
 	private String nickName; // 작성자의 닉네임
 	private String userPic; // 작성자의 프로필 이미지
-	private Date createDt; // 작성일(current_timestamp)
+	private Date createdDt; // 작성일(current_timestamp)
 	private Date modifiedDt; // 수정일
 	private String title; // 제목
 	private String contents; // 내용

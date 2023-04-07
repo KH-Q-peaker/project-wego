@@ -22,8 +22,6 @@ import lombok.extern.log4j.Log4j2;
 public class PartyService {
 	
 	private final PartyMapper partyMapper;
-	private final JoinMapper joinMapper;
-	private final FileMapper fileMapper;
 
 
 	public List<PartyViewVO> getList() throws ServiceException {
@@ -144,11 +142,8 @@ public class PartyService {
 		log.trace("isRemovedById({}) invoked.", partyId);
 		
 		try {
-			boolean isPartyRemoved = (this.partyMapper.deleteById(partyId) == 1);
-			boolean isImgRemoved = (this.fileMapper.delete("SAN_PARTY", partyId) == 1);
-			boolean isJoinRemoved = (this.joinMapper.deleteById(partyId, userId) == 1);
-			
-			return isPartyRemoved && isImgRemoved && isJoinRemoved; 
+
+			return (this.partyMapper.deleteById(partyId) == 1);
 			
 		}catch(Exception e) {
 			throw new ServiceException(e);

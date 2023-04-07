@@ -67,7 +67,7 @@
 					<img
 						src=" ${party.userPic }"
 						alt="" class="userpic" />
-					<div class="username">${party.nickname}</div>
+					<div class="username">${party.nickName}</div>
 					<!--  좋아요 버튼  -->
 					<div class="likeCnt">
 						<input class="like ${isLike ? 'fill' : '' }" type="button" value="" /><label>${party.likeCnt }</label>
