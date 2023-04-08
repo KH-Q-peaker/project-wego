@@ -24,7 +24,7 @@
 			<img id="userImg" class="user-profile-img"
 				src="https://picsum.photos/id/684/600/400" alt="회원 프로필 이미지" />
 			<!-- 비로그인 상태 -->
-			<button class="login-btn" onclick="location.href='/login/'"></button>
+			<button class="login-btn" onclick="location.href='/login'"></button>
 			<div class="menubar">
 				<ul>
 					<li><a href="../mypage/">마이페이지</a></li>

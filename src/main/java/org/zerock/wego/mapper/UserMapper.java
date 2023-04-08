@@ -5,16 +5,16 @@ import org.zerock.wego.domain.UserVO;
 
 public interface UserMapper {
 
+	// userId로 유저 조회
+	public abstract UserVO selectByUserId(Integer userId);
+
+	// 소셜 계정 조회
+	public abstract UserVO selectBySocialId(String socialId);
+	
+	// 닉네임 중복 확인	
+	public abstract UserVO selectByNickname(String nickname);
+
 	// 카카오 가입 등록 
 	public abstract Integer insertUser(UserDTO dto);
-	
-	// 카카오 권한? 얜뭐야?
-	public abstract void authorize(UserVO userVO);
-	
-	// userId로 유저 조회
-	public abstract UserVO selectUserByUserId(Long targetUserId);
-	// 카카오 계정 조회 ? 
-	public abstract UserVO selectUserBySocialId(String socialId);
-	
-	
+
 }// end interface
