@@ -29,6 +29,7 @@
 		<!-- =================================================================================== -->
 		<!-- 로그인 테스트 하고 싶은 페지지의 url 추가 -->
 			<mapping path="/badge/**" />
+			<mapping path="/party/**" />
 		<!-- =================================================================================== -->
 			
 			<exclude-mapping path="/"/> 
@@ -36,6 +37,14 @@
 			<exclude-mapping path="/search/**"/> 
 			
 			<beans:ref bean="authInterceptor"/> 
+		</interceptor> 
+		
+		<interceptor> 
+		<!-- =================================================================================== -->
+			<mapping path="/report/create" />
+		<!-- =================================================================================== -->
+
+			<beans:ref bean="reportInterceptor"/> 
 		</interceptor> 
 	</interceptors>
 
@@ -50,7 +59,7 @@
 			value="20971520" />
 		<beans:property name="preserveFilename" value="true" />
 		<beans:property name="uploadTempDir"
-			value="file:/C:/upload/" />
+			value="file:/Users/isojin/Desktop/ttt" />
 	</beans:bean>
 
 </beans:beans>
