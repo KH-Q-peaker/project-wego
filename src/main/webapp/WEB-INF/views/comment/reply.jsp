@@ -13,21 +13,21 @@
 
 	
 				<div class="comments mention">
-				<input type="hidden" id="mentionId" value="${c.mentionId }"/>
-				<img class="cmtuserPic" src="${c.userPic }"/>
-				<div class="cmtuser">${c.nickname }</div>
+				<input type="hidden" id="mentionId" value="${comment.mentionId }"/>
+				<img class="cmtuserPic" src="${comment.userPic }"/>
+				<div class="cmtuser">${comment.nickname }</div>
 				<div class="cmtdate">
-					<fmt:formatDate pattern="MM-dd HH:mm" value="${c.createdDt}"></fmt:formatDate>
+					<fmt:formatDate pattern="MM-dd HH:mm" value="${comment.createdDt}"></fmt:formatDate>
 				</div>
 				<div class="btns">
-					<input type="hidden" id= "commentId" name="commentId" value="${c.commentId}">
-					<c:if test="${c.userId == sessionScope.__AUTH__.userId && c.reportCnt < 5 }"> <!--  이거 조건 바꿔야된다!!!! -->
+					<input type="hidden" id= "commentId" name="commentId" value="${comment.commentId}">
+					<c:if test="${comment.userId == sessionScope.__AUTH__.userId && comment.reportCnt < 5 }"> <!--  이거 조건 바꿔야된다!!!! -->
 					<input type="button" class="modifycmt" name="modifycmt" value="수정" /> 
 					<input type="button" class="deletecmt" name="deletecmt" value="삭제" /> 
 					</c:if>
 					<input type="button" class="reportcmt" name="reportcmt" value="신고" />
 				</div>
-					<div class="comment">${c.contents}</div>
+					<div class="comment">${comment.contents}</div>
 			
 				
 				<div class="updatebtn">

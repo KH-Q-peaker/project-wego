@@ -29,12 +29,10 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 
 @Controller
-//@SessionAttributes("userId")
 @RequestMapping("/comment")
 public class CommentController {
 
 	private final CommentService commentService;
-//	private final UserService userService;
 	
 	
 	// 댓글 offset 로딩 

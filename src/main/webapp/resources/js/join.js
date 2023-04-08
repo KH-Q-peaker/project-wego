@@ -76,8 +76,8 @@ $(() => { /* 참여하기 모달창 on/off  */
 			$(".joinbtn").off('click').on('click', function() {
 
 				$.ajax({
-					url: "/party/join/" + target.targetCd,
-					type: "DELETE",
+					url : "/party/join/" + target.targetCd ,
+					type : "POST",
 					success: function() {
 						joinModalcls();
 						setMessage("🙅🏻‍♀️취소되었습니다.");

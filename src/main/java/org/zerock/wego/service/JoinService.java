@@ -1,6 +1,7 @@
 package org.zerock.wego.service;
 
 import org.springframework.stereotype.Service;
+import org.zerock.wego.domain.JoinDTO;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.JoinMapper;
 
@@ -19,22 +20,43 @@ public class JoinService {
 	
 
 	// 모집 참여 여부 
-	public boolean isUserJoined(Integer partyId, Integer userId) throws ServiceException {
-		log.trace("isUserJoined({}, {}) invoked.", partyId, userId);
+	public boolean isUserJoined(JoinDTO dto) throws ServiceException {
+//		log.trace("isUserJoined({}, {}) invoked.", partyId, userId);
 		
-		return (this.joinMapper.selectById(partyId, userId) != null); 
+		String status = this.joinMapper.selectById(dto);
+		
+		if(status != null && status.equals("Y")) {
+			return true;
+		}else {
+			return false;
+		}// if-else
 	}// cancleJoin
 	
 
 	
-	// 모집 참여 등록 
-	public boolean isJoinCreated(Integer partyId, Integer userId) throws ServiceException {
-		log.trace("isJoinCreated({}, {}) invoked.", partyId, userId);
+	// 모집 참여 토글
+	public boolean isJoinCreatedOrCancled(JoinDTO dto) throws ServiceException {
+//		log.trace("isJoinCreated({}, {}) invoked.", partyId, userId);
 		
 		try {
+			String status = this.joinMapper.selectById(dto);
 			
-			return (this.joinMapper.insert(partyId, userId) == 1);
+			boolean isSuccess;
 			
+			if(status == null) {
+				
+				isSuccess = (this.joinMapper.insert(dto) == 1);
+				
+			}else if(status.equals("Y")){
+				
+				isSuccess = (this.joinMapper.update(dto, "N") == 1);
+				
+			}else{
+				
+				isSuccess = (this.joinMapper.update(dto, "Y") == 1);
+			}// if-else
+			
+			return isSuccess;
 		}catch (Exception e) {
 			throw new ServiceException(e);
 		}// try-catch
@@ -42,13 +64,26 @@ public class JoinService {
 
 
 	
-	// 모집 참여 취소 
-	public boolean isJoinCancled(Integer partyId, Integer userId) throws ServiceException {
-		log.trace("isJoinCancled({}, {}) invoked.", partyId, userId);
+//	// 모집 참여 취소 
+//	public boolean isJoinCancled(JoinDTO dto) throws ServiceException {
+////		log.trace("isJoinCancled({}, {}) invoked.", partyId, userId);
+//		
+//		try {
+//			
+//			return (this.joinMapper.update(dto, "N") == 1);
+//			
+//		}catch(Exception e) {
+//			throw new ServiceException(e);
+//		}// try-catch
+//	}
+	
+	// 모집 참여 삭제 *** 얘도 댓글처럼 스케줄링 해야할듯 *** 
+	public boolean isJoinRemoved(JoinDTO dto) throws ServiceException {
+//		log.trace("isJoinRemoved({}) invoked.", dto);
 		
 		try {
 			
-			return (this.joinMapper.deleteById(partyId, userId) == 1);
+			return (this.joinMapper.deleteById(dto) == 1);
 			
 		}catch(Exception e) {
 			throw new ServiceException(e);

@@ -24,6 +24,20 @@
 			#{reportGb}
 	    	)
     </insert>
+    <!-- ***************** 신고 총합 조회 ******************** -->
+    <select
+    	id="selectCountByTarget">
+    	
+    	SELECT 
+    		count(user_id)
+    	FROM	
+    		report_tb
+    	WHERE
+    		target_gb = #{targetGb}
+    		AND
+    		target_cd = #{targetCd}
+    </select>
+    
   </mapper>
   
   

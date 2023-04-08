@@ -207,7 +207,7 @@ public class CommentService {
 
 	// 댓글 영구 삭제
 	@Async
-	@Scheduled(fixedRate = 10000)
+	@Scheduled(fixedRate = 100000)
 	public boolean isCleared() throws ServiceException{
 		
 		try {

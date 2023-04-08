@@ -11,45 +11,52 @@
     <!-- ************ 참여 여부 확인  ************ -->
     <select 
     	id="selectById" 
-    	resultType="Integer">
+    	resultType="String">
     	
-    	SELECT 1
-    	FROM dual
-    	WHERE EXISTS(
-    			SELECT 1 
-    			FROM join_tb
-    			WHERE san_party_id = #{partyId}
-    			AND user_id = #{userId})
+    	SELECT 
+    		status
+    	FROM 
+    		join_tb
+    	WHERE 
+    		san_party_id = #{sanPartyId}
+    		AND user_id = #{userId}
     </select>
     
     
-	<!-- ************ 참여 신청 ************ -->
+	<!-- ************ 참여 생성  ************ -->
     <insert 
     	id="insert">
     	
     	INSERT INTO join_tb
     		(san_party_id, user_id)
     	VALUES
-    		(#{partyId}, #{userId})
+    		(#{sanPartyId}, #{userId})
     </insert>
     
     
-    <!-- ************ 참여 취소 ************ -->
-    <delete 
-    	id="deleteById">
-    	DELETE
-    	FROM
+    <!-- ************ 참여 신청/취소 토글 ************ -->
+    <update 
+    	id="update">
+    	
+    	UPDATE
     		join_tb
-    		
-    	<where>
-    		san_party_id = #{partyId}
-    		
-    		<if test = "#{userId} != null" >
+    	SET
+    		status = #{status}
+    	WHERE
+    		san_party_id = #{dto.sanPartyId}
     		AND
-    		user_id = #{userId}
-    		</if>
-    	</where>
-    </delete>
+    		user_id = #{dto.userId}
+    </update>
+    
+<!--     ************ 특정글 참여 삭제 ************ -->
+<!--     <delete  -->
+<!--     	id="deleteById"> -->
+<!--     	DELETE -->
+<!--     	FROM -->
+<!--     		join_tb -->
+<!--     	WHERE -->
+<!--     		san_party_id = #{sanPartyId} -->
+<!--     </delete> -->
     
   </mapper>
   
