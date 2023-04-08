@@ -60,7 +60,7 @@ implements InitializingBean {
 	}// showLogin
 
 
-//	@GetMapping("/kakao")
+	@GetMapping("/kakao")
 	public String getKakaoLogin() throws ControllerException{
 		log.trace("getKakaoLogin() invoked.");
 
@@ -75,13 +75,6 @@ implements InitializingBean {
 		}// try-catch
 		
 	}// getKakaoLogin
-	
-	@GetMapping("/kakao")
-	public void getKakaoAuthUrl(HttpServletResponse response) throws IOException {
-		log.trace("getKakaoAuthUrl({}) invoked.", response);
-		
-		response.sendRedirect(kakaoOAuth.getLoginURLToGetAuthorizationCode());
-	} // getKakaoAuthUrl
 
 
 	@GetMapping("/kakao/oauth")
