@@ -1,6 +1,9 @@
 package org.zerock.wego.controller;
 
+import java.io.IOException;
 import java.util.Objects;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Controller;
@@ -10,15 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.servlet.ModelAndView;
 import org.zerock.wego.domain.UserDTO;
 import org.zerock.wego.domain.UserVO;
-import org.zerock.wego.domain.oauth.kakao.KakaoOAuthTokenDTO;
-import org.zerock.wego.domain.oauth.kakao.KakaoUserInfoDTO;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.oauth.KakaoOAuth;
-import org.zerock.wego.service.KakaoService;
-import org.zerock.wego.service.UserLoginService;
+import org.zerock.wego.service.LoginService;
+import org.zerock.wego.service.OAuthService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -33,39 +33,34 @@ public class LoginController
 implements InitializingBean {
 
 
-	private final KakaoService kakaoService;
-
-	private final UserLoginService userLoginService;
-
 	private final KakaoOAuth kakaoOAuth;
+	private final LoginService loginService;
+	private final OAuthService oAuthService;
 
 	@Override
 	public void afterPropertiesSet() throws ControllerException {
 		log.trace("afterPropertiesSet() invoked");
 
 		try {
-			Objects.requireNonNull(this.kakaoService);
-			Objects.requireNonNull(this.userLoginService);
 			Objects.requireNonNull(this.kakaoOAuth);
+			Objects.requireNonNull(this.loginService);
+			Objects.requireNonNull(this.oAuthService);
+
 		} 
 		catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
 	} // afterPropertiesSet
-	
-	@GetMapping("/")
+
+	@GetMapping
 	public String showLogin() throws ControllerException{
 		log.trace("showLogin() invoked.");
 
-		try {
-			return "/common/login";
-		} catch (Exception e) {
-			throw new ControllerException(e);
-		}// try-catch
-	}// getCode
+		return "common/login";
+	}// showLogin
 
 
-	@GetMapping("/kakao")
+//	@GetMapping("/kakao")
 	public String getKakaoLogin() throws ControllerException{
 		log.trace("getKakaoLogin() invoked.");
 
@@ -78,65 +73,62 @@ implements InitializingBean {
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		}// try-catch
-	}// getCode
+		
+	}// getKakaoLogin
+	
+	@GetMapping("/kakao")
+	public void getKakaoAuthUrl(HttpServletResponse response) throws IOException {
+		log.trace("getKakaoAuthUrl({}) invoked.", response);
+		
+		response.sendRedirect(kakaoOAuth.getLoginURLToGetAuthorizationCode());
+	} // getKakaoAuthUrl
 
 
 	@GetMapping("/kakao/oauth")
 	public String getKakaoCallBack(
-			@RequestParam("code") String authorizationCode, 
-			@SessionAttribute(value = "LOGIN_CALL_BACK_URI", required = false)Object loginCallBackURI,
+			@RequestParam("code") String authorizationCode,
 			Model model
 			) throws ControllerException{
-		log.trace("getAccessToken({}, {}, model) invoked.", authorizationCode, loginCallBackURI);
+		log.trace("getAccessToken({}, model) invoked.", authorizationCode);
 
 		try {
-			// access Token 받기
-			KakaoOAuthTokenDTO kakaoToken = kakaoService.getAccessToken(authorizationCode);
-			//			kakaoService.unlinkKakao(kakaoToken);
+			UserDTO kakaoUserDTO = oAuthService.kakaoLogin(authorizationCode);
+			// 수정 유저 인포 갖고와서 그걸로 다시 회원가입 되어 있는지 로그인 서비스에 전달하자
 
-			// 카카오계정 정보 받기 
-			KakaoUserInfoDTO userInfo = kakaoService.getUserInfo(kakaoToken);
+			log.info("userDTO = {}", kakaoUserDTO);
 
-			log.info("userInfo = {}", userInfo);
+			UserVO kakaoOAuth = this.loginService.login(kakaoUserDTO);
 
-			String nickname = userInfo.getProperties().getNickname();
-			String socialId = userInfo.getKakao_account().getEmail();
-
-			log.info("\n::nickname = {}\n::socialId = {}", nickname, socialId);
-
-			UserVO auth = this.userLoginService.getUserVOBySocialId(socialId);
-
-			// 없는 이메일이면 == 회원아니면
-			if(auth == null) {
-
-				// 카카오 가입
-				UserDTO user = new UserDTO();
-
-				user.setNickname(nickname);
-				user.setSocialId(socialId);
-
-				this.userLoginService.signUp(user);
-
-				auth = this.userLoginService.getUserVOBySocialId(socialId);
-				// 가입하고 바로 로그인
-				/// 추가 로직 고민 해봐야 
-				// 모달을 띄운다 등
-			}//if
-
-			model.addAttribute("__AUTH__", auth);
-
-			if(loginCallBackURI == null) {
-
-				return "redirect:/";
-			} // if
-
-			return "redirect:" + (String) loginCallBackURI;
-
+			if(kakaoOAuth == null) {
+				model.addAttribute("__AUTH__", kakaoUserDTO);
+				
+				return "redirect:/sign-up/";
+			}
+			else {
+				model.addAttribute("__AUTH__", kakaoOAuth);
+				
+				return "redirect:/login/callback";
+			}
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		}// try-catch
-	}// getCode
 
+	}// getKakaoCallBack
 
+	@GetMapping("/callback")
+	public String getLoginCallBack(
+			@SessionAttribute(value = "LOGIN_CALL_BACK_URI", required = false)Object loginCallBackURI
+			) {
+		log.trace("getLoginCallBack({}) invoked.", loginCallBackURI);
+
+		if(loginCallBackURI == null) {
+
+			return "redirect:/";
+		} // if
+
+		return "redirect:" + (String) loginCallBackURI;
+
+	} // getLoginCallBack
 
 }// end class
+

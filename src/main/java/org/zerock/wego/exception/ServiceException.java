@@ -5,10 +5,14 @@ public class ServiceException extends RuntimeException {
 	
 	public ServiceException(String message) {
 		super(message);
+		
+		super.printStackTrace();
 	} // Constructor#1
 	
 	public ServiceException(Exception originalException) {
 		super(originalException);
+		
+		super.printStackTrace();
 	} // Constructor#2
 	
 	
