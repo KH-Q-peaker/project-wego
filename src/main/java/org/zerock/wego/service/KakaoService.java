@@ -92,7 +92,6 @@ implements InitializingBean{
 			throw new ServiceException(e);
 		}// try-catch
 
-
 	}// getUserInfo
 
 
@@ -125,4 +124,6 @@ implements InitializingBean{
 			e.printStackTrace();
 		}
 	}// unlinkKakao
+	
+	
 }// end class

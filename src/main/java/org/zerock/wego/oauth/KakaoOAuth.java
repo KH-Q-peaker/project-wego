@@ -22,76 +22,81 @@ import lombok.extern.log4j.Log4j2;
 @NoArgsConstructor
 
 @Component
-public class KakaoOAuth {
+public class KakaoOAuth {	// https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api 참조
  
 	@Value("${kakao.rest.api.key}")
-	private String kakaoClientId;
+	private String kakaoClientId;	// REST key
 
-	private String KAKAO_AUTHORIZE_REQUEST_URI = "https://kauth.kakao.com/oauth/authorize?";
-	private String REDIRECT_URI = "http://localhost:8080/login/kakao/oauth"; // 도메인 수정필요
-	private	String RESPONSE_TYPE = "code"; 
-	private final String KAKAO_TOKEN_REQUEST_URL = "https://kauth.kakao.com/oauth/token";
-	private final String KAKAO_USER_INFO_REQUEST_URL = "https://kapi.kakao.com/v2/user/me";
+	private final String KAKAO_AUTHORIZE_REQUEST_URL = "https://kauth.kakao.com/oauth/authorize?";	// 인가 코드 요청 URL
+	private final String REDIRECT_URI = "http://localhost:8080/login/kakao/oauth";	// 인가 코드를 전달받을 서비스 서버의 URI >>>>>>>>>>>>>> 도메인 수정필요 kakao에서도 수정필요
+	private final String RESPONSE_TYPE = "code";	// 인가 코드 요청시 param >>> code로 고정
+	private final String GRANT_TYPE = "authorization_code"; // 토큰 요청시 param >>> authorization_code로 고정 
+	private final String KAKAO_TOKEN_REQUEST_URL = "https://kauth.kakao.com/oauth/token";	// 인가 코드를 전달받을 서비스 서버의 URI
+	private final String KAKAO_USER_INFO_REQUEST_URL = "https://kapi.kakao.com/v2/user/me";	// 사용자 정보 요청 URI
 
 
 	public String getLoginURLToGetAuthorizationCode() {
 		log.trace("getLoginURLToGetAuthorizationCode() invoked.");
 
-		StringBuffer LoginURL = new StringBuffer();
+		StringBuffer LoginURL = new StringBuffer(KAKAO_AUTHORIZE_REQUEST_URL);
 
-		LoginURL.append(KAKAO_AUTHORIZE_REQUEST_URI)
-		.append("client_id=").append(kakaoClientId)
-		.append("&").append("redirect_uri=").append(REDIRECT_URI)
-		.append("&").append("response_type=").append(RESPONSE_TYPE);
+		LoginURL	// 파라미터 설정
+			.append("client_id=").append(kakaoClientId)	
+			.append("&").append("redirect_uri=").append(REDIRECT_URI)
+			.append("&").append("response_type=").append(RESPONSE_TYPE);
 
 		return LoginURL.toString();
 	} // getLoginURLToGetAuthorizationCode
 	
 
+	// 인가 코드로 Access Token 요청
 	public ResponseEntity<String> requestAccessToken(String authorizationCode) {
 		log.trace("requestAccessToken({}) invoked.", authorizationCode);
 
 		HttpHeaders headers = new HttpHeaders();
 		RestTemplate restTemplate = new RestTemplate();
 
-		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);	// 해더 설정
+																		// kakao 문서에는 utf-8로 설정까지 있는데 그건 web.xml설정으로 대체
 
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>(); // 바디에 파라미터 설정
 
-		params.add("grant_type", "authorization_code"); // authorization_code로 고정
-		params.add("client_id", kakaoClientId); // 앱 REST API 키
-		params.add("redirect_uri", REDIRECT_URI); // 인가 코드가 리다이렉트된 URI
-		params.add("code", authorizationCode); // 인가 코드 받기 요청으로 얻은 인가 코드
+		params.add("grant_type", GRANT_TYPE);
+		params.add("client_id", kakaoClientId);
+		params.add("redirect_uri", REDIRECT_URI);
+		params.add("code", authorizationCode);
 
-		HttpEntity<MultiValueMap<String, String>> kakaoOAuthRequest = new HttpEntity<>(params, headers);
+		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
 
 		ResponseEntity<String> response = restTemplate.postForEntity(
 				KAKAO_TOKEN_REQUEST_URL,
-				kakaoOAuthRequest,
+				request,
 				String.class);
 
 		return response;
 	} // requestAccessToken
 
 	
-	public KakaoOAuthTokenDTO parseOAuthTokenDTO(ResponseEntity<String> response) throws JsonProcessingException {
-		log.trace("parseOAuthTokenDTO({}) invoked.", response);
+	// 요청을 DTO로 변환
+	public KakaoOAuthTokenDTO parseOAuthTokenDTO(ResponseEntity<String> accessTokenResponse) throws JsonProcessingException {
+		log.trace("parseOAuthTokenDTO({}) invoked.", accessTokenResponse);
 
 		ObjectMapper objectMapper = new ObjectMapper();
 
-		KakaoOAuthTokenDTO kakaoOAuthTokenDTO = objectMapper.readValue(response.getBody(), KakaoOAuthTokenDTO.class);
+		KakaoOAuthTokenDTO kakaoOAuthTokenDTO = objectMapper.readValue(accessTokenResponse.getBody(), KakaoOAuthTokenDTO.class);
 
 		return kakaoOAuthTokenDTO;
 	} // parseOAuthTokenDTO
 	
 
-	public ResponseEntity<String> requestUserInfo(KakaoOAuthTokenDTO oAuthToken) {
-		log.trace("requestUserInfo({}) invoked.", oAuthToken);
+	// Access Token으로 유저 정보 요청
+	public ResponseEntity<String> requestUserInfo(KakaoOAuthTokenDTO OAuthTokenDTO) {
+		log.trace("requestUserInfo({}) invoked.", OAuthTokenDTO);
 
 		HttpHeaders headers = new HttpHeaders();
 		RestTemplate restTemplate = new RestTemplate();
 		
-		headers.add("Authorization", "Bearer " + oAuthToken.getAccess_token());
+		headers.add("Authorization", "Bearer " + OAuthTokenDTO.getAccess_token());
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
 		HttpEntity<MultiValueMap<String, String>> kakaoUserInfoRequest = new HttpEntity<>(headers);
@@ -104,6 +109,8 @@ public class KakaoOAuth {
 		return response;
 	} // requestUserInfo
 
+	
+	// 요청을 DTO로 변환
 	public KakaoUserInfoDTO parseUserInfoDTO(ResponseEntity<String> response) throws JsonProcessingException {
 		log.trace("parseUserInfoDTO({}) invoked.", response);
 

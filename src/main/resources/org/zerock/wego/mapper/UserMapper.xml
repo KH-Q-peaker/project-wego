@@ -6,17 +6,17 @@
 
 <mapper namespace="org.zerock.wego.mapper.UserMapper">
 	
-	<select id= "selectUserByUserId" resultType="org.zerock.wego.domain.UserVO">
+	<select id= "selectByUserId" resultType="org.zerock.wego.domain.UserVO">
 		
 		SELECT 
 			*
 		FROM
 			user_tb
 		WHERE
-			user_id = #{targetUserId}
+			user_id = #{userId}
 	</select>
 
-	<select id="selectUserBySocialId" resultType="org.zerock.wego.domain.UserVO">
+	<select id="selectBySocialId" resultType="org.zerock.wego.domain.UserVO">
 		
 		SELECT 
 			*
@@ -24,6 +24,16 @@
 			user_tb
 		WHERE
 			social_id = #{socialId}
+	</select>
+	
+	<select id="selectByNickname" resultType="org.zerock.wego.domain.UserVO">
+		
+		SELECT 
+			*
+		FROM
+			user_tb
+		WHERE
+			nickname = #{nickname}
 	</select>
 	
 	

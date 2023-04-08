@@ -43,13 +43,13 @@ public class UserController
 			produces = {
 					MediaType.APPLICATION_JSON_VALUE
 			})
-	public UserVO getTargetUserInfo(
-			@PathVariable("targetUserId")Long targetUserId,
+	public UserVO getUserInfoById(
+			@PathVariable("targetUserId")Integer targetUserId,
 			Model model)
 					throws ServiceException {
 		log.trace("getTargetUserInfo({}) invoked.", targetUserId);
 
-		UserVO targetUserVO = this.userService.getTargetUserInfo(targetUserId);
+		UserVO targetUserVO = this.userService.getById(targetUserId);
 		
 		return targetUserVO;
 	} // getTargetUserInfo
