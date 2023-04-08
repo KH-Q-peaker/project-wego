@@ -29,4 +29,16 @@ public class ReportService {
 		}// try-catch
 	}// modifyComment
 	
+	// 타겟 신고 총합 조회 
+	public Integer getTotalCount(ReportDTO dto) throws ServiceException{
+		
+		try {
+			Integer totalCount = this.reportMapper.selectCountByTarget(dto);
+			
+			return (totalCount == null ? 0 : totalCount);
+		}catch(Exception e) {
+			throw new ServiceException(e);
+		}// try-catch
+	}// getTotalCount
+	
 }// end class

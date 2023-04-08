@@ -27,6 +27,7 @@ import org.zerock.wego.domain.CommentViewVO;
 import org.zerock.wego.domain.FavoriteDTO;
 import org.zerock.wego.domain.FileDTO;
 import org.zerock.wego.domain.FileVO;
+import org.zerock.wego.domain.JoinDTO;
 import org.zerock.wego.domain.PageInfo;
 import org.zerock.wego.domain.PartyDTO;
 import org.zerock.wego.domain.PartyViewVO;
@@ -75,7 +76,7 @@ public class PartyController {
 	
 	
 	// 모집글 상세 조회 
-	@GetMapping("/{partyId}") 
+	@GetMapping("detail/{partyId}") 
 	public ModelAndView showDetailById(@PathVariable("partyId")Integer partyId, 
 										@SessionAttribute("__AUTH__")UserVO user,
 										PageInfo target) throws ControllerException{
@@ -95,15 +96,20 @@ public class PartyController {
 			Integer userId = user.getUserId();
 			Objects.requireNonNull(userId);
 			
-			boolean isJoin = this.joinService.isUserJoined(partyId, userId);
-//			boolean isLike = this.likeService.isUserLiked(target, userId);
+			JoinDTO join = new JoinDTO();
+			join.setSanPartyId(partyId);
+			join.setUserId(userId);
 			
+			boolean isJoin = this.joinService.isUserJoined(join);
+			
+//			boolean isLike = this.likeService.isUserLiked(target, userId);
 			FavoriteDTO favorite = new FavoriteDTO();
 			favorite.setTargetGb("SAN_PARTY");
 			favorite.setTargetCd(partyId);
 			favorite.setUserId(userId);
 			
 			boolean isFavorite = this.fatoriteService.isFavoriteInfo(favorite);
+			
 			int totalCnt = this.commentService.getCommentsCount(target);
 			
 
@@ -291,7 +297,7 @@ public class PartyController {
 		} // try-catch
 	} // register
 	
-	// 참여 신청
+	// 참여 신청/취소 토글 
 		@PostMapping("/join/{partyId}")
 		ResponseEntity<String> offerJoin(@PathVariable Integer partyId, 
 										 @SessionAttribute("__AUTH__") UserVO user) throws ControllerException {
@@ -301,7 +307,11 @@ public class PartyController {
 				Integer userId = user.getUserId();
 				Objects.nonNull(userId);
 
-				if (this.joinService.isJoinCreated(partyId, userId)) {
+				JoinDTO join = new JoinDTO();
+				join.setSanPartyId(partyId);
+				join.setUserId(userId);
+				
+				if (this.joinService.isJoinCreatedOrCancled(join)) {
 
 					return new ResponseEntity<>("OK", HttpStatus.OK);
 				} // if
@@ -313,26 +323,30 @@ public class PartyController {
 			} // try-catch
 		}// offerJoin
 
-		// 참여 취소
+		// 참여 삭제
 //		@PostMapping("/cancle")
-		@DeleteMapping("/join/{partyId}")
-		ResponseEntity<String> cancleJoin(@PathVariable Integer partyId, 
-										 @SessionAttribute("__AUTH__") UserVO user) throws ControllerException {
-			log.trace("cancleJoin({}, {}) invoked.", partyId, user);
-
-			try {
-				Integer userId = user.getUserId();
-				Objects.nonNull(userId);
-
-				if (this.joinService.isJoinCancled(partyId, userId)) {
-
-					return new ResponseEntity<>("OK", HttpStatus.OK);
-				} // if
-
-				return new ResponseEntity<>("XX", HttpStatus.BAD_REQUEST);
-
-			} catch (Exception e) {
-				throw new ControllerException(e);
-			} // try-catch
-		}// cancleJoin
+//		@DeleteMapping("/join/{partyId}")
+//		ResponseEntity<String> cancleJoin(@PathVariable Integer partyId, 
+//										 @SessionAttribute("__AUTH__") UserVO user) throws ControllerException {
+//			log.trace("cancleJoin({}, {}) invoked.", partyId, user);
+//
+//			try {
+//				Integer userId = user.getUserId();
+//				Objects.nonNull(userId);
+//				
+//				JoinDTO join = new JoinDTO();
+//				join.setSanPartyId(partyId);
+//				join.setUserId(userId);
+//				
+//				if (this.joinService.isJoinCancled(join)) {
+//
+//					return new ResponseEntity<>("OK", HttpStatus.OK);
+//				} // if
+//
+//				return new ResponseEntity<>("XX", HttpStatus.BAD_REQUEST);
+//
+//			} catch (Exception e) {
+//				throw new ControllerException(e);
+//			} // try-catch
+//		}// cancleJoin
 } // end class

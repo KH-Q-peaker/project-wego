@@ -41,7 +41,9 @@ public class ReportController {
 		report.setTargetCd(target.getTargetCd());
 		report.setReportGb(reportGb);
 		
-		if(this.reportService.create(report)) {
+		boolean isCreated = (this.reportService.create(report));
+		
+		if(isCreated) {
 			
 			return new ResponseEntity<>("OK", HttpStatus.OK);
 			/*접수 완료되고 신고수 카운트해서 블라인드 처리될지말지 해야함
