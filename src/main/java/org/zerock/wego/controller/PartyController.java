@@ -76,7 +76,7 @@ public class PartyController {
 	
 	
 	// 모집글 상세 조회 
-	@GetMapping("detail/{partyId}") 
+	@GetMapping("/{partyId}") 
 	public ModelAndView showDetailById(@PathVariable("partyId")Integer partyId, 
 										@SessionAttribute("__AUTH__")UserVO user,
 										PageInfo target) throws ControllerException{
@@ -91,10 +91,8 @@ public class PartyController {
 			
 
 			PartyViewVO party = this.partyService.getById(partyId);
-			Objects.requireNonNull(party);
 			
 			Integer userId = user.getUserId();
-			Objects.requireNonNull(userId);
 			
 			JoinDTO join = new JoinDTO();
 			join.setSanPartyId(partyId);
@@ -110,16 +108,16 @@ public class PartyController {
 			
 			boolean isFavorite = this.fatoriteService.isFavoriteInfo(favorite);
 			
-			int totalCnt = this.commentService.getCommentsCount(target);
+			int commentCount = this.commentService.getCommentsCount(target);
 			
 
-			LinkedBlockingDeque<CommentViewVO> comments = commentService.getCommentsOffsetByTarget(target);
+			LinkedBlockingDeque<CommentViewVO> comments = commentService.getCommentOffsetByTarget(target, 0);
 
 			
 			mav.addObject("party", party);
 			mav.addObject("isJoin", isJoin);
 			mav.addObject("isFavorite", isFavorite);
-			mav.addObject("totalCnt", totalCnt);
+			mav.addObject("commentCount", commentCount);
 //			mav.addObject("userPic", userPic);
 //			mav.addObject("partyImg", partyImg);
 			
@@ -305,7 +303,6 @@ public class PartyController {
 
 			try {
 				Integer userId = user.getUserId();
-				Objects.nonNull(userId);
 
 				JoinDTO join = new JoinDTO();
 				join.setSanPartyId(partyId);
