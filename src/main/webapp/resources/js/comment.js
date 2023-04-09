@@ -13,6 +13,19 @@ function toggleBtn(inputElem, buttonElem) {
     });
   }
 }
+function toggleMentionBtn(buttonElem) {
+	
+	if (buttonElem.parent().next().css('display') == 'none') {
+		$('.mentionwrite, .mentionList').hide('fast');
+		buttonElem.val('Ⅹ 닫기');
+		buttonElem.parent().next('.mentionwrite').show('fast').css('display', 'grid');
+		buttonElem.parent().next().next('.mentionList').show('fast');
+	} else {
+		buttonElem.val('↪ ︎답글');
+		$(".mcontents").val('');
+		$('.mentionwrite, .mentionList').hide('fast');
+	}
+}
 
 $(() => { /* 새 댓글 post 전송  */
 	
@@ -35,8 +48,6 @@ $(() => { /* 새 댓글 post 전송  */
 				'background' : 'buttonface' 
 		});
 	});
-	
-	
 	$(".ncmt").off('click').on('click', function() {
 
 		$.ajax({
@@ -49,12 +60,12 @@ $(() => { /* 새 댓글 post 전송  */
 				contents: $(this).prev().val()
 			},
 			success: function(data) {
-				page=2;
+				page=1;
 				$("#contents").val('');
 				$(".cmtcontainer").replaceWith(data);
 		},
 		error : function() {
-			setMessage("⚠️ 댓글 등록 실패."); // 이거 고쳐ㅕㅕㅕㅕㅕㅕㅕㅕㅕ
+			setMessage("⚠️ 댓글 등록 실패.");
 			showModal();
 			setTimeout(hideModal, 500);
 		}
@@ -64,32 +75,39 @@ $(() => { /* 새 댓글 post 전송  */
 
 
 $(() => { /* 답글 관련 */
-	$(".mentionwrite").hide();
+//	$(".mentionwrite").hide();
 	
   /* 답글 버튼 클릭시 멘션 작성 창 on */
   	$(".mentionbtn").off('click').on('click', function () {
-			
+		
 		/* 다른 멘션창 모두 닫은 후 대상만 on  */
-		$(".mentionwrite").hide('fast');
-		$(".mcontents").val('');
-		$(".mentionbtn").val("↪ ︎답글");
 		$(".men").prop('disabled', true).css({
 				'color' : 'gray',
 				'background' : 'buttonface' 
 		});
-		
-    	if ($(this).parent().next().css("display") == "none") {
-	    	
-			$(this).val("☓ 닫기");
-	    	$(this).parent().next().show('normal');
-    	}
+		let mentionList = $(this).parent().next().next('.mentionList');
+
+			$.ajax({
+				url: "/comment/mention",
+				type: "GET",
+				data:
+				{
+					commentId: $(this).siblings('#commentId').val()
+				},
+				success: function(data) {
+					mentionList.html(data);
+				},
+				error: function() {
+					console.log('멘션로딩 실패');
+				}
+			});
+		toggleMentionBtn($(this));
   	});
   	/* 취소 클릭 시 멘션 작성 창 off  */
   	$(".mentionwrite").children(".cancle").off('click').on('click', function(){
 		
 		$(".mcontents").val('').height('80px');
-		$(".mentionwrite").hide('fast');
-		$(".mentionbtn").attr('value', "↪ ︎답글");
+		$(".mentionwrite, .mentionList").hide('fast');
 	});
 	
 	/* 입력내용에 따라 등록버튼 활성/비활성  */
@@ -114,13 +132,12 @@ $(() => { /* 답글 관련 */
 				mentionId : targetMentionId,
 				contents : $(this).prev().val()
 			},
-			
 			success : function(data){
 				setMessage("️📝 답글이 등록되었습니다.");
 		 		showModal();
 		 		setTimeout(hideModal, 500);
 		 		mentionPosition.after(data);
-		 		$(".mentionbtn").attr('value', "↪ ︎답글");
+		 		$('.mcontents').val('');
 			},
 			error : function(){
 		 		setMessage("⚠️ 답글 등록 실패."); // 이거 고쳐ㅕㅕㅕㅕㅕㅕㅕㅕㅕ

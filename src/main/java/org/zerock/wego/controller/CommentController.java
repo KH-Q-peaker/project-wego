@@ -37,12 +37,14 @@ public class CommentController {
 	
 	// 댓글 offset 로딩 
 	@GetMapping("/load")
-	ModelAndView loadCommentOffset(PageInfo target) throws Exception{
+	ModelAndView loadCommentOffset(PageInfo target, Integer lastComment) throws Exception{
+		log.trace("loadCommentOffset({}, {}) invoked.", target, lastComment);
+		
 		
 		ModelAndView mav = new ModelAndView();
-
+		
 		LinkedBlockingDeque<CommentViewVO> comments = 
-					this.commentService.getCommentsOffsetByTarget(target);
+					this.commentService.getCommentOffsetByTarget(target, lastComment);
 		
 		if(comments == null) {
 			
@@ -52,10 +54,29 @@ public class CommentController {
 
 		return mav;
 	}// loadCommentOffset
+
+	// 댓글 멘션 로딩 
+	@GetMapping("/mention")
+	ModelAndView loadMentionsByCommentId(Integer commentId) throws Exception{
+		log.trace("loadMentionsByCommentId({}) invoked", commentId);
+		
+				
+		ModelAndView mav = new ModelAndView();
+		
+		LinkedBlockingDeque<CommentViewVO> mentions = 
+					this.commentService.getMentionsByCommentId(commentId);
+		
+		if(mentions == null) {
+			
+			return null;
+		}
+		mav.addObject("comments", mentions);
+		mav.setViewName("comment/load");
+
+		return mav;
+	}// loadCommentOffset
 	
-	
-	
-	
+
 	// 댓글 작성 
 	@PostMapping("/register")
 	ModelAndView registerComment(CommentDTO dto, 
@@ -77,7 +98,8 @@ public class CommentController {
 			
 			if(isRegistered) {
 				
-				LinkedBlockingDeque<CommentViewVO> comments = this.commentService.getCommentsOffsetByTarget(target);
+				LinkedBlockingDeque<CommentViewVO> comments 
+							= this.commentService.getCommentOffsetByTarget(target, 0);
 
 				mav.addObject("comments", comments);
 				mav.setViewName("comment/comment");
@@ -92,13 +114,13 @@ public class CommentController {
 	}// registerComment
 	
 	
-
-	
 	// 멘션 작성 
 	@PostMapping("/reply")
 	ModelAndView registerMention(CommentDTO dto, 
 								@SessionAttribute("__AUTH__") UserVO user) throws ControllerException{
-
+		log.trace("registerMention({}, {}) invoked.", dto, user);
+		
+		
 		ModelAndView mav = new ModelAndView();
 
 		PageInfo target = new PageInfo();
@@ -118,11 +140,8 @@ public class CommentController {
 			return mav;
 		} catch (Exception e) {
 			throw new ControllerException(e);
-		}
-			
+		}// try-catch
 	}// registerComment
-	
-	
 	
 	
 	// 댓글 삭제 
@@ -139,7 +158,6 @@ public class CommentController {
 		
 		return new ResponseEntity<String>("XX", HttpStatus.NOT_FOUND);
 	}// registerComment
-	
 	
 	
 	// 댓글 수정 
