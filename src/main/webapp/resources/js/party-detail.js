@@ -1,10 +1,12 @@
 
-$(window).off('scroll').on('scroll', function() {
+function scrollCommentLoading() {
 
    if($(window).scrollTop() + window.innerHeight >= ($(document).height() -1)) {
 	  loadMoreComments();
   }
-});
+}
+ 
+$(window).off('scroll').on('scroll', scrollCommentLoading);
 
 let page = target.currPage;
 //const urlParams = new URLSearchParams(window.location.search);
@@ -12,17 +14,16 @@ let page = target.currPage;
 
 function loadMoreComments() {
 
-	console.log('loading');
-	console.log(page);
-	console.log(commentCount);
-	console.log(target.amount);
-	if (page <= Math.ceil(commentCount / target.amount)) {
+//	console.log('loading');
+//	console.log(page);
+//	console.log(commentCount);
+//	console.log(target.amount);
 
 		let lastCommentId = $('.comments:last #commentId').val();
 		let lastMentionId = $('.mention:last #mentionId').val();
 
 		let lastComment = (lastMentionId == null ? lastCommentId : lastMentionId);
-
+		
 		$.ajax({
 			url: "/comment/load",
 			type: "GET",
@@ -35,7 +36,6 @@ function loadMoreComments() {
 			},
 
 			success: function(data) {
-
 				if (data.length != 0) {
 					$(".cmtcontainer").append(data);
 				}else{
@@ -46,7 +46,6 @@ function loadMoreComments() {
 				console.log('댓글로딩오류 ');/* 바꿔야됨  */
 			}
 		});
-	}
 }
 
 /* 된거아님 */

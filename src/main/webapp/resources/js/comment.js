@@ -61,6 +61,7 @@ $(() => { /* 새 댓글 post 전송  */
 			},
 			success: function(data) {
 				page=1;
+				$(window).off('scroll').on('scroll', scrollCommentLoading);
 				$("#contents").val('');
 				$(".cmtcontainer").replaceWith(data);
 		},
