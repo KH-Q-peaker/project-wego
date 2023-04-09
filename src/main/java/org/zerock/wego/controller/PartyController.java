@@ -5,7 +5,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -40,7 +39,7 @@ import org.zerock.wego.service.JoinService;
 import org.zerock.wego.service.PartyService;
 import org.zerock.wego.service.SanInfoService;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -57,7 +56,7 @@ public class PartyController {
 	private final JoinService joinService;
 	private final SanInfoService mountainService;
 	private final FileService fileService;
-	private final FavoriteService fatoriteService;
+	private final FavoriteService favoriteService;
   
 	
 	@ModelAttribute("target")
@@ -106,7 +105,7 @@ public class PartyController {
 			favorite.setTargetCd(partyId);
 			favorite.setUserId(userId);
 			
-			boolean isFavorite = this.fatoriteService.isFavoriteInfo(favorite);
+			boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
 			
 			int commentCount = this.commentService.getCommentsCount(target);
 			
@@ -126,9 +125,8 @@ public class PartyController {
 				mav.addObject("comments", comments);
 			}// if
 			
-			// 수정 예정 ***************************
-			Gson gson = new Gson();
-			String targetJson = gson.toJson(target);
+			ObjectMapper objectMapper = new ObjectMapper();
+			String targetJson = objectMapper.writeValueAsString(target);
 			mav.addObject("target", targetJson);
 
 			mav.setViewName("/party/detail");

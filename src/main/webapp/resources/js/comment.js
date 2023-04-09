@@ -16,14 +16,14 @@ function toggleBtn(inputElem, buttonElem) {
 function toggleMentionBtn(buttonElem) {
 	
 	if (buttonElem.parent().next().css('display') == 'none') {
-		$('.mentionwrite, .mentionList').hide('fast');
-		buttonElem.val('Ⅹ 닫기');
+		$('.mentionwrite, .mentionList, .mention').hide('fast');
+		buttonElem.val('Ⅹ닫기');
 		buttonElem.parent().next('.mentionwrite').show('fast').css('display', 'grid');
 		buttonElem.parent().next().next('.mentionList').show('fast');
 	} else {
-		buttonElem.val('↪ ︎답글');
+		buttonElem.val('↪︎답글');
 		$(".mcontents").val('');
-		$('.mentionwrite, .mentionList').hide('fast');
+		$('.mentionwrite, .mentionList, .mention').hide('fast');
 	}
 }
 
@@ -76,16 +76,15 @@ $(() => { /* 새 댓글 post 전송  */
 
 
 $(() => { /* 답글 관련 */
-//	$(".mentionwrite").hide();
 	
   /* 답글 버튼 클릭시 멘션 작성 창 on */
   	$(".mentionbtn").off('click').on('click', function () {
 		
-		/* 다른 멘션창 모두 닫은 후 대상만 on  */
 		$(".men").prop('disabled', true).css({
 				'color' : 'gray',
 				'background' : 'buttonface' 
 		});
+		let mentionId = $(this).siblings('#commentId').val();
 		let mentionList = $(this).parent().next().next('.mentionList');
 
 			$.ajax({
@@ -93,7 +92,7 @@ $(() => { /* 답글 관련 */
 				type: "GET",
 				data:
 				{
-					commentId: $(this).siblings('#commentId').val()
+					commentId: mentionId
 				},
 				success: function(data) {
 					mentionList.html(data);
@@ -102,50 +101,47 @@ $(() => { /* 답글 관련 */
 					console.log('멘션로딩 실패');
 				}
 			});
-		toggleMentionBtn($(this));
+			
+			toggleMentionBtn($(this));
+		
+			/* 등록버튼 클릭 시 멘션 등록 post전송   */
+			$(".men").off('click').on('click', function() {
+
+				$.ajax({
+					url: "/comment/reply",
+					type: "POST",
+					data:
+					{
+						targetGb: target.targetGb,
+						targetCd: target.targetCd,
+						mentionId: mentionId,
+						contents: $(this).prev().val()
+					},
+					success: function(data) {
+						setMessage("️📝 답글이 등록되었습니다.");
+						showModal();
+						setTimeout(hideModal, 500);
+						mentionList.append(data);
+						$('.mcontents').val('');
+					},
+					error: function() {
+						setMessage("⚠️ 답글 등록 실패."); // 이거 고쳐ㅕㅕㅕㅕㅕㅕㅕㅕㅕ
+						showModal();
+						setTimeout(hideModal, 700);
+					}
+				});
+			});
   	});
   	/* 취소 클릭 시 멘션 작성 창 off  */
   	$(".mentionwrite").children(".cancle").off('click').on('click', function(){
 		
 		$(".mcontents").val('').height('80px');
-		$(".mentionwrite, .mentionList").hide('fast');
 	});
 	
 	/* 입력내용에 따라 등록버튼 활성/비활성  */
 	$(".mcontents").off('input').on('input', function(){
 		
 		toggleBtn($(this), $(this).next());
-	});
-	
-	/* 등록버튼 클릭 시 멘션 등록 post전송   */
-	$(".men").off('click').on('click', function(){
-		
-		let targetMentionId =$(this).siblings("#mentionId").val();
-		let mentionPosition = $('#mentionId[value="' + targetMentionId + '"]').parent().last();
-		
-		$.ajax({
-			url : "/comment/reply",
-			type : "POST",
-			data : 
-			{
-				targetGb :target.targetGb,
-				targetCd : target.targetCd,
-				mentionId : targetMentionId,
-				contents : $(this).prev().val()
-			},
-			success : function(data){
-				setMessage("️📝 답글이 등록되었습니다.");
-		 		showModal();
-		 		setTimeout(hideModal, 500);
-		 		mentionPosition.after(data);
-		 		$('.mcontents').val('');
-			},
-			error : function(){
-		 		setMessage("⚠️ 답글 등록 실패."); // 이거 고쳐ㅕㅕㅕㅕㅕㅕㅕㅕㅕ
-		 		showModal();
-		 		setTimeout(hideModal, 700);
-			}
-		});
 	});
 });
 
