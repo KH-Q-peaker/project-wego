@@ -29,6 +29,7 @@ public class ReportService {
 		}// try-catch
 	}// modifyComment
 	
+	
 	// 타겟 신고 총합 조회 
 	public Integer getTotalCount(String targetGb, Integer targetCd) throws ServiceException{
 		
@@ -44,6 +45,4 @@ public class ReportService {
 			throw new ServiceException(e);
 		}// try-catch
 	}// getTotalCount
-	
-	
 }// end class

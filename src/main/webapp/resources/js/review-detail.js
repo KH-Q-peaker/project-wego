@@ -1,13 +1,21 @@
 
-$(window).scroll(function() {
+function scrollCommentLoading() {
+
    if($(window).scrollTop() + window.innerHeight >= ($(document).height() -1)) {
 	  loadMoreComments();
-	  }
-});
+  }
+}
+ 
+$(window).off('scroll').on('scroll', scrollCommentLoading);
 
-let page = 2
+let page = target.currPage;
 
 function loadMoreComments() {
+
+	let lastCommentId = $('.comments:last #commentId').val();
+	let lastMentionId = $('.mention:last #mentionId').val();
+
+	let lastComment = (lastMentionId == null ? lastCommentId : lastMentionId);
 
 	$.ajax({
 		url: "/comment/load",
@@ -15,18 +23,20 @@ function loadMoreComments() {
 		data: {
 			targetGb: target.targetGb,
 			targetCd: target.targetCd,
-			currPage: page++,
-			amount: target.amount
-		}, // 댓글은 불러와짐
+			currPage: page,
+			amount: target.amount,
+			lastComment: lastComment
+		},
 
 		success: function(data) {
-
 			if (data.length != 0) {
 				$(".cmtcontainer").append(data);
+			} else {
+				$(window).off('scroll');
 			}
 		},
 		error: () => {
-			console.log('댓글로딩오류 ');
+			console.log('댓글로딩오류 ');/* 바꿔야됨  */
 		}
 	});
 }

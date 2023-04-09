@@ -123,7 +123,7 @@ public class ReviewController {
 			mav.addObject("target", targetJson);
 
 
-			mav.setViewName("/review/review-detail");
+			mav.setViewName("/review/detail");
 
 			
 			return mav;
@@ -139,7 +139,7 @@ public class ReviewController {
 	@DeleteMapping("/{reviewId}")
 	public String removeById(@PathVariable("reviewId")Integer reviewId, 
 							RedirectAttributes rttrs) throws ControllerException{
-		log.trace("remove({}) invoked.", reviewId);
+		log.trace("removeById({}) invoked.", reviewId);
 
 		try {
 

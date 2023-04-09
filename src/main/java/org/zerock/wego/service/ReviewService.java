@@ -66,7 +66,7 @@ public class ReviewService {
 		log.trace("isRemoved({}) invoked.", reviewId);
 		
 		try {
-			return this.reviewMapper.delete(reviewId) == 1;
+			return (this.reviewMapper.delete(reviewId) == 1);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch

@@ -19,14 +19,12 @@ var target = JSON.parser('${target}');
 	<!-- 댓글 전체 컨테이너  -->
 	<div class="cmtcontainer">
 	
-			
 		<!-- 새로운 댓글 작성 폼  -->
 		<div class="cmtwrite" id="cmtwrite">
 			<textarea id="contents" name="contents" placeholder="댓글을 작성해주세요." maxlength="1000" required></textarea>
 			<input type="button" value="등록" class="insert ncmt" disabled> 
 			<input type="button" value="삭제" class="cancle">
 		</div>
-		
 		
 			<c:forEach items="${comments}" var="c">
 				<c:if test="${c.status != 'Y' }">
@@ -37,7 +35,6 @@ var target = JSON.parser('${target}');
 				<input type="hidden" id="mentionId" value="${c.mentionId }"/>
 				</c:if>
 				<!--  댓글 내부 (유저닉네임, 작성일, 수정/삭제/신고버튼, 내용, 답글버튼, 수정상태 시 수정/취소버튼)  -->
-<%-- 				<img class="cmtuserPic" src="${c.userPic}"/> --%>
 				<c:if test="${c.status == 'N' }">
 				<img class="cmtuserPic" src="${c.userPic}"/>
 				<div class="cmtuser">${c.nickname}</div>
@@ -47,7 +44,7 @@ var target = JSON.parser('${target}');
 				</div>
 				<div class="btns">
 					<input type="hidden" id= "commentId" name="commentId" value="${c.commentId}">
-					<c:if test="${c.userId == sessionScope.__AUTH__.userId && c.reportCnt < 5 }"> <!--  이거 조건 바꿔야된다!!!! -->
+					<c:if test="${c.userId == sessionScope.__AUTH__.userId && c.reportCnt < 5 }"> 
 					<input type="button" class="modifycmt" name="modifycmt" value="수정" /> 
 					<input type="button" class="deletecmt" name="deletecmt" value="삭제" /> 
 					</c:if>
@@ -85,7 +82,7 @@ var target = JSON.parser('${target}');
 					<input type="button" value="등록" class="insert men" disabled> 
 					<input type="button" value="삭제" class="cancle">
 				</div>
-				<div class="mentionList" style="display: hide; grid-column: 2/-1; "> </div>
+				<div class="mentionList"> </div>
 			</c:if>
 		</c:if>
 		</c:forEach>

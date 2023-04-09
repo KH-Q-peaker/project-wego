@@ -51,8 +51,7 @@
 </head>
 <body>
 	<div class="total-wrap">
-		<%@ include file="../common/header.jsp"%>
-<%-- 		<jsp:include page="../common/header.jsp" /> --%>
+		<jsp:include page="../common/header.jsp" />
 			<section>
 				<div class="rheader">
 					<div class="mnt">🌱 ${party.sanName} 🌱</div>
@@ -121,7 +120,6 @@
 				<div class="to cmt">cmt</div>
 			</section>
 		</div>
-<%-- 			<%@ include file="../common/footer.jsp"%> --%>
 		<jsp:include page="../common/footer.jsp" />
 	</body>
 </html>

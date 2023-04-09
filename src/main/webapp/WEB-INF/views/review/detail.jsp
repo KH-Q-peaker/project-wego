@@ -23,9 +23,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
+<link rel="stylesheet" type="text/css" href="/resources/css/default.css">
 <link rel="stylesheet" type="text/css" href="/resources/css/header.css"/>
 <link rel="stylesheet" type="text/css" href="/resources/css/footer.css"/>
-<link rel="stylesheet" type="text/css" href="${path}/resources/css/default.css">
 <link rel="stylesheet" type="text/css" href="/resources/css/like.css"/>
 <link rel="stylesheet" type="text/css" href="/resources/css/comment.css"/>
 <link rel="stylesheet" type="text/css" href="${path}/resources/css/review-detail.css">
@@ -44,27 +44,23 @@
 <body>
 	<div class="total-wrap">		
 		<jsp:include page="../common/header.jsp" />
-		<section>
-			<!--  게시글 컨테이너  !-->
+			<section>
 				<div class="rheader">
 					<div class="mnt">🌱 ${review.sanName} 🌱</div>
-					<%-- 산이름 --%>
 					<div class="title">️${review.title}</div>
-					<%-- 글제목 --%>
 					<div class="dt">
-						<%-- 작성일시  --%>
 						<fmt:formatDate pattern="yy-MM-dd HH:mm" value="${review.createdDt}"></fmt:formatDate>
 					</div>
 				</div>
 				<div class="contents">
 					<img src="${userPic}" alt="" class="userpic" />
-					<div class="username">${review.nickname}</div>
+					<div class="username">${review.nickName}</div>
 					<div class="likeCnt">
 						<input class="like ${isLike ? 'fill' : '' }" type="button" value="" />︎<label> ${review.likeCnt }</label>
 					</div>
 					<div class="content">${review.contents}</div>
 					<div class="btns">
-						<c:if test="${review.userId == sessionScope.__AUTH__}"> 
+						<c:if test="${review.userId == sessionScope.__AUTH__.userId}"> 
 						<input type="button" class="modify" name="modify" value="수정" />
 						<input type="button" class="delete" name="delete" value="삭제" />
 						</c:if>
@@ -72,18 +68,14 @@
 					</div>
 				</div>
 
-				<div class="cnt">댓글 (${totalCnt})</div>
-			<!--   댓글 컨테이너   !-->
+				<div class="cnt">댓글 (${commentCount})</div>
 				<c:set var="comments" value="${comments}" />
-				<!--  댓글 목록  -->
-				<!--  새 댓글 작성 폼  -->
 				<jsp:include page="../comment/comment.jsp" />
 
-			<!-- 탑버튼이랑 댓글쓰기버튼  -->
-			<div class="to top">top</div>
-			<div class="to cmt">cmt</div>
-		</section>
-	</div>
+				<div class="to top">top</div>
+				<div class="to cmt">cmt</div>
+			</section>
+		</div>
 		<jsp:include page="../common/footer.jsp" />
-</body>
+	</body>
 </html>
