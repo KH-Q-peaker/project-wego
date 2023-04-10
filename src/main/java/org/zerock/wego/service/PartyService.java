@@ -1,15 +1,13 @@
 package org.zerock.wego.service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.zerock.wego.domain.PartyDTO;
 import org.zerock.wego.domain.PartyViewVO;
+import org.zerock.wego.exception.NotFoundPageException;
 import org.zerock.wego.exception.ServiceException;
-import org.zerock.wego.mapper.FileMapper;
-import org.zerock.wego.mapper.JoinMapper;
 import org.zerock.wego.mapper.PartyMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -52,18 +50,18 @@ public class PartyService {
 		} // try-catch
 	} // selectUserIdByPartyId
 	
+	
 	// 모집글 상세 조회 
-	public PartyViewVO getById(Integer partyId) throws ServiceException{
+	public PartyViewVO getById(Integer partyId) throws Exception{
 		log.trace("getById({}) invoked.", partyId);
 		
-		try {
 			PartyViewVO party = this.partyMapper.selectById(partyId);
-			Objects.requireNonNull(party);
+
+			if(party == null) {
+				 throw new NotFoundPageException("party not found : " + partyId);
+			}// if
 			
 			return party;
-		} catch (Exception e) {
-			throw new ServiceException(e);
-		} // try-catch
 	}// getById
 	
 	// 모집글 사진 조회
@@ -122,12 +120,15 @@ public class PartyService {
 		} // try-catch
 	} // modify
 	
+	
 	// 모집글 삭제 
 	public boolean isRemovedById(Integer partyId, Integer userId) throws ServiceException{
 		log.trace("isRemovedById({}) invoked.", partyId);
 
 		try {
-			return (this.partyMapper.deleteById(partyId) == 1); 
+			
+			return (this.partyMapper.deleteById(partyId) == 1);
+			
 		}catch(Exception e) {
 			throw new ServiceException(e);
 		}// try-catch 

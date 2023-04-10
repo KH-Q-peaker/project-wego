@@ -1,12 +1,12 @@
 package org.zerock.wego.service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.zerock.wego.domain.ReviewDTO;
 import org.zerock.wego.domain.ReviewViewVO;
+import org.zerock.wego.exception.NotFoundPageException;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.ReviewMapper;
 
@@ -46,19 +46,25 @@ public class ReviewService {
 	
 	
 	// 특정 후기글 조회 
-	public ReviewViewVO getById(Integer reviewId) throws ServiceException {
+	public ReviewViewVO getById(Integer reviewId) throws Exception {
 		log.trace("getById({}) invoked.", reviewId);	
 		
 		try {
 			ReviewViewVO review = this.reviewMapper.selectById(reviewId);
-			Objects.requireNonNull(review);
-
+			
+			if(review == null) {
+				throw new NotFoundPageException("review not found : " + reviewId); // 얘왜 기본생성자없엄 
+			}// if
 			
 			return review;
+			
+		} catch (NotFoundPageException e) {
+			throw new NotFoundPageException(e);
+			
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
-	} // get
+	} // getById
 	
 	
 	// 특정 후기글 삭제

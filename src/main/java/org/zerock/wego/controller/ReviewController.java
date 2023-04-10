@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -60,28 +59,25 @@ public class ReviewController {
 	
 	
 	@ModelAttribute("target")
-	PageInfo createPageInfo() {
+	PageInfo createPageInfo(Integer reviewId) {
 		log.trace("createPageInfo() invoked.");
 		
-		PageInfo target = new PageInfo();
-
-		target.setTargetGb("SAN_REVIEW");
+		PageInfo target = PageInfo.builder()
+				.targetGb("SAN_REVIEW")
+				.targetCd(reviewId)
+				.build();
 		
 		return target;
 	}// createdBoardDTO
 	
 	
-	
 	@GetMapping("/{reviewId}")
 	public ModelAndView showDetailById(@PathVariable("reviewId")Integer reviewId,
 									@SessionAttribute("__AUTH__")UserVO user,
-									PageInfo target) throws ControllerException{
+									PageInfo target) throws Exception{
 		log.trace("showDetail({}, {}) invoked.", reviewId, target);
 		
-		try {
-			
-			target = this.createPageInfo();
-			target.setTargetCd(reviewId);
+			target = this.createPageInfo(reviewId);
 			
 			
 			ModelAndView mav = new ModelAndView();
@@ -104,7 +100,6 @@ public class ReviewController {
 			
 			LinkedBlockingDeque<CommentViewVO> comments = commentService.getCommentOffsetByTarget(target, 0);
 
-			Objects.requireNonNull(review);
 
 			/*후기글 사진 넣는거 필요함 */
 			mav.addObject("review", review);
@@ -128,9 +123,6 @@ public class ReviewController {
 			
 			return mav;
 
-		} catch (Exception e) {
-			throw new ControllerException(e);
-		} // try-catch
 	}// viewReviewDetail
 	
 	
@@ -155,12 +147,13 @@ public class ReviewController {
 		}// try-catch
 	}// removeReview
 	
+	
 	@GetMapping(	
 			path = "/modify/{reviewId}"
 			)
 	public String modify(@SessionAttribute("__AUTH__")UserVO auth,
 			@PathVariable("reviewId") Integer reviewId, Model model)
-					throws ControllerException  {
+					throws Exception  {
 		log.trace("modify({}, {}, {}) invoked.", auth, reviewId, model);
 		
 		ReviewViewVO reviewVO = this.reviewService.getById(reviewId);

@@ -32,6 +32,8 @@ import org.zerock.wego.domain.PartyDTO;
 import org.zerock.wego.domain.PartyViewVO;
 import org.zerock.wego.domain.UserVO;
 import org.zerock.wego.exception.ControllerException;
+import org.zerock.wego.exception.NotFoundPageException;
+import org.zerock.wego.exception.NotFoundUserException;
 import org.zerock.wego.service.CommentService;
 import org.zerock.wego.service.FavoriteService;
 import org.zerock.wego.service.FileService;
@@ -60,15 +62,13 @@ public class PartyController {
   
 	
 	@ModelAttribute("target")
-	PageInfo createPageInfo() {
+	PageInfo createPageInfo(Integer partyId) {
 		log.trace("createPageInfo() invoked.");
 		
-		PageInfo target = new PageInfo();
-
-		target.setTargetGb("SAN_PARTY");
-		target.setCurrPage(1);
-		target.setAmount(5);
-		
+		PageInfo target = PageInfo.builder()
+							.targetGb("SAN_PARTY")
+							.targetCd(partyId)
+							.build();
 		return target;
 	}// createdBoardDTO
 	
@@ -78,12 +78,10 @@ public class PartyController {
 	@GetMapping("/{partyId}") 
 	public ModelAndView showDetailById(@PathVariable("partyId")Integer partyId, 
 										@SessionAttribute("__AUTH__")UserVO user,
-										PageInfo target) throws ControllerException{
+										PageInfo target) throws Exception{
 		log.trace("showDetailById({}, {}) invoked.", partyId, user);
 		
-		try {
-			target = this.createPageInfo();
-			target.setTargetCd(partyId);
+			target = this.createPageInfo(partyId);
 			
 			
 			ModelAndView mav = new ModelAndView();
@@ -91,14 +89,22 @@ public class PartyController {
 
 			PartyViewVO party = this.partyService.getById(partyId);
 			
+			if(party == null) {
+				throw new NotFoundPageException("party not found : " + partyId);
+			}// if  
+			
+			
 			Integer userId = user.getUserId();
 			
-			JoinDTO join = new JoinDTO();
-			join.setSanPartyId(partyId);
-			join.setUserId(userId);
+			
+			JoinDTO join = JoinDTO.builder()
+							.sanPartyId(partyId)
+							.userId(userId)
+							.build();
 			
 			boolean isJoin = this.joinService.isUserJoined(join);
 			
+		
 //			boolean isLike = this.likeService.isUserLiked(target, userId);
 			FavoriteDTO favorite = new FavoriteDTO();
 			favorite.setTargetGb("SAN_PARTY");
@@ -133,10 +139,7 @@ public class PartyController {
 
 			return mav;
 
-		} catch (Exception e) {
-			throw new ControllerException(e);
-		} // try-catch
-	}// viewReviewDetail
+	}// showDetailById
 	
 	
 	@GetMapping(
@@ -302,11 +305,14 @@ public class PartyController {
 			try {
 				Integer userId = user.getUserId();
 
-				JoinDTO join = new JoinDTO();
-				join.setSanPartyId(partyId);
-				join.setUserId(userId);
+				JoinDTO join = JoinDTO.builder()
+								.sanPartyId(partyId)
+								.userId(userId)
+								.build();
 				
-				if (this.joinService.isJoinCreatedOrCancled(join)) {
+				boolean isJoined = this.joinService.isJoinCreatedOrCancled(join);
+				
+				if (isJoined) {
 
 					return new ResponseEntity<>("OK", HttpStatus.OK);
 				} // if

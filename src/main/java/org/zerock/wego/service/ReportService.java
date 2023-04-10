@@ -34,9 +34,10 @@ public class ReportService {
 	public Integer getTotalCount(String targetGb, Integer targetCd) throws ServiceException{
 		
 		try {
-			ReportDTO dto = new ReportDTO();
-			dto.setTargetGb(targetGb);
-			dto.setTargetCd(targetCd);
+			ReportDTO dto = ReportDTO.builder()
+							.targetGb(targetGb)
+							.targetCd(targetCd)
+							.build();
 			
 			Integer totalCount = this.reportMapper.selectCountByTarget(dto);
 			

@@ -7,11 +7,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
 </head>
 <body>
-	<h1>error.jsp</h1>
+	<h1>없다   </h1>
 	<hr>
-	<h3><%= exception.getMessage() %></h3>
+	<h3> 유저가 </h3>
 </body>
 </html>
