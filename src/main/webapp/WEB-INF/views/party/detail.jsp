@@ -99,6 +99,7 @@
 					</div>
 					<div class="btns">
 						<c:if test="${party.userId == sessionScope.__AUTH__.userId}"> 
+<%-- 						<a href="/party/modify/${party.sanPartyId }" class="modify" name="modify" value="수정" />  --%>
 						<input type="button" class="modify" name="modify" value="수정" /> 
 						<input type="button" class="delete" name="delete" value="삭제" /> 
 						</c:if>

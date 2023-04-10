@@ -33,11 +33,18 @@ public class ReportController {
 
 		Integer userId = user.getUserId();
 		
-		ReportDTO report = new ReportDTO();
-		report.setUserId(userId);
-		report.setTargetGb(target.getTargetGb());
-		report.setTargetCd(target.getTargetCd());
-		report.setReportGb(reportGb);
+//		ReportDTO report = new ReportDTO();
+//		report.setUserId(userId);
+//		report.setTargetGb(target.getTargetGb());
+//		report.setTargetCd(target.getTargetCd());
+//		report.setReportGb(reportGb);
+		
+		ReportDTO report = ReportDTO.builder()
+							.userId(userId)
+							.targetGb(target.getTargetGb())
+							.targetCd(target.getTargetCd())
+							.reportGb(reportGb)
+							.build();
 		
 		boolean isCreated = (this.reportService.create(report));
 		

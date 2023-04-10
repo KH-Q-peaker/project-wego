@@ -48,23 +48,10 @@ function loadMoreComments() {
 		});
 }
 
-/* 된거아님 */
 $(".modify").off('click').on('click', function(){
 	
 	let currentUrl = window.location.href;
-	console.log(currentUrl);
-	newURl = currentUrl.replace('/detail/', '/modify/');
-	console.log(newURl);
+	newURL = currentUrl.replace('/party/', '/party/modify/');
 	
-	$.ajax({
-		url: new URL(newURl),
-		type: 'GET',
-		success: function(data){
-			
-			$('section').html(data);
-		},
-		error: ()=>{
-			alert('dfdf');
-		}
-	});
+	window.location.replace(new URL(newURL));
 });

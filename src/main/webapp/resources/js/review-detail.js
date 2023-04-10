@@ -41,5 +41,12 @@ function loadMoreComments() {
 	});
 }
 
+$(".modify").off('click').on('click', function(){
+	
+	let currentUrl = window.location.href;
+	newURL = currentUrl.replace('/review/', '/review/modify/');
+	
+	window.location.replace(new URL(newURL));
+});
 
 
