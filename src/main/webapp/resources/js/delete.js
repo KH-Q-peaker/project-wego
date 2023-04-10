@@ -37,7 +37,8 @@ $(() => { /* 삭제 관련 */
 		let targetComment = $(this).parent().parent();
 		let firstMention = targetComment.nextAll('.mention').first();
 		let commentId = $(this).siblings("#commentId").val();
-
+console.log(targetComment.find('#mentionCnt').html()); 
+console.log(targetComment.next().next('.mentionList').html());
 		/* 댓글 삭제 post 전송 */
 		$(".del").off('click').on('click', function(){
 			
@@ -50,8 +51,9 @@ $(() => { /* 삭제 관련 */
 		 			setTimeout(hideModal, 500);
 		 			deleteModalcls();
 		
-		 			if(firstMention.children('#mentionId').val() == commentId){
-						targetComment.children().not('.comment').remove();
+		 			if(targetComment.find('#mentionCnt').html() > 0 ||
+		 				targetComment.next().next('.mentionList').html() != null){
+						targetComment.children().not('.comment, .mentionbtn').remove();
 						targetComment.children('.comment').html('삭제된 댓글입니다.');
 //					}else if(targetComment.next('.mention').children('#mentionId').val() != commentId &&
 //							 targetComment.prev('.mention').children('#mentionId').val() != commentId){

@@ -16,6 +16,7 @@
 				<!-- 멘션일 경우와 아닐경우 분리 -->
 				<c:if test="${c.status != 'Y' }">
 				<div class="comments ${c.mentionId == null ? '' : 'mention'}">
+				<input type="hidden" id="commentId" value="${c.commentId }"/>
 				<c:if test="${c.mentionId != null }">
 				<input type="hidden" id="mentionId" value="${c.mentionId }"/>
 				</c:if>
@@ -46,6 +47,9 @@
 					<div class="comment">${c.contents}</div>
 					<c:if test="${c.mentionId == null && c.status == 'N'}">
 					<input type="button" class="mentionbtn" name="mentionbtn" value="↪ ︎답글" />
+						<c:if test="${c.mentionCnt != 0 }">
+						<span class="mentionCnt">답글 ${c.mentionCnt }개</span>
+						</c:if>
 					</c:if>
 				</c:otherwise>
 				</c:choose>
@@ -65,6 +69,7 @@
 					<input type="button" value="등록" class="insert men" disabled> 
 					<input type="button" value="취소" class="cancle">
 				</div>
+				<div class="mentionList" style="grid-column: 2/-1; "> </div>
 			</c:if>
 		</c:if>
 		</c:forEach>

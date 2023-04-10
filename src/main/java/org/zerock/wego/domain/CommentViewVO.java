@@ -20,7 +20,7 @@ public class CommentViewVO {
 	private String contents;		// 댓글 내용 
 	private String status;			// 삭제 상태값 
 	private Integer reportCnt;		// 신고수 
-	
+	private Integer mentionCnt;		// 답글수
 
 	
 }// end class

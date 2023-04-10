@@ -5,7 +5,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -27,6 +26,7 @@ import org.zerock.wego.domain.CommentViewVO;
 import org.zerock.wego.domain.FavoriteDTO;
 import org.zerock.wego.domain.FileDTO;
 import org.zerock.wego.domain.FileVO;
+import org.zerock.wego.domain.JoinDTO;
 import org.zerock.wego.domain.PageInfo;
 import org.zerock.wego.domain.PartyDTO;
 import org.zerock.wego.domain.PartyViewVO;
@@ -39,7 +39,7 @@ import org.zerock.wego.service.JoinService;
 import org.zerock.wego.service.PartyService;
 import org.zerock.wego.service.SanInfoService;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -56,7 +56,7 @@ public class PartyController {
 	private final JoinService joinService;
 	private final SanInfoService mountainService;
 	private final FileService fileService;
-	private final FavoriteService fatoriteService;
+	private final FavoriteService favoriteService;
   
 	
 	@ModelAttribute("target")
@@ -90,30 +90,33 @@ public class PartyController {
 			
 
 			PartyViewVO party = this.partyService.getById(partyId);
-			Objects.requireNonNull(party);
 			
 			Integer userId = user.getUserId();
-			Objects.requireNonNull(userId);
 			
-			boolean isJoin = this.joinService.isUserJoined(partyId, userId);
+			JoinDTO join = new JoinDTO();
+			join.setSanPartyId(partyId);
+			join.setUserId(userId);
+			
+			boolean isJoin = this.joinService.isUserJoined(join);
+			
 //			boolean isLike = this.likeService.isUserLiked(target, userId);
-			
 			FavoriteDTO favorite = new FavoriteDTO();
 			favorite.setTargetGb("SAN_PARTY");
 			favorite.setTargetCd(partyId);
 			favorite.setUserId(userId);
 			
-			boolean isFavorite = this.fatoriteService.isFavoriteInfo(favorite);
-			int totalCnt = this.commentService.getCommentsCount(target);
+			boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
+			
+			int commentCount = this.commentService.getCommentsCount(target);
 			
 
-			LinkedBlockingDeque<CommentViewVO> comments = commentService.getCommentsOffsetByTarget(target);
+			LinkedBlockingDeque<CommentViewVO> comments = commentService.getCommentOffsetByTarget(target, 0);
 
 			
 			mav.addObject("party", party);
 			mav.addObject("isJoin", isJoin);
 			mav.addObject("isFavorite", isFavorite);
-			mav.addObject("totalCnt", totalCnt);
+			mav.addObject("commentCount", commentCount);
 //			mav.addObject("userPic", userPic);
 //			mav.addObject("partyImg", partyImg);
 			
@@ -122,9 +125,8 @@ public class PartyController {
 				mav.addObject("comments", comments);
 			}// if
 			
-			// 수정 예정 ***************************
-			Gson gson = new Gson();
-			String targetJson = gson.toJson(target);
+			ObjectMapper objectMapper = new ObjectMapper();
+			String targetJson = objectMapper.writeValueAsString(target);
 			mav.addObject("target", targetJson);
 
 			mav.setViewName("/party/detail");
@@ -291,7 +293,7 @@ public class PartyController {
 		} // try-catch
 	} // register
 	
-	// 참여 신청
+	// 참여 신청/취소 토글 
 		@PostMapping("/join/{partyId}")
 		ResponseEntity<String> offerJoin(@PathVariable Integer partyId, 
 										 @SessionAttribute("__AUTH__") UserVO user) throws ControllerException {
@@ -299,9 +301,12 @@ public class PartyController {
 
 			try {
 				Integer userId = user.getUserId();
-				Objects.nonNull(userId);
 
-				if (this.joinService.isJoinCreated(partyId, userId)) {
+				JoinDTO join = new JoinDTO();
+				join.setSanPartyId(partyId);
+				join.setUserId(userId);
+				
+				if (this.joinService.isJoinCreatedOrCancled(join)) {
 
 					return new ResponseEntity<>("OK", HttpStatus.OK);
 				} // if
@@ -313,26 +318,30 @@ public class PartyController {
 			} // try-catch
 		}// offerJoin
 
-		// 참여 취소
+		// 참여 삭제
 //		@PostMapping("/cancle")
-		@DeleteMapping("/join/{partyId}")
-		ResponseEntity<String> cancleJoin(@PathVariable Integer partyId, 
-										 @SessionAttribute("__AUTH__") UserVO user) throws ControllerException {
-			log.trace("cancleJoin({}, {}) invoked.", partyId, user);
-
-			try {
-				Integer userId = user.getUserId();
-				Objects.nonNull(userId);
-
-				if (this.joinService.isJoinCancled(partyId, userId)) {
-
-					return new ResponseEntity<>("OK", HttpStatus.OK);
-				} // if
-
-				return new ResponseEntity<>("XX", HttpStatus.BAD_REQUEST);
-
-			} catch (Exception e) {
-				throw new ControllerException(e);
-			} // try-catch
-		}// cancleJoin
+//		@DeleteMapping("/join/{partyId}")
+//		ResponseEntity<String> cancleJoin(@PathVariable Integer partyId, 
+//										 @SessionAttribute("__AUTH__") UserVO user) throws ControllerException {
+//			log.trace("cancleJoin({}, {}) invoked.", partyId, user);
+//
+//			try {
+//				Integer userId = user.getUserId();
+//				Objects.nonNull(userId);
+//				
+//				JoinDTO join = new JoinDTO();
+//				join.setSanPartyId(partyId);
+//				join.setUserId(userId);
+//				
+//				if (this.joinService.isJoinCancled(join)) {
+//
+//					return new ResponseEntity<>("OK", HttpStatus.OK);
+//				} // if
+//
+//				return new ResponseEntity<>("XX", HttpStatus.BAD_REQUEST);
+//
+//			} catch (Exception e) {
+//				throw new ControllerException(e);
+//			} // try-catch
+//		}// cancleJoin
 } // end class

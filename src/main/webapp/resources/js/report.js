@@ -10,7 +10,7 @@ var reportModal = function(){
 	const backdrop =$('<div></div>').addClass('modalbackground');
 	$(".total-wrap").append(backdrop);
 		
-		$(".reportModal").show('normal').css('display', 'flex');/* 신고 모달창 on */
+		$(".reportModal").show('fast').css('display', 'flex');/* 신고 모달창 on */
 		$('input[name=check]').prop('checked', false); /* 체크 초기화 */
 		
 		

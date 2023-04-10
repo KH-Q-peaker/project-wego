@@ -24,7 +24,7 @@ var target = JSON.parser('${target}');
 		<div class="cmtwrite" id="cmtwrite">
 			<textarea id="contents" name="contents" placeholder="댓글을 작성해주세요." maxlength="1000" required></textarea>
 			<input type="button" value="등록" class="insert ncmt" disabled> 
-			<input type="button" value="지우기??" class="cancle">
+			<input type="button" value="삭제" class="cancle">
 		</div>
 		
 		
@@ -32,14 +32,15 @@ var target = JSON.parser('${target}');
 				<c:if test="${c.status != 'Y' }">
 				<div class="comments ${c.mentionId == null ? '' : 'mention'}">
 				
+				<input type="hidden" id="commentId" value="${c.commentId }"/>
 				<c:if test="${c.mentionId != null }">
 				<input type="hidden" id="mentionId" value="${c.mentionId }"/>
 				</c:if>
 				<!--  댓글 내부 (유저닉네임, 작성일, 수정/삭제/신고버튼, 내용, 답글버튼, 수정상태 시 수정/취소버튼)  -->
-				<c:if test="${c.status == 'N' }">
 <%-- 				<img class="cmtuserPic" src="${c.userPic}"/> --%>
+				<c:if test="${c.status == 'N' }">
 				<img class="cmtuserPic" src="${c.userPic}"/>
-				<div class="cmtuser">${c.status != 'N' ? '알수없음' : c.nickname }</div>
+				<div class="cmtuser">${c.nickname}</div>
 				<div class="cmtdate">
 						<fmt:formatDate pattern="MM-dd HH:mm" value="${c.modifiedDt == null? c.createdDt : c.modifiedDt}"></fmt:formatDate>
 						${c.modifiedDt != null ? '수정됨' : ''}
@@ -59,8 +60,12 @@ var target = JSON.parser('${target}');
 				</c:when>
 				<c:otherwise>
 					<div class="comment">${c.contents}</div>
-					<c:if test="${c.mentionId == null && c.status == 'N'}">
-					<input type="button" class="mentionbtn" name="mentionbtn" value="↪ ︎답글" />
+<%-- 					<c:if test="${c.mentionId == null && c.status == 'N'}"> --%>
+					<c:if test="${c.mentionId == null}">
+					<input type="button" class="mentionbtn" name="mentionbtn" value="↪답글" />
+						<c:if test="${c.mentionCnt != 0 }">
+						<span class="mentionCnt">답글 <span id="mentionCnt">${c.mentionCnt }</span>개</span>
+						</c:if>
 					</c:if>
 				</c:otherwise>
 				</c:choose>
@@ -78,8 +83,9 @@ var target = JSON.parser('${target}');
 					<input type="hidden" id= "mentionId" name="mentionId" value="${c.commentId}">
 					<textarea  id="mcontents" class="mcontents" name="contents" placeholder="답글을 작성해주세요." maxlength="1000" required></textarea>
 					<input type="button" value="등록" class="insert men" disabled> 
-					<input type="button" value="취소" class="cancle">
+					<input type="button" value="삭제" class="cancle">
 				</div>
+				<div class="mentionList" style="display: hide; grid-column: 2/-1; "> </div>
 			</c:if>
 		</c:if>
 		</c:forEach>

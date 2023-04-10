@@ -40,26 +40,70 @@ public class CommentService {
 	}// getCommentCnt
 
 	
+//	// 댓글 offset 로딩
+//	public LinkedBlockingDeque<CommentViewVO> getCommentsOffsetByTarget(PageInfo target 
+//											) throws ServiceException{
+//		log.trace("getCommentsOffsetByTarget({}) invoked.", target);
+//		
+//		try {
+//			LinkedBlockingDeque<CommentViewVO> comments 
+//					= this.commentMapper.selectCommentsOffsetByTarget(target);
+//			
+//			if(comments.isEmpty()) {
+//				
+//				return null;
+//			}else {
+//				
+//				return comments;
+//			}// if-else
+//
+//		}catch(Exception e) {
+//			throw new ServiceException(e);
+//		}// try-catch
+//	}// getCommentsOffsetByTarget
+	
 	// 댓글 offset 로딩
-	public LinkedBlockingDeque<CommentViewVO> getCommentsOffsetByTarget(PageInfo target) throws ServiceException{
-		log.trace("getCommentsOffsetByTarget({}) invoked.", target);
-		
-		try {
-			LinkedBlockingDeque<CommentViewVO> comments 
-					= this.commentMapper.selectCommentsOffsetByTarget(target);
+		public LinkedBlockingDeque<CommentViewVO> getCommentOffsetByTarget(PageInfo target, Integer lastCommentId) throws ServiceException{
+			log.trace("getCommentsOffsetByTarget({}) invoked.", target);
 			
-			if(comments.isEmpty()) {
+			try {
+				LinkedBlockingDeque<CommentViewVO> comments 
+						= this.commentMapper.selectOnlyCommentOffsetByTarget(target, lastCommentId);
 				
-				return null;
-			}else {
-				
-				return comments;
-			}// if-else
+				if(comments.isEmpty()) {
+					
+					return null;
+				}else {
+					
+					return comments;
+				}// if-else
 
-		}catch(Exception e) {
-			throw new ServiceException(e);
-		}// try-catch
-	}// getCommentsOffsetByTarget
+			}catch(Exception e) {
+				throw new ServiceException(e);
+			}// try-catch
+		}// getCommentsOffsetByTarget
+		
+		
+		
+		// 댓글의 멘션 전체 조회
+		public LinkedBlockingDeque<CommentViewVO> getMentionsByCommentId(Integer commentId) throws ServiceException {
+
+			try {
+				LinkedBlockingDeque<CommentViewVO> mentions 
+							= this.commentMapper.selectOnlyMentionsByCommentId(commentId);
+
+				if (mentions.isEmpty()) {
+
+					return null;
+				} else {
+
+					return mentions;
+				} // if-else
+
+			} catch (Exception e) {
+				throw new ServiceException(e);
+			} // try-catch
+		}// getCommentsOffsetByTarget
 
 	
 	// 댓글 코드로 조회 
@@ -207,7 +251,7 @@ public class CommentService {
 
 	// 댓글 영구 삭제
 	@Async
-	@Scheduled(fixedRate = 10000)
+	@Scheduled(fixedRate = 100000)
 	public boolean isCleared() throws ServiceException{
 		
 		try {
