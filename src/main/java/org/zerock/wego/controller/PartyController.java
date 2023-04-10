@@ -5,7 +5,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -40,7 +39,7 @@ import org.zerock.wego.service.JoinService;
 import org.zerock.wego.service.PartyService;
 import org.zerock.wego.service.SanInfoService;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -57,7 +56,7 @@ public class PartyController {
 	private final JoinService joinService;
 	private final SanInfoService mountainService;
 	private final FileService fileService;
-	private final FavoriteService fatoriteService;
+	private final FavoriteService favoriteService;
   
 	
 	@ModelAttribute("target")
@@ -76,7 +75,7 @@ public class PartyController {
 	
 	
 	// 모집글 상세 조회 
-	@GetMapping("detail/{partyId}") 
+	@GetMapping("/{partyId}") 
 	public ModelAndView showDetailById(@PathVariable("partyId")Integer partyId, 
 										@SessionAttribute("__AUTH__")UserVO user,
 										PageInfo target) throws ControllerException{
@@ -91,10 +90,8 @@ public class PartyController {
 			
 
 			PartyViewVO party = this.partyService.getById(partyId);
-			Objects.requireNonNull(party);
 			
 			Integer userId = user.getUserId();
-			Objects.requireNonNull(userId);
 			
 			JoinDTO join = new JoinDTO();
 			join.setSanPartyId(partyId);
@@ -108,18 +105,18 @@ public class PartyController {
 			favorite.setTargetCd(partyId);
 			favorite.setUserId(userId);
 			
-			boolean isFavorite = this.fatoriteService.isFavoriteInfo(favorite);
+			boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
 			
-			int totalCnt = this.commentService.getCommentsCount(target);
+			int commentCount = this.commentService.getCommentsCount(target);
 			
 
-			LinkedBlockingDeque<CommentViewVO> comments = commentService.getCommentsOffsetByTarget(target);
+			LinkedBlockingDeque<CommentViewVO> comments = commentService.getCommentOffsetByTarget(target, 0);
 
 			
 			mav.addObject("party", party);
 			mav.addObject("isJoin", isJoin);
 			mav.addObject("isFavorite", isFavorite);
-			mav.addObject("totalCnt", totalCnt);
+			mav.addObject("commentCount", commentCount);
 //			mav.addObject("userPic", userPic);
 //			mav.addObject("partyImg", partyImg);
 			
@@ -128,9 +125,8 @@ public class PartyController {
 				mav.addObject("comments", comments);
 			}// if
 			
-			// 수정 예정 ***************************
-			Gson gson = new Gson();
-			String targetJson = gson.toJson(target);
+			ObjectMapper objectMapper = new ObjectMapper();
+			String targetJson = objectMapper.writeValueAsString(target);
 			mav.addObject("target", targetJson);
 
 			mav.setViewName("/party/detail");
@@ -305,7 +301,6 @@ public class PartyController {
 
 			try {
 				Integer userId = user.getUserId();
-				Objects.nonNull(userId);
 
 				JoinDTO join = new JoinDTO();
 				join.setSanPartyId(partyId);

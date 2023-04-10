@@ -117,6 +117,7 @@
 /* 답글 버튼 */
 .mentionbtn {
 	grid-column-start: 1;
+	grid-row: 3;
 	width: 40px;
 	height: 20px;
 	font-size: 10px;
@@ -125,23 +126,21 @@
 	color: rgba(78, 197, 61, 0.9);
 	background-color: #ffffff00;
 }
+.mentionCnt{
+	grid-row: 3;
+    grid-column: 2;
+    justify-self: end;
+    width: auto;
+    font-size: 11px;
+    color: #727272;
+    align-self: baseline;
+    margin-top: 5px;
+}
 
 /* 멘션 컨테이너 */
 .mention {
 	grid-column: 2/-1;
 }
-
-.mentionwrite {
-	display: grid;
-	grid-column: 2/-1;
-	align-self: end;
-	margin: 10px 0;
-}
-
-#mentionwrite>.cmtwrite {
-	border-radius: 10px;
-}
-
 /* 댓글 작성 폼 */
 .cmtwrite {
 	display: grid;
@@ -185,6 +184,16 @@
 	width: 30px;
 	height: 20px;
 	font-size: 11px;
+}
+.mentionwrite {
+	display: none;
+	grid-column: 2/-1;
+	align-self: end;
+	margin: 10px 0;
+}
+
+#mentionwrite>.cmtwrite {
+	border-radius: 10px;
 }
 
 .insert {

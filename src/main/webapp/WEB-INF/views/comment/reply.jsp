@@ -13,6 +13,7 @@
 
 	
 				<div class="comments mention">
+				<input type="hidden" id="commentId" value="${comment.commentId }"/>
 				<input type="hidden" id="mentionId" value="${comment.mentionId }"/>
 				<img class="cmtuserPic" src="${comment.userPic }"/>
 				<div class="cmtuser">${comment.nickname }</div>

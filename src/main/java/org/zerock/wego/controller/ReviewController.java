@@ -10,8 +10,6 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
 
-import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,23 +23,23 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.wego.domain.CommentViewVO;
+import org.zerock.wego.domain.FavoriteDTO;
 import org.zerock.wego.domain.FileDTO;
 import org.zerock.wego.domain.FileVO;
 import org.zerock.wego.domain.PageInfo;
 import org.zerock.wego.domain.ReviewDTO;
-import org.zerock.wego.domain.ReviewVO;
 import org.zerock.wego.domain.ReviewViewVO;
 import org.zerock.wego.domain.UserVO;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.service.CommentService;
+import org.zerock.wego.service.FavoriteService;
 import org.zerock.wego.service.FileService;
 import org.zerock.wego.service.ReviewService;
 import org.zerock.wego.service.SanInfoService;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -55,6 +53,7 @@ public class ReviewController {
 	private final ReviewService reviewService;
 	private final CommentService commentService;
 	private final FileService fileService;
+	private final FavoriteService favoriteService;
 //	private final UserService userService;
 //	private final LikeService likeService;
 	
@@ -75,7 +74,7 @@ public class ReviewController {
 	
 	@GetMapping("/{reviewId}")
 	public ModelAndView showDetailById(@PathVariable("reviewId")Integer reviewId,
-									@SessionAttribute("__AUTH__")Integer userId,
+									@SessionAttribute("__AUTH__")UserVO user,
 									PageInfo target) throws ControllerException{
 		log.trace("showDetail({}, {}) invoked.", reviewId, target);
 		
@@ -90,25 +89,28 @@ public class ReviewController {
 			
 			ReviewViewVO review = this.reviewService.getById(reviewId);
 			
+			Integer userId = user.getUserId();
+			
+			FavoriteDTO favorite = new FavoriteDTO();
+			favorite.setTargetGb("SAN_REVIEW");
+			favorite.setTargetCd(reviewId);
+			favorite.setUserId(userId);
+			
+			boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
 //			boolean isLike = this.likeService.isUserLike(target, userId);
-			int totalCnt = this.commentService.getCommentsCount(target);
 
-//			String userPic = this.userService.getUserPic(review.getUserPic());
-			String userPic = review.getUserPic();
+			int commentCount = this.commentService.getCommentsCount(target);
+
 			
-			if(userPic == null) {
-				userPic = "/resources/img/default-profile.png";
-			}// if
-			
-			LinkedBlockingDeque<CommentViewVO> comments = commentService.getCommentsOffsetByTarget(target);
+			LinkedBlockingDeque<CommentViewVO> comments = commentService.getCommentOffsetByTarget(target, 0);
 
 			Objects.requireNonNull(review);
 
 			/*후기글 사진 넣는거 필요함 */
 			mav.addObject("review", review);
-//			mav.addObject("isLike", isLike);
-			mav.addObject("totalCnt", totalCnt);
-			mav.addObject("userPic", userPic);
+			mav.addObject("isFavorite", isFavorite);
+			mav.addObject("commentCount", commentCount);
+//			mav.addObject("userPic", userPic);
 			
 			if(comments != null) {
 				
@@ -116,9 +118,10 @@ public class ReviewController {
 			}// if
 			
 			/* 수정 예정 */
-			Gson gson = new Gson();
-			String targetJson = gson.toJson(target);
+			ObjectMapper objectMapper = new ObjectMapper();
+			String targetJson = objectMapper.writeValueAsString(target);
 			mav.addObject("target", targetJson);
+
 
 			mav.setViewName("/review/review-detail");
 

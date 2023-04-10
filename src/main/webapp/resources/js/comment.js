@@ -13,6 +13,19 @@ function toggleBtn(inputElem, buttonElem) {
     });
   }
 }
+function toggleMentionBtn(buttonElem) {
+	
+	if (buttonElem.parent().next().css('display') == 'none') {
+		$('.mentionwrite, .mentionList, .mention').hide('fast');
+		buttonElem.val('Ⅹ닫기');
+		buttonElem.parent().next('.mentionwrite').show('fast').css('display', 'grid');
+		buttonElem.parent().next().next('.mentionList').show('fast');
+	} else {
+		buttonElem.val('↪︎답글');
+		$(".mcontents").val('');
+		$('.mentionwrite, .mentionList, .mention').hide('fast');
+	}
+}
 
 $(() => { /* 새 댓글 post 전송  */
 	
@@ -35,8 +48,6 @@ $(() => { /* 새 댓글 post 전송  */
 				'background' : 'buttonface' 
 		});
 	});
-	
-	
 	$(".ncmt").off('click').on('click', function() {
 
 		$.ajax({
@@ -49,12 +60,13 @@ $(() => { /* 새 댓글 post 전송  */
 				contents: $(this).prev().val()
 			},
 			success: function(data) {
-				page=2;
+				page=1;
+				$(window).off('scroll').on('scroll', scrollCommentLoading);
 				$("#contents").val('');
 				$(".cmtcontainer").replaceWith(data);
 		},
 		error : function() {
-			setMessage("⚠️ 댓글 등록 실패."); // 이거 고쳐ㅕㅕㅕㅕㅕㅕㅕㅕㅕ
+			setMessage("⚠️ 댓글 등록 실패.");
 			showModal();
 			setTimeout(hideModal, 500);
 		}
@@ -64,70 +76,72 @@ $(() => { /* 새 댓글 post 전송  */
 
 
 $(() => { /* 답글 관련 */
-	$(".mentionwrite").hide();
 	
   /* 답글 버튼 클릭시 멘션 작성 창 on */
   	$(".mentionbtn").off('click').on('click', function () {
-			
-		/* 다른 멘션창 모두 닫은 후 대상만 on  */
-		$(".mentionwrite").hide('fast');
-		$(".mcontents").val('');
-		$(".mentionbtn").val("↪ ︎답글");
+		
 		$(".men").prop('disabled', true).css({
 				'color' : 'gray',
 				'background' : 'buttonface' 
 		});
+		let mentionId = $(this).siblings('#commentId').val();
+		let mentionList = $(this).parent().next().next('.mentionList');
+
+			$.ajax({
+				url: "/comment/mention",
+				type: "GET",
+				data:
+				{
+					commentId: mentionId
+				},
+				success: function(data) {
+					mentionList.html(data);
+				},
+				error: function() {
+					console.log('멘션로딩 실패');
+				}
+			});
+			
+			toggleMentionBtn($(this));
 		
-    	if ($(this).parent().next().css("display") == "none") {
-	    	
-			$(this).val("☓ 닫기");
-	    	$(this).parent().next().show('normal');
-    	}
+			/* 등록버튼 클릭 시 멘션 등록 post전송   */
+			$(".men").off('click').on('click', function() {
+
+				$.ajax({
+					url: "/comment/reply",
+					type: "POST",
+					data:
+					{
+						targetGb: target.targetGb,
+						targetCd: target.targetCd,
+						mentionId: mentionId,
+						contents: $(this).prev().val()
+					},
+					success: function(data) {
+						setMessage("️📝 답글이 등록되었습니다.");
+						showModal();
+						setTimeout(hideModal, 500);
+						mentionList.append(data);
+						$('.mcontents').val('');
+					},
+					error: function() {
+						setMessage("⚠️ 답글 등록 실패."); // 이거 고쳐ㅕㅕㅕㅕㅕㅕㅕㅕㅕ
+						showModal();
+						setTimeout(hideModal, 700);
+					}
+				});
+			});
   	});
   	/* 취소 클릭 시 멘션 작성 창 off  */
   	$(".mentionwrite").children(".cancle").off('click').on('click', function(){
 		
 		$(".mcontents").val('').height('80px');
-		$(".mentionwrite").hide('fast');
-		$(".mentionbtn").attr('value', "↪ ︎답글");
 	});
 	
 	/* 입력내용에 따라 등록버튼 활성/비활성  */
 	$(".mcontents").off('input').on('input', function(){
 		
 		toggleBtn($(this), $(this).next());
-	});
-	
-	/* 등록버튼 클릭 시 멘션 등록 post전송   */
-	$(".men").off('click').on('click', function(){
-		
-		let targetMentionId =$(this).siblings("#mentionId").val();
-		let mentionPosition = $('#mentionId[value="' + targetMentionId + '"]').parent().last();
-		
-		$.ajax({
-			url : "/comment/reply",
-			type : "POST",
-			data : 
-			{
-				targetGb :target.targetGb,
-				targetCd : target.targetCd,
-				mentionId : targetMentionId,
-				contents : $(this).prev().val()
-			},
-			
-			success : function(data){
-				setMessage("️📝 답글이 등록되었습니다.");
-		 		showModal();
-		 		setTimeout(hideModal, 500);
-		 		mentionPosition.after(data);
-		 		$(".mentionbtn").attr('value', "↪ ︎답글");
-			},
-			error : function(){
-		 		setMessage("⚠️ 답글 등록 실패."); // 이거 고쳐ㅕㅕㅕㅕㅕㅕㅕㅕㅕ
-		 		showModal();
-		 		setTimeout(hideModal, 700);
-			}
-		});
 	});
 });
 

@@ -29,7 +29,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 	
-	<link rel="stylesheet" type="text/css"  href="${path}/resources/css/default.css"/>
+<%-- 	<link rel="stylesheet" type="text/css"  href="${path}/resources/css/default.css"/> --%>
 	<link rel="stylesheet" type="text/css" href="${path}/resources/css/header.css"/>
 	<link rel="stylesheet" type="text/css" href="${path}/resources/css/footer.css"/>
 	<link rel="stylesheet" type="text/css" href="${path}/resources/css/like.css"/>
@@ -44,7 +44,10 @@
 	<script type="text/javascript" src="${path}/resources/js/comment.js"  defer></script>
 	<script type="text/javascript" src="${path}/resources/js/party-detail.js"  defer></script>
 
-	<script> var target = JSON.parse('${target}'); </script>
+	<script> 
+		var target = JSON.parse('${target}');
+		var commentCount = ${commentCount};
+	</script>
 </head>
 <body>
 	<div class="total-wrap">
@@ -55,7 +58,9 @@
 					<div class="mnt">🌱 ${party.sanName} 🌱</div>
 					<div class="title">${party.title }</div>
 					<div class="dt">
-						<fmt:formatDate pattern="yy-MM-dd HH:mm" value="${party.createdDt}"></fmt:formatDate>
+						<fmt:formatDate pattern="yy-MM-dd HH:mm" 
+						value="${party.modifiedDt == null? party.createdDt : party.modifiedDt}"/>
+						${party.modifiedDt != null ? '수정됨' : ''}
 					</div>
 				</div>
 				<div class="contents">
@@ -109,7 +114,7 @@
 						</c:otherwise>
 					</c:choose>
 				</div>
-				<div class="cnt">댓글 (${totalCnt})</div>
+				<div class="cnt">댓글 (${commentCount})</div>
 				<c:set var="comments" value="${comments}" />
 				<%@ include file="../comment/comment.jsp"%>
 				<div class="to top">top</div>
