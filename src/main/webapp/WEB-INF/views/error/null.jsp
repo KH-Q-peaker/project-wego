@@ -7,10 +7,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
 </head>
 <body>
-	<h1>error.jsp</h1>
+	<h1> 어딘가에 널이 들어왔따  </h1>
 	<hr>
 	<h3><%= exception.getMessage() %></h3>
 </body>

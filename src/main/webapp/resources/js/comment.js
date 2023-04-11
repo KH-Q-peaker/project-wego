@@ -16,10 +16,10 @@ function toggleBtn(inputElem, buttonElem) {
 function toggleMentionBtn(buttonElem) {
 	
 	if (buttonElem.parent().next().css('display') == 'none') {
-		$('.mentionwrite, .mentionList, .mention').hide('fast');
+		$('.mentionwrite, .mentionList, .mention').hide();
 		buttonElem.val('Ⅹ닫기');
-		buttonElem.parent().next('.mentionwrite').show('fast').css('display', 'grid');
-		buttonElem.parent().next().next('.mentionList').show('fast');
+		buttonElem.parent().next('.mentionwrite').show('normal').css('display', 'grid');
+		buttonElem.parent().next().next('.mentionList').show().children('.mention').show('fast');
 	} else {
 		buttonElem.val('↪︎답글');
 		$(".mcontents").val('');
@@ -29,7 +29,7 @@ function toggleMentionBtn(buttonElem) {
 
 $(() => { /* 새 댓글 post 전송  */
 	
-	$('textarea').off('keydow').on( 'keydown', function (){
+	$('textarea').off('keydown').on( 'keydown', function (){
    		$(this).css('height', 'auto');
     	$(this).height(this.scrollHeight);
   	});
@@ -86,7 +86,8 @@ $(() => { /* 답글 관련 */
 		});
 		let mentionId = $(this).siblings('#commentId').val();
 		let mentionList = $(this).parent().next().next('.mentionList');
-
+		let mentionbtn = $(this);
+		
 			$.ajax({
 				url: "/comment/mention",
 				type: "GET",
@@ -96,13 +97,14 @@ $(() => { /* 답글 관련 */
 				},
 				success: function(data) {
 					mentionList.html(data);
+					toggleMentionBtn(mentionbtn);
 				},
 				error: function() {
 					console.log('멘션로딩 실패');
 				}
 			});
+//			toggleMentionBtn($(this));
 			
-			toggleMentionBtn($(this));
 		
 			/* 등록버튼 클릭 시 멘션 등록 post전송   */
 			$(".men").off('click').on('click', function() {

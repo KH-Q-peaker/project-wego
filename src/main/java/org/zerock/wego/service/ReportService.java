@@ -17,7 +17,7 @@ public class ReportService {
 	
 	private final ReportMapper reportMapper;
 
-	// 신고 접수 
+	// 신고 생성  
 	public boolean create(ReportDTO dto) throws ServiceException {
 		log.trace("create({}) invoked.", dto);
 		
@@ -29,10 +29,16 @@ public class ReportService {
 		}// try-catch
 	}// modifyComment
 	
+	
 	// 타겟 신고 총합 조회 
-	public Integer getTotalCount(ReportDTO dto) throws ServiceException{
+	public Integer getTotalCount(String targetGb, Integer targetCd) throws ServiceException{
 		
 		try {
+			ReportDTO dto = ReportDTO.builder()
+							.targetGb(targetGb)
+							.targetCd(targetCd)
+							.build();
+			
 			Integer totalCount = this.reportMapper.selectCountByTarget(dto);
 			
 			return (totalCount == null ? 0 : totalCount);
@@ -40,5 +46,4 @@ public class ReportService {
 			throw new ServiceException(e);
 		}// try-catch
 	}// getTotalCount
-	
 }// end class
