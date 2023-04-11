@@ -180,7 +180,7 @@ public class PartyController {
 			Integer userId = user.getUserId();
 
 			boolean isPartyRemoved = this.partyService.isRemovedById(partyId, userId);
-			boolean isImgRemoved = this.fileService.remove("SAN_PARTY", partyId);
+			boolean isImgRemoved = this.fileService.removeAll("SAN_PARTY", partyId);
 //			boolean isJoinRemoved = this.joinService.isJoinCancled(partyId, userId);
 
 

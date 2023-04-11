@@ -51,11 +51,21 @@ public class FileService {
 		} // try-catch
 	} // modify
 	
-	public boolean remove(String targetGb, Integer targetCd) throws ServiceException {
+	public boolean removeAll(String targetGb, Integer targetCd) throws ServiceException {
 		log.trace("remove({}, {}) invoked.", targetGb, targetCd);
 		
 		try {
-			return this.mapper.delete(targetGb, targetCd) == 1;
+			return this.mapper.deleteAll(targetGb, targetCd) == 1;
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	} // removeAll
+	
+	public boolean remove(String targetGb, Integer targetCd, String uuid) throws ServiceException {
+		log.trace("remove({}, {}) invoked.", targetGb, targetCd, uuid);
+		
+		try {
+			return this.mapper.delete(targetGb, targetCd, uuid) == 1;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
