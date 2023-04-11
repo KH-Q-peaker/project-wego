@@ -93,11 +93,11 @@
         	comment_id &lt; #{lastCommentId}
         	AND
         	</if>
-        	status IN ('N', 'P')
-        	AND 
         	target_cd = #{target.targetCd}
-    	    AND 
+        	AND 
 	        target_gb = #{target.targetGb}
+    	    AND 
+        	status IN ('N', 'P')
 	        AND
 	        comment_gb = 'COMMENT'
         </where>
@@ -120,11 +120,10 @@
   				*
   		FROM 
   			comment_v
-         	
         <where>
-        	status IN ('N', 'P')
-        	AND 
         	mention_id = #{commentId}
+        	AND
+        	status IN ('N', 'P')
         </where>
         ORDER BY
          	COMMENT_ID ASC
@@ -227,19 +226,6 @@
     
     </delete>
     
-    
-<!--     <delete -->
-<!--     	id="deleteCommentByUserId"> -->
-    	
-<!--     	DELETE -->
-<!--     	FROM -->
-<!--     		comment_tb -->
-    	
-<!--     	<where> -->
-<!--     	user_id = #(userId) -->
-<!--     	</where>	 -->
-<!--     </delete> -->
-    
     <!-- ***************** 댓글 작성 ******************** -->
     <insert
     	id="insertComment">
@@ -256,7 +242,6 @@
     		#{contents}	
 	    	)
     </insert>
-    
     
     <!-- ***************** 멘션 작성 ******************** -->
     <insert

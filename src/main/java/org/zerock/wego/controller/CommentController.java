@@ -85,13 +85,13 @@ public class CommentController {
 
 		ModelAndView mav = new ModelAndView();
 
-		PageInfo target = new PageInfo();
-		target.setTargetGb(dto.getTargetGb());
-		target.setTargetCd(dto.getTargetCd());
+		PageInfo target = PageInfo.builder()
+				.targetGb(dto.getTargetGb())
+				.targetCd(dto.getTargetCd())
+				.build();
 
 		Integer userId = user.getUserId();
 		dto.setUserId(userId);
-
 		
 		try {
 			boolean isRegistered = this.commentService.isCommentRegistered(dto);
@@ -123,9 +123,10 @@ public class CommentController {
 		
 		ModelAndView mav = new ModelAndView();
 
-		PageInfo target = new PageInfo();
-		target.setTargetGb(dto.getTargetGb());
-		target.setTargetCd(dto.getTargetCd());
+		PageInfo target = PageInfo.builder()
+				.targetGb(dto.getTargetGb())
+				.targetCd(dto.getTargetCd())
+				.build();
 
 		Integer userId = user.getUserId();
 		dto.setUserId(userId);

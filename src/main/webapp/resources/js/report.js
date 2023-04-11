@@ -90,13 +90,17 @@ $(() => {
 				targetCd : targetCd,
 				reportGb : $("input[name='check']:checked").val()
 			},
-		
-			success : function(){
-				reportModalcls();
-				setMessage("🚨 신고가 접수되었습니다. 🚨");
-		 		showModal();
-		 		setTimeout(hideModal, 500);
-//				setTimeout(()=>{location.reload()}, 600);
+
+			success: function(data) {
+				console.log(data);
+				if (data >= 5) {
+					window.location.replace("http://localhost:8080");
+				} else {
+					reportModalcls();
+					setMessage("🚨 신고가 접수되었습니다. 🚨");
+					showModal();
+					setTimeout(hideModal, 500);
+				}
 			},
 			error : function(){
 				reportModalcls();
