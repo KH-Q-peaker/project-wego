@@ -38,22 +38,16 @@
 			
 			<beans:ref bean="authInterceptor"/> 
 		</interceptor> 
-		
+		<!--
 		<interceptor> 
-		<!-- =================================================================================== -->
 			<mapping path="/report/create" />
-		<!-- =================================================================================== -->
 
 			<beans:ref bean="reportInterceptor"/> 
-		</interceptor> 
+		</interceptor>  -->
 	</interceptors>
 
 	<!-- 파일 업로드를 위한 빈 설정 -->
-<<<<<<< HEAD
-	<!--
-=======
 <!-- 
->>>>>>> branch 'main' of https://github.com/uniyunnnn/project-wego-jiyun.git
 	<beans:bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<beans:property name="defaultEncoding" value="UTF-8" />
@@ -65,9 +59,5 @@
 		<beans:property name="uploadTempDir"
 			value="file:/Users/isojin/Desktop/ttt" />
 	</beans:bean>
-<<<<<<< HEAD
-	-->
-=======
  -->
->>>>>>> branch 'main' of https://github.com/uniyunnnn/project-wego-jiyun.git
 </beans:beans>
