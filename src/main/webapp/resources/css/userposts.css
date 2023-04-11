@@ -46,12 +46,12 @@ tbody > td {
 .middle .t2 {
   width: 300px;
 }
-.middle .t3,
-.middle .t4 {
+.middle .t3  {
   width: 120px;
 }
+.middle .t4,
 .middle .t5 {
-  width: 70px;
+  width: 55px;
 }
 
 #pagination {
