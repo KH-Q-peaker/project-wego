@@ -20,7 +20,7 @@ public class JoinService {
 	
 
 	// 모집 참여 여부 
-	public boolean isUserJoined(JoinDTO dto) throws ServiceException {
+	public boolean isUserJoin(JoinDTO dto) throws ServiceException {
 //		log.trace("isUserJoined({}, {}) invoked.", partyId, userId);
 		
 		String status = this.joinMapper.selectById(dto);
@@ -35,7 +35,7 @@ public class JoinService {
 
 	
 	// 모집 참여 토글
-	public boolean isJoinCreatedOrCancled(JoinDTO dto) throws ServiceException {
+	public boolean isJoinCreateOrCancle(JoinDTO dto) throws ServiceException {
 //		log.trace("isJoinCreated({}, {}) invoked.", partyId, userId);
 		
 		try {
@@ -78,7 +78,7 @@ public class JoinService {
 //	}
 	
 	// 모집 참여 삭제 *** 얘도 댓글처럼 스케줄링 해야할듯 *** 
-	public boolean isJoinRemoved(JoinDTO dto) throws ServiceException {
+	public boolean isJoinRemove(JoinDTO dto) throws ServiceException {
 //		log.trace("isJoinRemoved({}) invoked.", dto);
 		
 		try {

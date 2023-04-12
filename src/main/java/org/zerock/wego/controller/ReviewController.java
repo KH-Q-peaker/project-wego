@@ -130,8 +130,8 @@ public class ReviewController {
 	public ResponseEntity<String> removeById(@PathVariable("reviewId")Integer reviewId) throws ControllerException{
 		log.trace("removeById({}) invoked.", reviewId);
 
-		boolean isReviewRemoved = this.reviewService.isRemoved(reviewId);
-		boolean isFileRemoved = this.fileService.remove("SAN_REVIEW", reviewId);
+		boolean isReviewRemoved = this.reviewService.isRemove(reviewId);
+		boolean isFileRemoved = this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId);
 		
 		boolean isSuccess = isReviewRemoved && isFileRemoved;
 		
@@ -189,7 +189,7 @@ public class ReviewController {
 			log.info("isSuccess: {}", isSuccess);
 			
 			if (imgFiles != null) {
-				boolean isRemoveSuccess = this.fileService.remove("SAN_REVIEW", sanReviewId);
+				boolean isRemoveSuccess = this.fileService.isRemoveByTarget("SAN_REVIEW", sanReviewId);
 				log.trace("isRemoveSuccess: {}", isRemoveSuccess);
 				
 				DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
@@ -222,7 +222,7 @@ public class ReviewController {
 						fileDto.setPath(imgPath);
 
 						try {
-							boolean isFileUploadSuccess = this.fileService.register(fileDto);
+							boolean isFileUploadSuccess = this.fileService.isRegistered(fileDto);
 							log.info("isFileUploadSuccess: {}", isFileUploadSuccess);
 						} catch (ServiceException e) {
 							e.printStackTrace();
@@ -291,7 +291,7 @@ public class ReviewController {
 						fileDto.setPath(imgPath);
 
 						try {
-							boolean isFileUploadSuccess = this.fileService.register(fileDto);
+							boolean isFileUploadSuccess = this.fileService.isRegistered(fileDto);
 							log.info("isFileUploadSuccess: {}", isFileUploadSuccess);
 						} catch (ServiceException e) {
 							e.printStackTrace();

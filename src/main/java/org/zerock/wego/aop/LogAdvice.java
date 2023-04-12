@@ -1,9 +1,6 @@
 package org.zerock.wego.aop;
 
-import java.util.Arrays;
-
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
@@ -20,23 +17,25 @@ public class LogAdvice {
 
 	@Around("execution(* org.zerock.wego.service.*Service.*(..))")
 	public Object logging(ProceedingJoinPoint pjp) throws Throwable{
-		String className = pjp.getTarget().getClass().getCanonicalName();
-		Signature methodSignature = pjp.getSignature();
-		String args = Arrays.toString(pjp.getArgs());
+
+		String ClassName = pjp.getSignature().getDeclaringTypeName();
+		String MethodName = pjp.getSignature().getName();
 		
+		log.trace(">> {}.{} invoked...", ClassName, MethodName);
 		
-		log.trace("^^^^^^^^^^^^^^^^^^^^^^^^^ invoked ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-//		log.trace(":: {}::{}({}) invoked.", className, methodName, args);
-		log.trace(":: CLASS = {}", className);
-		log.trace(":: METHOD = {}",methodSignature.toShortString());
-		log.trace(":: ARGS = {}", args);
-		log.trace("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+//		long start = System.nanoTime();
+		long start = System.currentTimeMillis();
 		
 		Object result = pjp.proceed();
-		log.info(":: result = {}", result);
+		
+//		long end = System.nanoTime();
+		long end = System.currentTimeMillis();
+		
+//		log.info(">> runtime = {} ns", (end - start));
+		log.info(">>>>>> runtime = {} ms", (end - start));
+//		log.info(":: result = {}", result);
 		
 		return result;
-	}// around
-	
+	}// logging
 }//end class
 
