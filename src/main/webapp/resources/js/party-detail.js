@@ -51,7 +51,7 @@ function loadMoreComments() {
 $(".modify").off('click').on('click', function(){
 	
 	let currentUrl = window.location.href;
-	newURL = currentUrl.replace('/party/', '/party/modify/');
+	modifyURL = currentUrl.replace('/party/', '/party/modify/');
 	
-	window.location.replace(new URL(newURL));
+	window.location.replace(new URL(modifyURL));
 });

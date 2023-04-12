@@ -18,14 +18,14 @@ import lombok.extern.log4j.Log4j2;
 @Service
 public class FavoriteService {
 
-	private final FavoriteMapper mapper;
+	private final FavoriteMapper favoriteMapper;
 
 	
 	public Set<FavoriteVO> getUserFavoriteOnList(Integer userId) throws ServiceException {
 		log.trace("getUserFavoriteOnList({}) invoked.", userId);
 
 		try {
-			return this.mapper.getUserFavoriteOnList(userId);
+			return this.favoriteMapper.getUserFavoriteOnList(userId);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -35,7 +35,7 @@ public class FavoriteService {
 		log.trace("isFavoriteInfo({}) invoked.", dto);
 
 		try {
-			return this.mapper.isFavoriteInfo(dto) == 1;
+			return this.favoriteMapper.isFavoriteInfo(dto) == 1;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -45,7 +45,7 @@ public class FavoriteService {
 		log.trace("register({}) invoked.", dto);
 
 		try {
-			return this.mapper.insert(dto) == 1;
+			return this.favoriteMapper.insert(dto) == 1;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -55,10 +55,18 @@ public class FavoriteService {
 		log.trace("modify({}) invoked.", dto);
 
 		try {
-			return this.mapper.update(dto) == 1;
+			return this.favoriteMapper.update(dto) == 1;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
 	} // modify
 	
+	public boolean removeAllByTarget(String targetGb, Integer targetCd) {
+		log.trace("removeAllByTarget({}, {}) invoked.", targetGb, targetCd);
+		
+		int totalCount = this.favoriteMapper.selectTotalCountByTarget(targetGb, targetCd);
+		int deleteCount = this.favoriteMapper.deleteByTarget(targetGb, targetCd);
+		
+		return totalCount == deleteCount;
+	}// removeAllByTarget
 } // end class

@@ -13,7 +13,7 @@
     	resultType="Integer">
     	
     	SELECT 
-  			COUNT(comment_id)
+  			NVL(COUNT(comment_id), 0)
   		FROM 
   			comment_tb
          <where>

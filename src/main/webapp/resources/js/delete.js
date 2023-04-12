@@ -16,7 +16,6 @@ var deleteModal = function(){
 				deleteModalcls();
 			}
 		});
-		
 		$(document).off('keydown').on('keydown', function(e){/* esc입력시 닫기 */
 	   		var code = e.keyCode || e.which;
 
@@ -35,10 +34,8 @@ $(() => { /* 삭제 관련 */
 		deleteModal();
 	
 		let targetComment = $(this).parent().parent();
-		let firstMention = targetComment.nextAll('.mention').first();
+//		let firstMention = targetComment.nextAll('.mention').first();
 		let commentId = $(this).siblings("#commentId").val();
-console.log(targetComment.find('#mentionCnt').html()); 
-console.log(targetComment.next().next('.mentionList').html());
 		/* 댓글 삭제 post 전송 */
 		$(".del").off('click').on('click', function(){
 			
@@ -53,13 +50,8 @@ console.log(targetComment.next().next('.mentionList').html());
 		
 		 			if(targetComment.find('#mentionCnt').html() > 0 ||
 		 				targetComment.next().next('.mentionList').html() != null){
-						targetComment.children().not('.comment, .mentionbtn').remove();
+						targetComment.children().not('.comment, .mentionbtn, #commentId, .mentionCnt').remove();
 						targetComment.children('.comment').html('삭제된 댓글입니다.');
-//					}else if(targetComment.next('.mention').children('#mentionId').val() != commentId &&
-//							 targetComment.prev('.mention').children('#mentionId').val() != commentId){
-//							console.log('dfdfdfdf');
-//							targetComment.prev('.comments').remove();
-//							targetComment.remove();
 					}else{
 		 				targetComment.remove();
 					}
@@ -92,19 +84,19 @@ console.log(targetComment.next().next('.mentionList').html());
 			$.ajax({
 				url : url + target.targetCd,
 				type : "DELETE",
-				success : function(){
-					setMessage("🗑️ 글이 삭제되었습니다.🚨");
-		 			showModal();
-		 			setTimeout(hideModal, 800);
+				success : function(response){
+					deleteModalcls();
+					setMessage(response);
+					showModal();
+					setTimeout(function(){ window.location.replace('http://localhost:8080') }, 700);		 			
 				},
 				error : function(){
 		 			deleteModalcls();
 		 			setMessage("⚠️ 삭제실패."); // 이거 고쳐ㅕㅕㅕㅕㅕㅕㅕㅕㅕ
 		 			showModal();
-		 			setTimeout(hideModal, 900);
+		 			setTimeout(hideModal, 700);
 				}
 			});
-		
 		});
 	});
 });
