@@ -61,8 +61,8 @@ public class PartyController {
   
 	
 	@GetMapping("")
-	public String operParty(Model model) throws ControllerException {
-		log.trace("operParty({}) invoked.", model);
+	public String openParty(Model model) throws ControllerException {
+		log.trace("openParty({}) invoked.", model);
 
 		try {
 			List<PartyViewVO> partyList = this.partyService.getList();
@@ -73,7 +73,7 @@ public class PartyController {
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
-	} // operParty
+	} // openParty
 	
 	
 	@ModelAttribute("target")

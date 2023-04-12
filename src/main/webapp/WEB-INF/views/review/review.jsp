@@ -9,7 +9,7 @@
 
 <head>
 <meta charset="UTF-8" />
-<title>WeGo-badge</title>
+<title>WeGo-Review</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="등산후기 게시판" />
@@ -21,6 +21,7 @@
 <link rel="stylesheet" href="/resources/css/footer.css" />
 <link rel="stylesheet" href="/resources/css/reviewItem.css?after" />
 <link rel="stylesheet" href="/resources/css/remote.css?after" />
+<link rel="stylesheet" href="/resources/css/sort.css?after" />
 
 <script src="/resources/js/header.js" defer></script>
 <script src="/resources/js/footer.js" defer></script>
