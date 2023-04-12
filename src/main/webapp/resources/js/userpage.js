@@ -3,6 +3,8 @@ window.onload = function () {
   userPosts();
 };
 
+removeSearch();
+
 // Get the navigation menu items
 const menuItems = document.querySelectorAll(".content-header-menu-item");
 

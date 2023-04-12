@@ -48,7 +48,7 @@
 	</select>
 
 	<select id ="selectTotalCount" resultType="Integer">
-		SELECT count(*)
+		SELECT count(id)
 		FROM (
 				SELECT SAN_REVIEW_ID AS id
 				FROM SAN_REVIEW_V
