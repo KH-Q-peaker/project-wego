@@ -11,21 +11,21 @@ public class PageDTO {
 
 	private Criteria cri;			// 페이징 처리를 위한 기준정보객체 
 	
-	private int totalAmount;		// 총 레코드 건수
+	private Integer totalAmount;		// 총 레코드 건수
 
 	// Pagination 모든 변수 계산~ 
-	private int startPage;			// 한 페이지당 페이지목록의 시작번호
-	private int endPage;			// 한 패이지당 페이지목록의 끝번호
-	private int realEndPage;		// 총 레코드 건수에 기반한 총 페이지 수
+	private Integer startPage;			// 한 페이지당 페이지목록의 시작번호
+	private Integer endPage;			// 한 패이지당 페이지목록의 끝번호
+	private Integer realEndPage;		// 총 레코드 건수에 기반한 총 페이지 수
 	
-	private int offset;				// 현재 페이지에 해당하는 레코드의 시작번호
+	private Integer offset;				// 현재 페이지에 해당하는 레코드의 시작번호
 	
-	private boolean prev;			// 다음 페이지목록의 존재여부
-	private boolean next;			// 이전 페이지목록의 존재여부
+	private Boolean prev;			// 다음 페이지목록의 존재여부
+	private Boolean next;			// 이전 페이지목록의 존재여부
 	
 	
 	
-	public PageDTO(Criteria cri, int totalAmount) {
+	public PageDTO(Criteria cri, Integer totalAmount) {
 		this.cri = cri;
 		
 		this.totalAmount = totalAmount;

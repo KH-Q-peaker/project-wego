@@ -11,7 +11,7 @@ import lombok.extern.log4j.Log4j2;
 public class Criteria {
 	
 	private String targetGb;
-	private Long targetCd;
+	private Integer targetCd;
 	private Integer userId;
 	private Integer currPage = 1; // 페이지 기본 값 
 	private Integer amount = 5; // 불러올 데이터 기본 값
