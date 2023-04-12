@@ -11,6 +11,6 @@ public interface SanInfoMapper {
 	public abstract List<SanInfoViewVO> selectAll(); 
 	public abstract Set<SanInfoViewVO> selectRandom10(); 
 	public abstract SanInfoViewVO selectById(Integer sanInfoId); 
-	public abstract Integer selectSanNameBySanName(String sanName); 
+	public abstract Integer selectIdBySanName(String sanName); 
 	
 } // end interface

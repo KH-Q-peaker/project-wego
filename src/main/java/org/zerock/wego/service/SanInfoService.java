@@ -41,21 +41,21 @@ public class SanInfoService {
 		} // try-catch
 	} // getRandom10List
 	
-	public SanInfoViewVO get(Integer sanInfoId) throws ServiceException {
-		log.trace("get({}) invoked.", sanInfoId);	
+	public SanInfoViewVO getById(Integer sanInfoId) throws ServiceException {
+		log.trace("getById({}) invoked.", sanInfoId);	
 		
 		try {
-			return this.mapper.select(sanInfoId);
+			return this.mapper.selectById(sanInfoId);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
-	} // get
+	} // getById
 	
-	public Integer selectSanName(String sanName) throws ServiceException {
-		log.trace("selectSanName({}) invoked.", sanName);
+	public Integer getIdBySanName(String sanName) throws ServiceException {
+		log.trace("getIdBySanName({}) invoked.", sanName);
 		
 		try {
-			return this.mapper.selectSanName(sanName);
+			return this.mapper.selectIdBySanName(sanName);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch

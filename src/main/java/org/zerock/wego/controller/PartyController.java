@@ -209,7 +209,7 @@ public class PartyController {
 				return "error";
 			} // if
 			
-			Integer sanId = this.sanInfoService.selectSanName(sanName);
+			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 			dto.setSanInfoId(sanId);
 
 			Timestamp dateTime = Timestamp.valueOf(date + " " + time + ":00");
@@ -254,7 +254,7 @@ public class PartyController {
 			
 			dto.setUserId(auth.getUserId());
 			
-			Integer sanId = this.sanInfoService.selectSanName(sanName);
+			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 			dto.setSanInfoId(sanId);
 
 			Timestamp dateTime = Timestamp.valueOf(date + " " + time + ":00");
