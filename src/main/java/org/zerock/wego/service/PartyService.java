@@ -122,16 +122,18 @@ public class PartyService {
 	
 	
 	// 모집글 삭제 
-	public boolean isRemovedById(Integer partyId, Integer userId) throws ServiceException{
+	public boolean isRemovedById(Integer partyId) throws Exception{
 		log.trace("isRemovedById({}) invoked.", partyId);
 
-		try {
+			int result = this.partyMapper.deleteById(partyId);
 			
-			return (this.partyMapper.deleteById(partyId) == 1);
-			
-		}catch(Exception e) {
-			throw new ServiceException(e);
-		}// try-catch 
+			if(result != 1) {
+				
+				throw new NotFoundPageException("delete failed : " + partyId);
+				
+			}else {
+				return true;
+			}// if-else
 	}// removeParty
 	
 }// end class

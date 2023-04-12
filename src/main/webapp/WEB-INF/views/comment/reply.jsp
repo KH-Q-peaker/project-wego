@@ -16,7 +16,7 @@
 					<input type="hidden" id="commentId" value="${comment.commentId }"/>
 					<input type="hidden" id="mentionId" value="${comment.mentionId }"/>
 					<img class="cmtuserPic" src="${comment.userPic }"/>
-					<div class="cmtuser">${comment.nickname }</div>
+					<a class="cmtuser" href="http://localhost:8080/profile/${comment.userId }">${comment.nickname}</a>
 					<div class="cmtdate">
 						<fmt:formatDate pattern="MM-dd HH:mm" value="${comment.createdDt}"></fmt:formatDate>
 					</div>

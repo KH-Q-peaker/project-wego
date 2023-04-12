@@ -22,6 +22,7 @@ public class ReportService {
 		log.trace("create({}) invoked.", dto);
 		
 		try {
+			
 			return (this.reportMapper.insert(dto) == 1);
 			
 		}catch(Exception e) {
@@ -34,16 +35,27 @@ public class ReportService {
 	public Integer getTotalCount(String targetGb, Integer targetCd) throws ServiceException{
 		
 		try {
-			ReportDTO dto = ReportDTO.builder()
-							.targetGb(targetGb)
-							.targetCd(targetCd)
-							.build();
+			Integer totalCount 
+					= this.reportMapper.selectCountByTarget(targetGb, targetCd);
 			
-			Integer totalCount = this.reportMapper.selectCountByTarget(dto);
 			
-			return (totalCount == null ? 0 : totalCount);
+			return totalCount;
 		}catch(Exception e) {
 			throw new ServiceException(e);
 		}// try-catch
 	}// getTotalCount
+	
+
+	public boolean removeAllByTarget(String targetGb, Integer targetCd) throws Exception{
+		log.trace("removeAllByTarget({}, {})", targetGb, targetCd);
+		
+
+		int totalCount = this.reportMapper.selectCountByTarget(targetGb, targetCd);
+		
+		int deleteCount = this.reportMapper.deleteByTarget(targetGb, targetCd);
+		
+		
+		return totalCount == deleteCount;
+	}// isRemovedByTarget
+	
 }// end class

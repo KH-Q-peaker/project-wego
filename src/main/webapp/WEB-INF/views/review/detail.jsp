@@ -54,7 +54,7 @@
 				</div>
 				<div class="contents">
 					<img src="${userPic}" alt="" class="userpic" />
-					<div class="username">${review.nickName}</div>
+					<a class="username" href="http://localhost:8080/profile/${review.userId}">${review.nickName}</a>
 					<div class="likeCnt">
 						<input class="like ${isLike ? 'fill' : '' }" type="button" value="" />︎<label> ${review.likeCnt }</label>
 					</div>

@@ -29,7 +29,7 @@
     	id="selectCountByTarget">
     	
     	SELECT 
-    		count(user_id)
+    		NVL(count(user_id), 0)
     	FROM	
     		report_tb
     	WHERE
@@ -37,6 +37,19 @@
     		AND
     		target_cd = #{targetCd}
     </select>
+    
+    <!-- ***************** 신고 삭제 ******************** -->
+    <delete
+    	id="deleteByTarget">
+    	
+    	DELETE
+    	FROM
+    		report_tb
+    	WHERE
+    		target_gb = #{targetGb}
+    		ANd
+    		target_cd = #{targetCd}	
+    </delete>
     
   </mapper>
   

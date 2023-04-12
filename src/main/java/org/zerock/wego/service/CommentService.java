@@ -31,12 +31,12 @@ public class CommentService {
 		
 		try {
 			int totalCount = this.commentMapper.selectTotalCountByTarget(target);
-			
+
 			return totalCount;
-			
-		}catch(Exception e) {
+
+		} catch (Exception e) {
 			throw new ServiceException(e);
-		}// try-catch 
+		} // try-catch
 	}// getCommentCnt
 
 	
@@ -64,7 +64,7 @@ public class CommentService {
 	
 	// 댓글 offset 로딩
 		public LinkedBlockingDeque<CommentViewVO> getCommentOffsetByTarget(PageInfo target, Integer lastCommentId) throws ServiceException{
-			log.trace("getCommentsOffsetByTarget({}) invoked.", target);
+			log.trace("getCommentsOffsetByTarget({}, {}) invoked.", target, lastCommentId);
 			
 			try {
 				LinkedBlockingDeque<CommentViewVO> comments 
@@ -112,7 +112,6 @@ public class CommentService {
 		
 		try {
 			CommentViewVO comment = this.commentMapper.selectById(commentId);
-			Objects.requireNonNull(comment);
 			
 			
 			return comment;
@@ -128,8 +127,9 @@ public class CommentService {
 		log.trace("isCommentRegister({}) invoked", dto);
 		
 		try {
-
-			return (this.commentMapper.insertComment(dto) == 1);
+			boolean isRegistered = (this.commentMapper.insertComment(dto) == 1); 
+		
+			return isRegistered;
 			
 		}catch(Exception e) {
 			throw new ServiceException(e);
@@ -143,10 +143,11 @@ public class CommentService {
 		log.trace("isMentionRegister({}) invoked", dto);
 		
 		try {
-
-			return (this.commentMapper.insertMention(dto) == 1);
+			boolean isRegistered = (this.commentMapper.insertMention(dto) == 1);
 			
-		}catch(Exception e) {
+			return isRegistered;
+			
+		} catch(Exception e) {
 			throw new ServiceException(e);
 		}// try-catch
 	}// registerComment
@@ -156,20 +157,21 @@ public class CommentService {
 	// 뭐를 삭제하냐....
 	public boolean isCommentOrMentionRemove(Integer commentId) throws ServiceException {
 
- 		boolean isRemove;
+ 		boolean isRemoved;
+ 		
 		CommentViewVO originComment = this.commentMapper.selectById(commentId);
 		 
 		 
 		 if(originComment.getCommentGb().equals("COMMENT")){
 			 
-			 isRemove = this.isCommentRemoved(commentId);
-		 }else {
+			 isRemoved = this.isCommentRemoved(commentId);
+		 } else {
 			 
-			 isRemove = this.isMentionRemoved(commentId);
+			 isRemoved = this.isMentionRemoved(commentId);
 		 }// if-else
 		 
 		 
-		return isRemove;
+		return isRemoved;
 	}// isCommentOrMentionRemove
 	
 	
@@ -236,15 +238,15 @@ public class CommentService {
 		log.trace("isModified({}) invoked", dto);
 
 		try {
-			
 			CommentViewVO originComment = this.commentMapper.selectById(dto.getCommentId());
 			
 			dto.setStatus(originComment.getStatus());
 			
+			boolean isUpdated = (this.commentMapper.updateComment(dto) == 1); 
 			
-			return this.commentMapper.updateComment(dto) == 1;
+			return isUpdated; 
 			
-		}catch(Exception e) {
+		}catch (Exception e) {
 			throw new ServiceException(e);
 		}// try-catch
 	}// modifyComment
@@ -256,7 +258,7 @@ public class CommentService {
 		
 		try {
 			boolean isClear = (this.commentMapper.deleteDeadComment() == 1);
-			
+			/*생각해보니까  이거 아닌데...? 뭐어차피 쿼츠 배우면 바꿀꺼니까 */
 			
 			return isClear;
 			
