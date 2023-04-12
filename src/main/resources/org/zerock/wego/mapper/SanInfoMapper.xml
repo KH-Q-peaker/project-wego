@@ -6,6 +6,12 @@
 
 <mapper namespace="org.zerock.wego.mapper.SanInfoMapper">
 
+	<select id="select"
+		resultType="org.zerock.wego.domain.SanInfoViewVO">
+		SELECT * 
+		FROM san_info_v
+	</select>
+
 	<select id="selectRandom10"
 		resultType="org.zerock.wego.domain.SanInfoViewVO">
 		SELECT *
