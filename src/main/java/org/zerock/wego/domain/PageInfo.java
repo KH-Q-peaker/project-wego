@@ -13,5 +13,4 @@ public class PageInfo {
 	private Integer currPage = 1;  
 	@Builder.Default 
 	private Integer amount = 5;
-	
 }// end class
