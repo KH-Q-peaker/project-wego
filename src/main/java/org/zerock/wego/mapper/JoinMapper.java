@@ -16,6 +16,6 @@ public interface JoinMapper {
 	public abstract Integer update(@Param("dto")JoinDTO dto, @Param("status")String status);
 	
 	// 모집 참여 삭제 
-	public abstract Integer deleteById(JoinDTO dto);
+	public abstract Integer delete(JoinDTO dto);
 
 }// end interface

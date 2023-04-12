@@ -9,9 +9,9 @@
   top: 80px;
   right: 30px;
 /*   transform: translate(-50%, -50%); */
-  width: 240px;
-  height: 70px;
-  background-color: rgb(255 144 0 / 80%);
+  width: 280px;
+  height: 80px;
+  background-color: rgb(255 255 255 / 80%);
   border-radius: 10px;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
   border: 0;
@@ -23,8 +23,8 @@
 #message {
 /*   padding: 20px; */
 /*   margin: auto; */
-  color: white;
-  font-size: 14px;
+  color: rgb(78, 197, 61);
+  font-size: 15px;
   text-align: center;
   font-weight: bold;
 }

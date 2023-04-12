@@ -10,23 +10,38 @@
 		SELECT *
 		FROM file_tb
 		WHERE
-		target_gb = #{targetGb} AND target_cd = #{targetCd}
+			target_gb = #{targetGb} AND target_cd = #{targetCd}
 	</select>
+	
+	<select
+		id="selectTotalCountByTarget">
+		
+		SELECT
+			NVL(count(file_id), 0)
+		FROM
+			file_tb
+		WHERE
+			target_gb = #{targetGb}
+			AND
+			target_cd = ${targetCd}	
+	</select>
+	
+	
 
 	<insert id="insert">
 		INSERT INTO
-		file_tb(target_gb, target_cd, file_name, uuid, path)
-		VALUES(#{targetGb}, #{targetCd}, #{fileName}, #{uuid}, #{path})
+			file_tb(target_gb, target_cd, file_name, uuid, path)
+			VALUES(#{targetGb}, #{targetCd}, #{fileName}, #{uuid}, #{path})
 	</insert>
 
 	<update id="update">
 		UPDATE file_tb
 		SET
-		file_name = #{fileName}
+			file_name = #{fileName}
 		WHERE
-		target_gb = #{targetGb}
-		AND target_cd = #{targetCd}
-		AND file_id = #{fileId}
+			target_gb = #{targetGb}
+			AND target_cd = #{targetCd}
+			AND file_id = #{fileId}
 	</update>
 
 	<delete id="deleteByTargetGbAndTargetCdAndUuid">
@@ -35,10 +50,10 @@
 		target_gb = #{targetGb} AND target_cd = #{targetCd} AND uuid = #{uuid}
 	</delete>
 
-	<delete id="deleteAll">
+	<delete id="deleteByTarget">
 		DELETE FROM file_tb
 		WHERE
-		target_gb = #{targetGb} AND target_cd = #{targetCd}
+			target_gb = #{targetGb} AND target_cd = #{targetCd}
 	</delete>
 
 </mapper>

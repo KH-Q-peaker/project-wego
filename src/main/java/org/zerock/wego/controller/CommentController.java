@@ -85,11 +85,11 @@ public class CommentController {
 
 		ModelAndView mav = new ModelAndView();
 
-		PageInfo target = PageInfo.builder()
-				.targetGb(dto.getTargetGb())
-				.targetCd(dto.getTargetCd())
-				.build();
+		PageInfo target = new PageInfo();
+		target.setTargetGb(dto.getTargetGb());
+		target.setTargetCd(dto.getTargetCd());
 
+		
 		Integer userId = user.getUserId();
 		dto.setUserId(userId);
 		
@@ -123,10 +123,6 @@ public class CommentController {
 		
 		ModelAndView mav = new ModelAndView();
 
-		PageInfo target = PageInfo.builder()
-				.targetGb(dto.getTargetGb())
-				.targetCd(dto.getTargetCd())
-				.build();
 
 		Integer userId = user.getUserId();
 		dto.setUserId(userId);
@@ -154,10 +150,10 @@ public class CommentController {
 		
 		if(this.commentService.isCommentOrMentionRemove(commentId)) {
 			
-			return new ResponseEntity<>("OK", HttpStatus.OK);
+			return ResponseEntity.ok().build();
 		}// if
 		
-		return new ResponseEntity<String>("XX", HttpStatus.NOT_FOUND);
+		return ResponseEntity.notFound().build();
 	}// registerComment
 	
 	
@@ -172,10 +168,10 @@ public class CommentController {
 		
 		if(this.commentService.isModified(dto)) {
 			
-			return new ResponseEntity<>("OK", HttpStatus.OK);
+			return ResponseEntity.ok().build();
 		}// if
 		
-		return new ResponseEntity<String>("XX", HttpStatus.NOT_FOUND);
+		return ResponseEntity.notFound().build();
 	}// registerComment
 	 
 }// end class

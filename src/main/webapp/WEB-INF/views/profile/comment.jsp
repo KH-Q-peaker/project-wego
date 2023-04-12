@@ -36,8 +36,17 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 </c:otherwise>
               </c:choose>
               <c:if test="${not empty mappingURI}">
-                <a href="/${mappingURI}/${profileCommentVO.targetCb}"
-                  >${profileCommentVO.contents}</a
+                <a href="/${mappingURI}/${profileCommentVO.targetCb}">
+                  <c:choose>
+                    <c:when
+                      test="${fn:length(profileCommentVO.contents) > 30}"
+                    >
+                      ${fn:substring(profileCommentVO.contents, 0,30)}...
+                    </c:when>
+                    <c:otherwise>
+                      ${profileCommentVO.contents}
+                    </c:otherwise>
+                  </c:choose></a
                 >
               </c:if>
             </td>

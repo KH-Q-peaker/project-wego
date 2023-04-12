@@ -60,6 +60,9 @@ $(() => { /* 새 댓글 post 전송  */
 				contents: $(this).prev().val()
 			},
 			success: function(data) {
+				setMessage("💬 댓글이 등록되었습니다.");
+				showModal();
+				setTimeout(hideModal, 700);
 				page=1;
 				$(window).off('scroll').on('scroll', scrollCommentLoading);
 				$("#contents").val('');
@@ -68,7 +71,7 @@ $(() => { /* 새 댓글 post 전송  */
 		error : function() {
 			setMessage("⚠️ 댓글 등록 실패.");
 			showModal();
-			setTimeout(hideModal, 500);
+			setTimeout(hideModal, 700);
 		}
 		});
 	});
@@ -120,9 +123,9 @@ $(() => { /* 답글 관련 */
 						contents: $(this).prev().val()
 					},
 					success: function(data) {
-						setMessage("️📝 답글이 등록되었습니다.");
+						setMessage("️💬 답글이 등록되었습니다.");
 						showModal();
-						setTimeout(hideModal, 500);
+						setTimeout(hideModal, 700);
 						mentionList.append(data);
 						$('.mcontents').val('');
 					},
@@ -198,16 +201,16 @@ $(() => { /* 수정 관련 */
 				success : function(){
 					setMessage("✏️ 댓글이 수정되었습니다.");
 		 			showModal();
-		 			setTimeout(hideModal, 500);
+		 			setTimeout(hideModal, 700);
 					modifying.replaceWith(target.text(modifying.val()));
-					target.siblings().not('.cmtuser').not('.cmtuserPic').toggle('fast');
+					target.siblings().not('.cmtuser, .cmtuserPic').toggle('fast');
 					
 					$(".modifycmt").prop('disabled', false);
 				},
 				error : function(){
 		 			setMessage("⚠️ 수정 실패."); // 이거 고쳐ㅕㅕㅕㅕㅕㅕㅕㅕㅕ
 		 			showModal();
-		 			setTimeout(hideModal, 500);
+		 			setTimeout(hideModal, 700);
 				}	
 			});
 		});
