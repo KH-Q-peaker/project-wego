@@ -6,6 +6,13 @@
 
 <mapper namespace="org.zerock.wego.mapper.ReviewMapper">
 
+	<select id="selectAll"
+		resultType="org.zerock.wego.domain.ReviewViewVO">
+		SELECT * 
+		FROM san_review_v 
+		ORDER BY created_Dt DESC
+	</select>
+
 	<select id="selectRandom10"
 		resultType="org.zerock.wego.domain.ReviewViewVO">
 		SELECT *

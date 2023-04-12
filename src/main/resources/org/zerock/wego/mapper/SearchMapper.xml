@@ -6,7 +6,7 @@
 
 <mapper namespace="org.zerock.wego.mapper.SearchMapper">
 
-	<select id="selectSearchSanInfo3"
+	<select id="selectSearchSanInfo3ByQuery"
 		resultType="org.zerock.wego.domain.SanInfoViewVO">
 		SELECT *
 		FROM san_info_v
@@ -18,7 +18,7 @@
 			AND rownum &lt;= 3
 	</select>
 
-	<select id="selectSearchParty3"
+	<select id="selectSearchParty3ByQuery"
 		resultType="org.zerock.wego.domain.PartyViewVO">
 		SELECT *
 		FROM san_party_v
@@ -30,7 +30,7 @@
 			AND rownum &lt;= 3
 	</select>
 
-	<select id="selectSearchReview3"
+	<select id="selectSearchReview3ByQuery"
 		resultType="org.zerock.wego.domain.ReviewViewVO">
 		SELECT *
 		FROM san_review_v

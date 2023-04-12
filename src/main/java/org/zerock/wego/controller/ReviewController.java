@@ -171,7 +171,7 @@ public class ReviewController {
 
 			ReviewViewVO vo = this.reviewService.getById(sanReviewId);
 
-			Integer sanId = this.sanInfoService.selectSanName(sanName);
+			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 			dto.setSanInfoId(sanId);
 
 			boolean isModifiedSuccess = this.reviewService.isModified(dto);
@@ -264,7 +264,7 @@ public class ReviewController {
 				return "error";
 			} // if
 
-			Integer sanId = this.sanInfoService.selectSanName(sanName);
+			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 			dto.setSanInfoId(sanId);
 
 			dto.setUserId(auth.getUserId());

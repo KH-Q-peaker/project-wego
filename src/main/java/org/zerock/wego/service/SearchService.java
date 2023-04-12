@@ -26,7 +26,7 @@ public class SearchService {
 		log.trace("selectSearchSanInfo3({}) invoked.", search);
 		
 		try {
-			return this.mapper.selectSearchSanInfo3(search);
+			return this.mapper.selectSearchSanInfo3ByQuery(search);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -36,7 +36,7 @@ public class SearchService {
 		log.trace("selectSearchParty3({}) invoked.", search);
 		
 		try {
-			return this.mapper.selectSearchParty3(search);
+			return this.mapper.selectSearchParty3ByQuery(search);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -46,7 +46,7 @@ public class SearchService {
 		log.trace("selectSearchReview3({}) invoked.", search);
 		
 		try {
-			return this.mapper.selectSearchReview3(search);
+			return this.mapper.selectSearchReview3ByQuery(search);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
