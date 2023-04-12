@@ -14,6 +14,8 @@ import org.zerock.wego.domain.oauth.kakao.KakaoUserInfoDTO;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.oauth.KakaoOAuth;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import lombok.Cleanup;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -22,27 +24,14 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 
 @Service
-public class KakaoService 
-implements InitializingBean{
+public class KakaoService {
 
 	private final KakaoOAuth kakaoOAuth; 
 
-	@Override
-	public void afterPropertiesSet() throws ServiceException {
-		log.trace("afterPropertiesSet() invoked");
 
-		try {
-			Objects.requireNonNull(this.kakaoOAuth);
-		} 
-		catch (Exception e) {
-			throw new ServiceException(e);
-		} // try-catch
-	} // afterPropertiesSet
-
-	public KakaoOAuthTokenDTO getAccessToken(String authorizationCode) throws ServiceException{
+	public KakaoOAuthTokenDTO getAccessToken(String authorizationCode) throws JsonProcessingException {
 		log.trace("getAccessToken({}) invoked.", authorizationCode);
 
-		try {
 			ResponseEntity<String> responseEntity = kakaoOAuth.requestAccessToken(authorizationCode);
 
 			int responseCode = responseEntity.getStatusCodeValue();
@@ -52,17 +41,13 @@ implements InitializingBean{
 			// 200이면 성공
 			if(responseCode == 200) {
 
-				KakaoOAuthTokenDTO kakaoOAuthTokenDTO = kakaoOAuth.parseOAuthTokenDTO(responseEntity);
+				KakaoOAuthTokenDTO kakaoOAuthTokenDTO = kakaoOAuth.parseOAuthTokenDTO(responseEntity.getBody());
 
 				return kakaoOAuthTokenDTO;
 			}
 			else {
 				throw new ServiceException("kakao getAccessToken");
 			} // if-else
-		}
-		catch(Exception e) {
-			throw new ServiceException(e);
-		}// try-catch
 
 	}// getAccessToken
 
@@ -80,7 +65,7 @@ implements InitializingBean{
 			// 200이면 성공
 			if(responseCode == 200) {
 
-				KakaoUserInfoDTO kakaoUserInfoDTO = kakaoOAuth.parseUserInfoDTO(responseEntity);
+				KakaoUserInfoDTO kakaoUserInfoDTO = kakaoOAuth.parseUserInfoDTO(responseEntity.getBody());
 
 				return kakaoUserInfoDTO;
 			}

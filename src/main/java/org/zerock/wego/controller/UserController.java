@@ -22,22 +22,11 @@ import lombok.extern.log4j.Log4j2;
 
 @RequestMapping("user")
 @RestController
-public class UserController 
-	implements InitializingBean{
-
-	private final UserService userService;
+public class UserController {
 	
-	@Override
-	public void afterPropertiesSet() throws ServiceException {
-		log.trace("afterPropertiesSet() invoked");
-		try {
-			Objects.requireNonNull(this.userService);
-		}
-		catch (Exception e) {
-			throw new ServiceException(e);
-		} // try-catch
-	} // afterPropertiesSet
+	private final UserService userService;
 
+	
 	@GetMapping(
 			path = "/json/{targetUserId}",
 			produces = {

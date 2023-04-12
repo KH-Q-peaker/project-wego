@@ -14,6 +14,8 @@ $(() => {
 
 				success: function () {
 					console.log("good")
+
+					
 				}
 			});
 

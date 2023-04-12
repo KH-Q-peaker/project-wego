@@ -25,7 +25,7 @@ public class FileService {
 		log.trace("getList() invoked.");
 		
 		try {
-			return this.mapper.select(targetGb, targetCd);
+			return this.mapper.selectByTargetGbAndTargetCd(targetGb, targetCd);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -65,7 +65,7 @@ public class FileService {
 		log.trace("remove({}, {}) invoked.", targetGb, targetCd, uuid);
 		
 		try {
-			return this.mapper.delete(targetGb, targetCd, uuid) == 1;
+			return this.mapper.deleteByTargetGbAndTargetCdAndUuid(targetGb, targetCd, uuid) == 1;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch

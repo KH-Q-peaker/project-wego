@@ -4,17 +4,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 import org.zerock.wego.domain.ReviewDTO;
 import org.zerock.wego.domain.ReviewViewVO;
 
 
 public interface ReviewMapper {
 
-	@Select("SELECT * FROM san_review_v ORDER BY created_Dt DESC")
-	public abstract List<ReviewViewVO> selectAll();	// 전체 목록 조회
-	
-	
+	public abstract List<ReviewViewVO> selectAll();	// 전체 목록 조회	
 	public abstract Set<ReviewViewVO> selectRandom10(); // 10개의 게시글 랜덤 조회
 	
 	// 특정 후기글 조회 
