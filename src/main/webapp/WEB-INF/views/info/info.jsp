@@ -19,7 +19,7 @@
 
 <link rel="stylesheet" href="/resources/css/header.css" />
 <link rel="stylesheet" href="/resources/css/footer.css" />
-<link rel="stylesheet" href="/resources/css/mountainItem.css?after" />
+<link rel="stylesheet" href="/resources/css/sanInfoItem.css?after" />
 <link rel="stylesheet" href="/resources/css/remote.css?after" />
 <link rel="stylesheet" href="/resources/css/sort.css?after" />
 
