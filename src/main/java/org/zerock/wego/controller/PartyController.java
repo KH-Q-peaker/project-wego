@@ -60,6 +60,22 @@ public class PartyController {
 	private final FavoriteService favoriteService;
   
 	
+	@GetMapping("")
+	public String operParty(Model model) throws ControllerException {
+		log.trace("operParty({}) invoked.", model);
+
+		try {
+			List<PartyViewVO> partyList = this.partyService.getList();
+
+			model.addAttribute("partyList", partyList);
+
+			return "party/party";
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	} // operParty
+	
+	
 	@ModelAttribute("target")
 	PageInfo createPageInfo(Integer partyId) {
 		log.trace("createPageInfo() invoked.");

@@ -57,6 +57,23 @@ public class ReviewController {
 //	private final UserService userService;
 //	private final LikeService likeService;
 
+	
+	@GetMapping("")
+	public String openReview(Model model) throws ControllerException {
+		log.trace("openReview({}) invoked.", model);
+
+		try {
+			List<ReviewViewVO> reviewList = this.reviewService.getList();
+
+			model.addAttribute("reviewList", reviewList);
+
+			return "review/review";
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	} // openReview
+	
+	
 	@ModelAttribute("target")
 	PageInfo createPageInfo(Integer reviewId) {
 		log.trace("createPageInfo() invoked.");
