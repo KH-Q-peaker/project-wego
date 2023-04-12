@@ -11,96 +11,46 @@ import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.UserMapper;
 
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 
 
 
 @Log4j2
-@NoArgsConstructor
+@RequiredArgsConstructor
 
 @Service
-public class LoginService 
-	implements InitializingBean {
+public class LoginService {
 	
-	@Autowired
-    private UserMapper userMapper;
-	public void afterPropertiesSet() throws Exception {
-		log.trace("afterPropertiesSet() invoked");
+    private final UserMapper userMapper;
+
+	
+ // 회원가입 가입
+    public void signUp(UserDTO userDTO) {
+    	log.trace("signUp({}) invoked.", userDTO);
+    	
+    	boolean isAlreadySignUp = isSignUp(userDTO.getSocialId());
 		
-		try {
-			Objects.requireNonNull(this.userMapper);
-		} 
-		catch (Exception e) {
-			throw new ServiceException(e);
-		} // try-catch
-	} // afterPropertiesSet
-
-	
-	public UserVO login(UserDTO userDTO) throws ServiceException{
-    	log.trace("login({}) invoked.", userDTO);
-    	
-    	try {
-    		String targetUserSocialId = userDTO.getSocialId();
-    		
-    		UserVO userVO = this.socailLogin(targetUserSocialId);
-    		
-    		boolean isAlreadySignUp = userVO != null;
-    		
-    		if(isAlreadySignUp) {
-    			
-    			return userVO;
-    		}
-    		else {
-    			
-    			return null;
-			}
-    		
-    	}catch(Exception e) {
-    		throw new ServiceException(e);
-    	}// try-catch
-    }// socialLogin
-	
-
-    // 회원가입 가입
-    public boolean signUp(UserDTO dto) throws ServiceException{
-    	log.trace("signUp({}) invoked.", dto);
-    	
-		try {
-
-			return this.userMapper.insertUser(dto) == 1;
-			
-		} catch (Exception e) {
-			throw new ServiceException(e);
-		} // try-catch
-    }// signUp
-
+		if (isAlreadySignUp) {
+			throw new RuntimeException("이미 가입된 회원입니다.");
+		} // if
+		
+		userMapper.insertUser(userDTO);
+    } // signUp
     
-    // 중복 닉네임 확인
-    public boolean isExistNickname(String nickname) throws ServiceException{
-    	log.trace("isExistNickname({}) invoked.", nickname);
-    	
-		try {
-
-			return this.userMapper.selectByNickname(nickname) != null;
-			
-		} catch (Exception e) {
-			throw new ServiceException(e);
-		} // try-catch
-    }// isExistNickname
+    // 회원가입 확인
+    public boolean isSignUp(String socialId) {
+    	return userMapper.selectBySocialId(socialId) != null;
+    } // isSignUp
     
     
     // 소셜 아이디로 로그인
-    public UserVO socailLogin(String socialId) throws ServiceException{
+    public UserVO socialLogin(String socialId) {
     	log.trace("loginBySocialId({}) invoked.", socialId);
     	
-    	try {
-    		
     		return userMapper.selectBySocialId(socialId);
     		
-    	}catch(Exception e) {
-    		throw new ServiceException(e);
-    	}// try-catch
     }// loginBySocialId
     
 }// end class

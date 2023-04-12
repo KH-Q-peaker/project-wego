@@ -15,7 +15,9 @@ import org.zerock.wego.domain.oauth.kakao.KakaoUserInfoDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -78,12 +80,12 @@ public class KakaoOAuth {	// https://developers.kakao.com/docs/latest/ko/kakaolo
 
 	
 	// 요청을 DTO로 변환
-	public KakaoOAuthTokenDTO parseOAuthTokenDTO(ResponseEntity<String> accessTokenResponse) throws JsonProcessingException {
-		log.trace("parseOAuthTokenDTO({}) invoked.", accessTokenResponse);
+	public KakaoOAuthTokenDTO parseOAuthTokenDTO(String accessToken) throws JsonProcessingException {
+		log.trace("parseOAuthTokenDTO({}) invoked.", accessToken);
 
 		ObjectMapper objectMapper = new ObjectMapper();
 
-		KakaoOAuthTokenDTO kakaoOAuthTokenDTO = objectMapper.readValue(accessTokenResponse.getBody(), KakaoOAuthTokenDTO.class);
+		KakaoOAuthTokenDTO kakaoOAuthTokenDTO = objectMapper.readValue(accessToken, KakaoOAuthTokenDTO.class);
 
 		return kakaoOAuthTokenDTO;
 	} // parseOAuthTokenDTO
@@ -111,12 +113,12 @@ public class KakaoOAuth {	// https://developers.kakao.com/docs/latest/ko/kakaolo
 
 	
 	// 요청을 DTO로 변환
-	public KakaoUserInfoDTO parseUserInfoDTO(ResponseEntity<String> response) throws JsonProcessingException {
-		log.trace("parseUserInfoDTO({}) invoked.", response);
+	public KakaoUserInfoDTO parseUserInfoDTO(String userInfo) throws JsonProcessingException {
+		log.trace("parseUserInfoDTO({}) invoked.", userInfo);
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		
-		KakaoUserInfoDTO kakaoUserInfoDTO = objectMapper.readValue(response.getBody(), KakaoUserInfoDTO.class);
+		KakaoUserInfoDTO kakaoUserInfoDTO = objectMapper.readValue(userInfo, KakaoUserInfoDTO.class);
 
 		return kakaoUserInfoDTO;		
 	} // getUserInfo
