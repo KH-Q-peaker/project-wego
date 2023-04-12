@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -56,6 +57,27 @@ public class ReviewController {
 	private final FavoriteService favoriteService;
 //	private final UserService userService;
 //	private final LikeService likeService;
+
+
+	@GetMapping("")
+	public String review(Model model) throws ControllerException {
+		log.trace("review({}) invoked.", model);
+
+		try {
+			Objects.requireNonNull(reviewService);
+			log.trace("@@ this.reviewService: {}", this.reviewService);
+
+			List<ReviewViewVO> reviewList = this.reviewService.getList();
+
+			model.addAttribute("reviewList", reviewList);
+
+			return "review/review";
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	} // party
+
+
 
 	@ModelAttribute("target")
 	PageInfo createPageInfo(Integer reviewId) {
@@ -176,7 +198,7 @@ public class ReviewController {
 
 			boolean isModifiedSuccess = this.reviewService.isModified(dto);
 			log.info("isModifiedSuccess: {}", isModifiedSuccess);
-			
+
 			// 기존 이미지 중 남은 이미지만 거르기
 			if(!oldImgFiles.equals("")) {
 				List<FileVO> files = this.fileService.getList("SAN_REVIEW", sanReviewId);
@@ -186,13 +208,13 @@ public class ReviewController {
 						log.info("***** item: {}", item);
 						// 파일시스템 상에서 이미지 제거
 						File file = new File(item.getPath());
-						
+
 						if(file.delete()) { // 파일 삭제 시도
 							log.info("파일 시스템에서 이미지 삭제 성공", file);
 						} else {
 							log.info("파일 시스템에서 이미지 삭제 실패", file);
 						} // if-else
-						
+
 						// 수정된 후기글에서 제거된 이미지 파일을 제거
 						boolean isRemoveSuccess = this.fileService.remove("SAN_REVIEW", sanReviewId, item.getUuid());
 						log.trace("isRemoveSuccess: {}", isRemoveSuccess);
@@ -242,7 +264,7 @@ public class ReviewController {
 
 				return "redirect:/review";
 			} // if
-			
+
 			return "redirect:/review";
 		} catch (Exception e) {
 			throw new ControllerException(e);

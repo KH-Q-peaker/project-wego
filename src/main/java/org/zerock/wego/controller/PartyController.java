@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -52,85 +53,105 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("/party")
 @Controller
 public class PartyController {
-	
+
 	private final PartyService partyService;
 	private final CommentService commentService;
 	private final JoinService joinService;
 	private final SanInfoService mountainService;
 	private final FileService fileService;
 	private final FavoriteService favoriteService;
-  
-	
+
+
+	@GetMapping("")
+	public String party(Model model) throws ControllerException {
+		log.trace("party({}) invoked.", model);
+
+		try {
+			Objects.requireNonNull(partyService);
+			log.trace("@@ this.partyService: {}", this.partyService);
+
+			List<PartyViewVO> partyList = this.partyService.getList();
+
+			model.addAttribute("partyList", partyList);
+
+			return "party/party";
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	} // party
+
+
+
 	@ModelAttribute("target")
 	PageInfo createPageInfo(Integer partyId) {
 		log.trace("createPageInfo() invoked.");
-		
+
 		PageInfo target = PageInfo.builder()
 							.targetGb("SAN_PARTY")
 							.targetCd(partyId)
 							.build();
 		return target;
 	}// createdBoardDTO
-	
-	
-	
+
+
+
 	// 모집글 상세 조회 
 	@GetMapping("/{partyId}") 
 	public ModelAndView showDetailById(@PathVariable("partyId")Integer partyId, 
 										@SessionAttribute("__AUTH__")UserVO user,
 										PageInfo target) throws Exception{
 		log.trace("showDetailById({}, {}) invoked.", partyId, user);
-		
+
 			target = this.createPageInfo(partyId);
-			
-			
+
+
 			ModelAndView mav = new ModelAndView();
-			
+
 
 			PartyViewVO party = this.partyService.getById(partyId);
-			
+
 			if(party == null) {
 				throw new NotFoundPageException("party not found : " + partyId);
 			}// if  
-			
-			
+
+
 			Integer userId = user.getUserId();
-			
-			
+
+
 			JoinDTO join = JoinDTO.builder()
 							.sanPartyId(partyId)
 							.userId(userId)
 							.build();
-			
+
 			boolean isJoin = this.joinService.isUserJoined(join);
-			
-		
+
+
 //			boolean isLike = this.likeService.isUserLiked(target, userId);
 			FavoriteDTO favorite = new FavoriteDTO();
 			favorite.setTargetGb("SAN_PARTY");
 			favorite.setTargetCd(partyId);
 			favorite.setUserId(userId);
-			
+
 			boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
-			
+
 			int commentCount = this.commentService.getCommentsCount(target);
-			
+
 
 			LinkedBlockingDeque<CommentViewVO> comments = commentService.getCommentOffsetByTarget(target, 0);
 
-			
+
 			mav.addObject("party", party);
 			mav.addObject("isJoin", isJoin);
 			mav.addObject("isFavorite", isFavorite);
 			mav.addObject("commentCount", commentCount);
 //			mav.addObject("userPic", userPic);
 //			mav.addObject("partyImg", partyImg);
-			
+
 			if(comments != null) {
-				
+
 				mav.addObject("comments", comments);
 			}// if
-			
+
 			ObjectMapper objectMapper = new ObjectMapper();
 			String targetJson = objectMapper.writeValueAsString(target);
 			mav.addObject("target", targetJson);
@@ -140,8 +161,8 @@ public class PartyController {
 			return mav;
 
 	}// showDetailById
-	
-	
+
+
 	@GetMapping(
 			path = "/modify/{partyId}"
 			)
@@ -153,21 +174,21 @@ public class PartyController {
 
 		try {
 			Integer postUserId = this.partyService.selectUserIdByPartyId(partyId);
-			
+
 			if(auth == null || !auth.getUserId().equals(postUserId)) {
 				return "error";
 			} // if
-			
+
 			PartyViewVO vo = this.partyService.getById(partyId);
 			model.addAttribute("party", vo);
-			
+
 			return "/party/modify";
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
 	} // detailAndModify
 
-	
+
 
 	// 모집글 삭제 
 	@DeleteMapping("/{partyId}")
@@ -175,7 +196,7 @@ public class PartyController {
 							 @SessionAttribute("__AUTH__") UserVO user,
 							 RedirectAttributes rttrs) throws ControllerException{
 			log.trace("removePartyByPartyId({}, {}) invoked.", partyId, user);
-		
+
 		try {
 			Integer userId = user.getUserId();
 
@@ -189,14 +210,14 @@ public class PartyController {
 			rttrs.addFlashAttribute("partyId", partyId); // 얘는 어따쓰지? 
 			rttrs.addAttribute("result", isSuccess ? "success" : "failure");
 
-			
+
 			return "redirect:/party";// 목록이동으로 하기 **** 아마 신영님꺼로 이동 
 
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
 	}// removeReview
-	
+
 
 	@PostMapping("/modify")
 	public String modify(
@@ -209,7 +230,7 @@ public class PartyController {
 			if(auth.getUserId() == dto.getUserId()) {
 				return "error";
 			} // if
-			
+
 			Integer sanId = this.mountainService.selectSanName(sanName);
 			dto.setSanInfoId(sanId);
 
@@ -251,9 +272,9 @@ public class PartyController {
 			if(auth == null) {
 				return "error";
 			} // if
-			
+
 			dto.setUserId(auth.getUserId());
-			
+
 			Integer sanId = this.mountainService.selectSanName(sanName);
 			dto.setSanInfoId(sanId);
 
@@ -295,7 +316,7 @@ public class PartyController {
 			throw new ControllerException(e);
 		} // try-catch
 	} // register
-	
+
 	// 참여 신청/취소 토글 
 		@PostMapping("/join/{partyId}")
 		ResponseEntity<String> offerJoin(@PathVariable Integer partyId, 
@@ -309,9 +330,9 @@ public class PartyController {
 								.sanPartyId(partyId)
 								.userId(userId)
 								.build();
-				
+
 				boolean isJoined = this.joinService.isJoinCreatedOrCancled(join);
-				
+
 				if (isJoined) {
 
 					return new ResponseEntity<>("OK", HttpStatus.OK);

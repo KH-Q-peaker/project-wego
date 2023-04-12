@@ -39,13 +39,13 @@
 			<beans:ref bean="authInterceptor"/> 
 		</interceptor> 
 		
-		<interceptor> 
+		<!-- <interceptor>  -->
 		<!-- =================================================================================== -->
-			<mapping path="/report/create" />
+			<!-- <mapping path="/report/create" /> -->
 		<!-- =================================================================================== -->
 
-			<beans:ref bean="reportInterceptor"/> 
-		</interceptor> 
+			<!-- <beans:ref bean="reportInterceptor"/>  -->
+		<!-- </interceptor>  -->
 	</interceptors>
 
 	<!-- 파일 업로드를 위한 빈 설정 -->
