@@ -37,7 +37,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
   <body>
     <div class="total-wrap">
       <!-- hearder start -->
-      <%@include file="/WEB-INF/views/common/noSearchHeader.jsp"%>
+      <%@include file="/WEB-INF/views/common/header.jsp"%>
       <!-- hearder end -->
       <!-- main start -->
       <section>
