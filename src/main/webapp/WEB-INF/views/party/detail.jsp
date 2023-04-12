@@ -29,7 +29,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 	
-<%-- 	<link rel="stylesheet" type="text/css"  href="${path}/resources/css/default.css"/> --%>
+	<link rel="stylesheet" type="text/css"  href="${path}/resources/css/default.css"/>
 	<link rel="stylesheet" type="text/css" href="${path}/resources/css/header.css"/>
 	<link rel="stylesheet" type="text/css" href="${path}/resources/css/footer.css"/>
 	<link rel="stylesheet" type="text/css" href="${path}/resources/css/like.css"/>
@@ -64,7 +64,7 @@
 				</div>
 				<div class="contents">
 					<img src=" ${party.userPic }" alt="" class="userpic" />
-					<div class="username">${party.nickName}</div>
+					<a class="username" href="http://localhost:8080/profile/${party.userId}">${party.nickName}</a>
 					<div class="likeCnt">
 						<input class="like ${isLike ? 'fill' : '' }" type="button" value="" /><label>${party.likeCnt }</label>
 					</div>

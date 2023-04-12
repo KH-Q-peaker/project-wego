@@ -22,7 +22,22 @@
 			AND target_gb = #{targetGb}
 			AND target_cd = #{targetCd}
 	</select>
-
+	
+	
+	<select
+		id="selectTotalCountByTarget">
+		
+		SELECT
+			NVL(count(user_id), 0)
+		FROM
+			like_tb
+		WHERE
+			target_gb = #{targetGb}
+			AND
+			target_cd = #{targetCd}	
+	</select>
+	
+	
 	<insert id="insert">
 		INSERT INTO
 		like_tb(user_Id, target_gb, target_cd, modified_dt, status)
@@ -39,4 +54,17 @@
 			AND target_gb = #{targetGb}
 			AND target_cd = #{targetCd}
 	</update>
+	
+	<delete
+		id="deleteByTarget">
+		
+		DELETE
+		FROM
+			like_tb
+		WHERE
+			target_gb = #{targetGb}
+			AND
+			target_cd = #{targetCd}
+	</delete>
+	
 </mapper>

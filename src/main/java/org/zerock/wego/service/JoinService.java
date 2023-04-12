@@ -83,7 +83,7 @@ public class JoinService {
 		
 		try {
 			
-			return (this.joinMapper.deleteById(dto) == 1);
+			return (this.joinMapper.delete(dto) == 1);
 			
 		}catch(Exception e) {
 			throw new ServiceException(e);
