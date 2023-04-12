@@ -6,6 +6,12 @@
 
 <mapper namespace="org.zerock.wego.mapper.SanInfoMapper">
 
+	<select id="selectAll"
+		resultType="org.zerock.wego.domain.SanInfoViewVO">
+		SELECT * 
+		FROM san_info_v
+	</select>
+
 	<select id="selectRandom10"
 		resultType="org.zerock.wego.domain.SanInfoViewVO">
 		SELECT *
@@ -18,14 +24,14 @@
 		WHERE rownum &lt;= 10
 	</select>
 
-	<select id="select"
+	<select id="selectById"
 		resultType="org.zerock.wego.domain.SanInfoViewVO">
 		SELECT *
 		FROM san_info_v
 		WHERE san_info_id = #{sanInfoId}
 	</select>
 
-	<select id="selectSanName" resultType="Integer">
+	<select id="selectIdBySanName" resultType="Integer">
 		SELECT san_info_id
 		FROM san_info_v
 		WHERE san_name = #{sanName}

@@ -180,8 +180,9 @@ public class ReviewController {
 			} // if
 			
 			ReviewViewVO vo = this.reviewService.getById(sanReviewId);
-			
-			Integer sanId = this.sanInfoService.selectSanName(sanName);
+
+			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
+      
 			dto.setSanInfoId(sanId);
 			
 			boolean isSuccess = this.reviewService.isModified(dto);
@@ -251,8 +252,9 @@ public class ReviewController {
 			if(auth == null) {
 				return "error";
 			} // if
-			
-			Integer sanId = this.sanInfoService.selectSanName(sanName);
+
+			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
+
 			dto.setSanInfoId(sanId);
 
 			dto.setUserId(auth.getUserId());

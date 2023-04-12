@@ -4,16 +4,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 import org.zerock.wego.domain.PartyDTO;
 import org.zerock.wego.domain.PartyViewVO;
 
 
 public interface PartyMapper {
 
-	@Select("SELECT * FROM san_party_v ORDER BY created_dt DESC")
 	public abstract List<PartyViewVO> selectAll();
-	
 	public abstract Set<PartyViewVO> selectRandom10();
 	public abstract Integer selectUserIdByPartyId(Integer partyId);
 	public abstract Long insert(PartyDTO dto);

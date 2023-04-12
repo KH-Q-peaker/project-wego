@@ -19,7 +19,6 @@ import lombok.extern.log4j.Log4j2;
 @Controller
 @RequestMapping("/report")
 public class ReportController {
-
 	
 	private final ReportService reportService;
 	

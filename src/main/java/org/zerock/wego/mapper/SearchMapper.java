@@ -9,8 +9,8 @@ import org.zerock.wego.domain.ReviewViewVO;
 
 public interface SearchMapper {
 	
-	public abstract Set<SanInfoViewVO> selectSearchSanInfo3(String search);
-	public abstract Set<PartyViewVO> selectSearchParty3(String search);
-	public abstract Set<ReviewViewVO> selectSearchReview3(String search);
+	public abstract Set<SanInfoViewVO> selectSearchSanInfo3ByQuery(String query);
+	public abstract Set<PartyViewVO> selectSearchParty3ByQuery(String query);
+	public abstract Set<ReviewViewVO> selectSearchReview3ByQuery(String query);
 	
 } // end interface

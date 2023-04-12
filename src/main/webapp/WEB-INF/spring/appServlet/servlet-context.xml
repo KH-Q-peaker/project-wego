@@ -32,7 +32,7 @@
 			<mapping path="/party/**" />
 		<!-- =================================================================================== -->
 			
-			<exclude-mapping path="/"/> 
+			<!-- <exclude-mapping path="/"/>  -->
 			<exclude-mapping path="/info/**"/> 
 			<exclude-mapping path="/search/**"/> 
 			
@@ -40,6 +40,16 @@
 		</interceptor> 
 		<!--
 		<interceptor> 
+
+		<!-- =================================================================================== -->
+		<!-- 로그인 테스트 하고 싶은 페지지의 url 추가 -->
+			<mapping path="/**" />
+			
+			<beans:ref bean="afterLoginInterceptor"/> 
+		</interceptor>
+		
+		<!-- <interceptor> 
+
 			<mapping path="/report/create" />
 
 			<beans:ref bean="reportInterceptor"/> 
@@ -47,7 +57,7 @@
 	</interceptors>
 
 	<!-- 파일 업로드를 위한 빈 설정 -->
-<!-- 
+
 	<beans:bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<beans:property name="defaultEncoding" value="UTF-8" />
@@ -57,7 +67,6 @@
 			value="20971520" />
 		<beans:property name="preserveFilename" value="true" />
 		<beans:property name="uploadTempDir"
-			value="file:/Users/isojin/Desktop/ttt" />
+			value="file:/Users/g9/Desktop/" />
 	</beans:bean>
- -->
 </beans:beans>

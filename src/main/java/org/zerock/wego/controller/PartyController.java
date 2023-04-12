@@ -55,7 +55,7 @@ public class PartyController {
 	private final PartyService partyService;
 	private final CommentService commentService;
 	private final JoinService joinService;
-	private final SanInfoService mountainService;
+	private final SanInfoService sanInfoService;
 	private final FileService fileService;
 	private final FavoriteService favoriteService;
 	private final ReportService reportService;
@@ -148,7 +148,7 @@ public class PartyController {
 		log.trace("modify({}, {}, {}) invoked.", auth, partyId, model);
 
 		try {
-			Integer postUserId = this.partyService.selectUserIdByPartyId(partyId);
+			Integer postUserId = this.partyService.getUserIdByPartyId(partyId);
 			
 			if(auth == null || !auth.getUserId().equals(postUserId)) {
 				return "error";
@@ -200,7 +200,7 @@ public class PartyController {
 				return "error";
 			} // if
 			
-			Integer sanId = this.mountainService.selectSanName(sanName);
+			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 			dto.setSanInfoId(sanId);
 
 			Timestamp dateTime = Timestamp.valueOf(date + " " + time + ":00");
@@ -213,7 +213,8 @@ public class PartyController {
 
 				imgFile.transferTo(new File(fileVo.get(0).getPath()));
 
-				this.fileService.modify("SAN_PARTY", sanPartyId, oldFileId, imgFile.getOriginalFilename());
+				boolean isModifySuccess = this.fileService.modify("SAN_PARTY", sanPartyId, oldFileId, imgFile.getOriginalFilename());
+				log.trace("isModifySuccess: {}", isModifySuccess);
 			} // if
 
 			boolean isSuccess = this.partyService.modify(dto);
@@ -244,14 +245,14 @@ public class PartyController {
 			
 			dto.setUserId(auth.getUserId());
 			
-			Integer sanId = this.mountainService.selectSanName(sanName);
+			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 			dto.setSanInfoId(sanId);
 
 			Timestamp dateTime = Timestamp.valueOf(date + " " + time + ":00");
 			dto.setPartyDt(dateTime);
 
 			boolean isSuccess = this.partyService.register(dto);
-			log.info("success: {}", isSuccess);
+			log.info("isSuccess: {}", isSuccess);
 
 			if (imgFile != null && !"".equals(imgFile.getOriginalFilename())) {
 
