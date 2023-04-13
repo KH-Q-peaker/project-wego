@@ -155,6 +155,10 @@ h2 {
   font-weight: bolder;
   color: white;
   grid-area: badge-header;
+  align-items: center;
+}
+a.badge-setting {
+    color: white;
 }
 /* 그리드 영역 분배 */
 .badge-item1 {

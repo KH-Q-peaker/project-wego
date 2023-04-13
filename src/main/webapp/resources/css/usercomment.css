@@ -51,7 +51,7 @@ tbody > td {
 }
 .middle .t4 ,
 .middle .t5 {
-  width: 40px;
+  width: 30px;
 }
 @media screen and (max-width: 838px) {
   .cotents {
@@ -67,9 +67,8 @@ tbody > td {
   .middle .t3 {
     width: 50px;
   }
-  .middle .t4,
   .middle .t5 {
-    width: 30px;
+    width: 17px;
   }
 }
 /* 모바일일때  */
@@ -97,7 +96,7 @@ tbody > td {
     width: 150px;
   }
   .middle .t3 {
-    width: 80px;
+    width: 35px;
   }
   .middle .t1,
   .middle .t4 {
