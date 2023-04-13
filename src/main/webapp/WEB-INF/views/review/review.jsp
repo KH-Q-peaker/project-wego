@@ -63,7 +63,7 @@
 
 					<!-- Item -->
 					<c:forEach var="item" items="${reviewList}">
-						<a href="/review/detail/${item.sanReviewId}">
+						<a href="/review/${item.sanReviewId}">
 							<div class="review-item">
 								<img class="user-img" src="/img/${fn:substring(item.userPic, 10, 55)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>

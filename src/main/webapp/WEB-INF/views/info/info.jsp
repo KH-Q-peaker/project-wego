@@ -66,7 +66,7 @@
 
 					<!-- Item -->
 					<c:forEach var="item" items="${sanInfoList}">
-						<a href="/info/detail/${item.sanInfoId}">
+						<a href="/info/${item.sanInfoId}">
 							<div class="mountain-item">
 								<img class="mountain-img" src="/img/${fn:substring(item.img, 10, 55)}" alt="img" />
 								<h3 class="mountain-name" id="mountainName">${item.sanName}</h3>
