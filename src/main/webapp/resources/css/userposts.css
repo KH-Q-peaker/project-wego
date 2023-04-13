@@ -115,7 +115,7 @@ li.currPage:active {
   }
   .middle .t4,
   .middle .t5 {
-    width: 33px;
+    width: 37px;
   }
 }
 /* 모바일일때  */
@@ -145,7 +145,7 @@ li.currPage:active {
     width: 150px;
   }
   .middle .t3 {
-    width: 80px;
+    width: 70px;
   }
   .middle .t1,
   .middle .t4 {
