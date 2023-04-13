@@ -158,7 +158,7 @@ h2 {
   align-items: center;
 }
 a.badge-setting {
-    color: white;
+  color: white;
 }
 /* 그리드 영역 분배 */
 .badge-item1 {
@@ -230,6 +230,10 @@ input.profileMenu {
   font-size: medium !important;
   border-style: none !important;
   background-color: #4ec53d00 !important;
+  display: inline-block;
+  width: 100%;
+  border-radius: 15px;
+  height: 100%;
 }
 .profileMenu:hover,
 .profileMenu:focus {

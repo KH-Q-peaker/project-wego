@@ -63,7 +63,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     ><input
                       type="button"
                       class="report"
-                      name="report"
+                      name="reportuser"
                       value="신고&#128680;"
                     />
                   </span>
