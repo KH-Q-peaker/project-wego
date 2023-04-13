@@ -51,7 +51,7 @@ tbody > td {
 }
 .middle .t4,
 .middle .t5 {
-  width: 55px;
+  width: 60px;
 }
 
 #pagination {
@@ -115,11 +115,14 @@ li.currPage:active {
   }
   .middle .t4,
   .middle .t5 {
-    width: 30px;
+    width: 33px;
   }
 }
 /* 모바일일때  */
 @media screen and (max-width: 756px) {
+	th, td {
+	    padding: 10px 5px 10px 5px;
+	}
   .cotents {
     margin: 5px;
     font-size: 12px;
