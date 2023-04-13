@@ -93,52 +93,43 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
   </div>
 </div>
 <script>
-function selectClickCurrPage() {
-        	  var availPageNumList = document.querySelectorAll('#currPageNum');
-        	  console.log("********PageNum",event.target.innerText);
-              var currPage = event.target.innerText;
-              var amount = 5;
-              $.ajax({
-                    type: 'get',
-                    url: '/profile/userposts',
-                    data:{"currPage":currPage,"amount":5,userId:"${userId}"},
-                    success: function(data){
-                    	console.log("amount?",amount);
-                        $(".cotents").load("/profile/userposts?userId="+userId+"&currPage="+currPage+"&amount="+amount);
-                    }//success
-             	 });//ajax
-          }//selectClickCurrPage
-          
-function selectClickCurrPagePrev () {
-		 console.log("**************Prev");
-		 var currPage = $( '#currPagePrev' ).val();
-		 var amount = 5;
-		 console.log("***********",currPage);
-		 $.ajax({
-			   type: 'get',
-		      url: '/profile/userposts',
-		      data:{"currPage":currPage,"amount":5,userId:"${userId}"},
-		      success: function(data){
-		      	console.log("amount?",amount);
-		          $(".cotents").load("/profile/userposts?userId="+userId+"&currPage="+currPage+"&amount="+amount);
-		      }//success
-		   }); //ajax
-		} //selectClickCurrPagePrev
-
- function selectClickCurrPageNext () {
-	 	 console.log("**************Next");
-	     var amount = 5;
-         var currPage = $( '#currPageNext' ).val();
-         console.log("***********",currPage);
-         $.ajax({
-	  		   type: 'get',
-	  	       url: '/profile/userposts',
-	  	       data:{"currPage":currPage,"amount":5,userId:"${userId}"},
-	  	       success: function(data){
-	  	       	console.log("amount?",amount);
-	  	           $(".cotents").load("/profile/userposts?userId="+userId+"&currPage="+currPage+"&amount="+amount);
-  	       	}//success
-         }); //ajax
-} //selectClickCurrPageNext
+	function selectClickCurrPage() {
+	              var currPage = event.target.innerText;
+	              var amount = 5;
+	              $.ajax({
+	                    type: 'get',
+	                    url: '/profile/userposts',
+	                    data:{"currPage":currPage,"amount":5,userId:"${userId}"},
+	                    success: function(data){
+	                        $(".cotents").load("/profile/userposts?userId="+userId+"&currPage="+currPage+"&amount="+amount);
+	                    }//success
+	             	 });//ajax
+	          }//selectClickCurrPage
+	          
+	function selectClickCurrPagePrev () {
+			 var currPage = $( '#currPagePrev' ).val();
+			 var amount = 5;
+			 $.ajax({
+				   type: 'get',
+			      url: '/profile/userposts',
+			      data:{"currPage":currPage,"amount":5,userId:"${userId}"},
+			      success: function(data){
+			          $(".cotents").load("/profile/userposts?userId="+userId+"&currPage="+currPage+"&amount="+amount);
+			      }//success
+			   }); //ajax
+			} //selectClickCurrPagePrev
+	
+	 function selectClickCurrPageNext () {
+		     var amount = 5;
+	         var currPage = $( '#currPageNext' ).val();
+	         $.ajax({
+		  		   type: 'get',
+		  	       url: '/profile/userposts',
+		  	       data:{"currPage":currPage,"amount":5,userId:"${userId}"},
+		  	       success: function(data){
+		  	           $(".cotents").load("/profile/userposts?userId="+userId+"&currPage="+currPage+"&amount="+amount);
+	  	       	}//success
+	         }); //ajax
+	} //selectClickCurrPageNext
           
 </script>
