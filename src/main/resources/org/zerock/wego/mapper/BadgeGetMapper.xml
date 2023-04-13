@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.wego.mapper.BadgeGetMapper">
+	<!-- 특정 유저의 뱃지 획득 내역에서 데이터를 조회 -->
+	<select id="selectWithUserId"
+		resultType="org.zerock.wego.domain.BadgeGetVO">
+
+		SELECT
+			*
+		FROM
+			badge_get_v
+		WHERE
+			user_id = #{userId}
+		ORDER BY
+			badge_id, created_dt
+
+	</select>
+	<!-- 특정 유저가 선택한 뱃지의 상태(대표상태)를 선택한 순서로 초기화 -->
+	<update id="updatePickedBadgeStatusToPickedSequence">
+
+		UPDATE
+			badge_get_tb
+		SET
+			status = #{pickedSequence}
+		WHERE
+			user_id = #{userId} AND
+			badge_id = #{pickedBadgeId}
+
+	</update>
+	<!-- 특정 유저가 선택한 뱃지를 제외하고 나머지 뱃지의 상태(대표상태)를 "선택되지 않음('N')"으로 초기화 -->
+	<update id="updateNotPickedBadgeStautToN">
+
+		UPDATE 
+			badge_get_tb
+		SET
+			status = 'N'
+		WHERE
+			user_id = #{userId} AND
+		<foreach item="pickList" collection="pickList"
+        open="badge_id NOT IN (" separator="," close=")">
+          #{pickList}
+    </foreach>
+	</update>
+</mapper>
