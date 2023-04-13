@@ -65,7 +65,7 @@
 
 					<!-- Item -->
 					<c:forEach var="item" items="${partyList}">
-						<a href="/party/detail/${item.sanPartyId}">
+						<a href="/party/${item.sanPartyId}">
 							<div class="recruit-item">
 								<img class="user-img" src="/img/${fn:substring(item.userPic, 10, 55)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
