@@ -363,44 +363,44 @@ const formCheck = () => {
   let contentResult = ""; // formData에 contents로 담을 텍스트
   const imgFileNames = []; // 이미지 파일명 저장(중간 제거된 이미지 유무를 위함)
   const oldImgFiles = []; // 기존 이미지 파일 체크
-  
-for (let i = 0; i < contentChildNodes.length; i++) {
-  if (contentChildNodes[i].nodeName === "IMG") {
-    contentResult += "<img>";
 
-    if (contentChildNodes[i].src.slice(0, 4) === "data") {
-      // 신규 이미지로 판단(MultipartFile)
-      imgFileNames.push(contentChildNodes[i].alt);
-    } else {
-      // 기존 이미지로 판단
-      // UUID를 객체에 저장
-      oldImgFiles.push(
-        contentChildNodes[i].src.slice(
-          contentChildNodes[i].src.lastIndexOf("/") + 1
-        )
-      );
-    } // if-else
-  } // if
-  
-  if (contentChildNodes[i].nodeName === "#text") {
-    contentResult += contentChildNodes[i].nodeValue;
-    continue;
-  } // if
-  
-  contentResult += contentChildNodes[i].innerText;
-} // for
+  for (let i = 0; i < contentChildNodes.length; i++) {
+    if (contentChildNodes[i].nodeName === "IMG") {
+      contentResult += "<img>";
+
+      if (contentChildNodes[i].src.slice(0, 4) === "data") {
+        // 신규 이미지로 판단(MultipartFile)
+        imgFileNames.push(contentChildNodes[i].alt);
+      } else {
+        // 기존 이미지로 판단
+        // UUID를 객체에 저장
+        oldImgFiles.push(
+          contentChildNodes[i].src.slice(
+            contentChildNodes[i].src.lastIndexOf("/") + 1
+          )
+        );
+      } // if-else
+    } // if
+
+    if (contentChildNodes[i].nodeName === "#text") {
+      contentResult += contentChildNodes[i].nodeValue;
+      continue;
+    } // if
+
+    contentResult += contentChildNodes[i].innerText;
+  } // for
 
   // 폼 데이터 저장(산이름, 제목, 내용)
-  if(selector("#upload").innerText == "수정") {
-	// input:hidden으로 수정할 후기글 번호를 전송
-	formData.set("sanReviewId", form.elements.sanReviewId.value);
+  if (selector("#upload").innerText == "수정") {
+    // input:hidden으로 수정할 후기글 번호를 전송
+    formData.set("sanReviewId", form.elements.sanReviewId.value);
   } // if
-  
+
   formData.set("sanName", form.elements.sanName.value);
   formData.set("title", form.elements.title.value);
   formData.set("contents", contentResult);
   formData.set("oldImgFiles", oldImgFiles);
-    console.log("oldImgFiles", oldImgFiles);
+  console.log("oldImgFiles", oldImgFiles);
 
   for (let key in imgFiles) {
     if (imgFileNames.includes(imgFiles[key].name)) {
@@ -414,24 +414,41 @@ for (let i = 0; i < contentChildNodes.length; i++) {
 // 등록 여부 재확인 -> 예(폼 전송) 이벤트
 selector(".upload input[type=submit]").onclick = (e) => {
   e.preventDefault();
-    
-  fetch(
-	selector("#upload").innerText == "등록" ? 
-	"/review/register" : "/review/modify", {
-    method: "POST",
-    body: formData,
-  }).then(res => {
-	self.location = res.url
-	});
+
+  const cookies = document.cookie.split(";");
+  let value;
+
+  for (let index in cookies) {
+    if (cookies[index].split("=")[0].trim() == "posted") {
+      value = cookies[index].split("=")[1].trim();
+    } // if
+  } // for
+
+  console.log("value: ", value);
+  
+  if (value !== "true") {
+    fetch(
+      selector("#upload").innerText == "등록"
+        ? "/review/register"
+        : "/review/modify",
+      {
+        method: "POST",
+        body: formData,
+      }
+    ).then((res) => {
+      self.location = res.url;
+    });
+  } // if
 };
 
 // 후기글 수정 시 이미지 경로 삽입
-window.onload = function() {
-    if(selector("#upload").innerText == "수정") {
-        let order = 0;
-        selector("#contents").childNodes.forEach(item => {
-            if(item.nodeName === "IMG") {
-                item.src = fileList[order++];
-            }
-        })
-    }}
+window.onload = function () {
+  if (selector("#upload").innerText == "수정") {
+    let order = 0;
+    selector("#contents").childNodes.forEach((item) => {
+      if (item.nodeName === "IMG") {
+        item.src = fileList[order++];
+      }
+    });
+  }
+};

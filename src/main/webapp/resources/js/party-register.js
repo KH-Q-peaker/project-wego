@@ -402,12 +402,28 @@ const formCheck = () => {
 selector(".upload input[type=submit]").onclick = (e) => {
   e.preventDefault();
 
-  fetch(
-	selector("#upload").innerText == "등록" ? 
-	"/party/register" : "/party/modify", {
-    method: "POST",
-    body: formData,
-  }).then(res => {
-	self.location = res.url
-	});
+  const cookies = document.cookie.split(";");
+  let value;
+
+  for (let index in cookies) {
+    if (cookies[index].split("=")[0].trim() == "posted") {
+      value = cookies[index].split("=")[1].trim();
+    } // if
+  } // for
+
+  console.log("value: ", value);
+
+  if (value !== "true") {
+    fetch(
+      selector("#upload").innerText == "등록"
+        ? "/party/register"
+        : "/party/modify",
+      {
+        method: "POST",
+        body: formData,
+      }
+    ).then((res) => {
+      self.location = res.url;
+    });
+  } // if
 };
