@@ -18,7 +18,7 @@ public class ReportService {
 	private final ReportMapper reportMapper;
 
 	// 신고 생성  
-	public boolean create(ReportDTO dto) throws ServiceException {
+	public boolean isCreate(ReportDTO dto) throws ServiceException {
 		log.trace("create({}) invoked.", dto);
 		
 		try {
@@ -46,7 +46,7 @@ public class ReportService {
 	}// getTotalCount
 	
 
-	public boolean removeAllByTarget(String targetGb, Integer targetCd) throws Exception{
+	public boolean isRemoveByTarget(String targetGb, Integer targetCd) throws Exception{
 		log.trace("removeAllByTarget({}, {})", targetGb, targetCd);
 		
 

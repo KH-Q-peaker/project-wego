@@ -47,7 +47,7 @@ public class ReviewService {
 	
 	// 특정 후기글 조회 
 	public ReviewViewVO getById(Integer reviewId) throws Exception {
-		log.trace("getById({}) invoked.", reviewId);	
+//		log.trace("getById({}) invoked.", reviewId);	
 		
 		try {
 			ReviewViewVO review = this.reviewMapper.selectById(reviewId);
@@ -68,8 +68,8 @@ public class ReviewService {
 	
 	
 	// 특정 후기글 삭제
-	public boolean isRemoved(Integer reviewId) throws ServiceException {
-		log.trace("isRemoved({}) invoked.", reviewId);
+	public boolean isRemove(Integer reviewId) throws ServiceException {
+//		log.trace("isRemoved({}) invoked.", reviewId);
 		
 		try {
 			return (this.reviewMapper.delete(reviewId) == 1);
