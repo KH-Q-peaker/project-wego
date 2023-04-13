@@ -5,13 +5,18 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -263,14 +268,22 @@ public class ReviewController {
 	@PostMapping("/register")
 	public String register(
 			@SessionAttribute("__AUTH__")UserVO auth, String sanName, List<MultipartFile> imgFiles, 
-			ReviewDTO dto, FileDTO fileDto) throws ControllerException {
-		log.trace("register({}, {}, {}, {}) invoked.", sanName, imgFiles, dto, fileDto);
+			ReviewDTO dto, FileDTO fileDto,
+			  @CookieValue(value="posted", required=false)boolean posted,
+			HttpServletResponse response) throws ControllerException {
+		log.trace("register({}, {}, {}, {}) invoked.", sanName, imgFiles, dto, posted, fileDto, response);
 
 		try {
 			if(auth == null) {
 				return "error";
 			} // if
 
+			if(!posted) { // false
+				Cookie cookie = new Cookie("posted", "true");				
+	            cookie.setMaxAge(30);
+	            response.addCookie(cookie);
+			} // if
+			
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 
 			dto.setSanInfoId(sanId);

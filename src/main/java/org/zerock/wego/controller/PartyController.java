@@ -8,10 +8,14 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -251,12 +255,20 @@ public class PartyController {
 	public String register(
 			@SessionAttribute("__AUTH__")UserVO auth,
 			String sanName, MultipartFile imgFile, String date, String time,	
-			PartyDTO dto, FileDTO fileDto) throws ControllerException {
+			PartyDTO dto, FileDTO fileDto,
+			@CookieValue(value="posted", required=false)boolean posted,
+			HttpServletResponse response) throws ControllerException {
 		log.trace("register({}, {}, {}, {}, {}, {}, {}) invoked.", auth, sanName, imgFile, date, time, dto, fileDto);
 
 		try {
 			if(auth == null) {
 				return "error";
+			} // if
+			
+			if(!posted) { // false
+				Cookie cookie = new Cookie("posted", "true");				
+	            cookie.setMaxAge(30);
+	            response.addCookie(cookie);
 			} // if
 			
 			dto.setUserId(auth.getUserId());
