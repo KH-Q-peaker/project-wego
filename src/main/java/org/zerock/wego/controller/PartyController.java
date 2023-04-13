@@ -115,7 +115,7 @@ public class PartyController {
 			join.setSanPartyId(partyId);
 			join.setUserId(userId);
 			
-			boolean isJoin = this.joinService.isUserJoined(join);
+			boolean isJoin = this.joinService.isUserJoin(join);
 			
 //			boolean isLike = this.likeService.isUserLiked(target, userId);
 			FavoriteDTO favorite = new FavoriteDTO();
@@ -187,10 +187,10 @@ public class PartyController {
 	public ResponseEntity<String> removeById(@PathVariable Integer partyId) throws Exception {
 		log.trace("removeById({}) invoked.", partyId);
 		
-		boolean isPartyRemoved = this.partyService.isRemovedById(partyId);
-		boolean isFileRemoved = this.fileService.remove("SAN_PARTY", partyId);
+		boolean isPartyRemoved = this.partyService.isRemoveById(partyId);
+		boolean isFileRemoved = this.fileService.isRemoveByTarget("SAN_PARTY", partyId);
 		boolean isLikeRemoved = this.favoriteService.removeAllByTarget("SAN_PARTY", partyId);
-		boolean isReportRemoved = this.reportService.removeAllByTarget("SAN_PARTY", partyId);
+		boolean isReportRemoved = this.reportService.isRemoveByTarget("SAN_PARTY", partyId);
 //			boolean isJoinRemoved = this.joinService.isJoinCancled(partyId, userId);
 		
 		boolean isSuccess = isPartyRemoved && isFileRemoved && isLikeRemoved && isReportRemoved;
@@ -229,7 +229,7 @@ public class PartyController {
 
 				imgFile.transferTo(new File(fileVo.get(0).getPath()));
 
-				boolean isModifySuccess = this.fileService.modify("SAN_PARTY", sanPartyId, oldFileId, imgFile.getOriginalFilename());
+				boolean isModifySuccess = this.fileService.isModify("SAN_PARTY", sanPartyId, oldFileId, imgFile.getOriginalFilename());
 				log.trace("isModifySuccess: {}", isModifySuccess);
 			} // if
 
@@ -293,7 +293,7 @@ public class PartyController {
 				fileDto.setUuid(uuid);
 				fileDto.setPath(imgPath);
 
-				boolean isFileUploadSuccess = this.fileService.register(fileDto);
+				boolean isFileUploadSuccess = this.fileService.isRegister(fileDto);
 				log.info("isFileUploadSuccess: {}", isFileUploadSuccess);
 			} // if
 
@@ -316,7 +316,7 @@ public class PartyController {
 				join.setSanPartyId(partyId);
 				join.setUserId(userId);
 				
-				boolean isJoined = this.joinService.isJoinCreatedOrCancled(join);
+				boolean isJoined = this.joinService.isJoinCreateOrCancle(join);
 				
 				if (isJoined) {
 

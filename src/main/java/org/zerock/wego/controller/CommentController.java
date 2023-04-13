@@ -94,7 +94,7 @@ public class CommentController {
 		dto.setUserId(userId);
 		
 		try {
-			boolean isRegistered = this.commentService.isCommentRegistered(dto);
+			boolean isRegistered = this.commentService.isCommentRegister(dto);
 			
 			if(isRegistered) {
 				

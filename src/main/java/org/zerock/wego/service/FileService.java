@@ -31,7 +31,7 @@ public class FileService {
 		} // try-catch
 	} // getList
 	
-	public boolean isRegistered(FileDTO dto) throws ServiceException {
+	public boolean isRegister(FileDTO dto) throws ServiceException {
 		log.trace("isRegistered({}) invoked.");
 		
 		try {
@@ -41,7 +41,7 @@ public class FileService {
 		} // try-catch
 	} // isRegistered
 
-	public boolean isModified(String targetGb, Integer targetCd, Integer fileId, String fileName) throws ServiceException {
+	public boolean isModify(String targetGb, Integer targetCd, Integer fileId, String fileName) throws ServiceException {
 		log.trace("isModified({}) invoked.");
 		
 		try {
@@ -63,13 +63,12 @@ public class FileService {
 			
 			return totalCount == deleteCount;
 
-			return this.mapper.deleteAll(targetGb, targetCd) == 1;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
 	} // isRemoveByTarget
 	
-	public boolean isRemoved(String targetGb, Integer targetCd, String uuid) throws ServiceException {
+	public boolean isRemove(String targetGb, Integer targetCd, String uuid) throws ServiceException {
 		log.trace("isRemoved({}, {}) invoked.", targetGb, targetCd, uuid);
 		
 		try {

@@ -122,8 +122,8 @@ public class PartyService {
 	
 	
 	// 모집글 삭제 
-	public boolean isRemovedById(Integer partyId) throws Exception{
-		log.trace("isRemovedById({}) invoked.", partyId);
+	public boolean isRemoveById(Integer partyId) throws Exception{
+//		log.trace("isRemovedById({}) invoked.", partyId);
 
 			int result = this.partyMapper.deleteById(partyId);
 			
