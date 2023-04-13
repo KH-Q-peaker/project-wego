@@ -99,14 +99,14 @@ $(() => {
 					reportModalcls();
 					setMessage("🚨 신고가 접수되었습니다. 🚨");
 					showModal();
-					setTimeout(hideModal, 500);
+					setTimeout(hideModal, 700);
 				}
 			},
 			error : function(){
 				reportModalcls();
 		 		setMessage("⚠️ 이미 접수된 신고입니다.");
 		 		showModal();
-		 		setTimeout(hideModal, 600);
+		 		setTimeout(hideModal, 700);
 			}
 		});
 	   }

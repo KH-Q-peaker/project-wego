@@ -123,13 +123,13 @@ public class CommentService {
 	
 
 	// 댓글 작성 
-	public boolean isCommentRegistered(CommentDTO dto) throws ServiceException{
+	public boolean isCommentRegister(CommentDTO dto) throws ServiceException{
 		log.trace("isCommentRegister({}) invoked", dto);
 		
 		try {
-			boolean isRegistered = (this.commentMapper.insertComment(dto) == 1); 
+			boolean isRegister = (this.commentMapper.insertComment(dto) == 1); 
 		
-			return isRegistered;
+			return isRegister;
 			
 		}catch(Exception e) {
 			throw new ServiceException(e);
@@ -143,9 +143,9 @@ public class CommentService {
 		log.trace("isMentionRegister({}) invoked", dto);
 		
 		try {
-			boolean isRegistered = (this.commentMapper.insertMention(dto) == 1);
+			boolean isRegister = (this.commentMapper.insertMention(dto) == 1);
 			
-			return isRegistered;
+			return isRegister;
 			
 		} catch(Exception e) {
 			throw new ServiceException(e);
@@ -157,26 +157,26 @@ public class CommentService {
 	// 뭐를 삭제하냐....
 	public boolean isCommentOrMentionRemove(Integer commentId) throws ServiceException {
 
- 		boolean isRemoved;
+ 		boolean isRemove;
  		
 		CommentViewVO originComment = this.commentMapper.selectById(commentId);
 		 
 		 
 		 if(originComment.getCommentGb().equals("COMMENT")){
 			 
-			 isRemoved = this.isCommentRemoved(commentId);
+			 isRemove = this.isCommentRemove(commentId);
 		 } else {
 			 
-			 isRemoved = this.isMentionRemoved(commentId);
+			 isRemove = this.isMentionRemoved(commentId);
 		 }// if-else
 		 
 		 
-		return isRemoved;
+		return isRemove;
 	}// isCommentOrMentionRemove
 	
 	
 	// 댓글 삭제
-	public boolean isCommentRemoved(Integer commentId) throws ServiceException {
+	public boolean isCommentRemove(Integer commentId) throws ServiceException {
 
 		
 		CommentDTO comment = new CommentDTO();

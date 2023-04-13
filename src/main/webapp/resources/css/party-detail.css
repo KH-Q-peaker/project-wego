@@ -62,15 +62,22 @@
 	color: rgba(78, 197, 61, 1);;
 }
 .likeCnt{
+	display: flex;
 	grid-row: 3;
 	grid-column: 1;
 	width: auto;
+	height: 30px;
 	margin: 30px auto;
+    align-items: center;
+    justify-content: start;
 }
 .like {
 	margin-right: 3px;
 }
-
+.likeCnt > label{
+	height: 30px;
+    padding-top: 20px;
+}
 .content {
 	margin: 0 auto;
 	/* padding: 0 15px; */

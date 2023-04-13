@@ -45,7 +45,7 @@ public class ReportController {
 							.reportGb(reportGb)
 							.build();
 		
-		boolean isCreated = (this.reportService.create(report));
+		boolean isCreated = (this.reportService.isCreate(report));
 		
 		if(isCreated) {
 			
