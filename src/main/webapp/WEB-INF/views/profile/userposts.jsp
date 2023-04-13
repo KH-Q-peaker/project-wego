@@ -41,7 +41,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
             </td>
             <td class="t3">
               <fmt:formatDate
-                pattern="yyyy년 MM월 dd일"
+                pattern="yyyy-MM-dd"
                 value="${profileVO.createDt}"
               ></fmt:formatDate>
             </td>

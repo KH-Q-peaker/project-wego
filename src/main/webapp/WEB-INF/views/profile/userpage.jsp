@@ -71,9 +71,11 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 <!--뱃지모음라인===== -->
                 <div class="badge-collection">
                   <div class="badge-header">
-                    <span>Badge Collection</span>
+                  <a class="badge-setting" href="/badge/${userProfile.userId}"
+                        >
+                    <span>Badge Collection</span></a>
                     <span>
-                      <a class="badge-setting" href=""
+                      <a class="badge-setting" href="/badge/${userProfile.userId}"
                         ><img src="/resources/img/badgeset.png" alt=""
                       /></a>
                     </span>

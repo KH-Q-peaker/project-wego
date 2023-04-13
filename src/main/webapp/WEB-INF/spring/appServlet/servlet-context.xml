@@ -29,8 +29,9 @@
 		<interceptor> 
 		<!-- =================================================================================== -->
 		<!-- 로그인 테스트 하고 싶은 페이지의 url 추가 -->
-			<mapping path="/badge/**" />
+			<mapping path="/review/**" />
 			<mapping path="/party/**" />
+			<mapping path="/profile/**" />
 		<!-- =================================================================================== -->
 			
 			<!-- <exclude-mapping path="/"/>  -->
@@ -40,13 +41,11 @@
 			<beans:ref bean="authInterceptor"/> 
 		</interceptor> 
 
-		<!-- <interceptor>  -->
-
-		<!-- =================================================================================== -->
-		<!-- 로그인 테스트 하고 싶은 페이지의 url 추가 -->
-		<!-- <mapping path="/**" />
+		<interceptor> 	
+			<mapping path="/**" />
+			
 			<beans:ref bean="afterLoginInterceptor"/> 
-		</interceptor> -->
+		</interceptor>
 		
 		<!-- <interceptor> 
 
@@ -65,7 +64,6 @@
 		<beans:property name="maxUploadSizePerFile"
 			value="20971520" />
 		<beans:property name="preserveFilename" value="true" />
-		<beans:property name="uploadTempDir"
-			value="file:/Temp" />
+		<beans:property name="uploadTempDir" value="file:/" />
 	</beans:bean>
 </beans:beans>
