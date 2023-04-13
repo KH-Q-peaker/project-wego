@@ -12,6 +12,7 @@
 
 	<resources mapping="/resources/**" location="/resources/" />
 	<resources mapping="/img/**" location="file:///C:/upload/" />
+	<resources mapping="/profileImage/**" location="file:///C:/temp/upload/profileImage/" />
 
 	<view-resolvers>
 		<jsp prefix="/WEB-INF/views/" suffix=".jsp" />
