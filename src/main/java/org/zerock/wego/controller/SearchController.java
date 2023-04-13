@@ -25,17 +25,17 @@ public class SearchController {
 	private SearchService service;
 
 	@GetMapping("/search")
-	public void searchResult(String search, Model model) throws ControllerException {
-		log.trace("searchResult({}) invoked.", search);
+	public void searchResult(String query, Model model) throws ControllerException {
+		log.trace("searchResult({}) invoked.", query);
 
 		try {
-			Set<SanInfoViewVO> sanInfoList = this.service.selectSearchSanInfo3(search);
+			Set<SanInfoViewVO> sanInfoList = this.service.selectSearchSanInfo3(query);
 			model.addAttribute("sanInfoList", sanInfoList);
 
-			Set<PartyViewVO> partyList = this.service.selectSearchParty3(search);
+			Set<PartyViewVO> partyList = this.service.selectSearchParty3(query);
 			model.addAttribute("partyList", partyList);
 
-			Set<ReviewViewVO> reviewList = this.service.selectSearchReview3(search);
+			Set<ReviewViewVO> reviewList = this.service.selectSearchReview3(query);
 			model.addAttribute("reviewList", reviewList);
 		} catch (Exception e) {
 			throw new ControllerException(e);
