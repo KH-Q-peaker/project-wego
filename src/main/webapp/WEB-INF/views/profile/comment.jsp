@@ -17,7 +17,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
           <th class="t1">게시판명</th>
           <th class="t2">내용</th>
           <th class="t3">작성일</th>
-          <th class="t4">조회수</th>
+          <th class="t4">글번호</th>
           <th class="t5">멘션수</th>
         </tr>
       </thead>
@@ -56,25 +56,23 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 value="${profileCommentVO.createdDt}"
               ></fmt:formatDate>
             </td>
-            <td class="t4">100</td>
+            <td class="t4">${profileCommentVO.targetCb}</td>
             <td class="t5">&#128140;${profileCommentVO.mentionCnt}</td>
           </tr>
         </c:forEach>
       </tbody>
     </table>
   </div>
-  <!-- 페이지네이션 기준갑 들어가야함. -->
+<!-- 페이지네이션 기준갑 들어가야함. -->
   <div id="pagination">
     <form action="paginationForm">
       <ul class="paginUl">
         <!-- Prev 표시 -->
         <c:if test="${pageMaker.prev}">
           <li class="prev">
-            <a
-              data-temp="${pageMaker.cri.setCurrPage(pageMaker.startPage - 1 )}"
-              href="/profile/userpage${userId}/${pageMaker.cri.pagingUri}"
-              >Prev</a
-            >
+            <span
+              data-temp="${pageMaker.cri.setCurrPage(pageMaker.startPage - 1 )}" onclick="selectClickCommentCurrPagePrev()">Prev</span>
+            <input type="hidden" id="currPagePrev" value="${pageMaker.startPage - 1}">
           </li>
         </c:if>
 
@@ -84,26 +82,21 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
           begin="${pageMaker.startPage}"
           end="${pageMaker.endPage}"
         >
-          <!-- 조건문으로 지금 현재 페이지확인 : 전송파라미터중 현페이지번호가같니?그럼비워 -->
+          <!-- 조건문으로 지금 현재 페이지확인 : 전송파라미터중 현페이지번호가같다면 비운다. -->
           <li class="${param.currPage eq pageNum ? 'currPage' : ''}">
-            <a
-              data-temp="${pageMaker.cri.setCurrPage(pageNum)}"
-              href="/profile/userpage${userId}/${pageMaker.cri.pagingUri}"
-              >${pageNum}</a
+            <span id="currPageNum" onclick="selectClickCommentCurrPage()">${pageNum}</span
             >
           </li>
           <!-- 숫자만 표시됨. -->
         </c:forEach>
 
         <!-- Next 표시 :  core 조건문 
-            현재페이지 기준으로 계산되어야함. 다 모델속성에 PageMaker저장되어잇음-->
+          현재페이지 기준으로 계산되어야함. 다 모델속성에 PageMaker저장되어잇음-->
         <c:if test="${pageMaker.next}">
           <li class="next">
-            <a
-              data-temp="${pageMaker.cri.setCurrPage(pageMaker.endPage+1)}"
-              href="/profile/userpage${userId}/${pageMaker.cri.pagingUri}"
-              >Next</a
-            >
+            <span
+              data-temp="${pageMaker.cri.setCurrPage(pageMaker.endPage+1)}" onclick="selectClickCommentCurrPageNext()">Next</span>
+              <input type="hidden" id="currPageNext" value="${pageMaker.endPage+1}">
           </li>
         </c:if>
       </ul>
