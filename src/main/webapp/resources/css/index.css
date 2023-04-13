@@ -1,0 +1,333 @@
+@charset "utf-8";
+
+body {
+  background: url(../images/Wegobg-01.png);
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background: linear-gradient(to right, #066c31, #3e8343ca); */
+}
+header .left {
+  float: left;
+  padding: 43px 0 0 78px;
+}
+header a {
+  color: #327314;
+}
+header h1 {
+  float: left;
+  padding: 0 108px 0 0;
+}
+header h1 a {
+  display: block;
+  width: 132px;
+  height: 50px;
+  background: url("../images/샘플로고.png") no-repeat 80%;
+  color: transparent;
+}
+header nav a {
+  display: block;
+  position: relative;
+  height: 50px;
+  line-height: 50px;
+  font-size: 17px;
+  font-weight: bold;
+}
+header nav a:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 13px;
+  width: 0;
+  height: 1px;
+  background: #53b255;
+  transition: width 0.5s;
+}
+header nav a:hover:before {
+  width: 100%;
+}
+header .close,
+header .all,
+header .left > div > div,
+header h2 {
+  display: none;
+}
+header .left > div {
+  float: left;
+}
+header .left > div nav li {
+  float: left;
+  padding: 0 20px 0 20px;
+}
+header > ul {
+  float: right;
+  padding: 51px 40px 0 0;
+}
+header > ul li {
+  float: left;
+  margin-left: -1px;
+}
+header > ul li a {
+  display: block;
+  width: 96px;
+  height: 38px;
+  line-height: 38px;
+  text-align: center;
+  font-size: 11px;
+  border-radius: 3px;
+}
+header .FAQ2 > i {
+  padding: 10px 0px 0px 15px;
+}
+header > ul li:first-child a {
+  border-radius: 3px 0 0 3px;
+}
+.bell {
+  filter: invert(36%) sepia(13%) saturate(4557%) hue-rotate(64deg)
+    brightness(90%) contrast(84%);
+  width: 25px;
+  padding: 0 15px 3px;
+}
+header > ul li:nth-last-of-type(2) a {
+  border-radius: 0 3px 3px 0;
+}
+header > ul li.join {
+  padding: 0 0 0 10px;
+}
+header > ul li.join a {
+  background: rgba(255, 255, 255, 0.44);
+}
+/* 로그인 후 보여지는걸로만들기. */
+#myPage {
+  visibility: hidden;
+}
+/* 내용물  */
+/* Desktop */
+.container {
+  display: inline-block;
+}
+@media screen and (min-width: 1100px) {
+  /* rank */
+  .rankers {
+    /* padding: 20px 20px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+  .rankers > div {
+    width: 300px;
+    /* height: 300px; */
+    border-radius: 15px;
+    padding: 10px 0 30px;
+    background-color: rgb(168, 255, 226);
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+  }
+  .top1 > .medal-img {
+    width: 50px;
+    height: 50px;
+    background: url(../svg/medal1.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+  .top2 > .medal-img {
+    width: 40px;
+    height: 40px;
+    background: url(../svg/medal2.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+  .top3 > .medal-img {
+    width: 30px;
+    height: 30px;
+    background: url(../svg/medal3.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+  .ranker-img {
+    margin: 20px 0;
+  }
+  .king-img {
+    width: 100px;
+    height: 100px;
+    background: url(../svg/king.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+  .mountain-img {
+    width: 100px;
+    height: 70px;
+    margin-top: -30px;
+    background: url(../svg/mountain.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+}
+/* Tablet*/
+@media screen and (max-width: 1099px) {
+  /* rank */
+  .rankers {
+    display: grid;
+    grid-template-rows: repeat(2, 50%);
+    grid-template-columns: repeat(2, 50%);
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+  .rankers > div {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    background-color: rgb(168, 255, 226);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .ranker-img {
+    margin: 20px 0;
+  }
+  .king-img {
+    width: 100px;
+    height: 100px;
+    background: url(../svg/king.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+  .mountain-img {
+    width: 100px;
+    height: 70px;
+    margin-top: -30px;
+    background: url(../svg/mountain.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+}
+
+/* Phone
+@media screen and (max-width: 767px) {
+} */
+/* common */
+img {
+  /* 드래그 방지 */
+  -webkit-user-drag: none;
+}
+/* container */
+.container {
+  position: absolute;
+  width: 60%;
+  height: auto;
+  top: 17%;
+  left: 23%;
+  margin: -50px 0 0 -50px;
+}
+/* container child - common */
+.mountain-info,
+.recruit,
+.review {
+  width: 100%;
+  margin: 30px 0;
+}
+.wrap {
+  overflow: scroll;
+  white-space: nowrap;
+  scrollbar-width: none;
+  user-select: none;
+  scroll-behavior: smooth;
+}
+.wrap::-webkit-scrollbar {
+  display: none;
+}
+.item {
+  display: inline-block;
+  width: 200px;
+  /* border: 1px solid black; */
+  border-radius: 15px;
+  padding: 20px;
+  margin: 0 10px;
+  text-align: center;
+  background-color: #fff;
+}
+.item > img {
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+.item > form {
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 10px 0 0;
+}
+#title {
+  margin: 10px auto;
+}
+.favorite {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  background: url(../svg/favorite.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+/* mountain-info - 개별 스타일 X */
+/* recruit */
+.user-info {
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  gap: 10px;
+}
+.user-info > img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+.item > hr {
+  border-top: 1px solid lightgray;
+  border-bottom: 0;
+  border-radius: 35px;
+  margin-bottom: 10px;
+}
+.recruit #title + img {
+  display: inline-block;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}
+.recruit-data {
+  text-align: left;
+}
+.recruit-data > p {
+  margin: 0;
+}
+.recruit-data > #mountainName {
+  text-align: center;
+}
+/* review */
+.top-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.top-info ~ img {
+  width: 100%;
+  border-radius: 15px;
+}
+.bottom-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.bottom-info > form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}

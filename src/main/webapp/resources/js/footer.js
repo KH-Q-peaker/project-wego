@@ -1,8 +1,8 @@
-$(()=>{
-
+$(() => {
   // footer fixed <-> relative converter
   footerSet = function () {
-    let footerOffsetTop = $("footer").offset().top - parseInt($("footer").css("margin-top"));
+    let footerOffsetTop =
+      $("footer").offset().top - parseInt($("footer").css("margin-top"));
     let windowInnerHeight = window.innerHeight;
     let footerOuterHeight = $("footer").outerHeight(true);
 
@@ -13,23 +13,21 @@ $(()=>{
     // console.log(totalWrapHeight - footerOuterHeight);
 
     if (footerOffsetTop < windowInnerHeight - footerOuterHeight) {
-        $("footer").css({
-            "position": 'fixed',
-        })
-        console.log("fixed")
+      $("footer").css({
+        position: "fixed",
+      });
+      console.log("fixed");
     } else if (totalWrapHeight > footerOffsetTop) {
-        $("footer").css({
-            "position": 'relative'
-            
-        })
-        console.log("relative")
+      $("footer").css({
+        position: "relative",
+      });
+      console.log("relative");
     }
-}
+  };
 
-footerSet();
+  footerSet();
 
-$(window).resize(function () {
+  $(window).resize(function () {
     footerSet();
-});
-
-}) // QJ
+  });
+}); // QJ

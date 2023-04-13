@@ -3,7 +3,7 @@
 /* common */
 body {
   margin: 0px;
-  background: url(../img/WegoBG.png);
+  background: url(../img/bg-wego.png);
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
@@ -97,7 +97,7 @@ header {
   display: block;
   width: 90px;
   height: 50px;
-  background: url(../img/WegoLogo.png);
+  background: url(../img/WEGOLOGO찐찐.png);
   background-repeat: no-repeat;
   background-size: contain;
   background-position-y: bottom;
@@ -108,7 +108,7 @@ header {
   display: block;
   width: 70px;
   height: 50px;
-  background: url(../img/WegoTitle.png);
+  background: url(../img/WEGOtile.png);
   background-repeat: no-repeat;
   background-size: contain;
   background-position-y: bottom;
@@ -141,7 +141,7 @@ header {
 
   justify-content: center;
 
-  width: 90px;
+  width: 85px;
 
   padding: 0 15px;
   margin: 0 5px;
@@ -151,7 +151,6 @@ header {
 
   transition: all 400ms ease;
 }
-
 .navbar li a {
   white-space: nowrap;
 }
@@ -343,7 +342,7 @@ header {
   .wegoLogo {
     width: 50px;
     height: 50px;
-    background: url(../img/WegoLogoSan.png);
+    background: url(../img/WEGOLOGO찐찐san.png);
     background-repeat: no-repeat;
     background-size: contain;
     background-position-y: center;
@@ -360,7 +359,7 @@ header {
 
   .navbar li {
     padding: 0 5px;
-    width: 70px;
+    width: 65px;
   }
 
   .user-profile-img {

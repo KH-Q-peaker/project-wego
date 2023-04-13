@@ -1,0 +1,501 @@
+/* 내정보구간 */
+.cotents {
+  overflow-x: auto;
+  height: max-content;
+  padding: 20px;
+  background-color: #ffffff;
+  position: relative;
+  border-radius: 15px;
+}
+
+.contents > h2 {
+  text-align: center;
+}
+
+.my-location p {
+  font-size: large;
+  margin-right: 20px;
+}
+.my-location p > span {
+  margin-right: 50px;
+}
+.my-location p > .my-city {
+  border: 2px;
+  border-left: #4ec53d solid;
+  box-sizing: content-box;
+  width: fit-content;
+}
+.my-city > label {
+  margin: 5px 5px;
+}
+
+select[name="sido1"] {
+  width: fit-content;
+  height: 40px;
+  margin: 5px 10px;
+  border: 0;
+  border-bottom: 1px solid lightgray;
+  margin-left: 0;
+  font-size: 14px;
+  position: relative;
+  z-index: 1;
+  background-color: #ffffff00;
+}
+
+select[name="gugun1"] {
+  width: fit-content;
+  height: 40px;
+  margin: 5px 10px 5px 0px;
+  border: 0;
+  border-bottom: 1px solid lightgray;
+  font-size: 14px;
+  position: relative;
+  z-index: 1;
+  background-color: #ffffff00;
+}
+
+/* 나의위치 커밋 */
+#upload {
+  display: inline-block;
+  box-sizing: border-box;
+  margin: 10px;
+  border-radius: 10px;
+  font-weight: bold;
+  padding: 8px 19px;
+  background-color: #4ec53d;
+  color: #fff;
+  border: 1px solid #cccccc5d;
+  cursor: pointer;
+  font-size: 14.5px !important;
+  width: 100px;
+  text-align: center;
+}
+
+/* 내용사진 */
+.my-taste {
+  display: block;
+  position: inherit;
+}
+.my-taste .my-tastein {
+  text-align: center;
+}
+.my-taste-pick {
+  display: inline-grid;
+  justify-content: space-around;
+  align-items: center;
+  justify-items: center;
+  text-align: center;
+  padding: 0px 10px 10px 10px;
+  font-size: 15px;
+  font-weight: bolder;
+  align-content: center;
+}
+.my-taste-pick img {
+  display: inline-block;
+  width: 200px;
+  border-radius: 35px;
+  padding: 20px;
+  /* margin: 0 10px; */
+  text-align: center;
+  /* background-color: rgb(0 0 0 / 22%); */
+}
+/* 내취향 */
+.my-taste-pick {
+  cursor: pointer;
+}
+/* 나의취향 선택 라디오버튼식으로 구현못함.  */
+input[type="radio"] img:checked + label {
+  background-color: #4ec53d;
+  color: #fff;
+}
+.my-taste-pick img:hover {
+  background-color: #4ec53d;
+}
+input[type="radio"].userPick > img:checked {
+  background-color: #4ec53d;
+}
+
+/* 라디오박스 */
+/* 라디오 버튼 숨기기 (원형 디스크) 푸시 버튼 효과를 생성하기 위해 레이블을 사용합니다.*/
+input[type="radio"] {
+  display: none;
+  margin: 10px;
+  padding: 5px 15px;
+}
+/* 레이블 (radiobuttons에 인접한)의 look'n'feel을 변경하시면 됩니다. 
+레이블에 여백을 추가하고 패딩을 추가해 주면 됩니다.*/
+input[type="radio"] + label {
+  display: inline-block;
+  box-sizing: border-box;
+  margin: 10px;
+  width: 100%;
+  border-radius: 10px;
+  font-weight: bold;
+  color: #fff;
+  padding: 8px 19px;
+  background-color: #a1a4a1;
+  border: 1px solid #cccccc5d;
+  cursor: pointer;
+  vertical-align: middle;
+  font-size: 14.5px !important;
+  width: 100px;
+  text-align: center;
+}
+
+input[name="user-taste-pick"] + label {
+  display: inline-block;
+  box-sizing: border-box;
+  margin: 10px;
+  width: 100%;
+  border-radius: 10px;
+  font-weight: bold;
+  color: #fff;
+  padding: 8px 19px;
+  background-color: #a1a4a1;
+  border: 1px solid #cccccc5d;
+  cursor: pointer;
+  vertical-align: middle;
+  font-size: 14.5px !important;
+  text-align: center;
+}
+.my-taste-pick img {
+	display: block;
+	margin: 0 auto;
+}
+
+.radio-items {
+  display: inline-flex;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+.radio-items > .radio-items-on {
+  display: table-cell;
+  height: fit-content;
+  text-align: center;
+}
+
+/* 선택한 라디오 단추 옆의 레이블에 대한 배경색 변경하면 강조 표시된 버튼으로 보이게*/
+input[type="radio"]:checked + label {
+  background-color: #4ec53d;
+  color: #fff;
+}
+.radio-items > p {
+  font-size: large;
+  margin-right: 50px;
+  width: 100px;
+}
+/* 회원탈퇴 */
+#end {
+  display: inline-block;
+  box-sizing: border-box;
+  margin: 10px;
+  border-radius: 10px;
+  font-weight: bold;
+  color: #fff;
+  padding: 8px 19px;
+  background-color: rgb(170, 170, 170);
+  border: 1px solid #cccccc5d;
+  cursor: pointer;
+  font-size: 14.5px !important;
+  width: 100px;
+  text-align: center;
+}
+
+.myinfo {
+  display: flex;
+  justify-content: space-between;
+}
+.myinfo-update input[type="button"] {
+  display: inline-block;
+  width: 100px;
+  height: 30px;
+  border: 0;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: rgb(170, 170, 170);
+  margin: 10px 10px;
+  cursor: pointer;
+}
+.myinfo-update input[type="submit"] {
+  display: inline-block;
+  width: 100px;
+  height: 30px;
+  border: 0;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #4ec53d;
+  margin: 10px 10px;
+  cursor: pointer;
+}
+.myinfo-update input[type="reset"] {
+  display: inline-block;
+  width: 100px;
+  height: 30px;
+  border: 0;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #f14a4a;
+  margin: 10px 10px;
+  cursor: pointer;
+}
+
+.myinfo-update {
+  width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  padding: 20px;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+}
+.alert-window {
+  width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  padding: 20px;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+}
+.alert-window button {
+  display: block;
+  width: 150px;
+  height: 50px;
+  border: 0;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #4ec53d;
+  margin: auto;
+}
+/* 재확인버튼 style */
+.myinfo-update .upload {
+  display: none;
+  width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  padding: 30px;
+  text-align: center;
+  background-image: none;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 150px;
+
+  transform: translate(-50%, -50%);
+}
+.myinfo-update .upload > input {
+  display: inline-block;
+  width: 100px;
+  height: 35px;
+  border: 0;
+  border-radius: 10px;
+  margin: 30px 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+}
+/* 탈퇴 모달창*/
+.withdraw-box,
+.withdraw-box2,
+.withdraw-box3 {
+  box-sizing: border-box;
+  display: none;
+  opacity: 0;
+  z-index: -1;
+  position: fixed;
+  width: 400px;
+  left: 50%;
+  top: 50%;
+  padding: 50px 40px;
+  transform: translate(-50%, -50%);
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 22%);
+}
+.withdraw-box3 {
+  width: 420px;
+}
+.withdraw-box.active,
+.withdraw-box2.active,
+.withdraw-box3.active {
+  z-index: 1;
+  display: block;
+  opacity: 1;
+}
+.withdraw-text,
+.withdraw-text2 {
+  box-sizing: border-box;
+  width: 320px;
+  padding: 30px 15px 30px 15px;
+  text-align: center;
+  border-radius: 10px;
+  height: 200px;
+  background-color: #d9d9d9;
+}
+.withdraw-text h2,
+.withdraw-text2 h2,
+.withdraw-text3 h2 {
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 32px;
+}
+.withdraw-text3 h2 {
+  line-height: 200%;
+}
+.withdraw-box p {
+  text-align: left;
+  font-size: 12px;
+  line-height: 250%;
+  color: white;
+}
+.withdwaw-button {
+  display: flex;
+  justify-content: space-around;
+}
+.withdwaw-no,
+.withdwaw-yes,
+.withdwaw-no2,
+.withdwaw-yes2 {
+  box-sizing: border-box;
+  cursor: pointer;
+  margin-top: 20px;
+  width: 150px;
+  height: 40px;
+  border-radius: 20px;
+  border: 0px;
+  background-color: #d9d9d9;
+}
+.withdraw-text2 input {
+  width: 250px;
+  height: 40px;
+  border-radius: 20px;
+  font-size: 20px;
+  text-align: center;
+  border: 0px;
+  background-color: #fff;
+}
+.withdraw-text2 input:focus {
+  border-style: none;
+  outline-style: none;
+  border: 2px solid #4ec53d;
+}
+.closebutton3,
+.closebutton4,
+.closebutton5
+ {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 2em;
+}
+.withdwaw-button3 {
+  display: flex;
+  justify-content: center;
+}
+.withdwaw-yes3 {
+  box-sizing: border-box;
+  cursor: pointer;
+  width: 170px;
+  height: 40px;
+  font-size: 20px;
+  border-radius: 20px;
+  border: 0px;
+  background-color: #d9d9d9;
+}
+
+/* 나의위치 안보이게하려면.. */
+.my-city {
+  display: none;
+}
+
+@media screen and (min-width: 426px) and (max-width: 768px) {
+  .cotents {
+    min-height: max-content;
+  }
+  .my-location p {
+    font-size: medium;
+  }
+  .my-taste-pick img {
+    display: inline-block;
+    width: 130px;
+    border-radius: 35px;
+    padding: 10px;
+    text-align: center;
+    /* background-color: #4ec53d; */
+  }
+  .radio-items > p {
+    font-size: large;
+    margin-right: 25px;
+    width: 88px;
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 425px) {
+  .cotents {
+    margin: 5px;
+    font-size: 13px;
+    min-height: max-content;
+  }
+  .my-location p span:first-child {
+  	display: block
+  }
+  .myinfo-update{
+  top: 75%
+  }
+  .my-taste-pick img {
+    width: 130px;
+    padding: 5px;
+    text-align: center;
+  }
+  .radio-items {
+    display: inline-flex;
+    border-radius: 10px;
+    box-sizing: border-box;
+    flex-direction: column;
+    align-content: space-around;
+    align-items: flex-start;
+  }
+  .my-location p > span {
+    margin: 5px 5px;
+  }
+  .radio-items > p {
+    font-size: large;
+    margin-right: 25px;
+    width: 88px;
+  }
+  .my-city select {
+    position: relative;
+  }
+}
+
+/* test */
+.show.myinfo-update {
+  display: block;
+}
