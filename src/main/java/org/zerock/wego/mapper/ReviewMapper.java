@@ -21,5 +21,6 @@ public interface ReviewMapper {
 	
 	// 특정 후기글 삭제 
 	public abstract Integer delete(@Param("reviewId")Integer reviewId);
-
+	
+	public abstract Integer hitsConutUp(@Param("reviewId")Integer reviewId); // 조회수 반영하기
 }// end interface

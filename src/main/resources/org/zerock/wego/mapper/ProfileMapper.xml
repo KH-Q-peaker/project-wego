@@ -25,7 +25,8 @@
 				USER_ID "user",
 				TITLE,
 				CREATED_DT,
-				LIKE_CNT "likeCnt"
+				LIKE_CNT "likeCnt",
+				COUNTVISIT "countVisit"
 			FROM 
 				SAN_REVIEW_V srt 
 			WHERE 
@@ -37,7 +38,8 @@
 				USER_ID "user",
 				TITLE,
 				CREATED_DT,
-				LIKE_CNT "likeCnt"
+				LIKE_CNT "likeCnt",
+				COUNTVISIT "countVisit"
 			FROM 
 				SAN_PARTY_V  srt 
 			WHERE 

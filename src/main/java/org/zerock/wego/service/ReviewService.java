@@ -55,7 +55,7 @@ public class ReviewService {
 			if(review == null) {
 				throw new NotFoundPageException("review not found : " + reviewId); // 얘왜 기본생성자없엄 
 			}// if
-			
+			this.reviewMapper.hitsConutUp(reviewId); //조회수증가.
 			return review;
 			
 		} catch (NotFoundPageException e) {

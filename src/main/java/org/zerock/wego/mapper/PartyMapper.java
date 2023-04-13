@@ -21,8 +21,9 @@ public interface PartyMapper {
 
 	// 특정 모집글 삭제 
 	public abstract Integer deleteById(@Param("partyId")Integer partyId);
-		
-		
+	
+	// 조회수 반영하기
+	public abstract Integer hitsConutUp(@Param("partyId")Integer partyId);		
 //====================================================================
 //	// 모집글 이미지 절대경로 조회 
 //	public abstract String selectPartyImgByPartyId(@Param("partyId")Integer partyId);

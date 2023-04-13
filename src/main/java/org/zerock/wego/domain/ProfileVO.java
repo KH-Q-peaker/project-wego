@@ -14,4 +14,5 @@ public class ProfileVO {
 	private String title; 			// 제목 
 	private Timestamp createDt;		// 생성일 
 	private Integer likeCnt; 		// 좋아요	
+	private Integer countVisit; 	// 조회수	
 } // end class
