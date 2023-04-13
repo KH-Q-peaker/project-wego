@@ -18,10 +18,10 @@ public class LogAdvice {
 	@Around("execution(* org.zerock.wego.service.*Service.*(..))")
 	public Object logging(ProceedingJoinPoint pjp) throws Throwable{
 
-		String ClassName = pjp.getSignature().getDeclaringTypeName();
-		String MethodName = pjp.getSignature().getName();
+		String className = pjp.getSignature().getDeclaringTypeName();
+		String methodName = pjp.getSignature().getName();
 		
-		log.trace(">> {}.{} invoked...", ClassName, MethodName);
+		log.trace(">> {}.{} invoked...", className, methodName);
 		
 //		long start = System.nanoTime();
 		long start = System.currentTimeMillis();
