@@ -240,7 +240,7 @@ public class ReviewController {
 						fileDto.setPath(imgPath);
 
 						try {
-							boolean isFileUploadSuccess = this.fileService.isRegistered(fileDto);
+							boolean isFileUploadSuccess = this.fileService.isRegister(fileDto);
 							log.info("isFileUploadSuccess: {}", isFileUploadSuccess);
 						} catch (ServiceException e) {
 							e.printStackTrace();
@@ -309,7 +309,7 @@ public class ReviewController {
 						fileDto.setPath(imgPath);
 
 						try {
-							boolean isFileUploadSuccess = this.fileService.isRegistered(fileDto);
+							boolean isFileUploadSuccess = this.fileService.isRegister(fileDto);
 							log.info("isFileUploadSuccess: {}", isFileUploadSuccess);
 						} catch (ServiceException e) {
 							e.printStackTrace();

@@ -229,7 +229,7 @@ public class PartyController {
 
 				imgFile.transferTo(new File(fileVo.get(0).getPath()));
 
-				boolean isModifySuccess = this.fileService.isModified("SAN_PARTY", sanPartyId, oldFileId, imgFile.getOriginalFilename());
+				boolean isModifySuccess = this.fileService.isModify("SAN_PARTY", sanPartyId, oldFileId, imgFile.getOriginalFilename());
 				log.trace("isModifySuccess: {}", isModifySuccess);
 			} // if
 
@@ -293,7 +293,7 @@ public class PartyController {
 				fileDto.setUuid(uuid);
 				fileDto.setPath(imgPath);
 
-				boolean isFileUploadSuccess = this.fileService.isRegistered(fileDto);
+				boolean isFileUploadSuccess = this.fileService.isRegister(fileDto);
 				log.info("isFileUploadSuccess: {}", isFileUploadSuccess);
 			} // if
 
