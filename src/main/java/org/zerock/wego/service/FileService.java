@@ -63,7 +63,6 @@ public class FileService {
 			
 			return totalCount == deleteCount;
 
-			return this.mapper.deleteAll(targetGb, targetCd) == 1;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
