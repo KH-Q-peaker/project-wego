@@ -28,8 +28,6 @@ implements HandlerInterceptor{
 			ModelAndView modelAndView
 			) throws Exception {
 		if(modelAndView != null) {
-			System.err.println(modelAndView);
-
 			UserVO authUserVO = (UserVO) modelAndView.getModelMap().getAttribute(SessionConfig.AUTH_KEY_NAME);
 
 			if(authUserVO != null) {

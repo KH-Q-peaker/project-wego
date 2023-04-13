@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <header>
 	<div class="header">
 		<div class="logoDiv">
-			<a href="#"> <span class="wegoLogo"></span> <span
+			<a href="/"> <span class="wegoLogo"></span> <span
 				class="wogoTitle"></span>
 			</a>
 		</div>
@@ -21,13 +23,22 @@
 		</div>
 		<div class="user">
 			<!-- 로그인 상태 -->
-			<img id="userImg" class="user-profile-img"
-				src="https://picsum.photos/id/684/600/400" alt="회원 프로필 이미지" />
+			<c:choose>
+				<c:when test="${sessionScope.__AUTH__.userPic != null}">
+					<img id="userImg" class="user-profile-img"
+				src="${sessionScope.__AUTH__.userPic}" alt="회원 프로필 이미지" />
+				</c:when>
+				<c:otherwise>
+					<img id="userImg" class="user-profile-img"
+				src="/resources/img/leaf.jpg" alt="회원 프로필 이미지" />
+				</c:otherwise>
+			</c:choose>
+			
 			<!-- 비로그인 상태 -->
 			<button class="login-btn" onclick="location.href='/login'"></button>
 			<div class="menubar">
 				<ul>
-					<li><a href="../mypage/">마이페이지</a></li>
+					<li><a href="../profile/${sessionScope.__AUTH__.userId}">마이페이지</a></li>
 					<li><a href="#">알림</a></li>
 					<li><a href="#">문의하기</a></li>
 					<li class="text-red"><a href="#">로그아웃</a></li>
