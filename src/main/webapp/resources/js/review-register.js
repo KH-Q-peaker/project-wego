@@ -131,14 +131,13 @@ selector("#cancle").addEventListener("click", () => {
 selector(".check-again .unload input[type=reset]").addEventListener(
   "click",
   () => {
-    selector(".check-again .unload").style.display = "none";
-    const elem = selector("#contents");
-
-    while (elem.firstChild) {
-      elem.removeChild(elem.firstChild);
-    } // while
+	if(selector("#upload").innerText == "수정") {
+		self.location = `/review/${selector("input[name=sanReviewId]").value}`;
+	} else {
+		self.location = "/review";
+	} /// if-else
   }
-);
+); // .addEventListener
 
 // 삭제 취소 버튼 클릭 이벤트
 selector(".check-again .unload input[type=button]").addEventListener(
@@ -307,7 +306,7 @@ const handleUpdate = (files) => {
 
     reader.addEventListener("load", (e) => {
       console.log("e.target", e.target);
-      imgPath = `<br><img src="${e.target.result}" alt="${files[0].name}"></img><br>`;
+      imgPath = `<img src="${e.target.result}" alt="${files[0].name}"></img><br>`;
     });
 
     reader.readAsDataURL(file);
@@ -371,6 +370,7 @@ const formCheck = () => {
       if (contentChildNodes[i].src.slice(0, 4) === "data") {
         // 신규 이미지로 판단(MultipartFile)
         imgFileNames.push(contentChildNodes[i].alt);
+        console.log("new img ---> ", contentChildNodes[i].alt);
       } else {
         // 기존 이미지로 판단
         // UUID를 객체에 저장
@@ -379,6 +379,8 @@ const formCheck = () => {
             contentChildNodes[i].src.lastIndexOf("/") + 1
           )
         );
+        console.log("old img --->", contentChildNodes[i].src.slice(
+            contentChildNodes[i].src.lastIndexOf("/") + 1));
       } // if-else
     } // if
 
