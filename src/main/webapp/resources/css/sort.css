@@ -1,0 +1,88 @@
+@charset "UTF-8";
+
+/* 정렬 */
+.select-sort * { box-sizing: border-box; }
+.select-sort {
+    grid-area: selectSort;
+    justify-self: right;
+    align-self: center;
+
+    position: relative;
+    width: 130px;
+    height: 37px;
+    margin: 10px 0px 0px 0px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background: url(../svg/arrow.svg) no-repeat 95% 50%;
+    background-size: 25px;
+    cursor: pointer;
+}
+
+.select-sort .btn-select {
+    display: flex;
+    align-items: center;
+    width: inherit;
+    height: inherit;
+    border: 0 none;
+    outline: 0 none;
+    padding-left: 15px;
+    background: transparent;
+    cursor: pointer;
+
+    /* 말줄임 */
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.select-sort .sortBy {
+    position: absolute; 
+    top: 28px;
+    left: 0;
+    width: 100%;
+    padding: 0;
+
+    background: rgb(255, 255, 255);
+    color: #fff;
+    border-radius: 10px;
+    list-style-type: none;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
+
+    overflow: hidden;
+    max-height: 0;
+    transition: .3s ease-in;
+}
+
+.select-sort.active .sortBy {
+    max-height: 500px;
+}
+
+.select-sort .sortByItem { 
+    /* 점선 */
+    /* border-bottom: 1px dashed black; */
+    padding: 5px 15px 5px;
+    transition: .1s;
+}
+
+.select-sort .sortByItem:hover {
+    background: rgb(129, 192, 111);
+}
+
+.select-sort .sortByItem:last-child {
+    border-bottom: 0 none;
+}
+
+.sortByItem > button {
+    border: 0;
+    background-color: transparent;
+}
+
+/* 스크롤 커스텀 */
+.selectBox2 .optionList::-webkit-scrollbar {width: 6px;}
+.selectBox2 .optionList::-webkit-scrollbar-track {background: transparent; }
+.selectBox2 .optionList::-webkit-scrollbar-thumb {background: #303030; border-radius: 45px;}
+.selectBox2 .optionList::-webkit-scrollbar-thumb:hover {background: #303030;}
+

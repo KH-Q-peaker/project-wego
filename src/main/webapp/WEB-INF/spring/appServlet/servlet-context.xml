@@ -27,7 +27,7 @@
 	<interceptors> 
 		<interceptor> 
 		<!-- =================================================================================== -->
-		<!-- 로그인 테스트 하고 싶은 페지지의 url 추가 -->
+		<!-- 로그인 테스트 하고 싶은 페이지의 url 추가 -->
 			<mapping path="/badge/**" />
 			<mapping path="/party/**" />
 		<!-- =================================================================================== -->
@@ -38,20 +38,18 @@
 			
 			<beans:ref bean="authInterceptor"/> 
 		</interceptor> 
-		<!--
-		<interceptor> 
+
+		<!-- <interceptor>  -->
 
 		<!-- =================================================================================== -->
-		<!-- 로그인 테스트 하고 싶은 페지지의 url 추가 -->
-			<mapping path="/**" />
-			
+		<!-- 로그인 테스트 하고 싶은 페이지의 url 추가 -->
+		<!-- <mapping path="/**" />
 			<beans:ref bean="afterLoginInterceptor"/> 
-		</interceptor>
+		</interceptor> -->
 		
 		<!-- <interceptor> 
 
 			<mapping path="/report/create" />
-
 			<beans:ref bean="reportInterceptor"/> 
 		</interceptor>  -->
 	</interceptors>
@@ -67,6 +65,6 @@
 			value="20971520" />
 		<beans:property name="preserveFilename" value="true" />
 		<beans:property name="uploadTempDir"
-			value="file:/Users/g9/Desktop/" />
+			value="file:/Temp" />
 	</beans:bean>
 </beans:beans>

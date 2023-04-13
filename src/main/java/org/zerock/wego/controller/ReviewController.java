@@ -53,9 +53,9 @@ public class ReviewController {
 	private final CommentService commentService;
 	private final FileService fileService;
 	private final FavoriteService favoriteService;
-	
-	
-	
+
+
+
 	@ModelAttribute("target")
 	PageInfo createPageInfo(Integer reviewId) {
 		log.trace("createPageInfo() invoked.");
@@ -69,6 +69,24 @@ public class ReviewController {
 	}// createdBoardDTO
 	
 	
+  
+	@GetMapping("")
+	public String openReview(Model model) throws ControllerException {
+		log.trace("openReview({}) invoked.", model);
+
+		try {
+			List<ReviewViewVO> reviewList = this.reviewService.getList();
+
+			model.addAttribute("reviewList", reviewList);
+
+			return "review/review";
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	} // openReview
+
+
+
 	@GetMapping("/{reviewId}")
 	public ModelAndView showDetailById(@PathVariable("reviewId")Integer reviewId,
 									@SessionAttribute("__AUTH__")UserVO user,

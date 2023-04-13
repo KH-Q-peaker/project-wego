@@ -1,0 +1,232 @@
+@charset "UTF-8";
+
+img {
+    /* 드래그 방지 */
+    -webkit-user-drag: none;
+}
+
+/* div한번더사용 */
+.container {
+    width: 100%;
+    position: relative;
+}
+
+/* 프레임 */
+.review {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+    gap: 20px;
+    grid-template-areas:
+    "reviewBoard reviewBoard selectSort selectSort";
+
+    place-items: center;
+    justify-content: center;
+}
+
+
+.review-board {
+    grid-area: reviewBoard;
+  
+    justify-self: left;
+  }
+.review-board > h2 {
+    font-size: 24px;
+    margin: 0;
+    padding: 0;
+  
+    text-align: center;
+}
+
+
+/* Item */
+.review-item {
+    width: 200px;
+    height: 330px;
+    padding: 15px;
+    border: 0;
+    border-radius: 10px;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25), 0 3px 3px rgba(0, 0, 0, 0.22);
+
+    background-color: #fff;
+
+    text-align: center;
+
+    display: grid;
+    grid-template-rows: 35px 140px 35px 90px 30px;
+    grid-template-columns: 40px 80px 10px 70px;
+    grid-template-areas:
+        "reviewUserImg reviewUserName reviewUserName reviewMountainName"
+        "reviewImg reviewImg reviewImg reviewImg"
+        "reviewTitle reviewTitle reviewTitle reviewTitle"
+        "reviewContents reviewContents reviewContents reviewContents"
+        "reviewLike reviewLike . reviewDate";
+
+    align-items: center;
+    justify-items: center;
+}
+
+.review-item>p {
+    margin: 0;
+    justify-self: left;
+}
+
+
+.review-item>.user-img {
+    grid-area: reviewUserImg;
+
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+
+    justify-self: left;
+}
+
+.review-item>.user-name {
+    grid-area: reviewUserName;
+
+    font-size: 14px;
+    margin: 0;
+
+    justify-self: left;
+    
+    display: block;
+	display: -webkit-box;
+	overflow: hidden;
+	white-space: nowrap;
+	white-space: normal;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	text-overflow: ellipsis;
+}
+
+.review-item>.mountain-name {
+    grid-area: reviewMountainName;
+    font-size: 14px;
+    margin: 0;
+    justify-self: right;
+    
+    display: block;
+	display: -webkit-box;
+	overflow: hidden;
+	white-space: nowrap;
+	white-space: normal;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	text-overflow: ellipsis;
+}
+
+.review-item>.review-img {
+    grid-area: reviewImg;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+
+    justify-self: center;
+}
+
+.review-item>.review-title {
+    grid-area: reviewTitle;
+
+    font-size: 20px;
+    margin: 0;
+
+    display: inline-block;
+    width: 185px;
+    align-content: center;
+    justify-self: center;
+    
+    display: block;
+	display: -webkit-box;
+	overflow: hidden;
+	white-space: nowrap;
+	white-space: normal;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	text-overflow: ellipsis;
+}
+
+.review-item>.review-contents {
+    grid-area: reviewContents;
+
+    width: 195px;
+    margin: 0;
+
+    font-size: 15px;
+
+    justify-self: center;
+    text-align: left;
+
+	display: block;
+    display: -webkit-box;
+    overflow: hidden;
+    white-space: nowrap;
+    white-space: normal;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+}
+
+.review-item>.review-like {
+    grid-area: reviewLike;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    justify-self: left;
+}
+
+.review-like>.favorite {
+    width: 30px;
+    height: 30px;
+    border: 0;
+  	background: url(../svg/favorite-off.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.on.favorite {
+	width: 30px;
+	height: 30px;
+	border: 0;
+	background: url(../svg/favorite-on.svg);
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+.review-like>.favorite-count {
+    font-size: 12px;
+}
+
+.review-item>.review-date {
+    grid-area: reviewDate;
+
+    font-size: 12px;
+    justify-self: right;
+    align-self: flex-end;
+}
+
+
+
+
+@media screen and (max-width: 768px) {
+    .review {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-areas:
+        "reviewBoard reviewBoard selectSort";
+    }
+}
+
+@media screen and (max-width: 426px) {
+    .review {
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-areas:
+        "reviewBoard"
+        "selectSort";
+    }
+
+    .review-board {
+        grid-area: reviewBoard;
+    
+        justify-self: center;
+    }
+}
