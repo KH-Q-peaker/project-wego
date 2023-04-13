@@ -61,6 +61,22 @@ public class PartyController {
 	private final ReportService reportService;
   
 	
+	@GetMapping("")
+	public String openParty(Model model) throws ControllerException {
+		log.trace("openParty({}) invoked.", model);
+
+		try {
+			List<PartyViewVO> partyList = this.partyService.getList();
+
+			model.addAttribute("partyList", partyList);
+
+			return "party/party";
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	} // openParty
+	
+	
 	@ModelAttribute("target")
 	PageInfo createPageInfo(Integer partyId) {
 		log.trace("createPageInfo() invoked.");

@@ -12,10 +12,10 @@
 		<div>
 			<nav>
 				<ul class="navbar">
-					<li><a href="#">산정보</a></li>
-					<li><a href="#">등산후기</a></li>
+					<li><a href="/info">산정보</a></li>
+					<li><a href="/review">등산후기</a></li>
 					<li><a href="#">랭킹</a></li>
-					<li><a href="#">모집</a></li>
+					<li><a href="/party">모집</a></li>
 				</ul>
 			</nav>
 		</div>

@@ -1,0 +1,241 @@
+@charset "UTF-8";
+
+img {
+	/* 드래그 방지 */
+	-webkit-user-drag: none;
+}
+
+/* div한번더사용 */
+.container {
+	width: 100%;
+	position: relative;
+}
+
+/* 프레임 */
+.recruit {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-gap: 20px;
+	gap: 20px;
+	grid-template-areas:
+	"recruitBoard recruitBoard selectSort selectSort";
+
+	place-items: center;
+	justify-content: center;
+}
+
+
+.recruit-board {
+	grid-area: recruitBoard;
+
+	justify-self: left;
+}
+.recruit-board > h2 {
+	font-size: 24px;
+	margin: 0;
+	padding: 0;
+
+	text-align: center;
+}
+
+
+/* Item */
+.recruit-item {
+	width: 200px;
+	height: 330px;
+	padding: 15px;
+	border: 0;
+	border-radius: 10px;
+	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25), 0 3px 3px rgba(0, 0, 0, 0.22);
+
+	background-color: #fff;
+
+	text-align: center;
+
+	display: grid;
+	grid-template-rows: 35px 140px 35px 30px 30px 30px 30px;
+	grid-template-columns: 40px 40px 40px 10px 70px;
+	grid-template-areas:
+		"recruitUserImg recruitUserName recruitUserName recruitUserName recruitMountainName"
+		"recruitImg recruitImg recruitImg recruitImg recruitImg"
+		"recruitTitle recruitTitle recruitTitle recruitTitle recruitTitle"
+		"recruitScheduleSchedule recruitSchedule recruitSchedule recruitSchedule recruitSchedule"
+		"recruitScheduleTime recruitTime recruitTime recruitTime recruitTime"
+		"recruitScheduleMember recruitScheduleMember recruitMember recruitMember recruitMember"
+		"recruitLike recruitLike recruitLike recruitLike recruitDate";
+
+	align-items: center;
+	justify-items: center; 
+}
+.recruit-item > p {
+	margin: 0;
+	justify-self: left;
+
+	display: block;
+	display: -webkit-box;
+	overflow: hidden;
+	white-space: nowrap;
+	white-space: normal;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	text-overflow: ellipsis;
+}
+.recruit-item > .user-img {
+	grid-area: recruitUserImg;
+
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+
+	justify-self: left;
+}
+.recruit-item > .user-name {
+	grid-area: recruitUserName;
+
+	font-size: 14px;
+
+	justify-self: left;
+
+	display: block;
+	display: -webkit-box;
+	overflow: hidden;
+	white-space: nowrap;
+	white-space: normal;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	text-overflow: ellipsis;
+}
+.recruit-item > .mountain-name {
+	grid-area: recruitMountainName;
+	font-size: 14px;
+    margin: 0;
+    justify-self: right;
+
+	display: block;
+	display: -webkit-box;
+	overflow: hidden;
+	white-space: nowrap;
+	white-space: normal;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	text-overflow: ellipsis;
+}
+.recruit-item > .recruit-img {
+	grid-area: recruitImg;
+	width: 130px;
+	height: 130px;
+	border-radius: 50%;
+
+	justify-self: center;
+}
+.recruit-item > .recruit-title {
+	grid-area: recruitTitle;
+
+	font-size: 20px;
+	margin: 0;
+
+    display: inline-block;
+    width: 185px;
+    align-content: center;
+    justify-self: center;
+
+    display: block;
+	display: -webkit-box;
+	overflow: hidden;
+	white-space: nowrap;
+	white-space: normal;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	text-overflow: ellipsis;
+}
+.recruit-item > .recruit-schedule-schedule {
+	grid-area: recruitScheduleSchedule;
+
+	font-size: 15px;
+}
+.recruit-schedule {
+	grid-area: recruitSchedule;
+
+	font-size: 15px;
+}
+.recruit-schedule-time {
+	grid-area: recruitScheduleTime;
+
+	font-size: 15px;
+}
+.recruit-time {
+	grid-area: recruitTime;
+
+	font-size: 15px;
+}
+.recruit-schedule-member {
+	grid-area: recruitScheduleMember;
+
+	font-size: 15px;
+}
+.recruit-member {
+	grid-area: recruitMember;
+
+	font-size: 15px;
+}
+.recruit-item > .recruit-like {
+	grid-area: recruitLike;
+	text-align: left;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+
+	justify-self: left;
+}
+.recruit-like > .favorite {
+    width: 30px;
+    height: 30px;
+    border: 0;
+  	background: url(../svg/favorite-off.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.on.favorite {
+	width: 30px;
+	height: 30px;
+	border: 0;
+	background: url(../svg/favorite-on.svg);
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+.recruit-like > .favorite-count {
+	font-size: 12px;
+}
+.recruit-item > .recruit-date {
+	grid-area: recruitDate;
+
+	font-size: 12px;
+	justify-self: right;
+	align-self: flex-end;
+}
+
+
+
+
+@media screen and (max-width: 768px) {
+	.recruit {
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-areas:
+		"recruitBoard recruitBoard selectSort";
+	}
+}
+
+@media screen and (max-width: 426px) {
+	.recruit {
+		grid-template-columns: repeat(1, 1fr);
+		grid-template-areas:
+			"recruitBoard"
+			"selectSort";
+	}
+
+	.recruit-board {
+		grid-area: recruitBoard;
+
+		justify-self: center;
+	}
+}
