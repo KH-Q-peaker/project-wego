@@ -22,7 +22,7 @@ import lombok.extern.log4j.Log4j2;
 @Service
 public class FileService {
 
-	private final FileMapper mapper;
+	private final FileMapper fileMapper;
 
 	public boolean isImageRegister(List<MultipartFile> imgFiles, String targetGb, Integer targetCd, FileDTO fileDTO)
 			throws ServiceException {
@@ -92,7 +92,7 @@ public class FileService {
 		log.trace("getList() invoked.");
 
 		try {
-			return this.mapper.selectByTargetGbAndTargetCd(targetGb, targetCd);
+			return this.fileMapper.selectByTargetGbAndTargetCd(targetGb, targetCd);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -102,7 +102,7 @@ public class FileService {
 		log.trace("isRegistered({}) invoked.");
 
 		try {
-			return this.mapper.insert(dto) == 1;
+			return this.fileMapper.insert(dto) == 1;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -113,7 +113,7 @@ public class FileService {
 		log.trace("isModified({}) invoked.");
 
 		try {
-			return this.mapper.update(targetGb, targetCd, fileId, fileName) == 1;
+			return this.fileMapper.update(targetGb, targetCd, fileId, fileName) == 1;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -124,9 +124,9 @@ public class FileService {
 
 		try {
 
-			int totalCount = this.mapper.selectTotalCountByTarget(targetGb, targetCd);
+			int totalCount = this.fileMapper.selectTotalCountByTarget(targetGb, targetCd);
 
-			int deleteCount = this.mapper.deleteByTarget(targetGb, targetCd);
+			int deleteCount = this.fileMapper.deleteByTarget(targetGb, targetCd);
 
 			return totalCount == deleteCount;
 
@@ -139,7 +139,7 @@ public class FileService {
 		log.trace("isRemoved({}, {}) invoked.", targetGb, targetCd, uuid);
 
 		try {
-			return this.mapper.deleteByTargetGbAndTargetCdAndUuid(targetGb, targetCd, uuid) == 1;
+			return this.fileMapper.deleteByTargetGbAndTargetCdAndUuid(targetGb, targetCd, uuid) == 1;
 
 		} catch (Exception e) {
 			throw new ServiceException(e);
