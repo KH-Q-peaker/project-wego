@@ -27,3 +27,4 @@ public interface ReviewMapper {
 	
 	public abstract Integer visitCountUp(@Param("reviewId")Integer reviewId); // 조회수 반영하기
 }// end interface
+

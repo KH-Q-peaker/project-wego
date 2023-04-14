@@ -45,58 +45,85 @@ public class ReviewService {
 	} // getList
 	
 	
+	// 특정 후기글 존재여부 확인 
+	public boolean isExist(Integer reviewId) throws ServiceException{
+		
+		boolean isExist = (this.reviewMapper.findById(reviewId) == 1);
+		
+		return isExist;
+	}// isExist
+	
+	
 	// 특정 후기글 조회 
 	public ReviewViewVO getById(Integer reviewId) throws Exception {
 //		log.trace("getById({}) invoked.", reviewId);	
 		
-		try {
 			ReviewViewVO review = this.reviewMapper.selectById(reviewId);
 			
 			if(review == null) {
-				throw new NotFoundPageException("review not found : " + reviewId); // 얘왜 기본생성자없엄 
+				throw new NotFoundPageException("해당 글을 찾을 수 없습니다."); 
 			}// if
 			
-			this.reviewMapper.visitCountUp(reviewId); //조회수증가.
+			this.reviewMapper.visitCountUp(reviewId);
+			
 			
 			return review;
-			
-		} catch (NotFoundPageException e) {
-			throw new NotFoundPageException(e);
-			
-		} catch (Exception e) {
-			throw new ServiceException(e);
-		} // try-catch
 	} // getById
 	
 	
 	// 특정 후기글 삭제
-	public boolean isRemove(Integer reviewId) throws ServiceException {
+	public boolean remove(Integer reviewId) throws ServiceException {
 //		log.trace("isRemoved({}) invoked.", reviewId);
-		
-		try {
-			return (this.reviewMapper.delete(reviewId) == 1);
-		} catch (Exception e) {
-			throw new ServiceException(e);
-		} // try-catch
+			
+			if(!this.isExist(reviewId)) {
+				throw new NotFoundPageException("해당 글을 찾을 수 없습니다.");
+			}// if
+			
+			boolean isRemove = (this.reviewMapper.delete(reviewId) == 1);
+			
+			if(this.isExist(reviewId)) {
+				throw new ServiceException("삭제 안됨 이거 예외 뭐로날릴지 생각 ");
+			}// if 
+			
+			return isRemove;
 	} // remove
 	
 	
-	public boolean isRegistered(ReviewDTO dto) throws ServiceException {
-		log.trace("register({}) invoked.");
+	public boolean register(ReviewDTO dto) throws ServiceException {
+//		log.trace("register({}) invoked.");
 		
 		try {
-			return this.reviewMapper.insert(dto) == 1;
+			
+			boolean isRegister = (this.reviewMapper.insert(dto) == 1);
+			
+			int insertPK = dto.getSanReviewId();
+			
+			if(!isExist(insertPK)) {
+				throw new ServiceException("등록 안됨 이거 예외 뭐로날릴지 생각 ");
+			}//if
+			
+			return isRegister;
+			
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
 	} // register
 	
 	
-	public boolean isModified(ReviewDTO dto) throws ServiceException {
-		log.trace("modify({}) invoked.");
+	public boolean modify(ReviewDTO dto) throws ServiceException {
+//		log.trace("modify({}) invoked.");
 		
 		try {
-			return this.reviewMapper.update(dto) == 1;
+			int modifyPK = dto.getSanReviewId();
+			
+			if(!isExist(modifyPK)) {
+				throw new ServiceException("등록 안됨 이거 예외 뭐로날릴지 생각 ");
+			}// if
+			
+			boolean isModify = (this.reviewMapper.update(dto) == 1);
+			
+			return isModify;
+			
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch

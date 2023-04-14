@@ -34,11 +34,8 @@
   			*
   		FROM
   			san_review_v
-  			
-  		<where>
-  		san_review_id = #{reviewId}
-  		</where>
-  			
+  		WHERE
+  			san_review_id = #{reviewId}
   	</select>
 
 	<!--  ************* 후기글 존재여부 *************** -->
@@ -58,10 +55,8 @@
   		DELETE 
   		FROM
   			san_review_tb
-  		<where>
+  		WHERE
   			san_review_id = #{reviewId}
-  		</where>
-  		
   	</delete>
 
 

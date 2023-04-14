@@ -17,7 +17,7 @@ public class ExceptionController {
         ModelAndView mav = new ModelAndView();
         
         mav.addObject("errorMessage", "NullPointerException");
-        mav.setViewName("error/null");
+        mav.setViewName("error");
         
         return mav;
     }// handleNullPointerException
@@ -29,7 +29,7 @@ public class ExceptionController {
         ModelAndView mav = new ModelAndView();
         
         mav.addObject("errorMessage", "NotFoundPageException");
-        mav.setViewName("error/notFoundPage");
+        mav.setViewName("error");
         
         return mav;
     }// handleNullPointerException

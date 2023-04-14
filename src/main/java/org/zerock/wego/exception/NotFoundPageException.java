@@ -6,13 +6,13 @@ public class NotFoundPageException extends RuntimeException {
 	public NotFoundPageException(String message) {
 		super(message);
 		
-		super.printStackTrace();
+//		super.printStackTrace();
 	} // Constructor#1
 	
 	public NotFoundPageException(Exception originalException) {
 		super(originalException);
 		
-		super.printStackTrace();
+//		super.printStackTrace();
 	} // Constructor#2
 	
 	

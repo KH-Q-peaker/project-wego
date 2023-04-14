@@ -10,8 +10,9 @@
 <link rel="stylesheet" href="/resources/css/error.css" />
 </head>
 <body>
-	<h3><%= exception.getMessage() %></h3>
-	<div>하하 안타깝게도 페이지를 찾을 수 없습니다!</div>
+	<div><%= exception.getMessage() %></div>
+	 <!--  이걱 앞에 클래스명 안나오게 하는 방법 아는사람 구함  -->
+	 <!-- 현재상태 = org.zerock.wego.exception.NotFoundPageException: 해당 글을 찾을 수 없습니다. -->
 	<a href="http://localhost:8080/">...메인으로 갈게요</a>
 </body>
 </html>

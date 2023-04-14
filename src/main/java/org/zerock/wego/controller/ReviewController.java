@@ -98,10 +98,9 @@ public class ReviewController {
 									PageInfo target) throws Exception{
 //		log.trace("showDetail({}, {}) invoked.", reviewId, target);
 		
-			target = this.createPageInfo(reviewId);
-			
-			
 			ModelAndView mav = new ModelAndView();
+
+			target = this.createPageInfo(reviewId);
 			
 			ReviewViewVO review = this.reviewService.getById(reviewId);
 			
@@ -117,7 +116,6 @@ public class ReviewController {
 
 			int commentCount = this.commentService.getCommentsCount(target);
 
-			
 			LinkedBlockingDeque<CommentViewVO> comments 
 							= this.commentService.getCommentOffsetByTarget(target, 0);
 
@@ -129,32 +127,28 @@ public class ReviewController {
 //			mav.addObject("userPic", userPic);
 			
 			if(comments != null) {
-				
 				mav.addObject("comments", comments);
 			}// if
-			
 			
 			ObjectMapper objectMapper = new ObjectMapper();
 			String targetJson = objectMapper.writeValueAsString(target);
 			mav.addObject("target", targetJson);
-
-
 			mav.setViewName("/review/detail");
 
-			
 			return mav;
 	}// viewReviewDetail
 	
 	
 	
-	@DeleteMapping(path= "/{reviewId}", produces= "text/plain; charset=UTF-8")
+	@DeleteMapping(path= "/{reviewId}",
+				  produces= "text/plain; charset=UTF-8")
 	public ResponseEntity<String> removeById(@PathVariable("reviewId")Integer reviewId) throws ControllerException{
 		log.trace("removeById({}) invoked.", reviewId);
 
-		boolean isReviewRemoved = this.reviewService.remove(reviewId);
-		boolean isFileRemoved = this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId);
+		boolean isReviewRemove = this.reviewService.remove(reviewId);
+		boolean isFileRemove = this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId);
 		
-		boolean isSuccess = isReviewRemoved && isFileRemoved;
+		boolean isSuccess = isReviewRemove && isFileRemove;
 		
 		if (isSuccess) {
 			return ResponseEntity.ok("🗑 후기글이 삭제되었습니다.️");
