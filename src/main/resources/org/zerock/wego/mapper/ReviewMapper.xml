@@ -79,7 +79,7 @@
 	<update id="hitsConutUp">
 		UPDATE san_review_tb
 		SET
-			countVisit = countVisit + 1
+			VISIT_CNT = VISIT_CNT + 1
 		WHERE
 			san_review_id = #{reviewId}
 	</update>

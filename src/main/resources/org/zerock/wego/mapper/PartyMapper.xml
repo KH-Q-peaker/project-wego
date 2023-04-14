@@ -100,7 +100,7 @@
 	<update id="hitsConutUp">
 		UPDATE san_party_tb
 		SET
-			countVisit = countVisit + 1
+			VISIT_CNT = VISIT_CNT + 1
 		WHERE
 			san_party_id = #{partyId}
 	</update>
