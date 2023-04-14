@@ -41,19 +41,18 @@ tbody > td {
   margin-bottom: 0;
 }
 .middle .t1 {
-  width: 70px;
+  width: 50px;
 }
 .middle .t2 {
-  width: 300px;
+  width: 280px;
 }
-.middle .t3  {
-  width: 120px;
+.middle .t3 {
+  width: 70px;
 }
-.middle .t4,
+.middle .t4 ,
 .middle .t5 {
-  width: 60px;
+  width: 40px;
 }
-
 #pagination {
   font-size: 16px;
 }
@@ -75,6 +74,7 @@ tbody > td {
   font-weight: bold;
   font-family: D2Coding;
   cursor: pointer;
+  border-radius: 15px;
   transition: all 0.5s ease-in-out;
 }
 #pagination li:hover {
@@ -91,12 +91,12 @@ tbody > td {
 li.currPage {
   font-weight: bold;
   color: white;
-  background-color: cornflowerblue;
+  background-color: rgba(78, 197, 61, 1)
 }
 li.currPage:active {
   font-weight: bold;
   color: white;
-  background-color: cornflowerblue;
+  background-color: rgba(78, 197, 61, 1)
 }
 
 @media screen and (max-width: 838px) {
@@ -113,9 +113,11 @@ li.currPage:active {
   .middle .t3 {
     width: 50px;
   }
-  .middle .t4,
+  .middle .t4 {
+    width: 25px;
+  }
   .middle .t5 {
-    width: 37px;
+    width: 35px;
   }
 }
 /* 모바일일때  */
@@ -145,7 +147,7 @@ li.currPage:active {
     width: 150px;
   }
   .middle .t3 {
-    width: 70px;
+    width: 30px;
   }
   .middle .t1,
   .middle .t4 {
