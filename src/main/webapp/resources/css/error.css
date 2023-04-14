@@ -1,0 +1,29 @@
+body {
+	background: url(../img/error.png);
+	margin: 0px;
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+div {
+	position: fixed;
+	top: 40vh;
+	left: 50%;
+	width: 100%;
+	text-align: center;
+	font-size: 40px;
+	color: rgb(14, 112, 0);
+	transform: translate(-50%, 0);
+}
+
+a {
+	position: fixed;
+	top: 47vh;
+	left: 50%;
+	font-size: 25px;
+	color: #727272;
+	transform: translate(-50%, 0);
+	text-decoration: none;
+}

@@ -25,8 +25,7 @@ public class ExceptionController {
     
     @ExceptionHandler(value = {NotFoundPageException.class})
     public ModelAndView handleNotFoundPageException(Exception e) {
-    	log.warn("******************************************");
-    	log.warn("******************************************");
+    	
         ModelAndView mav = new ModelAndView();
         
         mav.addObject("errorMessage", "NotFoundPageException");
@@ -35,9 +34,6 @@ public class ExceptionController {
         return mav;
     }// handleNullPointerException
 
-    
-    
-    
     
     @ExceptionHandler(value = {Exception.class})
     public ModelAndView handleException(Exception e) {
