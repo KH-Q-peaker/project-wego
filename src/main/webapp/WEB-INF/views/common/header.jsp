@@ -50,7 +50,7 @@
 		<div>
 			<form action="/search" method="get">
 				<button class="search-icon" type="submit"></button>
-				<input type="text" name="search" id="search" placeholder="Search" />
+				<input type="text" name="query" id="search" placeholder="Search" />
 				<button class="cancel" type="reset"></button>
 			</form>
 		</div>

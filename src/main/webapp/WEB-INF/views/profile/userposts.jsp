@@ -45,7 +45,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 value="${profileVO.createDt}"
               ></fmt:formatDate>
             </td>
-            <td class="t4">100</td>
+            <td class="t4">${profileVO.visitCount}</td>
             <td class="t5">&#128149;${profileVO.likeCnt}</td>
           </tr>
         </c:forEach>
@@ -59,11 +59,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
         <!-- Prev 표시 -->
         <c:if test="${pageMaker.prev}">
           <li class="prev">
-            <a
-              data-temp="${pageMaker.cri.setCurrPage(pageMaker.startPage - 1 )}"
-              href="/profile/${userId}${pageMaker.cri.pagingUri}"
-              >Prev</a
-            >
+            <span
+              data-temp="${pageMaker.cri.setCurrPage(pageMaker.startPage - 1 )}" onclick="selectClickCurrPagePrev()">Prev</span>
+            <input type="hidden" id="currPagePrev" value="${pageMaker.startPage - 1}">
           </li>
         </c:if>
 
@@ -75,10 +73,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
         >
           <!-- 조건문으로 지금 현재 페이지확인 : 전송파라미터중 현페이지번호가같다면 비운다. -->
           <li class="${param.currPage eq pageNum ? 'currPage' : ''}">
-            <a
-              data-temp="${pageMaker.cri.setCurrPage(pageNum)}"
-              href="/profile/${userId}${pageMaker.cri.pagingUri}"
-              >${pageNum}</a
+            <span id="currPageNum" onclick="selectClickCurrPage()">${pageNum}</span
             >
           </li>
           <!-- 숫자만 표시됨. -->
@@ -88,11 +83,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
           현재페이지 기준으로 계산되어야함. 다 모델속성에 PageMaker저장되어잇음-->
         <c:if test="${pageMaker.next}">
           <li class="next">
-            <a
-              data-temp="${pageMaker.cri.setCurrPage(pageMaker.endPage+1)}"
-              href="/profile/${userId}${pageMaker.cri.pagingUri}"
-              >Next</a
-            >
+            <span
+              data-temp="${pageMaker.cri.setCurrPage(pageMaker.endPage+1)}" onclick="selectClickCurrPageNext()">Next</span>
+              <input type="hidden" id="currPageNext" value="${pageMaker.endPage+1}">
           </li>
         </c:if>
       </ul>

@@ -44,6 +44,7 @@ public class PartyService {
 	public Integer getUserIdByPartyId(Integer partyId) {
 		log.trace("getUserIdByPartyId() invoked.");
 		try {
+			
 			return this.partyMapper.selectUserIdByPartyId(partyId);
 		} catch (Exception e) {
 			throw new ServiceException(e);
@@ -60,7 +61,8 @@ public class PartyService {
 			if(party == null) {
 				 throw new NotFoundPageException("party not found : " + partyId);
 			}// if
-			
+			 
+			this.partyMapper.visitCountUp(partyId); //조회수증가.
 			return party;
 	}// getById
 	
@@ -111,6 +113,8 @@ public class PartyService {
 			throw new ServiceException(e);
 		} // try-catch
 	} // register
+	
+	
 	public boolean modify(PartyDTO dto) throws ServiceException {
 		log.trace("modify({}) invoked.", dto);
 		try {

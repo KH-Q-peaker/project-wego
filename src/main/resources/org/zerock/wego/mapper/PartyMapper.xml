@@ -97,4 +97,11 @@
 			san_party_id = #{sanPartyId}
 	</update>
 
+	<update id="visitCountUp">
+		UPDATE san_party_tb
+		SET
+			VISIT_CNT = VISIT_CNT + 1
+		WHERE
+			san_party_id = #{partyId}
+	</update>
 </mapper>

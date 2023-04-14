@@ -184,8 +184,14 @@ selector(".check-again .unload input[type=button]").addEventListener(
 // 작성 취소 -> 예(삭제, Red Button) 버튼 클릭 이벤트
 selector(".check-again .unload input[type=reset]").addEventListener(
   "click",
-  () => uploadImgRemove()
-);
+  () => {
+	if(selector("#upload").innerText == "수정") {
+		self.location = `/party/${selector("input[name=sanPartyId]").value}`;
+	} else {
+		self.location = "/party";
+	} /// if-else
+  }
+); // .addEventListener
 
 // 업로드 이미지 삭제
 const uploadImgRemove = () => {
