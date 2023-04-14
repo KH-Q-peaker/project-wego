@@ -207,7 +207,8 @@ public class PartyController {
 	@PostMapping("/modify")
 	public String modify(
 			@SessionAttribute("__AUTH__")UserVO auth,
-			Integer sanPartyId, String sanName, @RequestParam("imgFile")List<MultipartFile> imageFiles, 
+			Integer sanPartyId, String sanName, 
+			@RequestParam(value = "imgFile", required = false)List<MultipartFile> imageFiles, 
 			String date, String time, PartyDTO partyDTO, FileDTO fileDTO) throws ControllerException { 
 		log.trace("modify({}, {}, {}, {}, {}, {}, {}) invoked.", auth, sanPartyId, sanName, imageFiles, date, time, partyDTO);
 
@@ -245,8 +246,8 @@ public class PartyController {
 	@PostMapping("/register")
 	public String register(
 			@SessionAttribute("__AUTH__")UserVO auth,
-			String sanName, @RequestParam("imgFile")List<MultipartFile> imageFiles, String date, String time,	
-			PartyDTO partyDTO, FileDTO fileDTO,
+			String sanName, @RequestParam(value = "imgFile", required = false)List<MultipartFile> imageFiles,
+			String date, String time, PartyDTO partyDTO, FileDTO fileDTO,
 			@CookieValue(value="posted", required=false)boolean posted,
 			HttpServletResponse response) throws ControllerException {
 		log.trace("register({}, {}, {}, {}, {}, {}, {}) invoked.", auth, sanName, imageFiles, date, time, partyDTO, fileDTO);

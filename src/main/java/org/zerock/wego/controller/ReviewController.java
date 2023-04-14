@@ -5,7 +5,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -194,11 +193,11 @@ public class ReviewController {
 	public String modify(
 			@SessionAttribute("__AUTH__")UserVO auth, 
 			Integer sanReviewId, String sanName, List<MultipartFile> imgFiles, 
-			ReviewDTO dto, FileDTO fileDto) throws ControllerException { 
-		log.trace("modify({}, {}, {}, {}, {}, {}) invoked.", auth, sanReviewId, sanName, imgFiles, dto, fileDto);
+			ReviewDTO reviewDTO, FileDTO fileDTO) throws ControllerException { 
+		log.trace("modify(auth, sanReviewId, sanName, imgFiles, reviewDTO, fileDTO) invoked.");
 
 		try {
-			if(auth.getUserId() == dto.getUserId()) {
+			if(auth.getUserId() == reviewDTO.getUserId()) {
 				return "error";
 			} // if
 			
@@ -206,9 +205,9 @@ public class ReviewController {
 
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
       
-			dto.setSanInfoId(sanId);
+			reviewDTO.setSanInfoId(sanId);
 			
-			boolean isSuccess = this.reviewService.isModified(dto);
+			boolean isSuccess = this.reviewService.isModified(reviewDTO);
 			log.info("isSuccess: {}", isSuccess);
 			
 			if (imgFiles != null) {
@@ -238,14 +237,14 @@ public class ReviewController {
 							e.printStackTrace();
 						} // try-catch
 
-						fileDto.setTargetGb("SAN_REVIEW");
-						fileDto.setTargetCd(dto.getSanReviewId());
-						fileDto.setFileName(originalName);
-						fileDto.setUuid(uuid);
-						fileDto.setPath(imgPath);
+						fileDTO.setTargetGb("SAN_REVIEW");
+						fileDTO.setTargetCd(reviewDTO.getSanReviewId());
+						fileDTO.setFileName(originalName);
+						fileDTO.setUuid(uuid);
+						fileDTO.setPath(imgPath);
 
 						try {
-							boolean isFileUploadSuccess = this.fileService.isRegister(fileDto);
+							boolean isFileUploadSuccess = this.fileService.isRegister(fileDTO);
 							log.info("isFileUploadSuccess: {}", isFileUploadSuccess);
 						} catch (ServiceException e) {
 							e.printStackTrace();
@@ -254,7 +253,7 @@ public class ReviewController {
 				});
 			} // if
 			
-			return "redirect:/review";
+			return "redirect:/review/" + reviewDTO.getSanReviewId();
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
@@ -267,11 +266,11 @@ public class ReviewController {
 
 	@PostMapping("/register")
 	public String register(
-			@SessionAttribute("__AUTH__")UserVO auth, String sanName, List<MultipartFile> imgFiles, 
-			ReviewDTO dto, FileDTO fileDto,
-			  @CookieValue(value="posted", required=false)boolean posted,
+			@SessionAttribute("__AUTH__")UserVO auth, String sanName, List<MultipartFile> imageFiles, 
+			ReviewDTO reviewDTO, FileDTO fileDTO,
+			@CookieValue(value="posted", required=false)boolean posted,
 			HttpServletResponse response) throws ControllerException {
-		log.trace("register({}, {}, {}, {}) invoked.", sanName, imgFiles, dto, posted, fileDto, response);
+		log.trace("register(auth, sanName, imageFiles, reviewDTO, fileDTO, posted, response) invoked.");
 
 		try {
 			if(auth == null) {
@@ -286,14 +285,14 @@ public class ReviewController {
 			
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 
-			dto.setSanInfoId(sanId);
+			reviewDTO.setSanInfoId(sanId);
 
-			dto.setUserId(auth.getUserId());
+			reviewDTO.setUserId(auth.getUserId());
 
-			boolean success = this.reviewService.isRegistered(dto);
+			boolean success = this.reviewService.isRegistered(reviewDTO);
 			log.info("success: {}", success);
 	
-			if (imgFiles != null) {
+			if (imageFiles != null) {
 				String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
 				String basePath = "C:/upload/" + today;
@@ -303,7 +302,7 @@ public class ReviewController {
 					Folder.mkdir();
 				} // if
 
-				imgFiles.forEach(imgFile -> {
+				imageFiles.forEach(imgFile -> {
 					if (!"".equals(imgFile.getOriginalFilename())) {
 						String originalName = imgFile.getOriginalFilename();
 						String uuid = UUID.randomUUID().toString();
@@ -315,14 +314,14 @@ public class ReviewController {
 							e.printStackTrace();
 						} // try-catch
 
-						fileDto.setTargetGb("SAN_REVIEW");
-						fileDto.setTargetCd(dto.getSanReviewId());
-						fileDto.setFileName(originalName);
-						fileDto.setUuid(uuid);
-						fileDto.setPath(imgPath);
+						fileDTO.setTargetGb("SAN_REVIEW");
+						fileDTO.setTargetCd(reviewDTO.getSanReviewId());
+						fileDTO.setFileName(originalName);
+						fileDTO.setUuid(uuid);
+						fileDTO.setPath(imgPath);
 
 						try {
-							boolean isFileUploadSuccess = this.fileService.isRegister(fileDto);
+							boolean isFileUploadSuccess = this.fileService.isRegister(fileDTO);
 							log.info("isFileUploadSuccess: {}", isFileUploadSuccess);
 						} catch (ServiceException e) {
 							e.printStackTrace();
@@ -334,6 +333,6 @@ public class ReviewController {
 			throw new ControllerException(e);
 		} // try-catch
 
-		return "redirect:/review";
+		return "redirect:/review/" + reviewDTO.getSanReviewId();
 	} // register
 }// end class
