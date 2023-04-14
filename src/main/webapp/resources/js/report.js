@@ -63,6 +63,14 @@ $(() => {
 		targetGb = target.targetGb;
 		targetCd = target.targetCd;
 	});
+	
+	$("input[name='reportuser']").off('click').on('click', function() {
+		
+		reportModal();
+		
+		targetGb = 'USER';
+		targetCd = $('#userId').val();
+	});
 
 	$(".mdreport").off('click').on('click', function(){
 		
@@ -92,7 +100,6 @@ $(() => {
 			},
 
 			success: function(data) {
-				console.log(data);
 				if (data >= 5) {
 					window.location.replace("http://localhost:8080");
 				} else {
