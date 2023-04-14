@@ -26,7 +26,7 @@
 				TITLE,
 				CREATED_DT,
 				LIKE_CNT "likeCnt",
-				COUNTVISIT "countVisit"
+				VISIT_CNT "visitCount"
 			FROM 
 				SAN_REVIEW_V srt 
 			WHERE 
@@ -39,7 +39,7 @@
 				TITLE,
 				CREATED_DT,
 				LIKE_CNT "likeCnt",
-				COUNTVISIT "countVisit"
+				VISIT_CNT "visitCount"
 			FROM 
 				SAN_PARTY_V  srt 
 			WHERE 
