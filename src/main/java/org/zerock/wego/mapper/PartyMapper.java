@@ -23,7 +23,7 @@ public interface PartyMapper {
 	public abstract Integer deleteById(@Param("partyId")Integer partyId);
 	
 	// 조회수 반영하기
-	public abstract Integer hitsConutUp(@Param("partyId")Integer partyId);		
+	public abstract Integer visitCountUp(@Param("partyId")Integer partyId);		
 //====================================================================
 //	// 모집글 이미지 절대경로 조회 
 //	public abstract String selectPartyImgByPartyId(@Param("partyId")Integer partyId);

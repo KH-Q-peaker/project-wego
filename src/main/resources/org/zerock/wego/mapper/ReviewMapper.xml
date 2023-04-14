@@ -76,7 +76,7 @@
 			san_review_id = #{sanReviewId}
 	</update>
 
-	<update id="hitsConutUp">
+	<update id="visitCountUp">
 		UPDATE san_review_tb
 		SET
 			VISIT_CNT = VISIT_CNT + 1

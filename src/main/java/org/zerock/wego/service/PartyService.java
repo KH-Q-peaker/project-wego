@@ -62,7 +62,7 @@ public class PartyService {
 				 throw new NotFoundPageException("party not found : " + partyId);
 			}// if
 			 
-			this.partyMapper.hitsConutUp(partyId); //조회수증가.
+			this.partyMapper.visitCountUp(partyId); //조회수증가.
 			return party;
 	}// getById
 	
