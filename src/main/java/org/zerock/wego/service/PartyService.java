@@ -111,6 +111,8 @@ public class PartyService {
 			throw new ServiceException(e);
 		} // try-catch
 	} // register
+	
+	
 	public boolean modify(PartyDTO dto) throws ServiceException {
 		log.trace("modify({}) invoked.", dto);
 		try {

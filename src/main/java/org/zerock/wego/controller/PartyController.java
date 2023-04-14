@@ -1,11 +1,7 @@
 package org.zerock.wego.controller;
 
-import java.io.File;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import javax.servlet.http.Cookie;
@@ -22,13 +18,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.zerock.wego.domain.CommentViewVO;
 import org.zerock.wego.domain.FavoriteDTO;
 import org.zerock.wego.domain.FileDTO;
-import org.zerock.wego.domain.FileVO;
 import org.zerock.wego.domain.JoinDTO;
 import org.zerock.wego.domain.PageInfo;
 import org.zerock.wego.domain.PartyDTO;
@@ -211,36 +207,31 @@ public class PartyController {
 	@PostMapping("/modify")
 	public String modify(
 			@SessionAttribute("__AUTH__")UserVO auth,
-			Integer sanPartyId, String sanName, MultipartFile imgFile, 
-			String date, String time, PartyDTO dto) throws ControllerException { 
-		log.trace("modify({}, {}, {}, {}, {}, {}, {}) invoked.", auth, sanPartyId, sanName, imgFile, date, time, dto);
+			Integer sanPartyId, String sanName, @RequestParam("imgFile")List<MultipartFile> imageFiles, 
+			String date, String time, PartyDTO partyDTO, FileDTO fileDTO) throws ControllerException { 
+		log.trace("modify({}, {}, {}, {}, {}, {}, {}) invoked.", auth, sanPartyId, sanName, imageFiles, date, time, partyDTO);
 
 		try {	
-			if(auth.getUserId() == dto.getUserId()) {
+			if(auth.getUserId() == partyDTO.getUserId()) {
 				return "error";
 			} // if
 			
+			// TODO: 아래 2가지도 서비스로 분리해야 될지 고민
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
-			dto.setSanInfoId(sanId);
+			partyDTO.setSanInfoId(sanId);
 
 			Timestamp dateTime = Timestamp.valueOf(date + " " + time + ":00");
-			dto.setPartyDt(dateTime);
+			partyDTO.setPartyDt(dateTime);
+			
+			boolean isModifySuccess = this.partyService.modify(partyDTO);
+			log.info("isModifySuccess: {}", isModifySuccess);
 
-
-			if (imgFile != null && !"".equals(imgFile.getOriginalFilename())) {
-				List<FileVO> fileVo = this.fileService.getList("SAN_PARTY", sanPartyId); 
-				Integer oldFileId = fileVo.get(0).getFileId();
-
-				imgFile.transferTo(new File(fileVo.get(0).getPath()));
-
-				boolean isModifySuccess = this.fileService.isModify("SAN_PARTY", sanPartyId, oldFileId, imgFile.getOriginalFilename());
-				log.trace("isModifySuccess: {}", isModifySuccess);
+			if (imageFiles != null) {
+				boolean isChangeImgeSuccess = this.fileService.isChangeImage(imageFiles, "SAN_PARTY", partyDTO.getSanPartyId(), fileDTO);
+				log.info("isChangeImgeSuccess: {}", isChangeImgeSuccess);
 			} // if
 
-			boolean isSuccess = this.partyService.modify(dto);
-			log.info("isSuccess: {}", isSuccess);
-
-			return "redirect:/party/detail/" + dto.getSanPartyId();
+			return "redirect:/party/" + partyDTO.getSanPartyId();
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
@@ -254,62 +245,41 @@ public class PartyController {
 	@PostMapping("/register")
 	public String register(
 			@SessionAttribute("__AUTH__")UserVO auth,
-			String sanName, MultipartFile imgFile, String date, String time,	
-			PartyDTO dto, FileDTO fileDto,
+			String sanName, @RequestParam("imgFile")List<MultipartFile> imageFiles, String date, String time,	
+			PartyDTO partyDTO, FileDTO fileDTO,
 			@CookieValue(value="posted", required=false)boolean posted,
 			HttpServletResponse response) throws ControllerException {
-		log.trace("register({}, {}, {}, {}, {}, {}, {}) invoked.", auth, sanName, imgFile, date, time, dto, fileDto);
+		log.trace("register({}, {}, {}, {}, {}, {}, {}) invoked.", auth, sanName, imageFiles, date, time, partyDTO, fileDTO);
 
 		try {
 			if(auth == null) {
 				return "error";
 			} // if
 			
-			if(!posted) { // false
+			if(!posted) {
 				Cookie cookie = new Cookie("posted", "true");				
 	            cookie.setMaxAge(30);
 	            response.addCookie(cookie);
 			} // if
 			
-			dto.setUserId(auth.getUserId());
+			// TODO: 아래 3가지도 서비스로 분리해야 될지 고민
+			partyDTO.setUserId(auth.getUserId());
 			
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
-			dto.setSanInfoId(sanId);
+			partyDTO.setSanInfoId(sanId);
 
 			Timestamp dateTime = Timestamp.valueOf(date + " " + time + ":00");
-			dto.setPartyDt(dateTime);
+			partyDTO.setPartyDt(dateTime);
 
-			boolean isSuccess = this.partyService.register(dto);
+			boolean isSuccess = this.partyService.register(partyDTO);
 			log.info("isSuccess: {}", isSuccess);
 
-			if (imgFile != null && !"".equals(imgFile.getOriginalFilename())) {
-
-				String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-
-				String basePath = "C:/upload/" + today;
-				File Folder = new File(basePath); 
-
-				if (!Folder.exists()) {
-					Folder.mkdir(); 
-				} // if
-
-				String originalName = imgFile.getOriginalFilename();
-				String uuid = UUID.randomUUID().toString();
-
-				String imgPath = basePath + "/" + uuid;
-				imgFile.transferTo(new File(imgPath));
-
-				fileDto.setTargetGb("SAN_PARTY");
-				fileDto.setTargetCd(dto.getSanPartyId());
-				fileDto.setFileName(originalName);
-				fileDto.setUuid(uuid);
-				fileDto.setPath(imgPath);
-
-				boolean isFileUploadSuccess = this.fileService.isRegister(fileDto);
-				log.info("isFileUploadSuccess: {}", isFileUploadSuccess);
+			if (imageFiles != null) {
+				boolean isImageUploadSuccess = this.fileService.isImageRegister(imageFiles, "SAN_PARTY", partyDTO.getSanPartyId(), fileDTO);
+				log.info("isImageUploadSuccess: {}", isImageUploadSuccess);
 			} // if
 
-			return "redirect:/party";
+			return "redirect:/party/" + partyDTO.getSanPartyId();
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
