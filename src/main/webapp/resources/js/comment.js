@@ -27,6 +27,16 @@ function toggleMentionBtn(buttonElem) {
 	}
 }
 
+//function createMentionElement(comment) {
+//    var $commentDiv = $('<div>').addClass('comments mention');
+//    var $commentPic = $('<img>').addClass('cmtuserPic').attr('src', comment.userPic);
+//    var $commentUser = $('<a>').addClass('cmtuser').attr('href', 'http://localhost:8080/profile/' + comment.userId).text(comment.nickname);
+//    var $commentDate = $('<div>').addClass('cmtdate').html(comment.createdDt);
+//    var $commentContents = $('<div>').addClass('comment').html(comment.contents);
+//    $commentDiv.append($commentPic, $commentUser, $commentDate, $commentContents);
+//    return $commentDiv;
+//}
+
 $(() => { /* 새 댓글 post 전송  */
 	
 	$('textarea').off('keydown').on( 'keydown', function (){
@@ -54,11 +64,12 @@ $(() => { /* 새 댓글 post 전송  */
 			url: "/comment/register",
 			type: "POST",
 			data:
-			{
+			JSON.stringify({
 				targetGb: target.targetGb,
 				targetCd: target.targetCd,
 				contents: $(this).prev().val()
-			},
+			}),
+			contentType: "application/json",
 			success: function(data) {
 				setMessage("💬 댓글이 등록되었습니다.");
 				showModal();
@@ -106,8 +117,6 @@ $(() => { /* 답글 관련 */
 					console.log('멘션로딩 실패');
 				}
 			});
-//			toggleMentionBtn($(this));
-			
 		
 			/* 등록버튼 클릭 시 멘션 등록 post전송   */
 			$(".men").off('click').on('click', function() {
@@ -116,18 +125,22 @@ $(() => { /* 답글 관련 */
 					url: "/comment/reply",
 					type: "POST",
 					data:
-					{
+					JSON.stringify({
 						targetGb: target.targetGb,
 						targetCd: target.targetCd,
 						mentionId: mentionId,
 						contents: $(this).prev().val()
-					},
+					}),
+					contentType : 'application/json',
 					success: function(data) {
+						console.log(data);
 						setMessage("️💬 답글이 등록되었습니다.");
 						showModal();
 						setTimeout(hideModal, 700);
-						mentionList.append(data);
 						$('.mcontents').val('');
+						mentionList.append(data);
+//						let newMention = createMentionElement(data);
+//						mentionList.append(newMention);
 					},
 					error: function() {
 						setMessage("⚠️ 답글 등록 실패."); // 이거 고쳐ㅕㅕㅕㅕㅕㅕㅕㅕㅕ

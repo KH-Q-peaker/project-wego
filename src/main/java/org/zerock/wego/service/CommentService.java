@@ -1,6 +1,5 @@
 package org.zerock.wego.service;
 
-import java.util.Objects;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import org.springframework.scheduling.annotation.Async;
@@ -234,17 +233,17 @@ public class CommentService {
 	
 	
 	// 댓글 수정 
-	public boolean isModified(CommentDTO dto) throws ServiceException{
-		log.trace("isModified({}) invoked", dto);
+	public boolean isModify(CommentDTO dto) throws ServiceException{
+//		log.trace("isModified({}) invoked", dto);
 
 		try {
 			CommentViewVO originComment = this.commentMapper.selectById(dto.getCommentId());
 			
 			dto.setStatus(originComment.getStatus());
 			
-			boolean isUpdated = (this.commentMapper.updateComment(dto) == 1); 
+			boolean isUpdate = (this.commentMapper.updateComment(dto) == 1); 
 			
-			return isUpdated; 
+			return isUpdate; 
 			
 		}catch (Exception e) {
 			throw new ServiceException(e);
@@ -254,7 +253,7 @@ public class CommentService {
 	// 댓글 영구 삭제
 	@Async
 	@Scheduled(fixedRate = 100000)
-	public boolean isCleared() throws ServiceException{
+	public boolean isClear() throws ServiceException{
 		
 		try {
 			boolean isClear = (this.commentMapper.deleteDeadComment() == 1);
