@@ -41,6 +41,16 @@
   			
   	</select>
 
+	<!--  ************* 후기글 존재여부 *************** -->
+	<select
+		id="findById">
+		
+		SELECT
+			EXISTS(SELECT 1
+					FROM san_review_tb
+					WHERE san_review_id = #{reviewId})		
+	</select>
+
 	<!--  ************* 후기글 삭제 *************** -->
 	<delete
   		id="delete">

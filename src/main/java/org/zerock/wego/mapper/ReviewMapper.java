@@ -16,6 +16,9 @@ public interface ReviewMapper {
 	// 특정 후기글 조회 
 	public abstract ReviewViewVO selectById(@Param("reviewId")Integer reviewId);
 	
+	// 특정 후기글 존재여부 
+	public abstract Integer findById(@Param("reviewId")Integer reviewId);
+	
 	public abstract Integer insert(ReviewDTO dto); // 신규게시물등록
 	public abstract Integer update(ReviewDTO dto); // 기존게시물수정
 	

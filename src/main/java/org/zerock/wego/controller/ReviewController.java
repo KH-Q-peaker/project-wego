@@ -92,17 +92,16 @@ public class ReviewController {
 
 
 
-	@GetMapping("/{reviewId}")
+	@GetMapping(path= "/{reviewId}")
 	public ModelAndView showDetailById(@PathVariable("reviewId")Integer reviewId,
 									@SessionAttribute("__AUTH__")UserVO user,
 									PageInfo target) throws Exception{
-		log.trace("showDetail({}, {}) invoked.", reviewId, target);
+//		log.trace("showDetail({}, {}) invoked.", reviewId, target);
 		
 			target = this.createPageInfo(reviewId);
 			
 			
 			ModelAndView mav = new ModelAndView();
-
 			
 			ReviewViewVO review = this.reviewService.getById(reviewId);
 			
@@ -148,12 +147,11 @@ public class ReviewController {
 	
 	
 	
-	
 	@DeleteMapping(path= "/{reviewId}", produces= "text/plain; charset=UTF-8")
 	public ResponseEntity<String> removeById(@PathVariable("reviewId")Integer reviewId) throws ControllerException{
 		log.trace("removeById({}) invoked.", reviewId);
 
-		boolean isReviewRemoved = this.reviewService.isRemove(reviewId);
+		boolean isReviewRemoved = this.reviewService.remove(reviewId);
 		boolean isFileRemoved = this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId);
 		
 		boolean isSuccess = isReviewRemoved && isFileRemoved;
@@ -208,7 +206,7 @@ public class ReviewController {
       
 			dto.setSanInfoId(sanId);
 			
-			boolean isSuccess = this.reviewService.isModified(dto);
+			boolean isSuccess = this.reviewService.modify(dto);
 			log.info("isSuccess: {}", isSuccess);
 			
 			if (imgFiles != null) {
@@ -290,7 +288,7 @@ public class ReviewController {
 
 			dto.setUserId(auth.getUserId());
 
-			boolean success = this.reviewService.isRegistered(dto);
+			boolean success = this.reviewService.register(dto);
 			log.info("success: {}", success);
 	
 			if (imgFiles != null) {
