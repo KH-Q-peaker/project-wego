@@ -1,10 +1,5 @@
 package org.zerock.wego.controller;
 
-import java.util.Objects;
-
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.http.MediaType;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,23 +19,18 @@ import lombok.extern.log4j.Log4j2;
 @RestController
 public class UserController {
 	
-	private final UserService userService;
-
-	
-	@GetMapping(
-			path = "/json/{targetUserId}",
-			produces = {
-					MediaType.APPLICATION_JSON_VALUE
-			})
-	public UserVO getUserInfoById(
-			@PathVariable("targetUserId")Integer targetUserId,
-			Model model)
-					throws ServiceException {
-		log.trace("getTargetUserInfo({}) invoked.", targetUserId);
-
-		UserVO targetUserVO = this.userService.getById(targetUserId);
-		
-		return targetUserVO;
-	} // getTargetUserInfo
+//	private final UserService userService;
+//
+//	
+//	@GetMapping(path = "/json/{targetUserId}")
+//	public UserVO getUserInfoById(@PathVariable("targetUserId")Integer targetUserId)
+//					throws ServiceException {
+//		log.trace("getTargetUserInfo({}) invoked.", targetUserId);
+//
+//		UserVO targetUserVO = this.userService.getById(targetUserId);
+//		
+//		return targetUserVO;
+//	} // getTargetUserInfo
+	// 굳이 필요가 없는 것 같아 삭제예정
 
 } // end class

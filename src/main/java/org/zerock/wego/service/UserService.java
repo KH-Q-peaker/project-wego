@@ -2,6 +2,7 @@ package org.zerock.wego.service;
 
 import org.springframework.stereotype.Service;
 import org.zerock.wego.domain.UserVO;
+import org.zerock.wego.exception.NotFoundUserException;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.UserMapper;
 
@@ -16,22 +17,27 @@ import lombok.extern.log4j.Log4j2;
 
 @Service
 public class UserService {
-	
-    private final UserMapper userMapper;
-    
-	
-    public UserVO getById(Integer userId) {
-    	log.trace("getTargetUserInfo({}) invoked.", userId);
-    	
-    	try {
-    		
-    		return userMapper.selectByUserId(userId);
-    		
-    	} catch(Exception e) {
-    		throw new ServiceException(e);
-    	}// try-catch
-    	
-    }// kakaoLogin
-    
-    
+
+	private final UserMapper userMapper;
+
+
+	public UserVO getById(Integer userId) {
+		log.trace("getById({}) invoked.", userId);
+
+		boolean isNotExistUser = !isExistById(userId);
+
+		if(isNotExistUser) {
+			throw new NotFoundUserException("없는 유저 입니다.");
+		} // if
+
+		return userMapper.selectByUserId(userId);
+	}// getById
+
+	public boolean isExistById(Integer userId) {
+		log.trace("isExistById({}) invoked.", userId);
+
+		return userMapper.selectByUserId(userId) != null;
+	}// isExistById
+
+
 }// end class

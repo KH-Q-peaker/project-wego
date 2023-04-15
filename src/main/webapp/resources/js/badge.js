@@ -1,25 +1,26 @@
 
-
 $(() => {
+
+    // ===============================================================================
+    removeSearch(); // header.js
+
+    if (authUserId === targetUserId) {
+        showAllBadge();
+    } else {
+        removePickSetting()
+    } // if-else
+
+    showGetPickStack();
+    removeAndAddPickBadge();
+    
+    // ===========================================================================init
+
     // 모달창 열림
     $(".pick5Setting > button").on({
         click: function () {
-            // $(this).next().showModal();
-            // $(".pick5Setting > button + dialog").showModal(); 
-            // 왜 jq로 show만 되냐?
-            // document.querySelector(".pick5Setting > button + dialog").showModal();
             document.querySelector(".pick5Setting > button + dialog").showModal();
         }
     }) // showModal
-
-    var clearPick = function () {
-        $("dialog .item").removeClass("pick");
-        $(".settingError").css("display", "none");
-        $("dialog .item").children(".sanBadge").children("span").remove();
-        pickList.length = 0;
-        $("dialog form button[value='submit'").css("background-color", "#fff")
-        $("dialog form button[value='submit'").css("color", "#000")
-    };
 
     // 모달창 닫으면 대표선택 초기화
     // 서밋
@@ -27,16 +28,12 @@ $(() => {
         close: function (e) {
             e.preventDefault();
 
-            console.log(e);
-
-            console.log(document.querySelector(".pick5Setting > button + dialog").returnValue);
+            let modalButton = document.querySelector(".pick5Setting > button + dialog").returnValue
 
             // list 가 1개이상일때만 서밋 가능
             if (pickList.length > 0) {
-                if (document.querySelector(".pick5Setting > button + dialog").returnValue === "submit") {
+                if (modalButton === "submit") {
                     let targetURL = `${targetUserId}`;
-
-                    console.log(pickList)
 
                     $.ajax({
                         type: "POST",
@@ -46,27 +43,20 @@ $(() => {
                         },
 
                         error: function () {
-                            // location.reload();
+                            alert("err");
+
+                            clearPick(pickList);
                         },
 
-                        success: function () {
-                            let mesg = "";
+                        success: function (newBadgeGetList) {
 
-                            for (let idx = 0; idx < pickList.length; idx++) {
-                                mesg += idx + 1 + " : " + pickList[idx] + "\n";
-                            }
-
-                            mesg += "저장완료"
-
-                            alert(mesg);
-
-                            // clearPick();
-
-                            location.reload(); 
+                            removeAndAddClassPickByGetList(newBadgeGetList);
+                            removeAndAddPickBadge();
+                            clearPick(pickList);
                         }
                     });
                 } else {
-                    clearPick();
+                    clearPick(pickList);
                 } // if-else submit or cancle
             } // if
         }
@@ -77,8 +67,8 @@ $(() => {
     // console.log(pickList);
 
     // 모달에서 대표뱃지선택
-    $("dialog .item").on({
-        click: function () {
+    $(document).on(
+        'click', "dialog .item", function () {
             if ($(this).hasClass("pick")) {
                 $(this).removeClass("pick");
                 $(this).children(".sanBadge").children("span").remove();
@@ -101,163 +91,268 @@ $(() => {
                     // id값을 뱃지리스트에 저장
                     let pickItem = $(this).prop("id");
 
-                    console.log(pickItem);
-
                     pickList.push(parseInt(pickItem));
-
-                    console.log(pickList);
 
                     $(this).children(".sanBadge").append("<span class='dot'></span>");
                 } // if-else
             } // if- else
 
             if (pickList.length > 0) {
-                $("dialog form button[value='submit'").css("background-color", "rgba(78, 197, 61, 1)");
-                $("dialog form button[value='submit'").css("color", "#fff")
+                $("dialog form button[value='submit']").css("background-color", "rgba(78, 197, 61, 1)");
+                $("dialog form button[value='submit']").css("color", "#fff")
             }
             else {
-                $("dialog form button[value='submit'").css("background-color", "#fff")
-                $("dialog form button[value='submit'").css("color", "#000")
+                $("dialog form button[value='submit']").css("background-color", "#fff")
+                $("dialog form button[value='submit']").css("color", "#000")
             }
 
             for (let idx = 0; idx < pickList.length; idx++) {
                 let pickNum = idx + 1;
-                let selectedBadgeId = "#" + pickList[idx];
-
-                // console.log(selectedBadgeId);
-                // console.log($(selectedBadgeId));
+                let selectedBadgeId = '#' + pickList[idx];
 
                 $(selectedBadgeId).children(".sanBadge").children("span").text(pickNum);
             } //for
         }
-    }); // item in modal onClick
+    ); // item in modal onClick
 
     // 누적치 on/off
-    $(".dot").on({
-        click: function () {
+    $(document).on(
+        'click', '.dot', function () {
+
             if ($(this).next().css('display') == 'block') {
                 $(this).next().css('display', 'none');
             } else {
                 $(this).next().css('display', 'block');
             } // if-else
         }
-    });// stackDot onClick
+    );// stackDot onClick
 
-    $(".dot + .stackList ").on({
-        click: function () {
+    $(document).on(
+        'click', '.dot + .stackList', function () {
+
             if ($(this).css('display') == 'block') {
                 $(this).css('display', 'none');
             } else {
                 $(this).css('display', 'block');
             } // if-else
         }
-    }); // stackList onClick
+    ); // stackList onClick
 
-    
+}) // .js
 
-    // =====================================ajax 비동기 호출
-    
-    $.ajax({
-        type: "GET",
-        url: "/auth/json/session",
-        error: function () {
-            console.log("err");
-        },
+var showAllBadge = () => {
+    $("#rank .item").css("display", "block");
+    $("#san .item").css("display", "block");
+} // showAllBadge
 
-        success: function (auth) {
-            authJson = auth;
+var removePickSetting = () => {
+    $(".pick5Setting").remove();
+} // showAllBadge
 
-            console.log(authJson);
-
-            if(authJson.userId === targetUserId){
-                $("#rank .item").css("display","block");
-                $("#san .item").css("display","block");
-                $(".pick5Setting").css("display","block");
-            } // if
-        }
-    });
-
-
+var showGetPickStack = () => {
     $.ajax({
         type: "GET",
         url: `get-list/json/${targetUserId}`,
         error: function () {
-            console.log("err");
-        },
+
+        }, // error
 
         success: function (badgeGetList) {
-            badgeGetListJson = badgeGetList;
 
-            console.log(badgeGetListJson);
-
-            let preBadgeId = 0;
-
-            let createdDtList = Array();
- 
-            for(let idx = 0; idx < badgeGetListJson.length; idx ++){
-
-                let nowBadgeGet = badgeGetListJson[idx];
-                
-                if(preBadgeId != nowBadgeGet.badgeId){
-                    preBadgeId = nowBadgeGet.badgeId;
-
-                    console.log(nowBadgeGet.badgeId);
-                    
-                    createdDtList = Array();
-
-                    createdDtList.push(nowBadgeGet.createdDt);
-
-                    $('#rank .item#' + nowBadgeGet.badgeId).css("display","block");
-                    $('#rank .item#' + nowBadgeGet.badgeId).addClass("get");
-                    $('#san .item#' + nowBadgeGet.badgeId).css("display","block");
-                    $('#san .item#' + nowBadgeGet.badgeId).addClass("get");
-
-                    console.log($('#collection .item#' + nowBadgeGet.badgeId))
-
-                    console.log(nowBadgeGet.badgeId + " <<<<<<<<<<<<<<<<get");
-
-
-
-                    if(nowBadgeGet.status != 'N'){
-                        console.log(preBadgeId + " <<<<<<<<<<<<<<<<pick");
-
-                        $('#rank .item#' + nowBadgeGet.badgeId).addClass("pick");
-                        $('#san .item#' + nowBadgeGet.badgeId).addClass("pick");
-                    }
-                }
-                else{
-                    createdDtList.push(nowBadgeGet.createdDt);
-                    
-
-                    console.log(createdDtList + " <<<<<<<<<<<<<<createdDtList");
-                    console.log(createdDtList.length + " <<<<<<<<<<<<<createdDtList.length");
-                } // if-else
-
-               
-            } // for
-
-            footerSet();
-        }
+            addClassGetPickByBadgeGetList(badgeGetList);
+            addDocumentStackDotAndList(badgeGetList)
+            setFooterPosition(); // footer.js
+        } // success
     });
+}
 
-     // 대표 뱃지는 항상 픽 클래스
-     $(".badgeBox#pick5 .item").addClass("pick");
-
+var resetGetPick = () => {
     $.ajax({
         type: "GET",
-        url: `/user/json/${targetUserId}`,
+        url: `get-list/json/${targetUserId}`,
         error: function () {
-            console.log("err");
-        },
 
-        success: function (targetUserVO) {
-            targetUserVOJson = targetUserVO;
+        }, // error
 
-            console.log(targetUserVOJson);
+        success: function (badgeGetList) {
 
-            $("#targetUserName").append(targetUserVOJson.nickname);
-        }
+            addClassGetPickByBadgeGetList(badgeGetList);
+            setFooterPosition(); // footer.js
+        } // success
     });
+}
 
-}) // .js
+var addClassGetPickByBadgeGetList = (badgeGetList) => {
+    let preBadgeId = 0;
+
+    for (let idx = 0; idx < badgeGetList.length; idx++) {
+
+        let nowBadgeGet = badgeGetList[idx];
+
+        let nowBadgeId = nowBadgeGet.badgeId;
+        let nowBadgeName = nowBadgeGet.badgeName;
+
+        if (preBadgeId != nowBadgeGet.badgeId) {
+            let getBadgeHTML = `<div class='item' id='${nowBadgeId}'><div class='sanBadge'></div><div class='badgeName'>${nowBadgeName}</div></div>`;
+
+            preBadgeId = nowBadgeId;
+
+            $('#rank .item#' + nowBadgeId).css("display", "block");
+            $('#rank .item#' + nowBadgeId).addClass("get");
+            $('#san .item#' + nowBadgeId).css("display", "block");
+            $('#san .item#' + nowBadgeId).addClass("get");
+
+            $(".pick5Setting > button + dialog > .badgeBox").append(getBadgeHTML)
+
+            if (nowBadgeGet.status != 'N') {
+                $('#rank .item#' + nowBadgeId).addClass("pick");
+                $('#san .item#' + nowBadgeId).addClass("pick");
+            } // if
+
+        } // if
+
+    } // for
+}
+
+var removeAndAddClassPickByGetList = (pickList) => {
+    let preBadgeId = 0;
+
+    for (let idx = 0; idx < pickList.length; idx++) {
+
+        let nowBadgeGet = pickList[idx];
+        let nowBadgeId = nowBadgeGet.badgeId;
+
+        if (preBadgeId != nowBadgeGet.badgeId) {
+
+            preBadgeId = nowBadgeId;
+
+            $('#rank .item#' + nowBadgeId).removeClass("pick");
+            $('#san .item#' + nowBadgeId).removeClass("pick");
+
+            if (nowBadgeGet.status != 'N') {
+                $('#rank .item#' + nowBadgeId).addClass("pick");
+                $('#san .item#' + nowBadgeId).addClass("pick");
+            } // if
+
+        } // if
+
+    } // for
+}
+
+
+
+var removeAndAddPickBadge = () =>{
+	$.ajax({
+        type: "GET",
+        url: `pick-list/json/${targetUserId}`,
+        error: function () {
+
+        }, // error
+
+        success: function (badgePickList) {
+            removePickBadge();
+
+            addPickBadge(badgePickList);
+            
+            setFooterPosition(); // footer.js
+        } // success
+    });
+}
+var removePickBadge = () =>{
+	$(".badgeBox#pick5").children("div.item").fadeOut(1000, function() {
+
+        $(this).remove();
+      });
+}
+var addPickBadge = (badgePickList) =>{
+    let preBadgeId = 0;
+    
+    for (let idx = 0; idx < badgePickList.length; idx++) {
+
+        let nowPickBadge = badgePickList[idx];
+        let nowPickBadgeId =  nowPickBadge.badgeId;
+        let nowPickBadgeName =  nowPickBadge.badgeName;
+
+        if (preBadgeId != nowPickBadgeId) {
+        
+            let pcikBadgeHTML = `<div class='item pick' id='${nowPickBadgeId}' style='display : none'><div class='sanBadge'></div><div class='badgeName'>${nowPickBadgeName}</div></div>`;
+
+            preBadgeId = nowPickBadgeId;
+
+            $(".badgeBox#pick5").append(pcikBadgeHTML);
+            $(".badgeBox#pick5").children("div.item").css("display", "block");
+        }   
+
+
+    }
+}
+
+var addDocumentStackDotAndList = (badgeGetList) => {
+    let preBadgeId = 0;
+
+    let createdDtList = Array();
+
+    for (let idx = 0; idx < badgeGetList.length; idx++) {
+
+        let nowBadgeGet = badgeGetList[idx];
+        let nowBadgeId = nowBadgeGet.badgeId;
+
+        let nowCreatedDt = getDateToTimeStamp(nowBadgeGet.createdDt)
+
+        if (preBadgeId != nowBadgeGet.badgeId) {
+
+            preBadgeId = nowBadgeId;
+
+            createdDtList = Array();
+
+            createdDtList.push(nowCreatedDt);
+
+        } else {
+
+            createdDtList.push(nowCreatedDt);
+
+            if (idx == badgeGetList.length - 1 || nowBadgeId != badgeGetList[idx + 1].badgeId) {
+                let dotHTML = "<span class='dot'>" + createdDtList.length + "</span>";
+                let stackListHTML = "<div class='stackList'><ul><li class=stackTitle>획득내역</li></ul></div>";
+
+                $('#rank .item#' + nowBadgeId).children(".sanBadge").append(dotHTML);
+                $('#rank .item#' + nowBadgeId).children(".sanBadge").append(stackListHTML);
+                $('#san .item#' + nowBadgeId).children(".sanBadge").append(dotHTML);
+                $('#san .item#' + nowBadgeId).children(".sanBadge").append(stackListHTML);
+
+
+                for (createdDtListIdx = 0; createdDtListIdx < createdDtList.length; createdDtListIdx++) {
+                    let stackContents = "<li class='stackContents'>" + createdDtList[createdDtListIdx] + "</li>";
+
+                    $('#rank .item#' + nowBadgeId).children(".sanBadge").children(".stackList").children("ul").append(stackContents);
+                    $('#san .item#' + nowBadgeId).children(".sanBadge").children(".stackList").children("ul").append(stackContents);
+                } // for
+
+            } // if
+
+        } // if-else
+
+    } // for
+}
+
+var getDateToTimeStamp = (timeStamp) => {
+
+    let date = new Date(timeStamp);
+
+    let yyyy = date.getFullYear();
+    let MM = date.getMonth();
+    let dd = date.getDay();
+
+    return yyyy + "-" + MM + "-" + dd;
+} // getDateToTimeStamp
+
+
+var clearPick = (pickList) => {
+    $("dialog .item").removeClass("pick");
+    $(".settingError").css("display", "none");
+    $("dialog .item").children(".sanBadge").children("span").remove();
+    pickList.length = 0;
+    $("dialog form button[value='submit']").css("background-color", "#fff")
+    $("dialog form button[value='submit']").css("color", "#000")
+};
 

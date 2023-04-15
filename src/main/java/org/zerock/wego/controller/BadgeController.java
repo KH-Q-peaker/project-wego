@@ -3,10 +3,6 @@ package org.zerock.wego.controller;
 import java.util.Deque;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
-import org.springframework.http.MediaType;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,8 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.zerock.wego.config.BadgeConfig;
 import org.zerock.wego.domain.BadgeGetVO;
+import org.zerock.wego.exception.NotFoundUserException;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.service.BadgeGetService;
+import org.zerock.wego.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,73 +24,69 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @RequiredArgsConstructor
 
-@RequestMapping("badge")	// base URI
+@RequestMapping("badge")
 @RestController
 public class BadgeController {
-	private final BadgeGetService badgeGetService;
+	private final UserService userService;
 	private final BadgeConfig badgeConfig;
+	private final BadgeGetService badgeGetService;
 
-	@GetMapping(
-			path = "/{targetUserId}"
-			)
-	public ModelAndView showCollection(
-			@PathVariable("targetUserId") Long targetUserId, 
-			HttpSession session
+
+
+	@GetMapping("/{targetUserId}")
+	public ModelAndView showCollection(@PathVariable("targetUserId") Integer targetUserId, ModelAndView mav) {
+		log.trace("showCollection({},ModelAndView) invoked.", targetUserId);
+
+		try {
+			mav.setViewName("/badge/badge");
+
+			String targetUserNickname = userService.getById(targetUserId).getNickname();
+
+			mav.addObject("targetUserNickname", targetUserNickname);
+			mav.addObject("badgeConfig", badgeConfig);
+			mav.addObject("targetUserId", targetUserId);
+			
+			return mav;
+		} catch (NotFoundUserException e) {
+			mav.setViewName("/error/notFoundUser");
+
+			return mav;
+		} // try-catch
+	} // showCollection
+
+	@PostMapping(path = "/{targetUserId}")
+	public Deque<BadgeGetVO> updatePickBadge(
+			@PathVariable("targetUserId")Integer targetUserId,
+			@RequestParam(value = "pickList[]") List<Integer> pickList
 			) throws ServiceException {
-		log.trace("openBadgeCollection({}, {}) invoked.", targetUserId, session);
+		log.trace("updatePickBadge({}, {}) invoked.", targetUserId, pickList);
 
-		// 번호 확인 절차 필요
-//		Deque<BadgeGetVO> badgeGetList = this.badgeGetService.getBadgeGetList(targetUserId);
+		badgeGetService.updatePickBadgeByUserIdAndPickList(targetUserId, pickList);
 
-		ModelAndView mv = new ModelAndView("/badge/badge");
+		Deque<BadgeGetVO> newBadgeGetList = badgeGetService.getAllByUserId(targetUserId);
 
-		mv.addObject("badgeConfig", badgeConfig);
-		mv.addObject("targetUserId", targetUserId);
+		return newBadgeGetList;
+	} // updatePickBadge
 
-		return mv;
-	} // badgeCollection
 
-	@PostMapping(
-			path = "/{targetUserId}",
-			produces = {
-					MediaType.APPLICATION_JSON_VALUE
-			})
-	public ModelAndView mofifyRepresentiveBadge(
-			@PathVariable("targetUserId")Long targetUserId,
-			@RequestParam(value = "pickList[]") List<Long> pickList,
-			Model model
-			) throws ServiceException {
-		log.trace("changeRepresentiveBadge({}) invoked.", targetUserId);
+	@GetMapping(path = "/get-list/json/{targetUserId}")
+	public Deque<BadgeGetVO> getBadgeGetListJson(@PathVariable("targetUserId")Integer targetUserId) {
+		log.trace("getBadgeGetListJson({}) invoked.", targetUserId);
 
-		log.info("\t + userId : {}", targetUserId);
-		log.info("\t + pickedBadgeList : {}", pickList);
+		Deque<BadgeGetVO> badgeGetList = badgeGetService.getAllByUserId(targetUserId);
 
-		this.badgeGetService.changeRepresentiveBadge(targetUserId, pickList);
+		return badgeGetList;
+	} // getBadgeGetListJson
 
-		Deque<BadgeGetVO> badgeGetList = this.badgeGetService.getBadgeGetList(targetUserId);
 
-		ModelAndView mv = new ModelAndView("/badge/badge");
+	@GetMapping(path = "/pick-list/json/{targetUserId}")
+	public Deque<BadgeGetVO> getPickBadgeListJson(@PathVariable("targetUserId")Integer targetUserId) {
+		log.trace("getPickBadgeListJson({}) invoked.", targetUserId);
 
-		mv.addObject("badgeGetList", badgeGetList);
+		Deque<BadgeGetVO> pickList = badgeGetService.getPickBadgeDequeByUserId(targetUserId);
 
-		return mv;
-	} // pickUpdate
-
-		@GetMapping(
-				path = "/get-list/json/{targetUserId}",
-				produces = {
-						MediaType.APPLICATION_JSON_VALUE
-				})
-		public Deque<BadgeGetVO> getBadgeGetList(
-				@PathVariable("targetUserId")Long targetUserId,
-				Model model)
-						throws ServiceException {
-			log.trace("getBadgeGetList({}) invoked.", targetUserId);
-	
-			Deque<BadgeGetVO> badgeGetList = this.badgeGetService.getBadgeGetList(targetUserId);
-
-			return badgeGetList;
-		} // pickUpdate
+		return pickList;
+	} // getPickBadgeListJson
 
 
 } // end class

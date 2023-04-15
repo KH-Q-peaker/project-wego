@@ -3,8 +3,9 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.zerock.wego.mapper.BadgeGetMapper">
+
 	<!-- 특정 유저의 뱃지 획득 내역에서 데이터를 조회 -->
-	<select id="selectWithUserId"
+	<select id="selectAllByUserId"
 		resultType="org.zerock.wego.domain.BadgeGetVO">
 
 		SELECT
@@ -17,20 +18,40 @@
 			badge_id, created_dt
 
 	</select>
+	
+	
+	<select id="selectAllPickBadgeByUserId"
+		resultType="org.zerock.wego.domain.BadgeGetVO">
+
+		SELECT
+			*
+		FROM
+			badge_get_v
+		WHERE
+			user_id = #{userId}
+			AND NOT status = 'N'
+		ORDER BY
+			status
+
+	</select>
+	
+	
 	<!-- 특정 유저가 선택한 뱃지의 상태(대표상태)를 선택한 순서로 초기화 -->
-	<update id="updatePickedBadgeStatusToPickedSequence">
+	<update id="updatePickBadgeStatusToPickedSequence">
 
 		UPDATE
 			badge_get_tb
 		SET
-			status = #{pickedSequence}
+			status = #{pickSequence}
 		WHERE
 			user_id = #{userId} AND
-			badge_id = #{pickedBadgeId}
+			badge_id = #{pickBadgeId}
 
 	</update>
+	
+	
 	<!-- 특정 유저가 선택한 뱃지를 제외하고 나머지 뱃지의 상태(대표상태)를 "선택되지 않음('N')"으로 초기화 -->
-	<update id="updateNotPickedBadgeStautToN">
+	<update id="updateNotPickBadgeStautToN">
 
 		UPDATE 
 			badge_get_tb
@@ -39,8 +60,8 @@
 		WHERE
 			user_id = #{userId} AND
 		<foreach item="pickList" collection="pickList"
-        open="badge_id NOT IN (" separator="," close=")">
+        	open="badge_id NOT IN (" separator="," close=")">
           #{pickList}
-    </foreach>
+    	</foreach>
 	</update>
 </mapper>

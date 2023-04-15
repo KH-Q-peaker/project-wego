@@ -19,23 +19,21 @@ public class BadgeConfig {
 
 	private final BadgeService badgeService;
 
-
-
 	
 	@Bean
-	public Deque<BadgeVO> getSanBadgeList() {
+	public Deque<BadgeVO> getAllSan() {
 		log.trace("getBadgeList() invoked");
 
-		return this.badgeService.getSanBadgeData();
-
-	} // getSanBadgeList
+		return badgeService.getAllSan();
+	} // getAllSan
+	
 	
 	@Bean
-	public Deque<BadgeVO> getRankingBadgeList() {
+	public Deque<BadgeVO> getAllRanking() {
 		log.trace("getBadgeList() invoked");
 
-		return this.badgeService.getRankingBadgeData();
+		return badgeService.getAllRanking();
+	} // getAllRanking
 
-	} // getRankingBadgeList
-
+	
 } // end class
