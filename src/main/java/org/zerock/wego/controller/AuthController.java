@@ -18,19 +18,15 @@ import lombok.extern.log4j.Log4j2;
 @RestController
 public class AuthController {
 	
-
-	@GetMapping(
-			path = "/json/session",
-			produces = {
-					MediaType.APPLICATION_JSON_VALUE
-			})
-	public UserVO getAuthJsonFromSession(
-			@SessionAttribute("__AUTH__")UserVO authUserVO
-			) {
-		log.trace("getAuthJsonFromSession({}) invoked", authUserVO);
-
-		return authUserVO;
-	} // getBadgeName
+//	@GetMapping(path = "/json/session")
+//	public UserVO getAuthJsonFromSession(
+//			@SessionAttribute("__AUTH__")UserVO authUserVO
+//			) {
+//		log.trace("getAuthJsonFromSession({}) invoked", authUserVO);
+//
+//		return authUserVO;
+//	} // getBadgeName
+	// 삭제예정
 
 
 } // end class

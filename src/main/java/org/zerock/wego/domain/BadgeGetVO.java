@@ -7,9 +7,9 @@ import lombok.Value;
 @Value
 public class BadgeGetVO {
 
-	Long badgeGetId;
-	Long userId;
-	Long badgeId;
+	Integer badgeGetId;
+	Integer userId;
+	Integer badgeId;
 	String badgeName;
 	Timestamp createdDt;
 	Character status;

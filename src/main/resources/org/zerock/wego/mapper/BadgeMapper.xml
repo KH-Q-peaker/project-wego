@@ -6,7 +6,7 @@
 
 <mapper namespace="org.zerock.wego.mapper.BadgeMapper">
 
- 	<select id="selectSanBadge"
+ 	<select id="selectAllSan"
 		resultType="org.zerock.wego.domain.BadgeVO">
 
 		SELECT 
@@ -19,7 +19,7 @@
 	</select>
 	
 	
-	<select id="selectRankingBadge"
+	<select id="selectAllRanking"
 		resultType="org.zerock.wego.domain.BadgeVO">
 
 		SELECT 

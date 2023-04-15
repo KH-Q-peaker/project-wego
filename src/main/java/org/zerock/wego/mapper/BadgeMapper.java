@@ -9,8 +9,8 @@ import org.zerock.wego.domain.BadgeVO;
 @Mapper
 public interface BadgeMapper {
 
-	public abstract LinkedBlockingDeque<BadgeVO> selectSanBadge();
+	public abstract LinkedBlockingDeque<BadgeVO> selectAllSan();
 	
-	public abstract LinkedBlockingDeque<BadgeVO> selectRankingBadge();
+	public abstract LinkedBlockingDeque<BadgeVO> selectAllRanking();
 	
 } // end interface

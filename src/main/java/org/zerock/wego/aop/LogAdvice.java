@@ -32,7 +32,7 @@ public class LogAdvice {
 		long end = System.currentTimeMillis();
 		
 //		log.info(">> runtime = {} ns", (end - start));
-		log.info(">>>>>> runtime = {} ms", (end - start));
+		log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> runtime = {} ms", (end - start));
 //		log.info(":: result = {}", result);
 		
 		return result;
