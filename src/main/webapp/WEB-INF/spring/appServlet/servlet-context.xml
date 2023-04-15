@@ -31,6 +31,7 @@
 			<mapping path="/review/**" />
 			<mapping path="/party/**" />
 			<mapping path="/profile/**" />
+			<mapping path="/badge/**" />
 		<!-- =================================================================================== -->
 			
 			<!-- <exclude-mapping path="/"/>  -->
