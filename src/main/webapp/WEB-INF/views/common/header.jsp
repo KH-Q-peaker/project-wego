@@ -22,20 +22,24 @@
 			</nav>
 		</div>
 		<div class="user">
-			<!-- 로그인 상태 -->
+			
 			<c:choose>
+				<c:when test="${sessionScope.__AUTH__ == null}">
+				<!-- 비로그인 상태 -->
+					<button class="login-btn" onclick="location.href='/login'"></button>
+				</c:when>
 				<c:when test="${sessionScope.__AUTH__.userPic != null}">
+				<!-- 로그인 상태 -->
 					<img id="userImg" class="user-profile-img"
-				src="${sessionScope.__AUTH__.userPic}" alt="회원 프로필 이미지" />
+						src="${sessionScope.__AUTH__.userPic}" alt="회원 프로필 이미지" />
 				</c:when>
 				<c:otherwise>
+				<!-- 로그인 상태 -->
 					<img id="userImg" class="user-profile-img"
-				src="/resources/img/leaf.jpg" alt="회원 프로필 이미지" />
+						src="/resources/img/leaf.jpg" alt="회원 프로필 이미지" />
 				</c:otherwise>
 			</c:choose>
 			
-			<!-- 비로그인 상태 -->
-			<button class="login-btn" onclick="location.href='/login'"></button>
 			<div class="menubar">
 				<ul>
 					<li><a href="../profile/${sessionScope.__AUTH__.userId}">마이페이지</a></li>

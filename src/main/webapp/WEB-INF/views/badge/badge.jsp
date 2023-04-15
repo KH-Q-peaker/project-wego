@@ -26,17 +26,17 @@
 
 	<link rel="stylesheet" href="${path}/resources/css/header.css" />
  	<link rel="stylesheet" href="${path}/resources/css/footer.css" />
+ 	
+ 	<script src="${path}/resources/js/header.js" defer></script>
+	<script src="${path}/resources/js/footer.js" defer></script>
   
 	<script>
 		var targetUserId = ${targetUserId};
+		var authUserId = ${sessionScope.__AUTH__.userId};
 	</script>
 	
 	<script src="${path}/resources/js/badge.js" defer></script>
 	
-	<script src="${path}/resources/js/header.js" defer></script>
-	<script src="${path}/resources/js/footer.js" defer></script>
-
-  
 </head>
 
 <body>
@@ -54,12 +54,12 @@
             <span class="title boxStyle">
               <div class="boxName">
                 <span id="svg"></span>
-                <span id="targetUserName"></span>
+                <span id="targetUserName">${targetUserNickname}</span>
                 <span>의 뱃지</span>
                 <span id="svg"></span>
               </div>
             </span>
-            <span class="pick5Setting" style="display: none;">
+            <span class="pick5Setting">
               <button type="button">
                 <span id="svg"></span>
               </button>
@@ -71,7 +71,7 @@
                   대표뱃지는 5개까지만 설정 가능합니다
                 </div>
                 <div class="badgeBox" id="setting">
-                  <div class="item" id="1003">
+                  <!-- <div class="item" id="1003">
                     <div class="sanBadge"></div>
                     <div class="badgeName">참대장</div>
                   </div>
@@ -94,7 +94,7 @@
                   <div class="item" id="93">
                     <div class="sanBadge"></div>
                     <div class="badgeName">한라산</div>
-                  </div>
+                  </div> -->
                 </div>
                 <div class="modalBtn">
                   <form method="dialog">
@@ -111,26 +111,6 @@
             <div class="boxName">
               <span id="svg"></span>
             </div>
-            <div class="item" id="1003">
-              <div class="sanBadge"></div>
-              <div class="badgeName">참대왕</div>
-            </div>
-            <div class="item" id="1">
-              <div class="sanBadge"></div>
-              <div class="badgeName">가리산</div>
-            </div>
-            <div class="item" id="4">
-              <div class="sanBadge"></div>
-              <div class="badgeName">가지산</div>
-            </div>
-            <div class="item" id="5">
-              <div class="sanBadge"></div>
-              <div class="badgeName">감악산</div>
-            </div>
-            <div class="item" id="93">
-              <div class="sanBadge"></div>
-              <div class="badgeName">한라산</div>
-            </div>
           </div>
 
           <div class="badgeBox boxStyle collection" id="rank">
@@ -143,37 +123,6 @@
                 <div class="badgeName">${badgeVO.badgeName}</div>
               </div>
             </c:forEach>
-            <!-- <div class="item">
-              <div class="sanBadge"></div>
-              <div class="badgeName">한우물왕</div>
-            </div>
-            <div class="item">
-              <div class="sanBadge"></div>
-              <div class="badgeName">제일높왕</div>
-            </div>
-            <div class="item get pick">
-              <div class="sanBadge">
-                <span class="dot">2</span>
-                <div class="stackList">
-                  <ul>
-                    <li class=stackTitle>
-                      획득내역
-                    </li>
-                    <li class="stackContents">
-                      2022-03-22
-                    </li>
-                    <li class="stackContents">
-                      2022-03-26
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="badgeName">참대왕</div>
-            </div>
-            <div class="item">
-              <div class="sanBadge"></div>
-              <div class="badgeName">후기왕</div>
-            </div>-->
           </div> 
           <!-- san badge -->
           <div class="badgeBox boxStyle collection" id="san">
