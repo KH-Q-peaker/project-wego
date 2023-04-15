@@ -31,8 +31,6 @@ var joinModal = function() {
 	});
 }
 
-
-
 $(() => { /* 참여하기 모달창 on/off  */
 
 	$(".join").off('click').on('click', function(){ 
@@ -72,15 +70,14 @@ $(() => { /* 참여하기 모달창 on/off  */
 
 			joinModal();
 
-
 			$(".joinbtn").off('click').on('click', function() {
 
 				$.ajax({
-					url : "/party/join/" + target.targetCd ,
+					url : "/join/" + target.targetCd ,
 					type : "POST",
 					success: function() {
 						joinModalcls();
-						setMessage("🙅🏻‍♀️취소되었습니다.");
+						setMessage("🙅🏻‍♀️ 취소되었습니다.");
 						showModal();
 						setTimeout(hideModal, 500);
 						$('#clsjoin').attr('id', 'join').val('참여하기');

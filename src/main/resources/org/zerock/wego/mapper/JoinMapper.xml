@@ -19,7 +19,8 @@
     		join_tb
     	WHERE 
     		san_party_id = #{sanPartyId}
-    		AND user_id = #{userId}
+    		AND 
+    		user_id = #{userId}
     </select>
     
     
@@ -32,7 +33,6 @@
     	VALUES
     		(#{sanPartyId}, #{userId})
     </insert>
-    
     
     <!-- ************ 참여 신청/취소 토글 ************ -->
     <update 
@@ -47,16 +47,6 @@
     		AND
     		user_id = #{dto.userId}
     </update>
-    
-<!--     ************ 특정글 참여 삭제 ************ -->
-<!--     <delete  -->
-<!--     	id="deleteById"> -->
-<!--     	DELETE -->
-<!--     	FROM -->
-<!--     		join_tb -->
-<!--     	WHERE -->
-<!--     		san_party_id = #{sanPartyId} -->
-<!--     </delete> -->
     
   </mapper>
   

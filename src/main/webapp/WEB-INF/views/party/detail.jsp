@@ -106,6 +106,9 @@
 						<input type="button" class="report" name="report" value="신고" />
 					</div>
 					<c:choose>
+						<c:when test="${party.userCnt >= party.partyMax }">
+							<input type="button" class="join" style="background-color: #727272" disabled value="모집완료" />
+						</c:when>
 						<c:when test="${isJoin == false }">
 							<input type="button" class="join" id="join" name="join" value="참여하기" />
 						</c:when>

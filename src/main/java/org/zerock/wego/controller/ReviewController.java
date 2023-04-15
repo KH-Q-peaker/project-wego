@@ -60,20 +60,6 @@ public class ReviewController {
 
 
 
-	@ModelAttribute("target")
-	PageInfo createPageInfo(Integer reviewId) {
-		log.trace("createPageInfo() invoked.");
-		
-		PageInfo target = new PageInfo();
-
-		target.setTargetGb("SAN_REVIEW");
-		target.setTargetCd(reviewId);
-		
-		return target;
-	}// createdBoardDTO
-	
-	
-  
 	@GetMapping("")
 	public String openReview(Model model) throws ControllerException {
 		log.trace("openReview({}) invoked.", model);
@@ -97,11 +83,10 @@ public class ReviewController {
 									PageInfo target) throws Exception{
 		log.trace("showDetail({}, {}) invoked.", reviewId, target);
 		
-			target = this.createPageInfo(reviewId);
-			
+			target.setTargetGb("SAN_REVIEW");
+			target.setTargetCd(reviewId);
 			
 			ModelAndView mav = new ModelAndView();
-
 			
 			ReviewViewVO review = this.reviewService.getById(reviewId);
 			
@@ -113,14 +98,11 @@ public class ReviewController {
 			favorite.setUserId(userId);
 			
 			boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
-//			boolean isLike = this.likeService.isUserLike(target, userId);
 
 			int commentCount = this.commentService.getCommentsCount(target);
-
 			
 			LinkedBlockingDeque<CommentViewVO> comments 
 							= this.commentService.getCommentOffsetByTarget(target, 0);
-
 
 			/*후기글 사진 넣는거 필요함 */
 			mav.addObject("review", review);
@@ -133,36 +115,28 @@ public class ReviewController {
 				mav.addObject("comments", comments);
 			}// if
 			
-			
 			ObjectMapper objectMapper = new ObjectMapper();
 			String targetJson = objectMapper.writeValueAsString(target);
 			mav.addObject("target", targetJson);
 
-
 			mav.setViewName("/review/detail");
-
 			
 			return mav;
 	}// viewReviewDetail
-	
-	
-	
 	
 	@DeleteMapping(path= "/{reviewId}", produces= "text/plain; charset=UTF-8")
 	public ResponseEntity<String> removeById(@PathVariable("reviewId")Integer reviewId) throws ControllerException{
 		log.trace("removeById({}) invoked.", reviewId);
 
-		boolean isReviewRemoved = this.reviewService.isRemove(reviewId);
-		boolean isFileRemoved = this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId);
-		
-		boolean isSuccess = isReviewRemoved && isFileRemoved;
-		
-		if (isSuccess) {
-			return ResponseEntity.ok("🗑 후기글이 삭제되었습니다.️");
+		try {
+			this.reviewService.removeById(reviewId);
+			boolean isFileRemoved = this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId);
 
-		} else {
+			return ResponseEntity.ok("🗑 &#1F5D1; 후기글이 삭제되었습니다.️");
+
+		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
-		}// if-else
+		}// try-catch
 	}// removeReview
 	
 	
@@ -207,8 +181,7 @@ public class ReviewController {
       
 			reviewDTO.setSanInfoId(sanId);
 			
-			boolean isSuccess = this.reviewService.isModified(reviewDTO);
-			log.info("isSuccess: {}", isSuccess);
+			this.reviewService.modify(reviewDTO);
 			
 			if (imgFiles != null) {
 				boolean isRemoveSuccess = this.fileService.isRemoveByTarget("SAN_REVIEW", sanReviewId);
@@ -289,8 +262,7 @@ public class ReviewController {
 
 			reviewDTO.setUserId(auth.getUserId());
 
-			boolean success = this.reviewService.isRegistered(reviewDTO);
-			log.info("success: {}", success);
+			this.reviewService.register(reviewDTO);
 	
 			if (imageFiles != null) {
 				String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));

@@ -82,32 +82,29 @@ public class CommentController {
 	ModelAndView registerComment(@RequestBody CommentDTO dto, 
 								@SessionAttribute("__AUTH__") UserVO user) throws ControllerException{
 //		log.trace("registerComment({}) invoked.", dto);
-
+		
 		ModelAndView mav = new ModelAndView();
 
+		
 		PageInfo target = new PageInfo();
 		target.setTargetGb(dto.getTargetGb());
 		target.setTargetCd(dto.getTargetCd());
-
 		
 		Integer userId = user.getUserId();
 		dto.setUserId(userId);
 		
+		
 		try {
-			boolean isRegistered = this.commentService.isCommentRegister(dto);
-			
-			if(isRegistered) {
-				
-				LinkedBlockingDeque<CommentViewVO> comments 
-							= this.commentService.getCommentOffsetByTarget(target, 0);
+			this.commentService.isCommentRegister(dto);
 
-				mav.addObject("comments", comments);
-				mav.setViewName("comment/comment");
-				
-				return mav;
-			}else {
-				return null; // ..?
-			}// if-else
+			LinkedBlockingDeque<CommentViewVO> comments 
+						= this.commentService.getCommentOffsetByTarget(target, 0);
+
+			mav.addObject("comments", comments);
+			mav.setViewName("comment/comment");
+
+			return mav;
+
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		}// try-catch
@@ -126,41 +123,20 @@ public class CommentController {
 		dto.setUserId(userId);
 
 		try {
-			boolean isRegister = this.commentService.isMentionRegister(dto);
+			this.commentService.isMentionRegister(dto);
 			
-			if(isRegister) {
-				
-				CommentViewVO comment = this.commentService.getById(dto.getCommentId());
+			CommentViewVO comment = this.commentService.getById(dto.getCommentId());
 
-				mav.addObject("comment", comment);
-				return mav;
-			}else {
-				return null;
-			}
+			mav.addObject("comment", comment);
+			
+			
+			return mav;
+
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		}// try-catch
 	}// registerComment
 	
-//	@PostMapping(path="/reply",
-//				 produces=MediaType.APPLICATION_JSON_VALUE)
-//	CommentViewVO registerMention(@RequestBody CommentDTO dto, 
-//								 @SessionAttribute("__AUTH__") UserVO user) throws ControllerException{
-////		log.trace("registerMention({}, {}) invoked.", dto, user);
-//		
-//		Integer userId = user.getUserId();
-//		dto.setUserId(userId);
-//
-//		try {
-//			this.commentService.isMentionRegister(dto);
-//			
-//			CommentViewVO comment = this.commentService.getById(dto.getCommentId());
-//
-//			return comment;
-//		} catch (Exception e) {
-//			throw new ControllerException(e);
-//		}// try-catch
-//	}// registerComment
 	
 	// 댓글 삭제 
 //	@PostMapping("/remove")
