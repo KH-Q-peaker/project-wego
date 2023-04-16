@@ -9,7 +9,10 @@ import org.zerock.wego.domain.PageInfo;
 
 public interface CommentMapper {
 
-
+	
+	// 존재 여부 
+	public abstract boolean isExist(@Param("commentId")Integer commentId);
+	
 	// 특정 글 댓글 총 개수 
 	public abstract Integer selectTotalCountByTarget(PageInfo target);
 	

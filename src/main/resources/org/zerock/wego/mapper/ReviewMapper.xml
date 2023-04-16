@@ -25,7 +25,17 @@
 		WHERE rownum &lt;= 10
 	</select>
 
+	<!--  ************* 존재 여부 *************** -->
+	<select id="isExist">
+		SELECT 
+			COUNT(san_review_id)
+		FROM 
+			san_review_tb
+		WHERE 
+			san_review_id = #{reviewId}
 
+	</select>
+	
 	<!--  ************* 특정 후기글 조회  *************** -->
 	<select id="selectById" 
   			resultType = "org.zerock.wego.domain.ReviewViewVO">

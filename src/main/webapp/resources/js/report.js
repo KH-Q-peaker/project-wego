@@ -13,22 +13,18 @@ var reportModal = function(){
 		$(".reportModal").show('fast').css('display', 'flex');/* 신고 모달창 on */
 		$('input[name=check]').prop('checked', false); /* 체크 초기화 */
 		
-		
 		/* 신고 모달창 off  */
-		
 		$(document).off('mouseup').on('mouseup', function (e){ /* 외부 영역 클릭 시 닫기 */
 			if($(".reportModal").has(e.target).length === 0){
 				reportModalcls();
 			}
 		});
-		
 		$(document).off('keydown').on('keydow', function(e){/* esc입력시 닫기 */
 		
     		var code = e.keyCode || e.which;
  
    			if (code == 27) { reportModalcls(); }
 		});
-		
 		$(".mdcancle").off('click').on('click', function() { /* 취소 버튼 클릭 시 닫기 */
 			reportModalcls();
 		});
@@ -100,18 +96,19 @@ $(() => {
 			},
 
 			success: function(data) {
+				
 				if (data >= 5) {
 					window.location.replace("http://localhost:8080");
 				} else {
 					reportModalcls();
-					setMessage("🚨 신고가 접수되었습니다. 🚨");
+					setMessage("신고가 접수되었습니다.");
 					showModal();
 					setTimeout(hideModal, 700);
 				}
 			},
-			error : function(){
+			error : function(data){
 				reportModalcls();
-		 		setMessage("⚠️ 이미 접수된 신고입니다.");
+		 		setMessage(data.responseText);
 		 		showModal();
 		 		setTimeout(hideModal, 700);
 			}

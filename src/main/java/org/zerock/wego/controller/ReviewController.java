@@ -33,6 +33,7 @@ import org.zerock.wego.domain.PageInfo;
 import org.zerock.wego.domain.ReviewDTO;
 import org.zerock.wego.domain.ReviewViewVO;
 import org.zerock.wego.domain.UserVO;
+import org.zerock.wego.exception.AccessBlindException;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.service.CommentService;
@@ -52,6 +53,7 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("/review")
 @Controller
 public class ReviewController {
+	
 	private final SanInfoService sanInfoService;
 	private final ReviewService reviewService;
 	private final CommentService commentService;
@@ -59,21 +61,6 @@ public class ReviewController {
 	private final FavoriteService favoriteService;
 
 
-
-	@ModelAttribute("target")
-	PageInfo createPageInfo(Integer reviewId) {
-		log.trace("createPageInfo() invoked.");
-		
-		PageInfo target = new PageInfo();
-
-		target.setTargetGb("SAN_REVIEW");
-		target.setTargetCd(reviewId);
-		
-		return target;
-	}// createdBoardDTO
-	
-	
-  
 	@GetMapping("")
 	public String openReview(Model model) throws ControllerException {
 		log.trace("openReview({}) invoked.", model);
@@ -91,36 +78,37 @@ public class ReviewController {
 
 
 
-	@GetMapping("/{reviewId}")
+	@GetMapping(path="/{reviewId}")
 	public ModelAndView showDetailById(@PathVariable("reviewId")Integer reviewId,
 									@SessionAttribute("__AUTH__")UserVO user,
 									PageInfo target) throws Exception{
 		log.trace("showDetail({}, {}) invoked.", reviewId, target);
-		
-			target = this.createPageInfo(reviewId);
-			
+
+			target.setTargetGb("SAN_REVIEW");
+			target.setTargetCd(reviewId);
 			
 			ModelAndView mav = new ModelAndView();
-
 			
 			ReviewViewVO review = this.reviewService.getById(reviewId);
-			
 			Integer userId = user.getUserId();
 			
+			// TO_DO : 내글이면 블라인드 되도 보여야되는데 왜 막히냐 ? 
+			if((review.getReportCnt() >= 5) && review.getUserId() != userId) {
+				throw new AccessBlindException();
+			}// if
+			
+			// TO_DO : 좋아요 바뀌면 바꿔야됨 
 			FavoriteDTO favorite = new FavoriteDTO();
 			favorite.setTargetGb("SAN_REVIEW");
 			favorite.setTargetCd(reviewId);
 			favorite.setUserId(userId);
 			
 			boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
-//			boolean isLike = this.likeService.isUserLike(target, userId);
 
-			int commentCount = this.commentService.getCommentsCount(target);
-
+			int commentCount = this.commentService.getTotalCountByTarget(target);
 			
 			LinkedBlockingDeque<CommentViewVO> comments 
 							= this.commentService.getCommentOffsetByTarget(target, 0);
-
 
 			/*후기글 사진 넣는거 필요함 */
 			mav.addObject("review", review);
@@ -133,36 +121,27 @@ public class ReviewController {
 				mav.addObject("comments", comments);
 			}// if
 			
-			
 			ObjectMapper objectMapper = new ObjectMapper();
 			String targetJson = objectMapper.writeValueAsString(target);
 			mav.addObject("target", targetJson);
 
-
 			mav.setViewName("/review/detail");
-
 			
 			return mav;
 	}// viewReviewDetail
-	
-	
-	
 	
 	@DeleteMapping(path= "/{reviewId}", produces= "text/plain; charset=UTF-8")
 	public ResponseEntity<String> removeById(@PathVariable("reviewId")Integer reviewId) throws ControllerException{
 		log.trace("removeById({}) invoked.", reviewId);
 
-		boolean isReviewRemoved = this.reviewService.isRemove(reviewId);
-		boolean isFileRemoved = this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId);
-		
-		boolean isSuccess = isReviewRemoved && isFileRemoved;
-		
-		if (isSuccess) {
-			return ResponseEntity.ok("🗑 후기글이 삭제되었습니다.️");
+		try {
+			this.reviewService.removeById(reviewId);
+//			this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId); 
+			return ResponseEntity.ok("🗑 후기글이 삭제되었습니다.️"); // 인코딩해서 넣던가 안넣던가 
 
-		} else {
+		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
-		}// if-else
+		}// try-catch
 	}// removeReview
 	
 	
@@ -207,8 +186,7 @@ public class ReviewController {
       
 			reviewDTO.setSanInfoId(sanId);
 			
-			boolean isSuccess = this.reviewService.isModified(reviewDTO);
-			log.info("isSuccess: {}", isSuccess);
+			this.reviewService.modify(reviewDTO);
 			
 			if (imgFiles != null) {
 				boolean isRemoveSuccess = this.fileService.isRemoveByTarget("SAN_REVIEW", sanReviewId);
@@ -289,8 +267,7 @@ public class ReviewController {
 
 			reviewDTO.setUserId(auth.getUserId());
 
-			boolean success = this.reviewService.isRegistered(reviewDTO);
-			log.info("success: {}", success);
+			this.reviewService.register(reviewDTO);
 	
 			if (imageFiles != null) {
 				String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));

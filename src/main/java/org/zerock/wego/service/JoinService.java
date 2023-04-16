@@ -2,6 +2,9 @@ package org.zerock.wego.service;
 
 import org.springframework.stereotype.Service;
 import org.zerock.wego.domain.JoinDTO;
+import org.zerock.wego.domain.PartyViewVO;
+import org.zerock.wego.exception.NotFoundPageException;
+import org.zerock.wego.exception.OperationFailException;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.JoinMapper;
 
@@ -17,65 +20,95 @@ public class JoinService {
 
 	
 	private final JoinMapper joinMapper;
+	private final PartyService partyService;
 	
-
 	// 모집 참여 여부 
-	public boolean isUserJoin(JoinDTO dto) throws ServiceException {
+	public boolean isJoin(JoinDTO dto) throws ServiceException {
 //		log.trace("isUserJoined({}, {}) invoked.", partyId, userId);
 		
 		String status = this.joinMapper.selectById(dto);
 		
-		if(status != null && status.equals("Y")) {
-			return true;
-		}else {
-			return false;
-		}// if-else
+		return (status != null && status.equals("Y"));
 	}// cancleJoin
 	
-
+	
+	// 현재 참여 인원 
+	public int getCurrentCount(JoinDTO dto) throws ServiceException {
+		
+		return this.joinMapper.selectTotalCount(dto);
+	}// currentCount 
+	
 	
 	// 모집 참여 토글
-	public boolean isJoinCreateOrCancle(JoinDTO dto) throws ServiceException {
+	public void createOrCancle(JoinDTO dto) throws Exception {
 //		log.trace("isJoinCreated({}, {}) invoked.", partyId, userId);
 		
+		/*
+		 * party isExist 만들어서 모집글 존재하는지 확인하기 어차피 여기서 가져온다면 이때 maxJoin 가져오면 되겠다
+		 */
 		try {
+			PartyViewVO party = this.partyService.getById(dto.getSanPartyId());
+
+			if (party == null) {
+				throw new NotFoundPageException();
+			} // if
+
+			int currentJoin = this.joinMapper.selectTotalCount(dto);
+			int maxJoin = party.getPartyMax();
+
+			if (currentJoin >= maxJoin) {
+				throw new OperationFailException();
+			} // if
+
 			String status = this.joinMapper.selectById(dto);
+
+			if (status == null) {
+
+				this.create(dto);
+			} else {
+
+				this.joinOrCancle(dto, status);
+			} // if-else
 			
-			boolean isSuccess;
+		} catch (NotFoundPageException | OperationFailException e) {
+			throw e;
 			
-			if(status == null) {
-				
-				isSuccess = (this.joinMapper.insert(dto) == 1);
-				
-			}else if(status.equals("Y")){
-				
-				isSuccess = (this.joinMapper.update(dto, "N") == 1);
-				
-			}else{
-				
-				isSuccess = (this.joinMapper.update(dto, "Y") == 1);
-			}// if-else
-			
-			return isSuccess;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			throw new ServiceException(e);
-		}// try-catch
-	}// offerJoin
-
-
+		} // try-catch
+	}// createOrCancle
 	
-//	// 모집 참여 취소 
-//	public boolean isJoinCancled(JoinDTO dto) throws ServiceException {
-////		log.trace("isJoinCancled({}, {}) invoked.", partyId, userId);
-//		
-//		try {
-//			
-//			return (this.joinMapper.update(dto, "N") == 1);
-//			
-//		}catch(Exception e) {
-//			throw new ServiceException(e);
-//		}// try-catch
-//	}
+	
+	// 참여 생성
+	public void create(JoinDTO dto) throws Exception {
+		
+		this.joinMapper.insert(dto);
+		
+		if(!this.isJoin(dto)) {
+			throw new OperationFailException();
+		}// if
+	}// create
+	
+	
+	// 참여/취소 토글 
+	public void joinOrCancle(JoinDTO dto, String status) throws Exception {
+
+		if (status.equals("Y")) {
+
+			this.joinMapper.update(dto, "N");
+
+			if (this.isJoin(dto)) {
+				throw new OperationFailException();
+			} // if
+		} else {
+			this.joinMapper.update(dto, "Y");
+
+			if (!this.isJoin(dto)) {
+				throw new OperationFailException();
+			} // if
+		}// if-else
+	}// joinOrCancle
+	
 	
 	// 모집 참여 삭제 *** 얘도 댓글처럼 스케줄링 해야할듯 *** 
 	public boolean isJoinRemove(JoinDTO dto) throws ServiceException {

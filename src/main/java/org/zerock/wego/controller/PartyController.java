@@ -115,7 +115,7 @@ public class PartyController {
 			join.setSanPartyId(partyId);
 			join.setUserId(userId);
 			
-			boolean isJoin = this.joinService.isUserJoin(join);
+			boolean isJoin = this.joinService.isJoin(join);
 			
 //			boolean isLike = this.likeService.isUserLiked(target, userId);
 			FavoriteDTO favorite = new FavoriteDTO();
@@ -125,7 +125,7 @@ public class PartyController {
 			
 			boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
 			
-			int commentCount = this.commentService.getCommentsCount(target);
+			int commentCount = this.commentService.getTotalCountByTarget(target);
 			
 
 			LinkedBlockingDeque<CommentViewVO> comments = commentService.getCommentOffsetByTarget(target, 0);
@@ -190,10 +190,10 @@ public class PartyController {
 		boolean isPartyRemoved = this.partyService.isRemoveById(partyId);
 		boolean isFileRemoved = this.fileService.isRemoveByTarget("SAN_PARTY", partyId);
 		boolean isLikeRemoved = this.favoriteService.removeAllByTarget("SAN_PARTY", partyId);
-		boolean isReportRemoved = this.reportService.isRemoveByTarget("SAN_PARTY", partyId);
+		this.reportService.removeByTarget("SAN_PARTY", partyId);
 //			boolean isJoinRemoved = this.joinService.isJoinCancled(partyId, userId);
 		
-		boolean isSuccess = isPartyRemoved && isFileRemoved && isLikeRemoved && isReportRemoved;
+		boolean isSuccess = isPartyRemoved && isFileRemoved && isLikeRemoved;
 
 		if (isSuccess) {
 			return ResponseEntity.ok("🗑 모집글이 삭제되었습니다.️");
@@ -286,57 +286,4 @@ public class PartyController {
 		} // try-catch
 	} // register
 	
-	// 참여 신청/취소 토글 
-		@PostMapping("/join/{partyId}")
-		ResponseEntity<String> offerJoin(@PathVariable Integer partyId, 
-										 @SessionAttribute("__AUTH__") UserVO user) throws ControllerException {
-			log.trace("offerJoin({}, {}) invoked.", partyId, user);
-
-			try {
-				Integer userId = user.getUserId();
-
-				JoinDTO join = new JoinDTO();
-				join.setSanPartyId(partyId);
-				join.setUserId(userId);
-				
-				boolean isJoined = this.joinService.isJoinCreateOrCancle(join);
-				
-				if (isJoined) {
-
-					return ResponseEntity.ok().build();
-				} // if
-
-				return ResponseEntity.badRequest().build();
-
-			} catch (Exception e) {
-				throw new ControllerException(e);
-			} // try-catch
-		}// offerJoin
-
-		// 참여 삭제
-//		@PostMapping("/cancle")
-//		@DeleteMapping("/join/{partyId}")
-//		ResponseEntity<String> cancleJoin(@PathVariable Integer partyId, 
-//										 @SessionAttribute("__AUTH__") UserVO user) throws ControllerException {
-//			log.trace("cancleJoin({}, {}) invoked.", partyId, user);
-//
-//			try {
-//				Integer userId = user.getUserId();
-//				Objects.nonNull(userId);
-//				
-//				JoinDTO join = new JoinDTO();
-//				join.setSanPartyId(partyId);
-//				join.setUserId(userId);
-//				
-//				if (this.joinService.isJoinCancled(join)) {
-//
-//					return new ResponseEntity<>("OK", HttpStatus.OK);
-//				} // if
-//
-//				return new ResponseEntity<>("XX", HttpStatus.BAD_REQUEST);
-//
-//			} catch (Exception e) {
-//				throw new ControllerException(e);
-//			} // try-catch
-//		}// cancleJoin
 } // end class

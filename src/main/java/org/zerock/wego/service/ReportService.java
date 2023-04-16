@@ -2,6 +2,9 @@ package org.zerock.wego.service;
 
 import org.springframework.stereotype.Service;
 import org.zerock.wego.domain.ReportDTO;
+import org.zerock.wego.exception.AccessBlindException;
+import org.zerock.wego.exception.DuplicateKeyException;
+import org.zerock.wego.exception.OperationFailException;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.ReportMapper;
 
@@ -16,46 +19,57 @@ public class ReportService {
 
 	
 	private final ReportMapper reportMapper;
-
-	// 신고 생성  
-	public boolean isCreate(ReportDTO dto) throws ServiceException {
-		log.trace("create({}) invoked.", dto);
+	
+	// 존재 여부 
+	public boolean isExist(ReportDTO dto) throws Exception{
 		
-		try {
-			
-			return (this.reportMapper.insert(dto) == 1);
-			
-		}catch(Exception e) {
-			throw new ServiceException(e);
-		}// try-catch
-	}// modifyComment
+		return (this.reportMapper.find(dto) != null);
+		
+	}// isExist
 	
 	
 	// 타겟 신고 총합 조회 
-	public Integer getTotalCount(String targetGb, Integer targetCd) throws ServiceException{
+	public int getTotalCount(ReportDTO dto) throws ServiceException{
 		
-		try {
-			Integer totalCount 
-					= this.reportMapper.selectCountByTarget(targetGb, targetCd);
-			
-			
-			return totalCount;
-		}catch(Exception e) {
-			throw new ServiceException(e);
-		}// try-catch
+		int totalCount 
+			= this.reportMapper.selectCountByTarget(dto.getTargetGb(), dto.getTargetCd());
+		
+		return totalCount;
+		
 	}// getTotalCount
 	
+	
+	// 신고 생성  
+	public void create(ReportDTO dto) throws Exception {
+//		log.trace("create({}) invoked.", dto);
+		
+		if(isExist(dto)) {
+			throw new DuplicateKeyException();
+		}// if
+		
+		this.reportMapper.insert(dto);
+		
+		if(!isExist(dto)) {
+			throw new OperationFailException();
+		}// if
+		
+	}// modifyComment
 
-	public boolean isRemoveByTarget(String targetGb, Integer targetCd) throws Exception{
-		log.trace("removeAllByTarget({}, {})", targetGb, targetCd);
+	
+	// 신고 삭제 
+	public void removeByTarget(String targetGb, Integer targetCd) throws Exception{
+//		log.trace("removeAllByTarget({}, {})", targetGb, targetCd);
 		
-
-		int totalCount = this.reportMapper.selectCountByTarget(targetGb, targetCd);
+		this.reportMapper.deleteAllByTarget(targetGb, targetCd);
 		
-		int deleteCount = this.reportMapper.deleteByTarget(targetGb, targetCd);
+		ReportDTO report = ReportDTO.builder()
+									.targetGb(targetGb)
+									.targetCd(targetCd)
+									.build();
 		
-		
-		return totalCount == deleteCount;
+		if(isExist(report)) {
+			throw new OperationFailException();
+		}// if
 	}// isRemovedByTarget
 	
 }// end class

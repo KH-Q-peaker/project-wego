@@ -7,10 +7,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="/resources/css/error.css" />
 </head>
 <body>
-	<h1>없다   </h1>
-	<hr>
-	<h3> 유저가 </h3>
+	<div>${errorMessage }</div>
+	<a href="http://localhost:8080/">...메인으로 갈게요</a>
 </body>
 </html>
