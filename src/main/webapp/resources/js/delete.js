@@ -1,10 +1,10 @@
 
-var deleteModalcls = function(){
+var hideDeleteModal = function(){
 	$(".deleteModal").hide('fast');
 	$(".modalbackground").remove();
 }
 
-var deleteModal = function(){
+var showDeleteModal = function(){
 
 	const backdrop =$('<div></div>').addClass('modalbackground');
 	$(".total-wrap").append(backdrop);
@@ -13,25 +13,24 @@ var deleteModal = function(){
 			
 		$(document).off('mouseup').on('mouseup', function (e){ /* 외부 영역 클릭 시 닫기 */
 			if($(".deleteModal").has(e.target).length === 0){
-				deleteModalcls();
+				hideDeleteModal();
 			}
 		});
 		$(document).off('keydown').on('keydown', function(e){/* esc입력시 닫기 */
 	   		var code = e.keyCode || e.which;
 
-	   		if (code == 27) { deleteModalcls(); }
+	   		if (code == 27) { hideDeleteModal(); }
 		});		
 		$(".delcancle").off('click').on('click', function() { /* 취소 클릭 시 닫기  */
-			deleteModalcls();
+			hideDeleteModal();
 		});
 };
-
 
 $(() => { /* 삭제 관련 */
 	
 	$(".deletecmt").off("click").on('click', function() {
 		
-		deleteModal();
+		showDeleteModal();
 	
 		let targetComment = $(this).parent().parent();
 //		let firstMention = targetComment.nextAll('.mention').first();
@@ -46,7 +45,7 @@ $(() => { /* 삭제 관련 */
 					setMessage("🗑️ 댓글이 삭제되었습니다.");
 		 			showModal();
 		 			setTimeout(hideModal, 500);
-		 			deleteModalcls();
+		 			hideDeleteModal();
 		
 		 			if(targetComment.find('#mentionCnt').html() > 0 ||
 		 				targetComment.next().next('.mentionList').html() != null){
@@ -57,7 +56,7 @@ $(() => { /* 삭제 관련 */
 					}
 				},
 				error : function(){
-		 			deleteModalcls();
+		 			hideDeleteModal();
 		 			setMessage("⚠️ 삭제실패."); // 이거 고쳐ㅕㅕㅕㅕㅕㅕㅕㅕㅕ
 		 			showModal();
 		 			setTimeout(hideModal, 500);
@@ -66,10 +65,9 @@ $(() => { /* 삭제 관련 */
 		});
 	});
 	
-	// 이거 해야되는거임 한거아님 
 	$(".delete").off('click').on('click', function() {
 		
-		deleteModal();
+		showDeleteModal();
 		
 		let url;
 		
@@ -78,20 +76,19 @@ $(() => { /* 삭제 관련 */
 		}else if(target.targetGb === 'SAN_PARTY'){
 			url = '/party/';
 		}
-		
 		$(".del").off('click').on('click', function(){
 		
 			$.ajax({
 				url : url + target.targetCd,
 				type : "DELETE",
-				success : function(response){
-					deleteModalcls();
-					setMessage(response);
+				success : function(data){
+					hideDeleteModal();
+					setMessage(data);
 					showModal();
-					setTimeout(function(){ window.location.replace('http://localhost:8080') }, 700);		 			
+					setTimeout(function(){ window.location.replace('http://localhost:8080' + url) }, 700);		 			
 				},
 				error : function(){
-		 			deleteModalcls();
+		 			hideDeleteModal();
 		 			setMessage("⚠️ 삭제실패."); // 이거 고쳐ㅕㅕㅕㅕㅕㅕㅕㅕㅕ
 		 			showModal();
 		 			setTimeout(hideModal, 700);

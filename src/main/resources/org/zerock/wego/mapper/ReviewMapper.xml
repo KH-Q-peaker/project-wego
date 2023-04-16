@@ -26,13 +26,14 @@
 	</select>
 
 	<!--  ************* 존재 여부 *************** -->
-	<select id="find">
+	<select id="isExist">
 		SELECT 
-			1
-		FROM
+			COUNT(san_review_id)
+		FROM 
 			san_review_tb
-		WHERE
+		WHERE 
 			san_review_id = #{reviewId}
+
 	</select>
 	
 	<!--  ************* 특정 후기글 조회  *************** -->

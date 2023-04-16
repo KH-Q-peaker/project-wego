@@ -29,7 +29,7 @@ public class ReportController {
 	ResponseEntity<String> createReport(PageInfo target,
 										@SessionAttribute("__AUTH__")UserVO user, 
 										String reportGb) throws Exception{
-//		log.trace("createReport({}, {}, {}) invoked.", user, target, reportGb);
+		log.trace("createReport() invoked.");
 		
 		try {
 //		ReportDTO report = new ReportDTO();
@@ -52,6 +52,7 @@ public class ReportController {
 			return ResponseEntity.ok().body(totalCount.toString());
 		
 		} catch(DuplicateKeyException e) {
+			
 			return ResponseEntity.badRequest().body("이미 접수된 신고입니다");
 		}// try-catch
 	}// createReport

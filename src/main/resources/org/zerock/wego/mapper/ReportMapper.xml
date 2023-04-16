@@ -20,7 +20,7 @@
     		target_gb = #{targetGb}
     		AND
     		target_cd = #{targetCd}
-    		<if test="#{userId} != null">
+    		<if test="userId != null">
     		AND
     		user_id = #{userId}
     		</if>

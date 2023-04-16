@@ -125,7 +125,7 @@ public class PartyController {
 			
 			boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
 			
-			int commentCount = this.commentService.getCommentsCount(target);
+			int commentCount = this.commentService.getTotalCountByTarget(target);
 			
 
 			LinkedBlockingDeque<CommentViewVO> comments = commentService.getCommentOffsetByTarget(target, 0);

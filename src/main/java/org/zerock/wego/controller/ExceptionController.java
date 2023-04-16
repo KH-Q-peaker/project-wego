@@ -15,44 +15,48 @@ public class ExceptionController {
 
     @ExceptionHandler(value = {NullPointerException.class})
     public ModelAndView handleNullPointerException(Exception e) {
+    	log.trace("NullPointerException *********************");
     	
         ModelAndView mav = new ModelAndView();
         
-        mav.addObject("errorMessage", "NullPointerException");
-        mav.setViewName("error");
+        mav.addObject("errorMessage", e.getMessage());
+        mav.setViewName("error/error");
         
         return mav;
     }// handleNullPointerException
     
     @ExceptionHandler(value = {NotFoundPageException.class})
     public ModelAndView handleNotFoundPageException(Exception e) {
+    	log.trace("NotFoundPageException *********************");
     	
         ModelAndView mav = new ModelAndView();
         
         mav.addObject("errorMessage", "해당 글을 찾을 수 없습니다 &#128546;");
-        mav.setViewName("error");
+        mav.setViewName("error/error");
         
         return mav;
     }// handleNullPointerException
 
     @ExceptionHandler(value = {AccessBlindException.class})
     public ModelAndView handleAccessBlindException(Exception e) {
+    	log.trace("AccessBlindException *********************");
     	
         ModelAndView mav = new ModelAndView();
         
         mav.addObject("errorMessage", "&#9888; 신고로 블라인드 처리된 글입니다 &#9888;");
-        mav.setViewName("error");
+        mav.setViewName("error/error");
         
         return mav;
     }// handleNullPointerException
     
     @ExceptionHandler(value = {OperationFailException.class})
     public ModelAndView handleOperationFailException(Exception e) {
+    	log.trace("OperationFailException *********************");
     	
         ModelAndView mav = new ModelAndView();
         
         mav.addObject("errorMessage", "&#9888; 작업중 문제가 발생어쩌고 다시시도 부탁  &#9888;");
-        mav.setViewName("error");
+        mav.setViewName("error/error");
         
         return mav;
     }// handleNullPointerException
@@ -62,8 +66,8 @@ public class ExceptionController {
     	
         ModelAndView mav = new ModelAndView();
         
-        mav.addObject("errorMessage", "Unknown exception");
-        mav.setViewName("error");
+        mav.addObject("errorMessage", e.getMessage());
+        mav.setViewName("error/error");
         
         return mav;
     }// handleException

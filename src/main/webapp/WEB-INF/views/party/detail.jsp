@@ -80,7 +80,7 @@
 							<span><fmt:formatDate pattern="HH시 mm분" value="${party.partyDt}"></fmt:formatDate></span> 
 						</div>
 						<div class="info">
-							<span class="list">참여인원</span> <span>${party.userCnt} / ${party.partyMax }</span>
+							<span class="list">참여인원</span> <span id="currentCount">${party.userCnt}</span><span>/  ${party.partyMax }</span>
 						</div>
 						<c:if test="${party.items != null}">
 							<div class="info">

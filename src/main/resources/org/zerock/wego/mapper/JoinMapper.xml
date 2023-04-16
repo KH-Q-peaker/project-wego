@@ -7,7 +7,20 @@
 
   <mapper namespace = "org.zerock.wego.mapper.JoinMapper">
 
-
+	<!-- ************ 참여 인원 확인  ************ -->
+    <select 
+    	id="selectTotalCount">
+    	
+    	SELECT 
+    		COUNT(user_id)
+    	FROM 
+    		join_tb
+    	WHERE 
+    		san_party_id = #{sanPartyId}
+    		AND
+    		status = 'Y'
+    </select>
+    
     <!-- ************ 참여 여부 확인  ************ -->
     <select 
     	id="selectById" 
@@ -22,7 +35,6 @@
     		AND 
     		user_id = #{userId}
     </select>
-    
     
 	<!-- ************ 참여 생성  ************ -->
     <insert 

@@ -19,6 +19,8 @@ import org.zerock.wego.domain.CommentViewVO;
 import org.zerock.wego.domain.PageInfo;
 import org.zerock.wego.domain.UserVO;
 import org.zerock.wego.exception.ControllerException;
+import org.zerock.wego.exception.NotFoundPageException;
+import org.zerock.wego.exception.OperationFailException;
 import org.zerock.wego.service.CommentService;
 
 import lombok.RequiredArgsConstructor;
@@ -38,7 +40,7 @@ public class CommentController {
 	// 댓글 offset 로딩 
 	@GetMapping(path="/load")
 	ModelAndView loadCommentOffset(PageInfo target, Integer lastComment) throws Exception{
-//		log.trace("loadCommentOffset({}, {}) invoked.", target, lastComment);
+		log.trace("loadCommentOffset({}, {}) invoked.", target, lastComment);
 		
 		
 		ModelAndView mav = new ModelAndView();
@@ -81,7 +83,7 @@ public class CommentController {
 	@PostMapping(path="/register")
 	ModelAndView registerComment(@RequestBody CommentDTO dto, 
 								@SessionAttribute("__AUTH__") UserVO user) throws ControllerException{
-//		log.trace("registerComment({}) invoked.", dto);
+		log.trace("registerComment() invoked.");
 		
 		ModelAndView mav = new ModelAndView();
 
@@ -95,7 +97,7 @@ public class CommentController {
 		
 		
 		try {
-			this.commentService.isCommentRegister(dto);
+			this.commentService.registerCommentOrMention(dto);
 
 			LinkedBlockingDeque<CommentViewVO> comments 
 						= this.commentService.getCommentOffsetByTarget(target, 0);
@@ -105,6 +107,9 @@ public class CommentController {
 
 			return mav;
 
+		} catch (OperationFailException | NotFoundPageException e) {
+			throw e;
+			
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		}// try-catch
@@ -123,7 +128,7 @@ public class CommentController {
 		dto.setUserId(userId);
 
 		try {
-			this.commentService.isMentionRegister(dto);
+			this.commentService.registerCommentOrMention(dto);
 			
 			CommentViewVO comment = this.commentService.getById(dto.getCommentId());
 
@@ -144,14 +149,15 @@ public class CommentController {
 	ResponseEntity<String> removeCommentOrMention(@PathVariable("commentId")Integer commentId) throws Exception{
 //		log.trace("removeComment({}) invoked.", commentId);
 		
-		boolean isRemove = this.commentService.isCommentOrMentionRemove(commentId); 
+		try {
+			this.commentService.removeCommentOrMention(commentId); 
 		
-		if(isRemove) {
-			
 			return ResponseEntity.ok().build();
-		}// if
-		
-		return ResponseEntity.notFound().build();
+			
+		} catch(Exception e) {
+			return ResponseEntity.notFound().build();
+			
+		}// try-catch
 	}// registerComment
 	
 	
@@ -160,18 +166,20 @@ public class CommentController {
 //	@PatchMapping("/{commentId}")
 //	ResponseEntity<String> modifyComment(@PathVariable("commentId")Integer commentId, 
 //										 @RequestBody String contents) throws Exception{
-	@PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PatchMapping(path="/{commentId}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<String> modifyComment(@RequestBody CommentDTO dto) throws Exception{
 //		log.trace("modifyComment({}) invoked.", dto);
 		
-		boolean isModify = this.commentService.isModify(dto);
-		
-		if(isModify) {
-			
+		try {
+
+			this.commentService.modify(dto);
+
 			return ResponseEntity.ok().build();
-		}// if
-		
-		return ResponseEntity.notFound().build();
+
+		} catch (Exception e) {
+			return ResponseEntity.notFound().build();
+			
+		} // try-catch
 	}// registerComment
 	 
 }// end class

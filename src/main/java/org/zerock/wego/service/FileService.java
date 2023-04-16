@@ -6,9 +6,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.zerock.wego.domain.FileDTO;
@@ -17,7 +14,6 @@ import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.FileMapper;
 
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2

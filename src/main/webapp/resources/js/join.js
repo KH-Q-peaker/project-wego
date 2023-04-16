@@ -1,11 +1,11 @@
 
-var joinModalcls = function(){
+var hideJoinModal = function(){
 	
 	$(".joinModal").hide('fast');
 	$(".modalbackground").remove();
 }
 
-var joinModal = function() {
+var showJoinModal = function() {
 
 	const backdrop =$('<div></div>').addClass('modalbackground');
 	$(".total-wrap").append(backdrop);
@@ -15,7 +15,7 @@ var joinModal = function() {
 	$(document).off('mouseup').on('mouseup', function(e) { /* 외부 영역 클릭 시 닫기 */
 
 		if ($(".joinModal").has(e.target).length === 0) {
-			joinModalcls();
+			hideJoinModal();
 		}
 	});
 	$(document).off('keydown').on('keydown', function(e) {/* esc입력시 닫기 */
@@ -23,11 +23,11 @@ var joinModal = function() {
 		var code = e.keyCode || e.which;
 
 		if (code == 27) { // 27은 ESC 키번호
-			joinModalcls();
+			hideJoinModal();
 		}
 	});
 	$(".clsbtn").off('click').on('click', function() {
-		joinModalcls();
+		hideJoinModal();
 	});
 }
 
@@ -40,50 +40,52 @@ $(() => { /* 참여하기 모달창 on/off  */
 			$("#ment").text('참여하시겠습니까?');
 			$(".clsbtn").val('취소');
 			$(".joinbtn").val('참여하기').removeClass('clsjoinbtn');
-			joinModal(); 
+			showJoinModal(); 
 		
 		$(".joinbtn").off('click').on('click', function(){
 			
 			$.ajax({
-			url : "/party/join/" + target.targetCd ,
+			url : "/join/" + target.targetCd ,
 			type : "POST",
-			success : function(){
-		 		joinModalcls();
+			success : function(data){
+		 		hideJoinModal();
 				setMessage("🏃🏻‍♀️참여되었습니다.");
 		 		showModal();
 		 		setTimeout(hideModal, 500);
 				$('#join').attr('id', 'clsjoin').val('취소하기');
+				$('#currentCount').html(data);
 			},
-			error : function(){
-			 	joinModalcls();
-		 		setMessage("⚠️ 참여할 수 없습니다.");
-		 		setTimeout(hideModal, 500);
+			error : function(data){
+			 	hideJoinModal();
+		 		setMessage(data.responseText);
+		 		showModal();
+		 		setTimeout(hideModal, 700);
 			}
 			});
 		});	
 		}
 		else{
-			
 			$("#ment").text('취소하시겠습니까?');
 			$(".clsbtn").val('아니오');
 			$(".joinbtn").val('예').addClass('clsjoinbtn');
 
-			joinModal();
+			showJoinModal();
 
 			$(".joinbtn").off('click').on('click', function() {
 
 				$.ajax({
 					url : "/join/" + target.targetCd ,
 					type : "POST",
-					success: function() {
-						joinModalcls();
+					success: function(data) {
+						hideJoinModal();
 						setMessage("🙅🏻‍♀️ 취소되었습니다.");
 						showModal();
 						setTimeout(hideModal, 500);
 						$('#clsjoin').attr('id', 'join').val('참여하기');
+						$('#currentCount').html(data);
 					},
 					error: function() {
-						joinModalcls();
+						hideJoinModal();
 						setMessage("⚠️ 취소할 수 없습니다. "); 
 						showModal();
 						setTimeout(hideModal, 500);

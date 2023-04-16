@@ -14,7 +14,7 @@ public interface ReviewMapper {
 	public abstract Set<ReviewViewVO> selectRandom10(); // 10개의 게시글 랜덤 조회
 	
 	// 존재여부 
-	public abstract Integer find(@Param("reviewId")Integer reviewId);
+	public abstract boolean isExist(@Param("reviewId")Integer reviewId);
 	
 	// 특정 후기글 조회 
 	public abstract ReviewViewVO selectById(@Param("reviewId")Integer reviewId);

@@ -2,10 +2,11 @@ package org.zerock.wego.service;
 
 import org.springframework.stereotype.Service;
 import org.zerock.wego.domain.JoinDTO;
+import org.zerock.wego.domain.PartyViewVO;
+import org.zerock.wego.exception.NotFoundPageException;
 import org.zerock.wego.exception.OperationFailException;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.JoinMapper;
-import org.zerock.wego.mapper.PartyMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -28,50 +29,87 @@ public class JoinService {
 		String status = this.joinMapper.selectById(dto);
 		
 		return (status != null && status.equals("Y"));
-//		if(status != null && status.equals("Y")) {
-//			return true;
-//		}else {
-//			return false;
-//		}// if-else
 	}// cancleJoin
 	
-
+	
+	// 현재 참여 인원 
+	public int getCurrentCount(JoinDTO dto) throws ServiceException {
+		
+		return this.joinMapper.selectTotalCount(dto);
+	}// currentCount 
+	
+	
 	// 모집 참여 토글
-	public void createOrCancle(JoinDTO dto) throws ServiceException {
+	public void createOrCancle(JoinDTO dto) throws Exception {
 //		log.trace("isJoinCreated({}, {}) invoked.", partyId, userId);
 		
-		//party isExist 만들어서 모집글 존재하는지 확인하기
-		
-		String status = this.joinMapper.selectById(dto);
+		/*
+		 * party isExist 만들어서 모집글 존재하는지 확인하기 어차피 여기서 가져온다면 이때 maxJoin 가져오면 되겠다
+		 */
+		try {
+			PartyViewVO party = this.partyService.getById(dto.getSanPartyId());
 
-		
-		if (status == null) {
+			if (party == null) {
+				throw new NotFoundPageException();
+			} // if
 
-			this.joinMapper.insert(dto);
-			
-			if(!this.isJoin(dto)) {
+			int currentJoin = this.joinMapper.selectTotalCount(dto);
+			int maxJoin = party.getPartyMax();
+
+			if (currentJoin >= maxJoin) {
 				throw new OperationFailException();
-			}// if
+			} // if
 
-		} else if (status.equals("Y")) {
+			String status = this.joinMapper.selectById(dto);
+
+			if (status == null) {
+
+				this.create(dto);
+			} else {
+
+				this.joinOrCancle(dto, status);
+			} // if-else
+			
+		} catch (NotFoundPageException | OperationFailException e) {
+			throw e;
+			
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	}// createOrCancle
+	
+	
+	// 참여 생성
+	public void create(JoinDTO dto) throws Exception {
+		
+		this.joinMapper.insert(dto);
+		
+		if(!this.isJoin(dto)) {
+			throw new OperationFailException();
+		}// if
+	}// create
+	
+	
+	// 참여/취소 토글 
+	public void joinOrCancle(JoinDTO dto, String status) throws Exception {
+
+		if (status.equals("Y")) {
 
 			this.joinMapper.update(dto, "N");
-			
-			if(this.isJoin(dto)) {
-				throw new OperationFailException();
-			}// if
 
+			if (this.isJoin(dto)) {
+				throw new OperationFailException();
+			} // if
 		} else {
-
 			this.joinMapper.update(dto, "Y");
-			
-			if(!this.isJoin(dto)) {
+
+			if (!this.isJoin(dto)) {
 				throw new OperationFailException();
-			}// if
-		} // if-else
-	}// offerJoin
-
-
+			} // if
+		}// if-else
+	}// joinOrCancle
+	
+	
 	// 모집 참여 삭제 *** 얘도 댓글처럼 스케줄링 해야할듯 *** 
 	public boolean isJoinRemove(JoinDTO dto) throws ServiceException {
 //		log.trace("isJoinRemoved({}) invoked.", dto);

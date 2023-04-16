@@ -33,6 +33,7 @@ import org.zerock.wego.domain.PageInfo;
 import org.zerock.wego.domain.ReviewDTO;
 import org.zerock.wego.domain.ReviewViewVO;
 import org.zerock.wego.domain.UserVO;
+import org.zerock.wego.exception.AccessBlindException;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.service.CommentService;
@@ -52,12 +53,12 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("/review")
 @Controller
 public class ReviewController {
+	
 	private final SanInfoService sanInfoService;
 	private final ReviewService reviewService;
 	private final CommentService commentService;
 	private final FileService fileService;
 	private final FavoriteService favoriteService;
-
 
 
 	@GetMapping("")
@@ -77,21 +78,26 @@ public class ReviewController {
 
 
 
-	@GetMapping("/{reviewId}")
+	@GetMapping(path="/{reviewId}")
 	public ModelAndView showDetailById(@PathVariable("reviewId")Integer reviewId,
 									@SessionAttribute("__AUTH__")UserVO user,
 									PageInfo target) throws Exception{
 		log.trace("showDetail({}, {}) invoked.", reviewId, target);
-		
+
 			target.setTargetGb("SAN_REVIEW");
 			target.setTargetCd(reviewId);
 			
 			ModelAndView mav = new ModelAndView();
 			
 			ReviewViewVO review = this.reviewService.getById(reviewId);
-			
 			Integer userId = user.getUserId();
 			
+			// TO_DO : 내글이면 블라인드 되도 보여야되는데 왜 막히냐 ? 
+			if((review.getReportCnt() >= 5) && review.getUserId() != userId) {
+				throw new AccessBlindException();
+			}// if
+			
+			// TO_DO : 좋아요 바뀌면 바꿔야됨 
 			FavoriteDTO favorite = new FavoriteDTO();
 			favorite.setTargetGb("SAN_REVIEW");
 			favorite.setTargetCd(reviewId);
@@ -99,7 +105,7 @@ public class ReviewController {
 			
 			boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
 
-			int commentCount = this.commentService.getCommentsCount(target);
+			int commentCount = this.commentService.getTotalCountByTarget(target);
 			
 			LinkedBlockingDeque<CommentViewVO> comments 
 							= this.commentService.getCommentOffsetByTarget(target, 0);
@@ -130,9 +136,8 @@ public class ReviewController {
 
 		try {
 			this.reviewService.removeById(reviewId);
-			boolean isFileRemoved = this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId);
-
-			return ResponseEntity.ok("🗑 &#1F5D1; 후기글이 삭제되었습니다.️");
+//			this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId); 
+			return ResponseEntity.ok("🗑 후기글이 삭제되었습니다.️"); // 인코딩해서 넣던가 안넣던가 
 
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();

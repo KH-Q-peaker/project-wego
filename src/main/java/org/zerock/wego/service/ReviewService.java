@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.zerock.wego.domain.ReviewDTO;
 import org.zerock.wego.domain.ReviewViewVO;
 import org.zerock.wego.exception.AccessBlindException;
@@ -24,6 +25,7 @@ public class ReviewService {
 	
 	private final ReviewMapper reviewMapper;
 	private final ReportService reportService;
+	private final FileService fileService;
 	
 	
 	public List<ReviewViewVO> getList() throws ServiceException {
@@ -48,11 +50,11 @@ public class ReviewService {
 	} // getList
 	
 	
-	// 존재여부 
-	public boolean isExist(Integer reviewId) throws ServiceException{
-		
-		return (this.reviewMapper.find(reviewId) != null);
-	}// isExist
+//	// 존재여부 
+//	public boolean isExist(Integer reviewId) throws ServiceException{
+//		
+//		return (this.reviewMapper.find(reviewId) != null);
+//	}// isExist
 	
 	// 특정 후기글 조회 
 	public ReviewViewVO getById(Integer reviewId) throws Exception {
@@ -65,15 +67,15 @@ public class ReviewService {
 				throw new NotFoundPageException();
 			}// if
 			
-			if(review.getReportCnt() >= 5) {
-				throw new AccessBlindException();
-			}// if
+//			if(review.getReportCnt() >= 5) {
+//				throw new AccessBlindException();
+//			}// if
 			
 			this.reviewMapper.visitCountUp(reviewId); //조회수증가.
 			
 			return review;
 			
-		} catch (NotFoundPageException | AccessBlindException e) { // 걍 나눌까 
+		} catch (NotFoundPageException e) { 
 			throw e;
 			
 		} catch (Exception e) {
@@ -83,27 +85,34 @@ public class ReviewService {
 	
 	
 	// 특정 후기글 삭제
+//	@Transactional // 얘 붙여야되는데 붙이면 삭제가 안됨 ...? 
 	public void removeById(Integer reviewId) throws Exception {
 //		log.trace("isRemoved({}) invoked.", reviewId);
 		
 		try {
-			if(!isExist(reviewId)) { 
+			boolean isExist = this.reviewMapper.isExist(reviewId);
+			
+			if(!isExist) { 
 				throw new NotFoundPageException();
 			}// if
 			
 			this.reviewMapper.delete(reviewId);
 			this.reportService.removeByTarget("SAN_REVIEW", reviewId);
-			// 좋아요 내역 삭제도 추기돼야 함 
-			// 파일 삭제도 추가돼야 함
+			this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId);
+			// TO_DO : 좋아요 내역 삭제도 추기돼야 함, 파일 서비스 수정되면 수정해야됨 
 			
-			if(isExist(reviewId)) {
+			isExist = this.reviewMapper.isExist(reviewId);
+			
+			if(isExist) {
 				throw new OperationFailException();
 			}// if
 			
 		} catch(NotFoundPageException e) {
 			throw e;
+			
 		} catch(OperationFailException e) {
 			throw e;
+			
 		} catch(Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -116,14 +125,19 @@ public class ReviewService {
 		try {
 			this.reviewMapper.insert(dto);
 			
-			if(!isExist(dto.getSanReviewId())) {
+			boolean isExist 
+					= this.reviewMapper.isExist(dto.getSanReviewId());
+			
+			if(!isExist) {
 				throw new OperationFailException();
 			}// if
 			
 		}catch(OperationFailException e) { 
 			throw e;
+			
 		} catch (Exception e) {
 			throw new ServiceException(e);
+			
 		} // try-catch
 	} // register
 	
@@ -132,7 +146,10 @@ public class ReviewService {
 		log.trace("modify({}) invoked.");
 		
 		try {
-			if(!isExist(dto.getSanReviewId())) {
+			boolean isExist 
+					= this.reviewMapper.isExist(dto.getSanReviewId());
+			
+			if(!isExist) {
 				throw new NotFoundPageException();
 			}// if
 			
@@ -140,8 +157,10 @@ public class ReviewService {
 			
 		}catch (NotFoundPageException e) {
 			throw e;
+			
 		} catch (Exception e) {
 			throw new ServiceException(e);
+			
 		} // try-catch
 	} // modify
 

@@ -5,7 +5,9 @@ import org.zerock.wego.domain.JoinDTO;
 
 public interface JoinMapper {
 	
-
+	// 참여 인원 수 
+	public abstract int selectTotalCount(JoinDTO dto);
+	
 	// 모집 참여 여부 조회 
 	public abstract String selectById(JoinDTO dto);
 	
