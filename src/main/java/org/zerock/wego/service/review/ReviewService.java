@@ -99,7 +99,7 @@ public class ReviewService {
 			}// if
 			
 			this.reviewMapper.delete(reviewId);
-			this.reportService.removeByTarget("SAN_REVIEW", reviewId);
+			this.reportService.removeAllByTarget("SAN_REVIEW", reviewId);
 			this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId);
 			// TO_DO : 좋아요 내역 삭제도 추기돼야 함, 파일 서비스 수정되면 수정해야됨 
 			

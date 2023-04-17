@@ -120,7 +120,7 @@ public class CommentController {
 	@PostMapping(path="/reply")
 	ModelAndView registerMention(@RequestBody CommentDTO dto, 
 								@SessionAttribute("__AUTH__") UserVO user) throws ControllerException{
-//		log.trace("registerMention({}, {}) invoked.", dto, user);
+		log.trace("registerMention() invoked.");
 		
 		ModelAndView mav = new ModelAndView();
 
@@ -171,7 +171,6 @@ public class CommentController {
 //		log.trace("modifyComment({}) invoked.", dto);
 		
 		try {
-
 			this.commentService.modify(dto);
 
 			return ResponseEntity.ok().build();

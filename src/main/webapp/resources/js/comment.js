@@ -203,7 +203,7 @@ $(() => { /* 수정 관련 */
 		$("input[name='updatecmt']").off('click').on('click', function() {
 				
 			$.ajax({
-				url : "/comment",
+				url : "/comment/" + commentId,
 				type : "PATCH",
 				data : 
 				JSON.stringify({
