@@ -168,8 +168,12 @@ window.onload = function(){
 		        success: function(data){
 				console.log("111loadload");
 		            $("#content2").load("/profile/pastPartyList?currPage="+currPage + "&amount="+amount+"&userId="+ userId);
-		       	 	}
-	   		});
+		       	 }
+	   	});
+	   	document.getElementById("module").style.opacity = "0";
+		$("#module").animate({
+			opacity : 1
+		});
 };
 
 
@@ -183,7 +187,6 @@ $('#climb').click(function(){
 		module1.innerHTML = '<div class="cotents"> \
 	    <div class="content1" id="content1"> </div>\
 	    <div class="content2" id="content2"> </div></div>';
-	    console.log("module1.innerHTML",module1.innerHTML);
 		$.ajax({
         type: 'get',
         url: '/profile/partyList',
@@ -201,6 +204,10 @@ $('#climb').click(function(){
 	            $("#content2").load("/profile/pastPartyList?currPage="+currPage + "&amount="+amount+"&userId="+ userId);
 	       	 	}
 	   	});
+	   	document.getElementById("module").style.opacity = "0";
+		$("#module").animate({
+			opacity : 1
+		});
 });
 //};
 //function partyList() {
@@ -208,12 +215,20 @@ $('#climb').click(function(){
 //}
 
 $('#info').click(function(){
+	var module1 = document.querySelector("#module");
+		module1.innerHTML = '<div class="cotents"> \
+	    <div class="content1" id="content1"> </div>\
+	    <div class="content2" id="content2"> </div></div>';
 	$.ajax({
 		async : true,
         type: 'get',
         url: '/profile/info',
         data:{"userId":userId},
         success: function(data){
+					document.getElementById("module").style.opacity = "0";
+					$("#module").animate({
+						opacity : 1
+					});
         	$("#module").load("/profile/info?userId=" + userId);
  		}
     });
