@@ -129,6 +129,20 @@ const today = `${date.getFullYear()}-${
 }-${date.getDate() < 10 ? ("0" + date.getDate()) : date.getDate()}`;
 selector("#date").min = today;
 
+// 모집글에서 모집인원범위(2~45)를 벗어날 경우 빨간색 숫자로 변경
+selector("input[name=partyMax]").addEventListener("input", e => {
+  console.log(e.target.value);
+  const member = e.target.value
+  if(member >= 2 && member <= 45 || member === "") {
+    e.target.style.color = "black";
+    console.log("black");
+  } else {
+    e.target.style.color = "red";
+    console.log("red");
+
+  } // if-else
+});
+
 // ========================= 추가 이벤트
 
 // 이미지 추가 버튼 클릭 이벤트

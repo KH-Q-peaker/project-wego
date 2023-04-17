@@ -51,7 +51,7 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("/party")
 @Controller
 public class PartyController {
-	
+
 	private final PartyService partyService;
 	private final CommentService commentService;
 	private final JoinService joinService;
@@ -59,8 +59,7 @@ public class PartyController {
 	private final FileService fileService;
 	private final FavoriteService favoriteService;
 	private final ReportService reportService;
-  
-	
+
 	@GetMapping("")
 	public String openParty(Model model) throws ControllerException {
 		log.trace("openParty({}) invoked.", model);
@@ -75,124 +74,115 @@ public class PartyController {
 			throw new ControllerException(e);
 		} // try-catch
 	} // openParty
-	
-	
+
 	@ModelAttribute("target")
 	PageInfo createPageInfo(Integer partyId) {
 		log.trace("createPageInfo() invoked.");
-		
+
 		PageInfo target = new PageInfo();
-		
+
 		target.setTargetGb("SAN_PARTY");
 		target.setTargetCd(partyId);
-		
+
 		return target;
 	}// createdBoardDTO
-	
-	
-	
-	// 모집글 상세 조회 
-	@GetMapping("/{partyId}") 
-	public ModelAndView showDetailById(@PathVariable("partyId")Integer partyId, 
-										@SessionAttribute("__AUTH__")UserVO user,
-										PageInfo target) throws Exception{
+
+	// 모집글 상세 조회
+	@GetMapping("/{partyId}")
+	public ModelAndView showDetailById(@PathVariable("partyId") Integer partyId,
+			@SessionAttribute("__AUTH__") UserVO user, PageInfo target) throws Exception {
 		log.trace("showDetailById({}, {}) invoked.", partyId, user);
-		
-			target = this.createPageInfo(partyId);
-			
-			
-			ModelAndView mav = new ModelAndView();
-			
-			PartyViewVO party = this.partyService.getById(partyId);
-			
-			if(party == null) {
-				throw new NotFoundPageException("party not found : " + partyId);
-			}// if  
-			
-			Integer userId = user.getUserId();
-			
-			JoinDTO join = new JoinDTO();
-			join.setSanPartyId(partyId);
-			join.setUserId(userId);
-			
-			boolean isJoin = this.joinService.isJoin(join);
-			
+
+		target = this.createPageInfo(partyId);
+
+		ModelAndView mav = new ModelAndView();
+
+		PartyViewVO party = this.partyService.getById(partyId);
+
+		if (party == null) {
+			throw new NotFoundPageException("party not found : " + partyId);
+		} // if
+
+		Integer userId = user.getUserId();
+
+		JoinDTO join = new JoinDTO();
+		join.setSanPartyId(partyId);
+		join.setUserId(userId);
+
+		boolean isJoin = this.joinService.isJoin(join);
+
 //			boolean isLike = this.likeService.isUserLiked(target, userId);
-			FavoriteDTO favorite = new FavoriteDTO();
-			favorite.setTargetGb("SAN_PARTY");
-			favorite.setTargetCd(partyId);
-			favorite.setUserId(userId);
-			
-			boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
-			
-			int commentCount = this.commentService.getTotalCountByTarget(target);
-			
+		FavoriteDTO favorite = new FavoriteDTO();
+		favorite.setTargetGb("SAN_PARTY");
+		favorite.setTargetCd(partyId);
+		favorite.setUserId(userId);
 
-			LinkedBlockingDeque<CommentViewVO> comments = commentService.getCommentOffsetByTarget(target, 0);
+		boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
 
-			
-			mav.addObject("party", party);
-			mav.addObject("isJoin", isJoin);
-			mav.addObject("isFavorite", isFavorite);
-			mav.addObject("commentCount", commentCount);
+		int commentCount = this.commentService.getTotalCountByTarget(target);
+
+		LinkedBlockingDeque<CommentViewVO> comments = commentService.getCommentOffsetByTarget(target, 0);
+
+		mav.addObject("party", party);
+		mav.addObject("isJoin", isJoin);
+		mav.addObject("isFavorite", isFavorite);
+		mav.addObject("commentCount", commentCount);
 //			mav.addObject("userPic", userPic);
 //			mav.addObject("partyImg", partyImg);
-			
-			if(comments != null) {
-				
-				mav.addObject("comments", comments);
-			}// if
-			
-			ObjectMapper objectMapper = new ObjectMapper();
-			String targetJson = objectMapper.writeValueAsString(target);
-			mav.addObject("target", targetJson);
 
-			mav.setViewName("/party/detail");
+		if (comments != null) {
 
-			return mav;
+			mav.addObject("comments", comments);
+		} // if
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		String targetJson = objectMapper.writeValueAsString(target);
+		mav.addObject("target", targetJson);
+
+		mav.setViewName("/party/detail");
+
+		return mav;
 
 	}// showDetailById
-	
-	
-	@GetMapping(
-			path = "/modify/{partyId}"
-			)
-	public String modify(
-			@SessionAttribute("__AUTH__")UserVO auth,
-			@PathVariable("partyId") Integer partyId, Model model) 
-			throws ControllerException { 
-		log.trace("modify({}, {}, {}) invoked.", auth, partyId, model);
+
+	@GetMapping(path = "/modify/{partyId}")
+	public String modify(@SessionAttribute("__AUTH__") UserVO auth, 
+			@PathVariable("partyId") Integer partyId,
+			Model model) throws ControllerException {
+		log.trace("modify(auth, partyId, model) invoked.");
 
 		try {
 			Integer postUserId = this.partyService.getUserIdByPartyId(partyId);
-			
-			if(auth == null || !auth.getUserId().equals(postUserId)) {
-				return "error";
+
+			if (auth == null) {
+				return "redirect:/login";
 			} // if
 			
+			if (!auth.getUserId().equals(postUserId)) {
+				throw new ControllerException("잘못된 접근입니다.");
+			} // if
+
 			PartyViewVO vo = this.partyService.getById(partyId);
 			model.addAttribute("party", vo);
-			
+
 			return "/party/modify";
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
 	} // detailAndModify
 
-	
-
 	// 모집글 삭제
 	@Transactional
-	@DeleteMapping(path= "/{partyId}", produces= "text/plain; charset=UTF-8")
+	@DeleteMapping(path = "/{partyId}", produces = "text/plain; charset=UTF-8")
 	public ResponseEntity<String> removeById(@PathVariable Integer partyId) throws Exception {
 		log.trace("removeById({}) invoked.", partyId);
-		
+
 		boolean isPartyRemoved = this.partyService.isRemoveById(partyId);
 		boolean isFileRemoved = this.fileService.isRemoveByTarget("SAN_PARTY", partyId);
 		boolean isLikeRemoved = this.favoriteService.removeAllByTarget("SAN_PARTY", partyId);
 		this.reportService.removeByTarget("SAN_PARTY", partyId);
 //			boolean isJoinRemoved = this.joinService.isJoinCancled(partyId, userId);
-		
+
 		boolean isSuccess = isPartyRemoved && isFileRemoved && isLikeRemoved;
 
 		if (isSuccess) {
@@ -202,33 +192,36 @@ public class PartyController {
 			return ResponseEntity.badRequest().build();
 		} // if-else
 	}// removeReview
-	
 
 	@PostMapping("/modify")
-	public String modify(
-			@SessionAttribute("__AUTH__")UserVO auth,
-			Integer sanPartyId, String sanName, 
-			@RequestParam(value = "imgFile", required = false)List<MultipartFile> imageFiles, 
-			String date, String time, PartyDTO partyDTO, FileDTO fileDTO) throws ControllerException { 
-		log.trace("modify({}, {}, {}, {}, {}, {}, {}) invoked.", auth, sanPartyId, sanName, imageFiles, date, time, partyDTO);
+	public String modify(@SessionAttribute("__AUTH__") UserVO auth, Integer sanPartyId, String sanName,
+			@RequestParam(value = "imgFile", required = false) List<MultipartFile> imageFiles, String date, String time,
+			PartyDTO partyDTO, FileDTO fileDTO) throws ControllerException {
+		log.trace("modify({}, {}, {}, {}, {}, {}, {}) invoked.", auth, sanPartyId, sanName, imageFiles, date, time,
+				partyDTO);
 
-		try {	
-			if(auth.getUserId() == partyDTO.getUserId()) {
-				return "error";
+		try {
+			if (auth == null) {
+				return "redirect:/login";
 			} // if
 			
-			// TODO: 아래 2가지도 서비스로 분리해야 될지 고민
+			if (auth.getUserId() != partyDTO.getUserId()) {
+				throw new ControllerException("잘못된 접근입니다.");
+			} // if
+
+			// TODO: 산이름으로 산ID 조회는 유틸 서비스로 분리 필요
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 			partyDTO.setSanInfoId(sanId);
 
 			Timestamp dateTime = Timestamp.valueOf(date + " " + time + ":00");
 			partyDTO.setPartyDt(dateTime);
-			
+
 			boolean isModifySuccess = this.partyService.modify(partyDTO);
 			log.info("isModifySuccess: {}", isModifySuccess);
 
 			if (imageFiles != null) {
-				boolean isChangeImgeSuccess = this.fileService.isChangeImage(imageFiles, "SAN_PARTY", partyDTO.getSanPartyId(), fileDTO);
+				boolean isChangeImgeSuccess = this.fileService.isChangeImage(imageFiles, "SAN_PARTY",
+						partyDTO.getSanPartyId(), fileDTO);
 				log.info("isChangeImgeSuccess: {}", isChangeImgeSuccess);
 			} // if
 
@@ -239,33 +232,37 @@ public class PartyController {
 	} // modify
 
 	@GetMapping("/register")
-	public void register() { 
+	public String register(@SessionAttribute("__AUTH__") UserVO auth) {
 		log.trace("register() invoked.");
+
+		if (auth == null) {
+			return "redirect:/login";
+		} // if
+
+		return "/party/register";
 	} // register
 
 	@PostMapping("/register")
-	public String register(
-			@SessionAttribute("__AUTH__")UserVO auth,
-			String sanName, @RequestParam(value = "imgFile", required = false)List<MultipartFile> imageFiles,
-			String date, String time, PartyDTO partyDTO, FileDTO fileDTO,
-			@CookieValue(value="posted", required=false)boolean posted,
+	public String register(@SessionAttribute("__AUTH__") UserVO auth, String sanName,
+			@RequestParam(value = "imgFile", required = false) List<MultipartFile> imageFiles, String date, String time,
+			PartyDTO partyDTO, FileDTO fileDTO, @CookieValue(value = "posted", required = false) boolean posted,
 			HttpServletResponse response) throws ControllerException {
-		log.trace("register({}, {}, {}, {}, {}, {}, {}) invoked.", auth, sanName, imageFiles, date, time, partyDTO, fileDTO);
+		log.trace("register({}, {}, {}, {}, {}, {}, {}) invoked.", auth, sanName, imageFiles, date, time, partyDTO,
+				fileDTO);
 
 		try {
-			if(auth == null) {
-				return "error";
+			if (auth == null) {
+				return "redirect:/login";
 			} // if
-			
-			if(!posted) {
-				Cookie cookie = new Cookie("posted", "true");				
-	            cookie.setMaxAge(30);
-	            response.addCookie(cookie);
+
+			if (!posted) {
+				Cookie cookie = new Cookie("posted", "true");
+				cookie.setMaxAge(30);
+				response.addCookie(cookie);
 			} // if
-			
-			// TODO: 아래 3가지도 서비스로 분리해야 될지 고민
+
 			partyDTO.setUserId(auth.getUserId());
-			
+
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 			partyDTO.setSanInfoId(sanId);
 
@@ -276,7 +273,8 @@ public class PartyController {
 			log.info("isSuccess: {}", isSuccess);
 
 			if (imageFiles != null) {
-				boolean isImageUploadSuccess = this.fileService.isImageRegister(imageFiles, "SAN_PARTY", partyDTO.getSanPartyId(), fileDTO);
+				boolean isImageUploadSuccess = this.fileService.isImageRegister(imageFiles, "SAN_PARTY",
+						partyDTO.getSanPartyId(), fileDTO);
 				log.info("isImageUploadSuccess: {}", isImageUploadSuccess);
 			} // if
 
@@ -285,5 +283,5 @@ public class PartyController {
 			throw new ControllerException(e);
 		} // try-catch
 	} // register
-	
+
 } // end class
