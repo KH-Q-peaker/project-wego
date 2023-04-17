@@ -6,7 +6,7 @@
 
 <mapper namespace="org.zerock.wego.mapper.FileMapper">
 
-	<select id="selectByTargetGbAndTargetCd" resultType="org.zerock.wego.domain.FileVO">
+	<select id="selectByTargetGbAndTargetCd" resultType="org.zerock.wego.domain.common.FileVO">
 		SELECT *
 		FROM file_tb
 		WHERE

@@ -6,7 +6,7 @@
 
 	<!-- 특정 유저의 뱃지 획득 내역에서 데이터를 조회 -->
 	<select id="selectAllByUserId"
-		resultType="org.zerock.wego.domain.BadgeGetVO">
+		resultType="org.zerock.wego.domain.badge.BadgeGetVO">
 
 		SELECT
 			*
@@ -21,7 +21,7 @@
 	
 	
 	<select id="selectAllPickBadgeByUserId"
-		resultType="org.zerock.wego.domain.BadgeGetVO">
+		resultType="org.zerock.wego.domain.badge.BadgeGetVO">
 
 		SELECT
 			*
