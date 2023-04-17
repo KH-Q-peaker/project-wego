@@ -6,7 +6,7 @@
 
 <mapper namespace="org.zerock.wego.mapper.UserMapper">
 	
-	<select id= "selectByUserId" resultType="org.zerock.wego.domain.UserVO">
+	<select id= "selectByUserId" resultType="org.zerock.wego.domain.common.UserVO">
 		
 		SELECT 
 			*
@@ -16,7 +16,7 @@
 			user_id = #{userId}
 	</select>
 
-	<select id="selectBySocialId" resultType="org.zerock.wego.domain.UserVO">
+	<select id="selectBySocialId" resultType="org.zerock.wego.domain.common.UserVO">
 		
 		SELECT 
 			*
@@ -26,7 +26,7 @@
 			social_id = #{socialId}
 	</select>
 	
-	<select id="selectByNickname" resultType="org.zerock.wego.domain.UserVO">
+	<select id="selectByNickname" resultType="org.zerock.wego.domain.common.UserVO">
 		
 		SELECT 
 			*

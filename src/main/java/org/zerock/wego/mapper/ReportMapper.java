@@ -1,7 +1,7 @@
 package org.zerock.wego.mapper;
 
 import org.apache.ibatis.annotations.Param;
-import org.zerock.wego.domain.ReportDTO;
+import org.zerock.wego.domain.common.ReportDTO;
 
 public interface ReportMapper {
 

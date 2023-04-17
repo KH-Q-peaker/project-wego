@@ -7,7 +7,7 @@
 <mapper namespace="org.zerock.wego.mapper.FavoriteMapper">
 
 	<select id="getUserFavoriteOnList" 
-		resultType="org.zerock.wego.domain.FavoriteVO">
+		resultType="org.zerock.wego.domain.common.FavoriteVO">
 		SELECT * 
 		FROM like_tb 
 		WHERE user_id = ${userId} 

@@ -6,11 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.zerock.wego.domain.PartyViewVO;
-import org.zerock.wego.domain.ReviewViewVO;
-import org.zerock.wego.domain.SanInfoViewVO;
+import org.zerock.wego.domain.info.SanInfoViewVO;
+import org.zerock.wego.domain.party.PartyViewVO;
+import org.zerock.wego.domain.review.ReviewViewVO;
 import org.zerock.wego.exception.ControllerException;
-import org.zerock.wego.service.SearchService;
+import org.zerock.wego.service.common.SearchService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
