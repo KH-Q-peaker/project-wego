@@ -8,23 +8,26 @@
   <mapper namespace = "org.zerock.wego.mapper.ReportMapper">
   	
   	
-  	 <!-- ***************** 신고 존재여부 ******************** -->
+  	<!-- ***************** 신고 존재여부 ******************** -->
     <select id="isExist" 
     		resultType="java.lang.Boolean">
-    
-    	SELECT EXISTS (
-        	SELECT 1 
-        	FROM report_tb
-        	<where>
+   			 
+   	SELECT
+        CASE WHEN 
+        	EXISTS (
+            	SELECT 1 
+            	FROM report_tb
+            	<where>
                 target_gb = #{targetGb}
-                AND
+                AND 
                 target_cd = #{targetCd}
-            	<if test="userId != null">
-                AND
+                <if test="userId != null">
+                AND 
                 user_id = #{userId}
-            	</if>
-        	</where>
-			)
+                </if>
+            	</where>
+        		) THEN 1 ELSE 0 END AS exist
+    FROM dual
 	</select>
     
     <!-- ***************** 신고 총합 조회 ******************** -->

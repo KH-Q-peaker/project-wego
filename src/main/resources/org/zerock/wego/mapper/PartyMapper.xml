@@ -34,7 +34,21 @@
 		WHERE rownum &lt;= 10
 	</select>
 
-	
+	<!-- *********** 식별자로 모집글 존재여부  ************ -->
+  	<select id="isExist" 
+  			resultType = "java.lang.Boolean">
+  		
+  		SELECT
+        CASE WHEN 
+        	EXISTS (
+            	SELECT 1 
+            	FROM san_party_tb
+            	WHERE san_party_id = #{partyId}
+        		) 
+        		THEN 1 ELSE 0 END AS exist
+    	FROM dual
+  	</select>
+  	
   	<!-- *********** 식별자로 모집글 조회  ************ -->
   	<select id="selectById" 
   			resultType = "org.zerock.wego.domain.party.PartyViewVO">
@@ -43,14 +57,10 @@
   			*
   		FROM
   			san_party_v
-  			
   		<where>
   		san_party_id = #{partyId}
   		</where>
-  			
   	</select>
-  	
-  
   	
   	<!-- ************ 모집글 삭제 ************ -->
   	<delete id="deleteById">
@@ -62,7 +72,6 @@
   		san_party_id = #{partyId}
   		</where>
   	</delete>
-  	
   	
 
 	<insert id="insert" 

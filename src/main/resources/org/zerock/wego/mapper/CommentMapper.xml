@@ -38,7 +38,7 @@
     
     <!-- ***********타겟으로 댓글만 오프셋 조회************ -->
     <select
-    	id="selectOnlyCommentOffsetByTarget" 
+    	id="selectCommentOffsetByTarget" 
     	resultType="org.zerock.wego.domain.common.CommentViewVO">
     	
     	SELECT 
@@ -69,7 +69,7 @@
     
     <!-- ***********댓글코드로 멘션만 조회************ -->
      <select
-    	id="selectOnlyMentionsByCommentId" 
+    	id="selectMentionsByCommentId" 
     	resultType="org.zerock.wego.domain.common.CommentViewVO">
     	
     	SELECT 

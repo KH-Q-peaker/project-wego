@@ -46,7 +46,7 @@ public class CommentService {
 
 		try {
 			LinkedBlockingDeque<CommentViewVO> comments 
-					= this.commentMapper.selectOnlyCommentOffsetByTarget(target, lastCommentId);
+					= this.commentMapper.selectCommentOffsetByTarget(target, lastCommentId);
 
 			if (comments.isEmpty()) {
 
@@ -66,7 +66,7 @@ public class CommentService {
 
 			try {
 				LinkedBlockingDeque<CommentViewVO> mentions 
-							= this.commentMapper.selectOnlyMentionsByCommentId(commentId);
+							= this.commentMapper.selectMentionsByCommentId(commentId);
 
 				if (mentions.isEmpty()) {
 
@@ -95,56 +95,6 @@ public class CommentService {
 			throw new ServiceException(e);
 		}// try-catch
 	}// getCommentsOffsetByTarget
-	
-
-//	// 댓글 작성 
-//	public void registerComment(CommentDTO dto) throws Exception{
-////		log.trace("isCommentRegister({}) invoked", dto);
-//		
-//		try {
-//			this.commentMapper.insertComment(dto); 
-//		
-//			boolean isExist 
-//				= (this.getById(dto.getCommentId()) != null);
-//			
-//			if(!isExist) {
-//				throw new OperationFailException();
-//			}// if
-//			
-//		} catch(OperationFailException e) {
-//			throw e;
-//			
-//		}catch(Exception e) {
-//			throw new ServiceException(e);
-//			
-//		}// try-catch
-//	}// registerComment
-//	
-//	
-//	
-//	// 멘션 작성 
-//	public void registerMention(CommentDTO dto) throws ServiceException{
-////		log.trace("isMentionRegister({}) invoked", dto);
-//		
-//		try {
-//			this.commentMapper.insertMention(dto);
-//			
-//			boolean isExist 
-//				= (this.getById(dto.getCommentId()) != null);
-//			
-//			if(!isExist) {
-//				throw new OperationFailException();
-//			}// if
-//			
-//		} catch(OperationFailException e) {
-//			throw e;
-//			
-//		} catch(Exception e) {
-//			throw new ServiceException(e);
-//			
-//		}// try-catch
-//	}// registerComment
-
 	
 	
 	// 댓글 작성 합치는게 낫나 
@@ -179,7 +129,7 @@ public class CommentService {
 	
 	// 뭐를 삭제하냐....
 	public void removeCommentOrMention(Integer commentId) throws ServiceException {
-		log.trace("removeCommentOrMention() invoked.");
+//		log.trace("removeCommentOrMention() invoked.");
 		
 		try {
 			CommentViewVO originComment = this.commentMapper.selectById(commentId);
@@ -207,53 +157,76 @@ public class CommentService {
 	
 	
 	// 댓글 삭제
-	public void removeComment(Integer commentId) throws ServiceException {
-		log.trace("removeComment() invoked.");
-		
-		CommentDTO comment = new CommentDTO();
-		comment.setCommentId(commentId);
-		comment.setContents("삭제된 댓글입니다.");
-		
-		
-		boolean isMentionExist 
-				= (this.commentMapper.hasMentionById(commentId) != null);
+	public void removeComment(Integer commentId) throws Exception {
+//		log.trace("removeComment() invoked.");
+		try {
 
-		if (isMentionExist) {
+			CommentDTO comment = new CommentDTO();
+			comment.setCommentId(commentId);
+			comment.setContents("삭제된 댓글입니다.");
+
+			boolean isExist = (this.commentMapper.selectById(commentId) != null);
+
+			if (!isExist) {
+				throw new NotFoundPageException();
+			} // if
+
+			boolean isMentionExist = (this.commentMapper.hasMentionById(commentId) != null);
+
+			if (isMentionExist) {
+
+				comment.setStatus("P");
+			} else {
+
+				comment.setStatus("Y");
+			} // if-else
+
+			this.commentMapper.updateComment(comment);
 			
-			comment.setStatus("P");
-		}else {
+		} catch (NotFoundPageException e) {
+			throw e;
 			
-			comment.setStatus("Y");
-		}// if-else
-		
-		this.commentMapper.updateComment(comment);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}// try-catch 
 		
 	}// removeComment
 	
 	
 	// 멘션 삭제
 	public void removeMention(Integer commentId) throws ServiceException {
-		log.trace("removeMention() invoked.");
-		
-		CommentDTO comment = new CommentDTO();
-		comment.setCommentId(commentId);
-		comment.setContents("삭제된 댓글입니다.");
-		comment.setStatus("Y");
+//		log.trace("removeMention() invoked.");
 
-		this.commentMapper.updateComment(comment);
-
-		CommentViewVO originComment = this.commentMapper.selectById(commentId);
-
-		boolean isMentionExist 
-				= (this.commentMapper.hasMentionById(originComment.getMentionId()) != null);
-
-		if (!isMentionExist) {
-
-			comment.setCommentId(originComment.getMentionId());
+		try {
+			CommentDTO comment = new CommentDTO();
+			comment.setCommentId(commentId);
+			comment.setContents("삭제된 댓글입니다.");
 			comment.setStatus("Y");
 
+			CommentViewVO originComment = this.commentMapper.selectById(commentId);
+
+			if (originComment == null) {
+				throw new NotFoundPageException();
+			} // if
+
 			this.commentMapper.updateComment(comment);
-		} // if
+
+			boolean isMentionExist = (this.commentMapper.hasMentionById(originComment.getMentionId()) != null);
+
+			if (!isMentionExist) {
+
+				comment.setCommentId(originComment.getMentionId());
+				comment.setStatus("Y");
+
+				this.commentMapper.updateComment(comment);
+			} // if
+			
+		} catch (NotFoundPageException e) {
+			throw e;
+			
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
 	}// removeComment
 
 	

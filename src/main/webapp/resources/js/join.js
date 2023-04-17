@@ -51,7 +51,7 @@ $(() => { /* 참여하기 모달창 on/off  */
 		 		hideJoinModal();
 				setMessage("🏃🏻‍♀️참여되었습니다.");
 		 		showModal();
-		 		setTimeout(hideModal, 500);
+		 		setTimeout(hideModal, 700);
 				$('#join').attr('id', 'clsjoin').val('취소하기');
 				$('#currentCount').html(data);
 			},
@@ -80,7 +80,7 @@ $(() => { /* 참여하기 모달창 on/off  */
 						hideJoinModal();
 						setMessage("🙅🏻‍♀️ 취소되었습니다.");
 						showModal();
-						setTimeout(hideModal, 500);
+						setTimeout(hideModal, 700);
 						$('#clsjoin').attr('id', 'join').val('참여하기');
 						$('#currentCount').html(data);
 					},
@@ -88,7 +88,7 @@ $(() => { /* 참여하기 모달창 on/off  */
 						hideJoinModal();
 						setMessage("⚠️ 취소할 수 없습니다. "); 
 						showModal();
-						setTimeout(hideModal, 500);
+						setTimeout(hideModal, 700);
 					}
 				});
 			});

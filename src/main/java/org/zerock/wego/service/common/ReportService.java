@@ -50,7 +50,7 @@ public class ReportService {
 
 	
 	// 신고 삭제 
-	public void removeByTarget(String targetGb, Integer targetCd) throws Exception{
+	public void removeAllByTarget(String targetGb, Integer targetCd) throws Exception{
 //		log.trace("removeAllByTarget({}, {})", targetGb, targetCd);
 		
 		this.reportMapper.deleteAllByTarget(targetGb, targetCd);
