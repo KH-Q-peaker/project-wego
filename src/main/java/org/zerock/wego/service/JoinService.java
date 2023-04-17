@@ -53,6 +53,7 @@ public class JoinService {
 				throw new NotFoundPageException();
 			} // if
 
+			
 			int currentJoin = this.joinMapper.selectTotalCount(dto);
 			int maxJoin = party.getPartyMax();
 
@@ -60,6 +61,7 @@ public class JoinService {
 				throw new OperationFailException();
 			} // if
 
+			
 			String status = this.joinMapper.selectById(dto);
 
 			if (status == null) {

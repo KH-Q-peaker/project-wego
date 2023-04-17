@@ -20,14 +20,7 @@ public class ReportService {
 	
 	private final ReportMapper reportMapper;
 	
-	// 존재 여부 
-	public boolean isExist(ReportDTO dto) throws Exception{
-		
-		return (this.reportMapper.find(dto) != null);
-		
-	}// isExist
-	
-	
+
 	// 타겟 신고 총합 조회 
 	public int getTotalCount(ReportDTO dto) throws ServiceException{
 		
@@ -43,16 +36,17 @@ public class ReportService {
 	public void create(ReportDTO dto) throws Exception {
 //		log.trace("create({}) invoked.", dto);
 		
-		if(isExist(dto)) {
+		
+		if(this.reportMapper.isExist(dto)) {
 			throw new DuplicateKeyException();
 		}// if
 		
 		this.reportMapper.insert(dto);
+
 		
-		if(!isExist(dto)) {
+		if(!this.reportMapper.isExist(dto)) {
 			throw new OperationFailException();
 		}// if
-		
 	}// modifyComment
 
 	
@@ -67,7 +61,9 @@ public class ReportService {
 									.targetCd(targetCd)
 									.build();
 		
-		if(isExist(report)) {
+		boolean isExist = this.reportMapper.isExist(report);
+		
+		if(isExist) {
 			throw new OperationFailException();
 		}// if
 	}// isRemovedByTarget

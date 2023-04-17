@@ -6,7 +6,7 @@ import org.zerock.wego.domain.ReportDTO;
 public interface ReportMapper {
 
 	// 존재 여부 
-	public abstract Integer find(ReportDTO dto);
+	public abstract boolean isExist(ReportDTO dto);
 	
 	// 신고 접수 
 	public abstract Integer insert(ReportDTO dto);

@@ -9,25 +9,39 @@
   	
   	
   	 <!-- ***************** 신고 존재여부 ******************** -->
+    <select id="isExist" 
+    		resultType="java.lang.Boolean">
+    
+    	SELECT EXISTS (
+        	SELECT 1 
+        	FROM report_tb
+        	<where>
+                target_gb = #{targetGb}
+                AND
+                target_cd = #{targetCd}
+            	<if test="userId != null">
+                AND
+                user_id = #{userId}
+            	</if>
+        	</where>
+			)
+	</select>
+    
+    <!-- ***************** 신고 총합 조회 ******************** -->
     <select
-    	id="find">
+    	id="selectCountByTarget">
     	
     	SELECT 
-    		1
+    		NVL(count(user_id), 0)
     	FROM	
     		report_tb
-    	<where>
+    	WHERE
     		target_gb = #{targetGb}
     		AND
     		target_cd = #{targetCd}
-    		<if test="userId != null">
-    		AND
-    		user_id = #{userId}
-    		</if>
-    	</where>
     </select>
     
-    <!-- ***************** 신고 접수  ******************** -->
+    <!-- ***************** 신고 생성  ******************** -->
     <insert
     	id="insert">
     	
@@ -43,20 +57,6 @@
 			#{reportGb}
 	    	)
     </insert>
-    
-    <!-- ***************** 신고 총합 조회 ******************** -->
-    <select
-    	id="selectCountByTarget">
-    	
-    	SELECT 
-    		NVL(count(user_id), 0)
-    	FROM	
-    		report_tb
-    	WHERE
-    		target_gb = #{targetGb}
-    		AND
-    		target_cd = #{targetCd}
-    </select>
     
     <!-- ***************** 신고 삭제 ******************** -->
     <delete
