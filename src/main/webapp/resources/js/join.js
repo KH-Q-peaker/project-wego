@@ -45,7 +45,7 @@ $(() => { /* 참여하기 모달창 on/off  */
 		$(".joinbtn").off('click').on('click', function(){
 			
 			$.ajax({
-			url : "/party/join/" + target.targetCd ,
+			url : "/party/" + target.targetCd + "/join" ,
 			type : "POST",
 			success : function(data){
 		 		hideJoinModal();
@@ -74,7 +74,7 @@ $(() => { /* 참여하기 모달창 on/off  */
 			$(".joinbtn").off('click').on('click', function() {
 
 				$.ajax({
-					url : "/party/join/" + target.targetCd ,
+					url : "/party/" + target.targetCd + "/join" ,
 					type : "POST",
 					success: function(data) {
 						hideJoinModal();
