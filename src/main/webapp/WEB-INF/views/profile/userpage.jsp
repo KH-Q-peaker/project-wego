@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%> <%@ taglib prefix="c"
 uri="http://java.sun.com/jsp/jstl/core"%> <%@ taglib prefix="fmt"
 uri="http://java.sun.com/jsp/jstl/fmt"%> <%@ taglib prefix="fn"
 uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -10,14 +10,15 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-	<title>Wego</title>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta name="description" content="등산멤버 모집 커뮤니티" />
-    
-	<link rel="shortcut icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
-	<link rel="icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
-	
+    <title>Wego 유저페이지</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="/resources/ico/favicon.ico"
+      type="image/x-icon"
+    />
+    <link rel="icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="/resources/css/header.css" />
     <link rel="stylesheet" href="/resources/css/footer.css" />
     <link rel="stylesheet" href="/resources/css/usercomment.css" />
@@ -27,15 +28,12 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <link rel="stylesheet" href="/resources/css/top.css" />
 
     <script src="/resources/js/header.js" defer></script>
-    <script src="/resources/js/footer.js" defer></script>
     <script src="/resources/js/top.js" defer></script>
     <script src="/resources/js/userpage.js" defer></script>
-    <script src="/resources/js/paging.js" defer></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
   </head>
-  
   <body>
     <div class="total-wrap">
       <!-- hearder start -->
@@ -47,18 +45,18 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
         <div class="mypage-container">
           <!--  프로필 메인  -->
           <div class="profile">
-            <c:forEach items="${getUserInfoList}" var="userProfile">
-              <!--<div class="profile-image">${userProfile.userPic}</div>-->
+            <%--<c:forEach items="${getUserInfoList}" var="userProfile">-->
+              <!--<div class="profile-image">${userProfile.userPic}</div>--%>
               <img
                 class="profile-image"
-                src="${userProfile.userPic}"
+                src="${getUserInfoList.userPic}"
                 alt="img"
               />
               <!--  사진  옆라인 -->
               <div class="name-badge-setting">
                 <div class="div-name-setting" id="user-info">
                   <span class="nickname"
-                    >&#127795; ${userProfile.nickname} 님 &#127795;
+                    >&#127795; ${getUserInfoList.nickname} 님 &#127795;
                     <input type="hidden" id="userId" value="${userId}" />
                   </span>
                   <span class="sirenbar"
@@ -73,11 +71,11 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 <!--뱃지모음라인===== -->
                 <div class="badge-collection">
                   <div class="badge-header">
-                  <a class="badge-setting" href="/badge/${userProfile.userId}"
+                  <a class="badge-setting" href="/badge/${getUserInfoList.userId}"
                         >
                     <span>Badge Collection</span></a>
                     <span>
-                      <a class="badge-setting" href="/badge/${userProfile.userId}"
+                      <a class="badge-setting" href="/badge/${getUserInfoList.userId}"
                         ><img src="/resources/img/badgeset.png" alt=""
                       /></a>
                     </span>
@@ -101,7 +99,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   </div>
                 </div>
               </div>
-            </c:forEach>
+            <%--</c:forEach>--%>
           </div>
           <!-- 프로필 아래  네비  -->
           <div id="content-section">
