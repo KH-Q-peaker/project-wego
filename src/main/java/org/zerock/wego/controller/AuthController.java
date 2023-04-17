@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.zerock.wego.domain.UserVO;
+import org.zerock.wego.domain.common.UserVO;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;

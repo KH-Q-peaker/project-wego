@@ -5,7 +5,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.zerock.wego.domain.BadgeGetVO;
+import org.zerock.wego.domain.badge.BadgeGetVO;
 
 
 @Mapper

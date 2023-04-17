@@ -3,7 +3,7 @@ package org.zerock.wego.mapper;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.zerock.wego.domain.BadgeVO;
+import org.zerock.wego.domain.badge.BadgeVO;
 
 
 @Mapper

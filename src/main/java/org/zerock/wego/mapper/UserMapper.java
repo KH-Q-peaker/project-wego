@@ -1,7 +1,7 @@
 package org.zerock.wego.mapper;
 
-import org.zerock.wego.domain.UserDTO;
-import org.zerock.wego.domain.UserVO;
+import org.zerock.wego.domain.common.UserDTO;
+import org.zerock.wego.domain.common.UserVO;
 
 public interface UserMapper {
 

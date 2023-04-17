@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.zerock.wego.config.SessionConfig;
-import org.zerock.wego.domain.UserDTO;
-import org.zerock.wego.domain.UserVO;
+import org.zerock.wego.domain.common.UserDTO;
+import org.zerock.wego.domain.common.UserVO;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.oauth.KakaoOAuth;
-import org.zerock.wego.service.LoginService;
-import org.zerock.wego.service.OAuthService;
+import org.zerock.wego.service.oauth.LoginService;
+import org.zerock.wego.service.oauth.OAuthService;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 

@@ -2,9 +2,9 @@ package org.zerock.wego.mapper;
 
 import java.util.Set;
 
-import org.zerock.wego.domain.SanInfoViewVO;
-import org.zerock.wego.domain.PartyViewVO;
-import org.zerock.wego.domain.ReviewViewVO;
+import org.zerock.wego.domain.info.SanInfoViewVO;
+import org.zerock.wego.domain.party.PartyViewVO;
+import org.zerock.wego.domain.review.ReviewViewVO;
 
 
 public interface SearchMapper {

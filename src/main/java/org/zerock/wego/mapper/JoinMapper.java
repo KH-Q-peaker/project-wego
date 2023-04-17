@@ -1,7 +1,7 @@
 package org.zerock.wego.mapper;
 
 import org.apache.ibatis.annotations.Param;
-import org.zerock.wego.domain.JoinDTO;
+import org.zerock.wego.domain.party.JoinDTO;
 
 public interface JoinMapper {
 	

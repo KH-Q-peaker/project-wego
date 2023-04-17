@@ -3,10 +3,10 @@ package org.zerock.wego.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
-import org.zerock.wego.domain.Criteria;
-import org.zerock.wego.domain.ProfileCommentVO;
-import org.zerock.wego.domain.ProfileVO;
-import org.zerock.wego.domain.UserVO;
+import org.zerock.wego.domain.common.Criteria;
+import org.zerock.wego.domain.common.UserVO;
+import org.zerock.wego.domain.profile.ProfileCommentVO;
+import org.zerock.wego.domain.profile.ProfileVO;
 
 
 public interface ProfileMapper {

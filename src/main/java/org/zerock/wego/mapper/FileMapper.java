@@ -3,8 +3,8 @@ package org.zerock.wego.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
-import org.zerock.wego.domain.FileDTO;
-import org.zerock.wego.domain.FileVO;
+import org.zerock.wego.domain.common.FileDTO;
+import org.zerock.wego.domain.common.FileVO;
 
 
 public interface FileMapper {
