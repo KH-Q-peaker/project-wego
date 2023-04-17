@@ -1,0 +1,17 @@
+package org.zerock.wego.domain.common;
+
+import lombok.Data;
+
+@Data
+public class CommentDTO {
+
+	private Integer commentId;			// 댓글 식별자
+	private String targetGb;			// 소속 게시판   *
+	private Integer targetCd;			// 소속 글 식별자 *
+	private String commentGb;			// 댓글 구분  
+	private Integer mentionId;			// 멘션 코드  
+	private Integer userId;				// 유저 코드 *
+	private String contents;			// 댓글 내용 * 
+	private String status;				// 삭제 상태값 
+	
+}// end class

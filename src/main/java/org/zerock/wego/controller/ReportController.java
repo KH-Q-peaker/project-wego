@@ -5,12 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.zerock.wego.domain.PageInfo;
-import org.zerock.wego.domain.ReportDTO;
-import org.zerock.wego.domain.UserVO;
+import org.zerock.wego.domain.common.PageInfo;
+import org.zerock.wego.domain.common.ReportDTO;
+import org.zerock.wego.domain.common.UserVO;
 import org.zerock.wego.exception.AccessBlindException;
 import org.zerock.wego.exception.DuplicateKeyException;
-import org.zerock.wego.service.ReportService;
+import org.zerock.wego.service.common.ReportService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

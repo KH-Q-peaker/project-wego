@@ -3,9 +3,9 @@ package org.zerock.wego.mapper;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import org.apache.ibatis.annotations.Param;
-import org.zerock.wego.domain.CommentDTO;
-import org.zerock.wego.domain.CommentViewVO;
-import org.zerock.wego.domain.PageInfo;
+import org.zerock.wego.domain.common.CommentDTO;
+import org.zerock.wego.domain.common.CommentViewVO;
+import org.zerock.wego.domain.common.PageInfo;
 
 public interface CommentMapper {
 

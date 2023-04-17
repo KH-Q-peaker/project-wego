@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
-import org.zerock.wego.domain.PartyDTO;
-import org.zerock.wego.domain.PartyViewVO;
+import org.zerock.wego.domain.party.PartyDTO;
+import org.zerock.wego.domain.party.PartyViewVO;
 
 
 public interface PartyMapper {

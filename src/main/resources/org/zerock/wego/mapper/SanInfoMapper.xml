@@ -7,13 +7,13 @@
 <mapper namespace="org.zerock.wego.mapper.SanInfoMapper">
 
 	<select id="selectAll"
-		resultType="org.zerock.wego.domain.SanInfoViewVO">
+		resultType="org.zerock.wego.domain.info.SanInfoViewVO">
 		SELECT * 
 		FROM san_info_v
 	</select>
 
 	<select id="selectRandom10"
-		resultType="org.zerock.wego.domain.SanInfoViewVO">
+		resultType="org.zerock.wego.domain.info.SanInfoViewVO">
 		SELECT *
 		FROM
 			(
@@ -25,7 +25,7 @@
 	</select>
 
 	<select id="selectById"
-		resultType="org.zerock.wego.domain.SanInfoViewVO">
+		resultType="org.zerock.wego.domain.info.SanInfoViewVO">
 		SELECT *
 		FROM san_info_v
 		WHERE san_info_id = #{sanInfoId}

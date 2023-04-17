@@ -7,7 +7,7 @@
 <mapper namespace="org.zerock.wego.mapper.SearchMapper">
 
 	<select id="selectSearchSanInfo3ByQuery"
-		resultType="org.zerock.wego.domain.SanInfoViewVO">
+		resultType="org.zerock.wego.domain.info.SanInfoViewVO">
 		SELECT *
 		FROM san_info_v
 		WHERE
@@ -19,7 +19,7 @@
 	</select>
 
 	<select id="selectSearchParty3ByQuery"
-		resultType="org.zerock.wego.domain.PartyViewVO">
+		resultType="org.zerock.wego.domain.party.PartyViewVO">
 		SELECT *
 		FROM san_party_v
 		WHERE
@@ -31,7 +31,7 @@
 	</select>
 
 	<select id="selectSearchReview3ByQuery"
-		resultType="org.zerock.wego.domain.ReviewViewVO">
+		resultType="org.zerock.wego.domain.review.ReviewViewVO">
 		SELECT *
 		FROM san_review_v
 		WHERE

@@ -3,8 +3,8 @@ package org.zerock.wego.mapper;
 import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
-import org.zerock.wego.domain.FavoriteDTO;
-import org.zerock.wego.domain.FavoriteVO;
+import org.zerock.wego.domain.common.FavoriteDTO;
+import org.zerock.wego.domain.common.FavoriteVO;
 
 public interface FavoriteMapper {
 	

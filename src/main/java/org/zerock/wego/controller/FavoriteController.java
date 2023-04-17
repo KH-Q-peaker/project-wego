@@ -3,9 +3,9 @@ package org.zerock.wego.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.zerock.wego.domain.FavoriteDTO;
+import org.zerock.wego.domain.common.FavoriteDTO;
 import org.zerock.wego.exception.ControllerException;
-import org.zerock.wego.service.FavoriteService;
+import org.zerock.wego.service.common.FavoriteService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;

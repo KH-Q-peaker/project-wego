@@ -7,7 +7,7 @@
 
 <mapper namespace="org.zerock.wego.mapper.ProfileMapper">
 
-    <select id="selectUserId" resultType="org.zerock.wego.domain.UserVO">
+    <select id="selectUserId" resultType="org.zerock.wego.domain.common.UserVO">
 		SELECT 
 			*
 		FROM
@@ -16,7 +16,7 @@
 			user_id = #{userId}
     </select>
 
-	<select id ="selectAll" resultType="org.zerock.wego.domain.ProfileVO">
+	<select id ="selectAll" resultType="org.zerock.wego.domain.profile.ProfileVO">
 		SELECT * 
 		FROM (
 			SELECT
@@ -62,7 +62,7 @@
 			 ) post
 	</select>
 
-	<select id ="selectAllComment" resultType="org.zerock.wego.domain.ProfileCommentVO">
+	<select id ="selectAllComment" resultType="org.zerock.wego.domain.profile.ProfileCommentVO">
 		SELECT * FROM (
 			    SELECT
 			        '등산후기' "targetGb",
