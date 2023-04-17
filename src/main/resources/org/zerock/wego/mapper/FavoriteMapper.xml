@@ -6,65 +6,65 @@
 
 <mapper namespace="org.zerock.wego.mapper.FavoriteMapper">
 
-	<select id="getUserFavoriteOnList" 
+	<select id="getUserFavoriteOnList"
 		resultType="org.zerock.wego.domain.FavoriteVO">
-		SELECT * 
-		FROM like_tb 
-		WHERE user_id = ${userId} 
-			AND status = 'Y'
+		SELECT *
+		FROM like_tb
+		WHERE user_id = ${userId}
+		AND status = 'Y'
 	</select>
 
 	<select id="isFavoriteInfo" resultType="Integer">
 		SELECT count(user_id)
 		FROM like_tb
 		WHERE
-			user_id = #{userId}
-			AND target_gb = #{targetGb}
-			AND target_cd = #{targetCd}
+		user_id = #{userId}
+		AND target_gb = #{targetGb}
+		AND target_cd = #{targetCd}
 	</select>
-	
-	
-	<select
-		id="selectTotalCountByTarget">
-		
+
+
+	<select id="selectTotalCountByTarget">
+
 		SELECT
-			NVL(count(user_id), 0)
+		NVL(count(user_id), 0)
 		FROM
-			like_tb
+		like_tb
 		WHERE
-			target_gb = #{targetGb}
-			AND
-			target_cd = #{targetCd}	
+		target_gb = #{targetGb}
+		AND
+		target_cd = #{targetCd}
 	</select>
-	
-	
+
+
 	<insert id="insert">
 		INSERT INTO
-		like_tb(user_Id, target_gb, target_cd, modified_dt, status)
-		VALUES(#{userId}, #{targetGb}, #{targetCd}, current_timestamp, #{status})
+		like_tb(user_Id, target_gb, target_cd,
+		modified_dt, status)
+		VALUES(#{userId}, #{targetGb}, #{targetCd},
+		current_timestamp, #{status})
 	</insert>
 
 	<update id="update">
 		UPDATE like_tb
 		SET
-			status = #{status},
-			modified_dt = current_timestamp
+		status = #{status},
+		modified_dt = current_timestamp
 		WHERE
-			user_id = #{userId}
-			AND target_gb = #{targetGb}
-			AND target_cd = #{targetCd}
+		user_id = #{userId}
+		AND target_gb = #{targetGb}
+		AND target_cd = #{targetCd}
 	</update>
-	
-	<delete
-		id="deleteByTarget">
-		
+
+	<delete id="deleteByTarget">
+
 		DELETE
 		FROM
-			like_tb
+		like_tb
 		WHERE
-			target_gb = #{targetGb}
-			AND
-			target_cd = #{targetCd}
+		target_gb = #{targetGb}
+		AND
+		target_cd = #{targetCd}
 	</delete>
-	
+
 </mapper>

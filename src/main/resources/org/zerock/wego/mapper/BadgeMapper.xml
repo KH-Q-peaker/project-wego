@@ -6,30 +6,30 @@
 
 <mapper namespace="org.zerock.wego.mapper.BadgeMapper">
 
- 	<select id="selectAllSan"
+	<select id="selectAllSan"
 		resultType="org.zerock.wego.domain.BadgeVO">
 
-		SELECT 
-			*
-		FROM 
-			badge_tb
+		SELECT
+		*
+		FROM
+		badge_tb
 		WHERE
-			badge_gb = '산'
-			
+		badge_gb = '산'
+
 	</select>
-	
-	
+
+
 	<select id="selectAllRanking"
 		resultType="org.zerock.wego.domain.BadgeVO">
 
-		SELECT 
-			*
-		FROM 
-			badge_tb
+		SELECT
+		*
+		FROM
+		badge_tb
 		WHERE
-			badge_gb = '랭킹'
-			
+		badge_gb = '랭킹'
+
 	</select>
-	
-	
+
+
 </mapper>

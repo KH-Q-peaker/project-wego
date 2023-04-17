@@ -23,14 +23,13 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
 </head>
-<body>	
+<body>
 	<div class="total-wrap">
 		<%@include file="/WEB-INF/views/common/header.jsp"%>
 		<section>
 			<form action="/party/modify" method="post"
 				enctype="multipart/form-data" class="container">
-				<input type="hidden" name="sanPartyId"
-					value="${party.sanPartyId}">
+				<input type="hidden" name="sanPartyId" value="${party.sanPartyId}">
 				<!-- form 필수값 검증 후 값이 없는 경우 알림 -->
 				<div class="alert-window">
 					<p>
@@ -47,7 +46,7 @@
 				<div class="title">
 					<label for="title">제목</label> <input type="text" name="title"
 						id="title" placeholder="제목을 입력하세요.(최소 2자 ~ 최대 20자 가능)"
-						maxlength="20" value="${party.title}"  required />
+						maxlength="20" value="${party.title}" required />
 				</div>
 				<div class="detail">
 					<div class="photo">

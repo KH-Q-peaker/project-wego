@@ -4,104 +4,104 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-  
-  <mapper namespace = "org.zerock.wego.mapper.PartyMapper">
-  
-  	<select id="selectAll"
+
+<mapper namespace="org.zerock.wego.mapper.PartyMapper">
+
+	<select id="selectAll"
 		resultType="org.zerock.wego.domain.PartyViewVO">
-		SELECT * 
-		FROM san_party_v 
+		SELECT *
+		FROM san_party_v
 		ORDER BY created_dt DESC
 	</select>
-  	
-	<select id="selectUserIdByPartyId"
-		resultType="int">
+
+	<select id="selectUserIdByPartyId" resultType="int">
 		SELECT user_id
 		FROM san_party_v
 		WHERE san_party_id = ${partyId}
 	</select>
-  	
+
 
 	<select id="selectRandom10"
 		resultType="org.zerock.wego.domain.PartyViewVO">
 		SELECT *
 		FROM
-			(
-			SELECT *
-			FROM san_party_v
-			ORDER BY dbms_random.random
-			)
+		(
+		SELECT *
+		FROM san_party_v
+		ORDER BY dbms_random.random
+		)
 		WHERE rownum &lt;= 10
 	</select>
 
-	
-  	<!-- *********** 식별자로 모집글 조회  ************ -->
-  	<select id="selectById" 
-  			resultType = "org.zerock.wego.domain.PartyViewVO">
-  		
-  		SELECT
-  			*
-  		FROM
-  			san_party_v
-  			
-  		<where>
-  		san_party_id = #{partyId}
-  		</where>
-  			
-  	</select>
-  	
-  
-  	
-  	<!-- ************ 모집글 삭제 ************ -->
-  	<delete id="deleteById">
-  	
-  		DELETE
-  		FROM
-  			san_party_tb
-  		<where>
-  		san_party_id = #{partyId}
-  		</where>
-  	</delete>
-  	
-  	
 
-	<insert id="insert" 
-			parameterType="org.zerock.wego.domain.PartyViewVO">
+	<!-- *********** 식별자로 모집글 조회 ************ -->
+	<select id="selectById"
+		resultType="org.zerock.wego.domain.PartyViewVO">
+
+		SELECT
+		*
+		FROM
+		san_party_v
+
+		<where>
+			san_party_id = #{partyId}
+		</where>
+
+	</select>
+
+
+
+	<!-- ************ 모집글 삭제 ************ -->
+	<delete id="deleteById">
+
+		DELETE
+		FROM
+		san_party_tb
+		<where>
+			san_party_id = #{partyId}
+		</where>
+	</delete>
+
+
+
+	<insert id="insert"
+		parameterType="org.zerock.wego.domain.PartyViewVO">
 		INSERT INTO
-			san_party_tb(
-				san_info_id, user_id, title, contents,
-				party_dt, party_max, items, condition
-				)
-			VALUES(
-				#{sanInfoId}, #{userId}, #{title}, #{contents},
-				#{partyDt}, #{partyMax}, #{items}, #{condition}
-			)
-			<selectKey keyProperty="sanPartyId" resultType="int" order="AFTER">
-				SELECT max(san_party_id)
-				FROM san_party_tb
-			</selectKey>
+		san_party_tb(
+		san_info_id, user_id, title, contents,
+		party_dt, party_max, items, condition
+		)
+		VALUES(
+		#{sanInfoId}, #{userId}, #{title}, #{contents},
+		#{partyDt}, #{partyMax}, #{items}, #{condition}
+		)
+		<selectKey keyProperty="sanPartyId" resultType="int"
+			order="AFTER">
+			SELECT max(san_party_id)
+			FROM san_party_tb
+		</selectKey>
 	</insert>
 
 	<update id="update">
 		UPDATE san_party_tb
 		SET
-			san_info_id = #{sanInfoId},
-			title = #{title},
-			contents = #{contents},
-			party_dt = #{partyDt},
-			party_max = #{partyMax},
-			items = #{items},
-			condition = #{condition},
-			modified_dt = current_timestamp
+		san_info_id = #{sanInfoId},
+		title = #{title},
+		contents = #{contents},
+		party_dt = #{partyDt},
+		party_max = #{partyMax},
+		items = #{items},
+		condition = #{condition},
+		modified_dt = current_timestamp
 		WHERE
-			san_party_id = #{sanPartyId}
+		san_party_id = #{sanPartyId}
 	</update>
 
 	<update id="visitCountUp">
 		UPDATE san_party_tb
 		SET
-			VISIT_CNT = VISIT_CNT + 1
+		VISIT_CNT = VISIT_CNT + 1
 		WHERE
-			san_party_id = #{partyId}
+		san_party_id = #{partyId}
 	</update>
 </mapper>

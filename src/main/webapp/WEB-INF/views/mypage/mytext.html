@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Wego 내글</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="./ico/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="등산멤버 모집 커뮤니티" />
+    <link rel="icon" href="./ico/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/header.css" />
+    <link rel="stylesheet" href="./css/footer.css" />
+    <link rel="stylesheet" href="./css/myPageindex.css" />
+    <link rel="stylesheet" href="./css/mytext.css" />
+    <link rel="stylesheet" href="./css/top.css" />
+    <script src="./js/header.js" defer></script>
+    <script src="./js/mypage.js" defer></script>
+    <script src="./js/top.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
+  </head>
+
+  <body>
+    <div class="total-wrap">
+      <!-- hearder start -->
+      <header>
+        <div class="header">
+          <div class="logoDiv">
+            <a href="#">
+              <span class="wegoLogo"></span>
+              <span class="wogoTitle"></span>
+            </a>
+          </div>
+          <div>
+            <nav>
+              <ul class="navbar">
+                <li><a href="#">산정보</a></li>
+                <li><a href="#">등산후기</a></li>
+                <li><a href="#">랭킹</a></li>
+                <li><a href="#">모집</a></li>
+              </ul>
+            </nav>
+          </div>
+          <div class="user">
+            <!-- 로그인 상태 => 현재 display: none; 상태 -->
+            <img
+              id="userImg"
+              class="user-profile-img"
+              src="https://picsum.photos/id/684/600/400"
+              alt="회원 프로필 이미지"
+            />
+            <!-- 비로그인 상태 -->
+            <button class="login-btn"></button>
+            <div class="menubar">
+              <ul>
+                <li><a href="../mypage/mypage.html">마이페이지</a></li>
+                <li><a href="#">알림</a></li>
+                <li><a href="#">문의하기</a></li>
+                <li class="text-red"><a href="#">로그아웃</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- hearder end -->
+
+      <!-- main start -->
+
+      <!-- Contents -->
+      <section>
+        <div class="mypage-container">
+          <form action="#" method="post" class="container">
+            <!-- form 필수값 검증 후 값이 없는 경우 알림 -->
+            <div class="alert-window">
+              <p>
+                닉네임은 <br />
+                필수사항 입니다.
+              </p>
+              <button type="button">확인</button>
+            </div>
+
+            <!--  닉네임 변경  -->
+            <div class="nickname-box">
+              <div class="nick-header">
+                <span>사용할 닉네임을 입력해주세요</span>
+              </div>
+              <form action="#">
+                <div class="nickname-input">
+                  <input type="text" placeholder="등산쟁이" />
+                  <span class="ion"
+                    ><ion-icon name="checkmark-circle-outline"></ion-icon>
+                    <ion-icon name="close-circle-outline"></ion-icon
+                  ></span>
+                </div>
+                <div class="bottom">
+                  <span>사용 가능한 닉네임입니다.</span>
+                </div>
+                <input type="submit" class="nickname-send" value="변경" />
+              </form>
+              <div>
+                <a href="#" class="closebutton2"
+                  ><ion-icon name="close-outline"></ion-icon
+                ></a>
+              </div>
+            </div>
+          </form>
+          <script
+            type="module"
+            src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+          ></script>
+          <script
+            nomodule
+            src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+          ></script>
+
+          <form action="#" method="post" class="container">
+            <!--  프로필 메인  -->
+            <div class="profile">
+              <div class="profile-image"></div>
+
+              <div class="add-profile-image">
+                <div class="top">
+                  <div class="folder-icon"></div>
+                  <span>Upload a photo</span>
+                  <span class="cancel" type="reset"></span>
+                </div>
+                <div class="drag-and-drop">
+                  <div class="picture"></div>
+                  <p>
+                    여기로 이미지를 드래그하거나<br />
+                    파일을 업로드 하세요. (최대 20MB)
+                  </p>
+                </div>
+                <button type="submit">변경</button>
+              </div>
+
+              <div class="wrap">
+                <div class="profile-image-button">
+                  <img src="./img/profileset.png" alt="프로필사진변경" />
+                </div>
+
+                <!--  사진 변경 옆라인 -->
+                <div class="name-badge-setting">
+                  <div class="div-name-setting">
+                    <span class="nickname">닉네임</span>
+                    <a class="name-setting" href="#"
+                      ><img src="./img/nickname.png" alt=""
+                    /></a>
+                  </div>
+                  <!--뱃지모음라인===== -->
+                  <div class="badge-collection">
+                    <div class="badge-header">
+                      <span>Badge Collection</span>
+                      <span>
+                        <a class="badge-setting" href=""
+                          ><img src="./img/badgeset.png" alt=""
+                        /></a>
+                      </span>
+                    </div>
+
+                    <!--적용 -->
+                    <div class="badge-item1" id="1003">
+                      <div class="sanBadge"></div>
+                    </div>
+                    <div class="badge-item2" id="1">
+                      <div class="sanBadge"></div>
+                    </div>
+                    <div class="badge-item3" id="4">
+                      <div class="sanBadge"></div>
+                    </div>
+                    <div class="badge-item4" id="5">
+                      <div class="sanBadge"></div>
+                    </div>
+                    <div class="badge-item5" id="93">
+                      <div class="sanBadge"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <!-- 프로필 아래  네비  -->
+          <div id="content-section">
+            <ul class="content-header-menu">
+              <li class="content-header-menu-item">
+                <a href="./mypage.html">등산 일정</a>
+              </li>
+              <li class="content-header-menu-item">
+                <a href="./myinfo.html">내 정보</a>
+              </li>
+              <li class="content-header-menu-item" id="item-point">
+                <a href="./mytext.html">내가 쓴 글, 댓글</a>
+              </li>
+              <li class="content-header-menu-item active">
+                <a href="./mylike.html">나의 좋아요</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- 내용물  -->
+          <div class="cotents">
+            <div class="content1">
+              <h2>내가 쓴 글✍</h2>
+              <table class="middle">
+                <thead>
+                  <tr style="align-items: center">
+                    <th class="t1" width="70">게시판명</th>
+                    <th class="t2" width="300">글 제목</th>
+                    <th class="t3" width="120">작성일</th>
+                    <th class="t4" width="70">조회</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="t1">등산모집</td>
+                    <td class="t2">DB에서는 어떻게 구하는거죠?</td>
+                    <td class="t3">2023.01.09</td>
+                    <td class="t4">10</td>
+                  </tr>
+                  <tr>
+                    <td class="t1">등산후기</td>
+                    <td class="t2">한라산 곰나와요 가지마세여</td>
+                    <td class="t3">2022.12.08</td>
+                    <td class="t4">1</td>
+                  </tr>
+                  <tr>
+                    <td class="t1">등산모집</td>
+                    <td class="t2">저랑 같이 금강산 가볼실분</td>
+                    <td class="t3">2022.06.08</td>
+                    <td class="t4">1</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="content2">
+              <h2>내가 댓글 단 글📌</h2>
+              <table class="middle">
+                <thead>
+                  <tr style="align-items: center">
+                    <th class="t1" width="70">게시판명</th>
+                    <th class="t2" width="300">글 제목</th>
+                    <th class="t3" width="120">작성일</th>
+                    <th class="t4" width="70">조회</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="t1">등산모집</td>
+                    <td class="t2">DB연결은 1도모르겟다</td>
+                    <td class="t3">2023.01.09</td>
+                    <td class="t4">10</td>
+                  </tr>
+                  <tr>
+                    <td class="t1">등산후기</td>
+                    <td class="t2">한라산 곰나와요 가지마세여</td>
+                    <td class="t3">2022.12.08</td>
+                    <td class="t4">1</td>
+                  </tr>
+                  <tr>
+                    <td class="t1">등산모집</td>
+                    <td class="t2">저랑 같이 금강산 가볼실분</td>
+                    <td class="t3">2022.06.08</td>
+                    <td class="t4">1</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- main end -->
+    </div>
+    <!-- total-wrap end -->
+    <a href="#" class="scrollToTop">
+      <img src="./svg/top.svg" />
+    </a>
+    <!-- Footer Start -->
+    <footer>
+      <div class="footer">
+        <ul>
+          <li><a href="#">사이트 도움말</a></li>
+          <li><a href="#">사이트 이용약관</a></li>
+          <li>
+            <a href="#"><strong>개인정보취급방침</strong></a>
+          </li>
+          <li><a href="#">책임의 한계와 법적고지</a></li>
+          <li><a href="#">게시중단요청서비스</a></li>
+          <li><a href="#">고객센터</a></li>
+        </ul>
+        <address>
+          Copyright ©
+          <a href="http://wego.co.kr"><strong>Wego</strong></a>
+          All Rights Reserved.
+        </address>
+        <div class="support">
+          <span class="link-bar">
+            <a
+              href="https://www.figma.com/file/4Gfranq8Iqz4pSebwzUc1W/Final-project?node-id=0%3A1&t=UILOPhDRyS6LJiQW-1"
+              target="_blank"
+            ></a>
+            <a
+              href="https://github.com/KH-Q-peaker?tab=repositories"
+              target="_blank"
+            ></a>
+          </span>
+        </div>
+      </div>
+    </footer>
+    <!-- Footer End -->
+  </body>
+</html>

@@ -1,14 +1,16 @@
 @charset "UTF-8";
 
-.like{
+.like {
 	background: url(../svg/like-off.svg);
 	background-repeat: no-repeat;
 	width: 30px;
 	height: 30px;
 }
-.fill{
+
+.fill {
 	background: url(../svg/like-on.svg);
 }
-.like:focus{
+
+.like:focus {
 	border: 0;
 }

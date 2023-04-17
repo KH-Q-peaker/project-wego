@@ -3,64 +3,59 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
 
-  <mapper namespace = "org.zerock.wego.mapper.JoinMapper">
 
-	<!-- ************ 참여 인원 확인  ************ -->
-    <select 
-    	id="selectTotalCount">
-    	
-    	SELECT 
-    		COUNT(user_id)
-    	FROM 
-    		join_tb
-    	WHERE 
-    		san_party_id = #{sanPartyId}
-    		AND
-    		status = 'Y'
-    </select>
-    
-    <!-- ************ 참여 여부 확인  ************ -->
-    <select 
-    	id="selectById" 
-    	resultType="String">
-    	
-    	SELECT 
-    		status
-    	FROM 
-    		join_tb
-    	WHERE 
-    		san_party_id = #{sanPartyId}
-    		AND 
-    		user_id = #{userId}
-    </select>
-    
-	<!-- ************ 참여 생성  ************ -->
-    <insert 
-    	id="insert">
-    	
-    	INSERT INTO join_tb
-    		(san_party_id, user_id)
-    	VALUES
-    		(#{sanPartyId}, #{userId})
-    </insert>
-    
-    <!-- ************ 참여 신청/취소 토글 ************ -->
-    <update 
-    	id="update">
-    	
-    	UPDATE
-    		join_tb
-    	SET
-    		status = #{status}
-    	WHERE
-    		san_party_id = #{dto.sanPartyId}
-    		AND
-    		user_id = #{dto.userId}
-    </update>
-    
-  </mapper>
+<mapper namespace="org.zerock.wego.mapper.JoinMapper">
+
+	<!-- ************ 참여 인원 확인 ************ -->
+	<select id="selectTotalCount">
+
+		SELECT
+		COUNT(user_id)
+		FROM
+		join_tb
+		WHERE
+		san_party_id = #{sanPartyId}
+		AND
+		status = 'Y'
+	</select>
+
+	<!-- ************ 참여 여부 확인 ************ -->
+	<select id="selectById" resultType="String">
+
+		SELECT
+		status
+		FROM
+		join_tb
+		WHERE
+		san_party_id = #{sanPartyId}
+		AND
+		user_id = #{userId}
+	</select>
+
+	<!-- ************ 참여 생성 ************ -->
+	<insert id="insert">
+
+		INSERT INTO join_tb
+		(san_party_id, user_id)
+		VALUES
+		(#{sanPartyId}, #{userId})
+	</insert>
+
+	<!-- ************ 참여 신청/취소 토글 ************ -->
+	<update id="update">
+
+		UPDATE
+		join_tb
+		SET
+		status = #{status}
+		WHERE
+		san_party_id = #{dto.sanPartyId}
+		AND
+		user_id = #{dto.userId}
+	</update>
+
+</mapper>
   
   
   

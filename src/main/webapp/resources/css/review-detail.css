@@ -1,6 +1,5 @@
 @charset "UTF-8";
 
-
 /* 제목 부분 */
 .rheader {
 	height: auto;
@@ -25,9 +24,9 @@
 	font-size: 25px;
 	padding: 0 15px;
 }
-.dt{
+
+.dt {
 	font-size: 13px;
-	
 }
 /* 글 본문 */
 .contents {
@@ -65,22 +64,25 @@
 	color: #14ab2c;
 }
 
-.likeCnt{
+.likeCnt {
 	display: flex;
 	grid-row: 3;
 	grid-column: 1/3;
 	width: auto;
-    height: 30px;
-    align-items: center;
-    justify-content: start;
+	height: 30px;
+	align-items: center;
+	justify-content: start;
 }
+
 .like {
 	margin-right: 3px;
 }
-.likeCnt > label{
+
+.likeCnt>label {
 	height: 30px;
-    padding-top: 20px;
+	padding-top: 20px;
 }
+
 .content {
 	grid-row: 2;
 	grid-column: 1/5;
@@ -89,11 +91,12 @@
 	font-size: 14px;
 	white-space: pre-wrap;
 }
+
 @media screen and (max-width: 768px) {
 	/* 글 본문 */
 	.contents {
-/* 		grid-template-columns: 50px minmax(100px, auto) 100px; */
-/* 		grid-template-rows: 50px minmax(100px, auto) 30px; */
+		/* 		grid-template-columns: 50px minmax(100px, auto) 100px; */
+		/* 		grid-template-rows: 50px minmax(100px, auto) 30px; */
 		padding: 15px;
 	}
 }
@@ -105,7 +108,7 @@
 	height: 30px;
 	padding: 7px;
 	margin: 10px;
-	background-color: rgb(255 255 255 / 90%);
+	background-color: rgb(255 255 255/ 90%);
 	font-size: 15px;
 	justify-content: center;
 	align-items: center;

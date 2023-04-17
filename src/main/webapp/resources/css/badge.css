@@ -1,411 +1,366 @@
 @charset "utf-8";
 
 .container {
-    box-sizing: content-box;
-
-    text-align: center;
+	box-sizing: content-box;
+	text-align: center;
 }
 
 .badge {
-    box-sizing: content-box;
-
-    margin: 0;
+	box-sizing: content-box;
+	margin: 0;
 }
 
 .badge .boxStyle {
-    border: 0;
-    border-radius: 10px;
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-
-    transition: all 400ms ease;
+	border: 0;
+	border-radius: 10px;
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px
+		rgba(0, 0, 0, 0.22);
+	transition: all 400ms ease;
 }
 
 .badge .head {
-    display: flex;
-    margin: 0 0 24px;
-
-    color: #fff;
-
-    justify-content: space-between;
-    align-items: center;
+	display: flex;
+	margin: 0 0 24px;
+	color: #fff;
+	justify-content: space-between;
+	align-items: center;
 }
-.badge .head .boxName{
-    display: flex;
 
-    align-items: center;
-
-    font-size: 32px;
+.badge .head .boxName {
+	display: flex;
+	align-items: center;
+	font-size: 32px;
 }
-.badge .head .boxName span#svg{
-    background : url(../img/badgeTitle.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
 
-    width: 32px;
-    height: 32px;
+.badge .head .boxName span#svg {
+	background: url(../img/badgeTitle.svg);
+	background-repeat: no-repeat;
+	background-size: contain;
+	width: 32px;
+	height: 32px;
 }
+
 .badge .head .boxName span#targetUserName {
-    padding: 0 6px 0 0;
-
-    font-size: 20px !important; 
-    font-weight: bold;
+	padding: 0 6px 0 0;
+	font-size: 20px !important;
+	font-weight: bold;
 }
+
 .badge .head .boxName span {
-    font-size: 15px !important; 
-    font-weight: bold;
+	font-size: 15px !important;
+	font-weight: bold;
 }
 
 .badge .title {
-    display: inline-block;
-    box-sizing: border-box;
-
-    padding: 6px 8px;
-
-    background-color: rgba(78, 197, 61, 0.75);
+	display: inline-block;
+	box-sizing: border-box;
+	padding: 6px 8px;
+	background-color: rgba(78, 197, 61, 0.75);
 }
 
 .badge .pick5Setting {
-    display: inline-block;
+	display: inline-block;
 }
-.badge .pick5Setting button{
-    border: 0;
-    background-color: rgba(0, 0, 0, 0);
 
-    transition: all 400ms ease;
+.badge .pick5Setting button {
+	border: 0;
+	background-color: rgba(0, 0, 0, 0);
+	transition: all 400ms ease;
 }
 
 .badge .pick5Setting button span#svg {
-    display: block;
-
-    background : url(../img/setting.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-
-    width: 44px;
-    height: 44px;
+	display: block;
+	background: url(../img/setting.svg);
+	background-repeat: no-repeat;
+	background-size: contain;
+	width: 44px;
+	height: 44px;
 }
-.badge .pick5Setting button:hover{
-    z-index: 1;
-    transform: scale(1.15);
-    transition: all 400ms ease;
+
+.badge .pick5Setting button:hover {
+	z-index: 1;
+	transform: scale(1.15);
+	transition: all 400ms ease;
 }
 
 .pick5Setting dialog {
-    z-index: 100;
-
-    padding: 20px;
-
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
-    border: 0;
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255, 1);
-
-    transition: all 400ms ease;
+	z-index: 100;
+	padding: 20px;
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 5px 5px
+		rgba(0, 0, 0, 0.22);
+	border: 0;
+	border-radius: 10px;
+	background-color: rgba(255, 255, 255, 1);
+	transition: all 400ms ease;
 }
-dialog .settingTitle,
-dialog .settingError {
-    margin: 0 0 12px;
+
+dialog .settingTitle, dialog .settingError {
+	margin: 0 0 12px;
 }
+
 dialog .settingTitle {
-    background-color: rgba(0, 0, 0, 0);
-
-    font-size: 20px;
-    font-weight: bold;
+	background-color: rgba(0, 0, 0, 0);
+	font-size: 20px;
+	font-weight: bold;
 }
-dialog .settingError {
-    display: none;
-    color: #F14A4A;
 
-    font-size: 15px;
-    font-weight: bold;
+dialog .settingError {
+	display: none;
+	color: #F14A4A;
+	font-size: 15px;
+	font-weight: bold;
 }
 
 dialog .badgeBox {
-    background-color: rgba(0, 0, 0, 0);
+	background-color: rgba(0, 0, 0, 0);
 }
+
 dialog .item .sanBadge {
-    background-color: rgba(217, 217, 217, 1);
-    transition: all 400ms ease;
+	background-color: rgba(217, 217, 217, 1);
+	transition: all 400ms ease;
 }
-dialog .item .sanBadge:hover{
-    z-index: 1;
+
+dialog .item .sanBadge:hover {
+	z-index: 1;
 	transform: scale(1.1);
-    transition: all 400ms ease;
+	transition: all 400ms ease;
 }
+
 dialog .item .badgeName {
-    color: black;
+	color: black;
 }
 
 dialog form button {
-    box-sizing: content-box;
-
-    margin: 10px 5px;
-    border: 1px solid #d9d9d9 !important;
-    border-radius: 10px;
-
-    padding: 5px 14px;
-
-    font-size: 20px !important;
+	box-sizing: content-box;
+	margin: 10px 5px;
+	border: 1px solid #d9d9d9 !important;
+	border-radius: 10px;
+	padding: 5px 14px;
+	font-size: 20px !important;
 }
 
 .pick5Setting dialog::backdrop {
-    z-index: 50;
-
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
+	z-index: 50;
+	background-color: rgba(255, 255, 255, 0.1);
+	backdrop-filter: blur(10px);
 }
 
 .badgeBox {
-    display: grid;
-
-    grid-template-columns: auto auto auto auto auto;
-    grid-template-rows: auto;
-    grid-column-gap: 1%;
-
-    justify-content: space-around;
-    justify-items: stretch;
-
-    margin: 0 0 32px;
-    padding: 20px;
-
-    background-color: rgba(217, 217, 217, 0.85);
+	display: grid;
+	grid-template-columns: auto auto auto auto auto;
+	grid-template-rows: auto;
+	grid-column-gap: 1%;
+	justify-content: space-around;
+	justify-items: stretch;
+	margin: 0 0 32px;
+	padding: 20px;
+	background-color: rgba(217, 217, 217, 0.85);
 }
 
 .badgeBox .boxName {
-    display: flex;
-
-    justify-content: center;
-
-    box-sizing: content-box;
-    padding: 0 0 15px;
-
-    grid-column-start: 1;
-    grid-column-end: 6;
+	display: flex;
+	justify-content: center;
+	box-sizing: content-box;
+	padding: 0 0 15px;
+	grid-column-start: 1;
+	grid-column-end: 6;
 }
-.badgeBox .boxName #svg{
-    display: block;
 
-    width: 45px;
-    height: 45px;
+.badgeBox .boxName #svg {
+	display: block;
+	width: 45px;
+	height: 45px;
 }
-#pick5 .boxName #svg{
-    background : url(../img/badgeTitle.svg);
 
-    background-repeat: no-repeat;
-    background-size: contain;
-
-    width: 55px;
-    height: 55px;
+#pick5 .boxName #svg {
+	background: url(../img/badgeTitle.svg);
+	background-repeat: no-repeat;
+	background-size: contain;
+	width: 55px;
+	height: 55px;
 }
-#rank .boxName #svg{
-    background : url(../img/ranking.svg);
 
-    background-repeat: no-repeat;
-    background-size: contain;
+#rank .boxName #svg {
+	background: url(../img/ranking.svg);
+	background-repeat: no-repeat;
+	background-size: contain;
 }
-#san .boxName #svg{
-    background : url(../img/WegoLogoSan.png);
-    
-    background-repeat: no-repeat;
-    background-size: contain;
 
-    width: 70px;
+#san .boxName #svg {
+	background: url(../img/WegoLogoSan.png);
+	background-repeat: no-repeat;
+	background-size: contain;
+	width: 70px;
 }
 
 .badgeBox#pick5 {
-    background-color: rgba(78, 197, 61, 0.75);
+	background-color: rgba(78, 197, 61, 0.75);
 }
 
 .badgeBox#rank {
-    grid-template-columns: auto auto auto auto;
+	grid-template-columns: auto auto auto auto;
 }
 
 .badgeBox#rank .boxName {
-    grid-column-start: 1;
-    grid-column-end: 5;
+	grid-column-start: 1;
+	grid-column-end: 5;
 }
 
 .badge .item {
-    display: flex;
-    
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    
-    width: 110px;
-    height: 155px;
-    padding: 0 6px 6px;
-
-    color: rgba(255, 255, 255, 1);
-
-    transition: all 400ms ease;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 110px;
+	height: 155px;
+	padding: 0 6px 6px;
+	color: rgba(255, 255, 255, 1);
+	transition: all 400ms ease;
 }
 
 .item>.sanBadge {
-    display: inline-block;
-
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-
-    background-color: rgba(153, 153, 153, 1);
-
-    transition: all 600ms ease;
+	display: inline-block;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	background-color: rgba(153, 153, 153, 1);
+	transition: all 600ms ease;
 }
 
 .get>.sanBadge {
-    background-color: #ffffff;
+	background-color: #ffffff;
 }
 
 .pick>.sanBadge {
-    width: 92px;
-    height: 92px;
-
-    border: 4px solid rgba(78, 197, 61, 1);
-    background-color: #ffffff !important; 
+	width: 92px;
+	height: 92px;
+	border: 4px solid rgba(78, 197, 61, 1);
+	background-color: #ffffff !important;
 }
 
 .sanBadge .dot {
-    z-index: 1;
-
-    display: flex;
-
-    margin: 0 0px 0 76%;
-
-    align-items: center;
-    justify-content: center;
-
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-
-    font-size: 12px;
-    color: #ffffff;
-
-    background-color: #F14A4A;
-
-    transition: all 400ms ease;
+	z-index: 1;
+	display: flex;
+	margin: 0 0px 0 76%;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	font-size: 12px;
+	color: #ffffff;
+	background-color: #F14A4A;
+	transition: all 400ms ease;
 }
-#rank .sanBadge .dot:hover, #san .sanBadge .dot:hover{
-    z-index: 2;
-    transform: scale(1.2);
-    transition: all 400ms ease;
+
+#rank .sanBadge .dot:hover, #san .sanBadge .dot:hover {
+	z-index: 2;
+	transform: scale(1.2);
+	transition: all 400ms ease;
 }
 
 .stackList {
-    z-index: 2;
-
-    display: none;
-    position: relative;
-    top: -12px;
-    left: 12px;
-
-    width: 76px;
-
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
-    border: 0;
-    border-radius: 10px;
-    background-color: rgba(78, 197, 61, 1);
-
-    transition: all 400ms ease;
+	z-index: 2;
+	display: none;
+	position: relative;
+	top: -12px;
+	left: 12px;
+	width: 76px;
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 5px 5px
+		rgba(0, 0, 0, 0.22);
+	border: 0;
+	border-radius: 10px;
+	background-color: rgba(78, 197, 61, 1);
+	transition: all 400ms ease;
 }
-.stackList:hover{
-    z-index: 1;
-    transform: scale(1.05);
-    transition: all 400ms ease;
+
+.stackList:hover {
+	z-index: 1;
+	transform: scale(1.05);
+	transition: all 400ms ease;
 }
 
 .stackList ul {
-    display: inline-block;
-    margin: 0;
-    padding: 3px 2px;
+	display: inline-block;
+	margin: 0;
+	padding: 3px 2px;
 }
 
 .stackList li.stackTitle {
-    margin: 3px 0;
-    font-size: 15px;
-
+	margin: 3px 0;
+	font-size: 15px;
 }
+
 .stackList li.stackContents {
-    margin: 3px 0;
-    font-size: 12px;
-    font-weight: bold;
+	margin: 3px 0;
+	font-size: 12px;
+	font-weight: bold;
 }
+
 .item .badgeName {
-    display: inline-block;
-
-    margin: 12px 0 15px;
-
-    font-size: 15px;
-    font-weight: bold;
-    color : #000;
+	display: inline-block;
+	margin: 12px 0 15px;
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
 }
+
 #pick5 .item .badgeName {
-    color : #fff;
+	color: #fff;
 }
+
 @media screen and (max-width: 768px) {
-    .badgeBox#setting {
-        grid-template-columns: auto auto auto;
-    }
-    .badgeBox {
-        grid-template-columns: auto auto auto;
-        grid-template-rows: auto;
-
-        justify-content: space-evenly;
-        justify-items: stretch;
-
-        padding: 15px 1%;
-        margin: 0px 0px 32px;
-
-        background-color: rgba(217, 217, 217, 0.85);
-    }
-
-    .badgeBox .boxName {
-        padding: 0 0 15px;
-
-        grid-column-start: 1;
-        grid-column-end: 4;
-    }
-
-    .badgeBox#rank {
-        grid-template-columns: auto auto;
-    }
-
-    .badgeBox#rank .boxName {
-        grid-column-start: 1;
-        grid-column-end: 3;
-    }
-
+	.badgeBox#setting {
+		grid-template-columns: auto auto auto;
+	}
+	.badgeBox {
+		grid-template-columns: auto auto auto;
+		grid-template-rows: auto;
+		justify-content: space-evenly;
+		justify-items: stretch;
+		padding: 15px 1%;
+		margin: 0px 0px 32px;
+		background-color: rgba(217, 217, 217, 0.85);
+	}
+	.badgeBox .boxName {
+		padding: 0 0 15px;
+		grid-column-start: 1;
+		grid-column-end: 4;
+	}
+	.badgeBox#rank {
+		grid-template-columns: auto auto;
+	}
+	.badgeBox#rank .boxName {
+		grid-column-start: 1;
+		grid-column-end: 3;
+	}
 }
 
-@media screen and (max-width: 425px){
-    .pick5Setting dialog {
-        padding: 15px;
-    }
-    .pick5Setting dialog > .item {
-        padding: 12px 1%;
-    }
-    .badge .item {
-        width: 84px;
-        padding: 0 3px 3px;
-    }
-    
-    .item>.sanBadge {
-        display: inline-block;
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-    }
-    .sanBadge .dot {
-        margin: 0px 0px 0 56px;
-    }
-    .stackList {
-        left: 0px;
-
-        width: 80px;
-    }
-    
-    .stackList ul {
-        padding: 3px 2px;
-    }
+@media screen and (max-width: 425px) {
+	.pick5Setting dialog {
+		padding: 15px;
+	}
+	.pick5Setting dialog>.item {
+		padding: 12px 1%;
+	}
+	.badge .item {
+		width: 84px;
+		padding: 0 3px 3px;
+	}
+	.item>.sanBadge {
+		display: inline-block;
+		width: 80px;
+		height: 80px;
+		border-radius: 50%;
+	}
+	.sanBadge .dot {
+		margin: 0px 0px 0 56px;
+	}
+	.stackList {
+		left: 0px;
+		width: 80px;
+	}
+	.stackList ul {
+		padding: 3px 2px;
+	}
 }

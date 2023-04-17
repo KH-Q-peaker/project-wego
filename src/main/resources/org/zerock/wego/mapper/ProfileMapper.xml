@@ -7,99 +7,184 @@
 
 <mapper namespace="org.zerock.wego.mapper.ProfileMapper">
 
-    <select id="selectUserId" resultType="org.zerock.wego.domain.UserVO">
-		SELECT 
-			*
+	<select id="selectUserId"
+		resultType="org.zerock.wego.domain.UserVO">
+		SELECT
+		*
 		FROM
-			user_tb
+		user_tb
 		WHERE
-			user_id = #{userId}
-    </select>
+		user_id = #{userId}
+	</select>
 
-	<select id ="selectAll" resultType="org.zerock.wego.domain.ProfileVO">
-		SELECT * 
+	<select id="selectAll"
+		resultType="org.zerock.wego.domain.ProfileVO">
+		SELECT *
 		FROM (
-			SELECT
-				'등산후기' "boardName",
-				SAN_REVIEW_ID "srtId",
-				USER_ID "user",
-				TITLE,
-				CREATED_DT,
-				LIKE_CNT "likeCnt",
-				VISIT_CNT "visitCount"
-			FROM 
-				SAN_REVIEW_V srt 
-			WHERE 
-				USER_ID = #{userId}
-				UNION 
-			SELECT
-				'등산모집' "boardName",
-				san_party_id "srtId",
-				USER_ID "user",
-				TITLE,
-				CREATED_DT,
-				LIKE_CNT "likeCnt",
-				VISIT_CNT "visitCount"
-			FROM 
-				SAN_PARTY_V  srt 
-			WHERE 
-				USER_ID = #{userId} )
+		SELECT
+		'등산후기' "boardName",
+		SAN_REVIEW_ID "srtId",
+		USER_ID "user",
+		TITLE,
+		CREATED_DT,
+		LIKE_CNT "likeCnt",
+		VISIT_CNT "visitCount"
+		FROM
+		SAN_REVIEW_V srt
+		WHERE
+		USER_ID = #{userId}
+		UNION
+		SELECT
+		'등산모집' "boardName",
+		san_party_id "srtId",
+		USER_ID "user",
+		TITLE,
+		CREATED_DT,
+		LIKE_CNT "likeCnt",
+		VISIT_CNT "visitCount"
+		FROM
+		SAN_PARTY_V srt
+		WHERE
+		USER_ID = #{userId} )
 		ORDER BY CREATED_DT DESC
-		OFFSET (#{cri.currPage} - 1 ) * #{cri.amount} ROWS
+		OFFSET (#{cri.currPage} - 1 ) *
+		#{cri.amount} ROWS
 		FETCH NEXT #{cri.amount} ROWS ONLY
 	</select>
 
-	<select id ="selectTotalCount" resultType="Integer">
+	<select id="selectTotalCount" resultType="Integer">
 		SELECT count(id)
 		FROM (
-				SELECT SAN_REVIEW_ID AS id
-				FROM SAN_REVIEW_V
-				WHERE USER_ID = #{userId}
-				UNION
-				SELECT SAN_PARTY_ID AS id
-				FROM SAN_PARTY_V
-				WHERE USER_ID = #{userId}
-			 ) post
+		SELECT SAN_REVIEW_ID AS id
+		FROM SAN_REVIEW_V
+		WHERE USER_ID = #{userId}
+		UNION
+		SELECT SAN_PARTY_ID AS id
+		FROM SAN_PARTY_V
+		WHERE USER_ID = #{userId}
+		) post
 	</select>
 
-	<select id ="selectAllComment" resultType="org.zerock.wego.domain.ProfileCommentVO">
+	<select id="selectAllComment"
+		resultType="org.zerock.wego.domain.ProfileCommentVO">
 		SELECT * FROM (
-			    SELECT
-			        '등산후기' "targetGb",
-					TARGET_CD "targetCb",
-			        COMMENT_ID "commentId",
-			        USER_ID "userId",
-			        CONTENTS "contents",
-			        "CREATED_DT" "CREATED_DT",
-			        "MENTION_CNT" "MENTION_CNT"
-			    FROM 
-			        COMMENT_V ctv
-			    WHERE 
-			        USER_ID = #{userId} AND 
-			        TARGET_GB = 'SAN_REVIEW'
-			    UNION 
-			    SELECT
-					'등산모집' "targetGb",
-					TARGET_CD "targetCb",
-			        COMMENT_ID "commentId",
-			        USER_ID "userId",
-			        CONTENTS "contents",
-			        "CREATED_DT" "CREATED_DT",
-			        "MENTION_CNT" "MENTION_CNT"
-			    FROM 
-			        COMMENT_V ctv 
-			    WHERE 
-			        USER_ID = #{userId} AND 
-			        TARGET_GB = 'SAN_PARTY'
-			)
-			ORDER BY "CREATED_DT" DESC
-			OFFSET ( #{cri2.currPage} - 1 ) * #{cri2.amount} ROWS
-			FETCH NEXT #{cri2.amount} ROWS ONLY
+		SELECT
+		'등산후기' "targetGb",
+		TARGET_CD "targetCb",
+		COMMENT_ID "commentId",
+		USER_ID "userId",
+		CONTENTS "contents",
+		"CREATED_DT" "CREATED_DT",
+		"MENTION_CNT" "MENTION_CNT"
+		FROM
+		COMMENT_V ctv
+		WHERE
+		USER_ID = #{userId} AND
+		TARGET_GB = 'SAN_REVIEW'
+		UNION
+		SELECT
+		'등산모집' "targetGb",
+		TARGET_CD "targetCb",
+		COMMENT_ID "commentId",
+		USER_ID "userId",
+		CONTENTS "contents",
+		"CREATED_DT" "CREATED_DT",
+		"MENTION_CNT" "MENTION_CNT"
+		FROM
+		COMMENT_V ctv
+		WHERE
+		USER_ID = #{userId} AND
+		TARGET_GB = 'SAN_PARTY'
+		)
+		ORDER BY "CREATED_DT" DESC
+		OFFSET ( #{cri2.currPage} - 1 ) * #{cri2.amount} ROWS
+		FETCH NEXT #{cri2.amount} ROWS ONLY
 	</select>
 
-	<select id ="selectTotalCountComment" resultType="Integer">
-		SELECT count(COMMENT_ID)
-			FROM COMMENT_V
-			WHERE USER_ID = #{userId} AND COMMENT_ID > 0
+	<select id="selectTotalCountComment" resultType="Integer">
+		SELECT
+		count(COMMENT_ID)
+		FROM COMMENT_V
+		WHERE USER_ID = #{userId} AND COMMENT_ID > 0
 	</select>
+	
+	<insert id ="insertProfilePictureInFileDTO">
+		INSERT
+			INTO tfile (path,filename,ori_filename,reg_date)
+		VALUES
+			(#{path},#{filename},#{ori_filename},#{reg_date})
+	</insert>
+	
+	<update id ="updateProfile">
+		update user_tb set user_pic = #{userPic}
+		where user_id = #{userId}
+	</update>
+	
+	<select id ="selectProfilePicturePath">
+		SELECT path
+		FROM tfile
+		WHERE filename = (
+			SELECT user_pic
+			FROM user_tb
+			WHERE user_id = #{userId}
+			)
+	</select>
+	
+	<update id ="updateNick">
+		UPDATE user_tb
+		SET nickname= #{nickname}
+		WHERE user_id = #{userId}
+	</update>
+	
+	<select id ="selectAvailableParty" resultType="org.zerock.wego.domain.PartyVO">
+	 <![CDATA[
+			SELECT san_Party_Id, san_Info_Id, user_Id, created_Dt, modified_Dt,
+					title, contents, TO_CHAR(party_Dt,'yyyy.MM.dd'), party_Max, items, condition
+			FROM san_party_tb
+			WHERE TO_CHAR(SYSDATE, 'yyyy/MM/dd HH:MM') <= TO_CHAR(PARTY_DT, 'yyyy/MM/dd HH:MM') AND user_id=#{userId}
+			OFFSET ( #{aCurrPage} - 1 ) * #{aAmount} ROWS
+			FETCH NEXT #{aAmount} ROWS ONLY
+		]]>
+	</select>
+	
+	<select id ="selectPastParty" resultType="org.zerock.wego.domain.PartyVO">
+		<![CDATA[
+			SELECT san_Party_Id, san_Info_Id, user_Id, created_Dt, modified_Dt,
+					title, contents, TO_CHAR(party_Dt,'yyyy.MM.dd'), party_Max, items, condition
+			FROM san_party_tb
+			WHERE TO_CHAR(SYSDATE, 'yyyy/MM/dd HH:MM') > TO_CHAR(PARTY_DT, 'yyyy/MM/dd HH:MM') AND user_id=#{userId}
+			OFFSET ( #{pCurrPage} - 1 ) * #{pAmount} ROWS
+			FETCH NEXT #{pAmount} ROWS ONLY
+		]]>
+	</select>
+	
+	<select id ="selectTotalCountAvailableParty" resultType="Integer">
+		<![CDATA[
+			SELECT count(san_party_id)
+			FROM san_party_tb
+			WHERE TO_CHAR(SYSDATE, 'yyyy/MM/dd HH:MM') <= TO_CHAR(PARTY_DT, 'yyyy/MM/dd HH:MM') AND user_id=#{userId}
+		]]>
+	</select>
+	
+	<select id ="selectTotalCountPastParty" resultType="Integer">
+		SELECT count(san_party_id)
+		FROM san_party_tb
+		WHERE TO_CHAR(SYSDATE, 'yyyy/MM/dd HH:MM') > TO_CHAR(PARTY_DT, 'yyyy/MM/dd HH:MM') AND user_id=#{userId}
+	</select>
+	
+	 <update id="updateMyInfo">
+  		UPDATE user_tb
+		SET address=#{address}, san_range=#{sanRange}, san_taste=#{sanTaste}
+		WHERE user_id=#{userId}
+	 </update>
+  
+     <!--<delete id="deleteMyAccount">
+    	DELETE
+    	FROM
+    		tuser_tb
+    	WHERE
+    		user_id = #{user_id}
+    </delete>  -->
+    
+		
 </mapper>

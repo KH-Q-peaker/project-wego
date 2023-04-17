@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -29,8 +30,10 @@
 <script src="/resources/js/top.js" defer></script>
 <script src="/resources/js/favorite.js" defer></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
 </head>
 
 <body>
@@ -54,7 +57,7 @@
 					<!-- 정렬 -->
 					<div class="select-sort">
 						<button class="btn-select">정렬 기준</button>
-						<ul class="sortBy">  
+						<ul class="sortBy">
 							<li class="sortByItem"><button type="button">최신순</button></li>
 							<li class="sortByItem"><button type="button">오래된순</button></li>
 							<li class="sortByItem"><button type="button">좋아요순</button></li>
@@ -65,7 +68,8 @@
 					<c:forEach var="item" items="${reviewList}">
 						<a href="/review/${item.sanReviewId}">
 							<div class="review-item">
-								<img class="user-img" src="/img/${fn:substring(item.userPic, 10, 55)}" alt="img" />
+								<img class="user-img"
+									src="/img/${fn:substring(item.userPic, 10, 55)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>
 								<img class="review-img" src="/img/defaultImg.png" alt="img" />
@@ -102,7 +106,8 @@
 
 	<!-- 리모컨 -->
 	<a href="#" class="scrollToTop"> <img src="/resources/svg/top.svg"></a>
-	<a href="/review/register" class="add-item"> <img src="/resources/svg/add-item.svg"></a>
+	<a href="/review/register" class="add-item"> <img
+		src="/resources/svg/add-item.svg"></a>
 
 
 	<%@include file="/WEB-INF/views/common/footer.jsp"%>

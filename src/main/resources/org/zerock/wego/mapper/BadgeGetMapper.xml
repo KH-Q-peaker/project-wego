@@ -9,59 +9,59 @@
 		resultType="org.zerock.wego.domain.BadgeGetVO">
 
 		SELECT
-			*
+		*
 		FROM
-			badge_get_v
+		badge_get_v
 		WHERE
-			user_id = #{userId}
+		user_id = #{userId}
 		ORDER BY
-			badge_id, created_dt
+		badge_id, created_dt
 
 	</select>
-	
-	
+
+
 	<select id="selectAllPickBadgeByUserId"
 		resultType="org.zerock.wego.domain.BadgeGetVO">
 
 		SELECT
-			*
+		*
 		FROM
-			badge_get_v
+		badge_get_v
 		WHERE
-			user_id = #{userId}
-			AND NOT status = 'N'
+		user_id = #{userId}
+		AND NOT status = 'N'
 		ORDER BY
-			status
+		status
 
 	</select>
-	
-	
+
+
 	<!-- 특정 유저가 선택한 뱃지의 상태(대표상태)를 선택한 순서로 초기화 -->
 	<update id="updatePickBadgeStatusToPickedSequence">
 
 		UPDATE
-			badge_get_tb
+		badge_get_tb
 		SET
-			status = #{pickSequence}
+		status = #{pickSequence}
 		WHERE
-			user_id = #{userId} AND
-			badge_id = #{pickBadgeId}
+		user_id = #{userId} AND
+		badge_id = #{pickBadgeId}
 
 	</update>
-	
-	
+
+
 	<!-- 특정 유저가 선택한 뱃지를 제외하고 나머지 뱃지의 상태(대표상태)를 "선택되지 않음('N')"으로 초기화 -->
 	<update id="updateNotPickBadgeStautToN">
 
-		UPDATE 
-			badge_get_tb
+		UPDATE
+		badge_get_tb
 		SET
-			status = 'N'
+		status = 'N'
 		WHERE
-			user_id = #{userId} AND
+		user_id = #{userId} AND
 		<foreach item="pickList" collection="pickList"
-        	open="badge_id NOT IN (" separator="," close=")">
-          #{pickList}
-    	</foreach>
+			open="badge_id NOT IN (" separator="," close=")">
+			#{pickList}
+		</foreach>
 	</update>
 </mapper>

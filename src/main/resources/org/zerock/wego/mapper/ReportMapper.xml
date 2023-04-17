@@ -3,75 +3,71 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  
-  <mapper namespace = "org.zerock.wego.mapper.ReportMapper">
-  	
-  	
-  	 <!-- ***************** 신고 존재여부 ******************** -->
-    <select
-    	id="find">
-    	
-    	SELECT 
-    		1
-    	FROM	
-    		report_tb
-    	<where>
-    		target_gb = #{targetGb}
-    		AND
-    		target_cd = #{targetCd}
-    		<if test="userId != null">
-    		AND
-    		user_id = #{userId}
-    		</if>
-    	</where>
-    </select>
-    
-    <!-- ***************** 신고 접수  ******************** -->
-    <insert
-    	id="insert">
-    	
-    	INSERT INTO report_tb(
-    		user_id,
-    		target_gb,
-    		target_cd,
-    		report_gb) 
-    	VALUES(
-    		#{userId},
-    		#{targetGb},
-    		#{targetCd},
-			#{reportGb}
-	    	)
-    </insert>
-    
-    <!-- ***************** 신고 총합 조회 ******************** -->
-    <select
-    	id="selectCountByTarget">
-    	
-    	SELECT 
-    		NVL(count(user_id), 0)
-    	FROM	
-    		report_tb
-    	WHERE
-    		target_gb = #{targetGb}
-    		AND
-    		target_cd = #{targetCd}
-    </select>
-    
-    <!-- ***************** 신고 삭제 ******************** -->
-    <delete
-    	id="deleteAllByTarget">
-    	
-    	DELETE
-    	FROM
-    		report_tb
-    	WHERE
-    		target_gb = #{targetGb}
-    		ANd
-    		target_cd = #{targetCd}	
-    </delete>
-    
-  </mapper>
+
+
+<mapper namespace="org.zerock.wego.mapper.ReportMapper">
+
+
+	<!-- ***************** 신고 존재여부 ******************** -->
+	<select id="find">
+
+		SELECT
+		1
+		FROM
+		report_tb
+		<where>
+			target_gb = #{targetGb}
+			AND
+			target_cd = #{targetCd}
+			<if test="userId != null">
+				AND
+				user_id = #{userId}
+			</if>
+		</where>
+	</select>
+
+	<!-- ***************** 신고 접수 ******************** -->
+	<insert id="insert">
+
+		INSERT INTO report_tb(
+		user_id,
+		target_gb,
+		target_cd,
+		report_gb)
+		VALUES(
+		#{userId},
+		#{targetGb},
+		#{targetCd},
+		#{reportGb}
+		)
+	</insert>
+
+	<!-- ***************** 신고 총합 조회 ******************** -->
+	<select id="selectCountByTarget">
+
+		SELECT
+		NVL(count(user_id), 0)
+		FROM
+		report_tb
+		WHERE
+		target_gb = #{targetGb}
+		AND
+		target_cd = #{targetCd}
+	</select>
+
+	<!-- ***************** 신고 삭제 ******************** -->
+	<delete id="deleteAllByTarget">
+
+		DELETE
+		FROM
+		report_tb
+		WHERE
+		target_gb = #{targetGb}
+		ANd
+		target_cd = #{targetCd}
+	</delete>
+
+</mapper>
   
   
   

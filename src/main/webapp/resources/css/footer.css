@@ -1,86 +1,95 @@
 @charset "utf-8";
 
 footer {
-  width: 100%;
-  background-color: #43a047;
-  margin-top: 100px;
+	width: 100%;
+	background-color: #43a047;
+	margin-top: 100px;
+	bottom: 0px;
+}
 
-  bottom: 0px;
-}
 .footer {
-  min-width: 375px;
-  max-width: 1024px;
-  text-align: center;
-  padding: 30px;
-  position: relative;
-  margin: auto;
-  box-sizing: border-box;
+	min-width: 375px;
+	max-width: 1024px;
+	text-align: center;
+	padding: 30px;
+	position: relative;
+	margin: auto;
+	box-sizing: border-box;
 }
+
 .footer li {
-  position: relative;
-  display: inline;
-  padding: 0 7px 0 10px;
-  white-space: nowrap;
+	position: relative;
+	display: inline;
+	padding: 0 7px 0 10px;
+	white-space: nowrap;
 }
+
 .footer li:before {
-  content: "";
-  width: 1px;
-  height: 12px;
-  background-color: #dbdbdb;
-  position: absolute;
-  left: 0;
-  top: 2px;
+	content: "";
+	width: 1px;
+	height: 12px;
+	background-color: #dbdbdb;
+	position: absolute;
+	left: 0;
+	top: 2px;
 }
+
 .footer li:first-child:before {
-  width: 0;
+	width: 0;
 }
+
 .footer address {
-  padding-top: 15px;
+	padding-top: 15px;
 }
+
 .support {
-  display: flex;
+	display: flex;
 }
+
 .link-bar {
-  display: flex;
-  flex-direction: row;
-  position: absolute;
-  bottom: 30px;
-  left: 140px;
+	display: flex;
+	flex-direction: row;
+	position: absolute;
+	bottom: 30px;
+	left: 140px;
 }
+
 .footer a:hover {
-  transition: all 400ms ease;
-  color: #ffffff;
+	transition: all 400ms ease;
+	color: #ffffff;
 }
 /* Add: font awesome => svg  */
-.link-bar a:nth-of-type(1),
-.link-bar a:nth-of-type(2) {
-  display: block;
-  width: 30px;
-  height: 30px;
+.link-bar a:nth-of-type(1), .link-bar a:nth-of-type(2) {
+	display: block;
+	width: 30px;
+	height: 30px;
 }
+
 .link-bar a:nth-of-type(1) {
-  background: url(../svg/figma.svg);
-  background-repeat: no-repeat;
+	background: url(../svg/figma.svg);
+	background-repeat: no-repeat;
 }
+
 .link-bar a:nth-of-type(2) {
-  background: url(../svg/github.svg);
-  background-repeat: no-repeat;
+	background: url(../svg/github.svg);
+	background-repeat: no-repeat;
 }
+
 @media screen and (max-width: 768px) {
-  footer{
-    margin-top: 45px;
-  }
-  .footer {
-    text-align: center;
-    padding: 30px 10px;
-    position: relative;
-  }
-  .support {
-    display: flex;
-    justify-content: center;
-    margin: 20px auto auto;
-  }
-  .link-bar {
-    position: static;
-  }
+	footer {
+		margin-top: 45px;
+	}
+	.footer {
+		text-align: center;
+		padding: 30px 10px;
+		position: relative;
+	}
+	.support {
+		display: flex;
+		justify-content: center;
+		margin: 20px auto auto;
+	}
+	.link-bar {
+		position: static;
+	}
 }

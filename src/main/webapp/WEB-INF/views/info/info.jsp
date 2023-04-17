@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -29,8 +30,10 @@
 <script src="/resources/js/top.js" defer></script>
 <script src="/resources/js/favorite.js" defer></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
 </head>
 
 <body>
@@ -56,7 +59,7 @@
 					<!-- 정렬 -->
 					<div class="select-sort">
 						<button class="btn-select">정렬 기준</button>
-						<ul class="sortBy">  
+						<ul class="sortBy">
 							<li class="sortByItem"><button type="button">ㄱㄴㄷ순</button></li>
 							<li class="sortByItem"><button type="button">좋아요순</button></li>
 						</ul>
@@ -68,7 +71,8 @@
 					<c:forEach var="item" items="${sanInfoList}">
 						<a href="/info/${item.sanInfoId}">
 							<div class="mountain-item">
-								<img class="mountain-img" src="/img/${fn:substring(item.img, 10, 55)}" alt="img" />
+								<img class="mountain-img"
+									src="/img/${fn:substring(item.img, 10, 55)}" alt="img" />
 								<h3 class="mountain-name" id="mountainName">${item.sanName}</h3>
 								<p class="mountain-contents" id="text">${item.details}</p>
 								<div class="mountain-like">

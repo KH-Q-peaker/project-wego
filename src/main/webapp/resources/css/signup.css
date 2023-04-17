@@ -1,73 +1,80 @@
 .container {
-padding : 20px 25px;
-	
-  border-radius: 10px;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
-  border: 0;
-  border-radius: 10px;
+	padding: 20px 25px;
+	border-radius: 10px;
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 5px 5px
+		rgba(0, 0, 0, 0.22);
+	border: 0;
+	border-radius: 10px;
 }
-.container > h1 {
-  margin: 0 0 32px;
-  font-size: 24px;
-}
-.wrap {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
 
+.container>h1 {
+	margin: 0 0 32px;
+	font-size: 24px;
 }
+
+.wrap {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 12px;
+}
+
 .wrap a {
-  width: 350px;
-  height: 55px;
-  border: 0;
-  padding: 0;
+	width: 350px;
+	height: 55px;
+	border: 0;
+	padding: 0;
 }
+
 .naver {
-  background: url(../img/naver.png);
-  background-repeat: no-repeat;
-  background-size: contain;
+	background: url(../img/naver.png);
+	background-repeat: no-repeat;
+	background-size: contain;
 }
+
 .kakao {
-  background: url(../img/kakao.png);
-  background-repeat: no-repeat;
-  background-size: contain;
+	background: url(../img/kakao.png);
+	background-repeat: no-repeat;
+	background-size: contain;
 }
+
 .google {
-  background: url(../img/google.png);
-  background-repeat: no-repeat;
-  background-size: contain;
+	background: url(../img/google.png);
+	background-repeat: no-repeat;
+	background-size: contain;
 }
+
 @media screen and (max-width: 480px) {
-  .container {
-    border-radius: 10px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
-    border: 0;
-    border-radius: 10px;
-  }
-  .social-login button {
-    width: 250px;
-    height: 40px;
-    border: 0;
-    padding: 0;
-  }
+	.container {
+		border-radius: 10px;
+		margin: auto;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 5px 5px
+			rgba(0, 0, 0, 0.22);
+		border: 0;
+		border-radius: 10px;
+	}
+	.social-login button {
+		width: 250px;
+		height: 40px;
+		border: 0;
+		padding: 0;
+	}
 }

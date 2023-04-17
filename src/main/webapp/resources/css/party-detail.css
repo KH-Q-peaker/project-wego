@@ -1,6 +1,5 @@
 @charset "UTF-8";
 
-
 /* 제목 부분 */
 .rheader {
 	height: 150px;
@@ -25,13 +24,15 @@
 	padding: 0 15px;
 	text-align: center;
 }
-.dt{
+
+.dt {
 	font-size: 13px;
 }
 /* 글 본문 */
 .contents {
 	display: grid;
-	grid-template-columns: 50px minmax(200px, 500px) minmax(200px, 450px) 100px;
+	grid-template-columns: 50px minmax(200px, 500px) minmax(200px, 450px)
+		100px;
 	grid-template-rows: 50px minmax(80px, auto) 60px;
 	margin: 30px 0;
 	border-radius: 10px;
@@ -52,32 +53,38 @@
 	height: 45px;
 	border-radius: 15px;
 }
+
 .username {
 	grid-column: 2;
 	grid-row: 1;
 	font-size: 16px;
 	padding-top: 12px;
 }
+
 .username:hover {
 	color: rgba(78, 197, 61, 1);;
 }
-.likeCnt{
+
+.likeCnt {
 	display: flex;
 	grid-row: 3;
 	grid-column: 1;
 	width: auto;
 	height: 30px;
 	margin: 30px auto;
-    align-items: center;
-    justify-content: start;
+	align-items: center;
+	justify-content: start;
 }
+
 .like {
 	margin-right: 3px;
 }
-.likeCnt > label{
+
+.likeCnt>label {
 	height: 30px;
-    padding-top: 20px;
+	padding-top: 20px;
 }
+
 .content {
 	margin: 0 auto;
 	/* padding: 0 15px; */
@@ -95,6 +102,7 @@
 	border-radius: 10px;
 	object-fit: cover;
 }
+
 .partyInfo {
 	grid-column: 3/-1;
 	grid-row: 2;
@@ -102,6 +110,7 @@
 	flex-direction: column;
 	width: 100%;
 }
+
 .partyInfo>.info {
 	display: flex;
 	margin: 20px 0;
@@ -115,7 +124,7 @@
 	align-items: center;
 	justify-content: center;
 	padding: 0 10px;
-/* 	margin-left: 20px; */
+	/* 	margin-left: 20px; */
 	font-size: 14px;
 }
 
@@ -124,7 +133,7 @@
 	height: 24px;
 	background-color: #ffffff00;
 	border: 1px solid rgba(78, 197, 61, 1);
-	color:rgba(78, 197, 61, 1);
+	color: rgba(78, 197, 61, 1);
 }
 
 .join {
@@ -138,7 +147,8 @@
 	margin: 20px 0 auto auto;
 	font-size: 14px;
 }
-#clsjoin{
+
+#clsjoin {
 	background-color: rgba(241, 73, 73, 1);
 }
 
@@ -146,10 +156,11 @@
 	/* 글 본문 */
 	.contents {
 		grid-template-columns: 50px minmax(150px, auto) 0 100px;
-		grid-template-rows: 50px minmax(100px, auto) minmax(80px, auto) minmax(30px, 80px);
+		grid-template-rows: 50px minmax(100px, auto) minmax(80px, auto)
+			minmax(30px, 80px);
 		background-color: rgb(255, 255, 255, 0.95);
 		align-items: center;
-		justify-content:normal;
+		justify-content: normal;
 		padding: 15px;
 	}
 	/* 글 내부 */
@@ -171,7 +182,7 @@
 		min-height: 250px;
 		margin: auto;
 	}
-	.info > span{
+	.info>span {
 		font-size: 13px;
 	}
 	.join {
@@ -179,7 +190,7 @@
 		grid-row: 4;
 		margin: 20px auto 0;
 	}
-	.likeCnt{
+	.likeCnt {
 		grid-row: 4;
 		margin: 20px 0 0;
 	}
@@ -192,7 +203,7 @@
 	height: 30px;
 	padding: 7px;
 	margin: 10px;
-	background-color: rgb(255 255 255 / 90%);
+	background-color: rgb(255 255 255/ 90%);
 	font-size: 15px;
 	justify-content: center;
 	align-items: center;
@@ -210,10 +221,12 @@
 	opacity: 90%;
 	z-index: 1;
 }
+
 .cmt {
 	bottom: 40px;
 	background: url(../svg/chat.svg);
 }
+
 .top {
 	display: none;
 	bottom: 80px;

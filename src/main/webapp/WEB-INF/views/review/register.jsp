@@ -7,7 +7,8 @@
 <title>후기 글 작성</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="shortcut icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="/resources/ico/favicon.ico"
+	type="image/x-icon" />
 <meta name="description" content="등산멤버 모집 커뮤니티" />
 <link rel="icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
 <link rel="stylesheet" href="/resources/css/header.css" />

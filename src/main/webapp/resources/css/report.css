@@ -3,8 +3,8 @@
 /* 신고 모달 컨테이너 */
 .reportModal {
 	display: none;
-	position : fixed; 
-	top:25vh;
+	position: fixed;
+	top: 25vh;
 	left: 50%;
 	transform: translate(-50%, 0);
 	flex-direction: column;
@@ -12,10 +12,11 @@
 	width: 300px;
 	height: 450px;
 	border-radius: 10px;
-	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
-  	border: 0;
-  	background-color: rgb(255,255,255, 1);
-  	z-index: 1;
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 5px 5px
+		rgba(0, 0, 0, 0.22);
+	border: 0;
+	background-color: rgb(255, 255, 255, 1);
+	z-index: 1;
 }
 /* 사유 리스트 */
 .reasons {
@@ -26,7 +27,8 @@
 	list-style-type: none;
 	margin: 0;
 }
-.reason{
+
+.reason {
 	font-size: 14px;
 }
 /* 사유 라디오들 */
@@ -57,9 +59,10 @@
 .btn {
 	display: flex;
 	margin: 35px;
-	justify-content:center;
+	justify-content: center;
 }
-.btn > button {
+
+.btn>button {
 	width: 60px;
 	height: 25px;
 	border: none;
@@ -67,18 +70,18 @@
 	margin: 0 10px;
 	font-size: 13px;
 }
-.mdcancle:hover{
-	
-	background-color: rgb(178 178 178);
-	color : white;
+
+.mdcancle:hover {
+	background-color: rgb(178, 178, 178);
+	color: white;
 }
-.mdreport:hover{
-	
+
+.mdreport:hover {
 	background-color: rgba(241, 73, 73, 1);
-	color : white;
+	color: white;
 }
 /* 체크표시 */
-.check > span {
+.check>span {
 	display: none;
 }
 
@@ -89,11 +92,13 @@
 .check input[type="radio"] {
 	display: none;
 }
+
 .check input[type="radio"]:checked ~ span {
 	display: inline;
 	color: #F14A4A;
 	font-size: 20px;
 }
+
 .check input[type="radio"]:checked ~ label {
 	color: #F14A4A;
 }

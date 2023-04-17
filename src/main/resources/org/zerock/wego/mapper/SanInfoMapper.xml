@@ -8,7 +8,7 @@
 
 	<select id="selectAll"
 		resultType="org.zerock.wego.domain.SanInfoViewVO">
-		SELECT * 
+		SELECT *
 		FROM san_info_v
 	</select>
 
@@ -16,11 +16,11 @@
 		resultType="org.zerock.wego.domain.SanInfoViewVO">
 		SELECT *
 		FROM
-			(
-			SELECT *
-			FROM san_info_v
-			ORDER BY dbms_random.random
-			)
+		(
+		SELECT *
+		FROM san_info_v
+		ORDER BY dbms_random.random
+		)
 		WHERE rownum &lt;= 10
 	</select>
 

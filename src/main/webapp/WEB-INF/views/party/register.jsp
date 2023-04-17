@@ -7,7 +7,8 @@
 <title>모집 글 작성</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="shortcut icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="/resources/ico/favicon.ico"
+	type="image/x-icon" />
 <meta name="description" content="등산멤버 모집 커뮤니티" />
 <link rel="icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
 <link rel="stylesheet" href="/resources/css/header.css" />
@@ -15,14 +16,17 @@
 <link rel="stylesheet" href="/resources/css/party-register.css" />
 <script src="/resources/js/header.js" defer></script>
 <script src="/resources/js/party-register.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
 </head>
 <body>
 	<div class="total-wrap">
-	<%@include file="/WEB-INF/views/common/header.jsp"%>
+		<%@include file="/WEB-INF/views/common/header.jsp"%>
 		<section>
-			<form action="/party/register" method="post" enctype="multipart/form-data" class="container">
+			<form action="/party/register" method="post"
+				enctype="multipart/form-data" class="container">
 				<!-- form 필수값 검증 후 값이 없는 경우 알림 -->
 				<div class="alert-window">
 					<p>
@@ -68,8 +72,8 @@
 								min="2" max="45" required />
 						</p>
 						<p>
-							<span>준비물</span><input type="text" name="items"
-								id="readyItems" maxlength="" />
+							<span>준비물</span><input type="text" name="items" id="readyItems"
+								maxlength="" />
 						</p>
 						<p>
 							<span>등반조건</span><input type="text" name="condition"

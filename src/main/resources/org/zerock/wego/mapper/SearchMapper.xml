@@ -11,11 +11,11 @@
 		SELECT *
 		FROM san_info_v
 		WHERE
-			(
-			san_name LIKE '%'||#{search}||'%'
-			OR details LIKE '%'||#{search}||'%'
-			)
-			AND rownum &lt;= 3
+		(
+		san_name LIKE '%'||#{search}||'%'
+		OR details LIKE '%'||#{search}||'%'
+		)
+		AND rownum &lt;= 3
 	</select>
 
 	<select id="selectSearchParty3ByQuery"
@@ -23,11 +23,11 @@
 		SELECT *
 		FROM san_party_v
 		WHERE
-			(
-			title LIKE '%'||#{search}||'%'
-			OR contents LIKE '%'||#{search}||'%'
-			)
-			AND rownum &lt;= 3
+		(
+		title LIKE '%'||#{search}||'%'
+		OR contents LIKE '%'||#{search}||'%'
+		)
+		AND rownum &lt;= 3
 	</select>
 
 	<select id="selectSearchReview3ByQuery"
@@ -35,11 +35,11 @@
 		SELECT *
 		FROM san_review_v
 		WHERE
-			(
-			title LIKE '%'||#{search}||'%'
-			OR contents LIKE '%'||#{search}||'%'
-			)
-			AND rownum &lt;= 3
+		(
+		title LIKE '%'||#{search}||'%'
+		OR contents LIKE '%'||#{search}||'%'
+		)
+		AND rownum &lt;= 3
 	</select>
 
 </mapper>

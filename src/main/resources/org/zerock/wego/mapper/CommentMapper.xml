@@ -3,243 +3,233 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace = "org.zerock.wego.mapper.CommentMapper">
 
-  	<!-- *********** 존재여부 ************ -->
+<mapper namespace="org.zerock.wego.mapper.CommentMapper">
+
+	<!-- *********** 존재여부 ************ -->
 	<select id="isExist">
 		SELECT
-			COUNT(comment_id)
+		COUNT(comment_id)
 		FROM
-			comment_tb
+		comment_tb
 		WHERE
-			comment_id = #{commentId}
+		comment_id = #{commentId}
 	</select>
 
-  	<!-- *********** 타겟 댓글 총합 ************ -->
-  	 
-  	<select
-    	id="selectTotalCountByTarget" 
-    	resultType="Integer">
-    	
-    	SELECT 
-  			NVL(COUNT(comment_id), 0)
-  		FROM 
-  			comment_tb
-         <where>
-         status = 'N'
-         AND
-         target_gb = #{targetGb}
-         AND 
-         target_cd = #{targetCd}
-         </where>
-    </select> 
-  	
-    
-    <!-- ***********타겟으로 댓글만 오프셋 조회************ -->
-    <select
-    	id="selectOnlyCommentOffsetByTarget" 
-    	resultType="org.zerock.wego.domain.CommentViewVO">
-    	
-    	SELECT 
-  				*
-  		FROM 
-  			comment_v
-         	
-     <where>
-       	<if test="lastCommentId > 0">
-       	comment_id &lt; #{lastCommentId}
-       	AND
-       	</if>
-       	target_cd = #{target.targetCd}
-       	AND 
-	       target_gb = #{target.targetGb}
-        AND 
-    	   status IN ('N', 'P')
-	    AND
-	       comment_gb = 'COMMENT'
-      </where>
-        ORDER BY
-         	COMMENT_ID DESC
-        
-        OFFSET 0 ROWS
-        FETCH NEXT #{target.amount} ROWS ONLY
-    </select> 
-    
-    
-    <!-- ***********댓글코드로 멘션만 조회************ -->
-     <select
-    	id="selectOnlyMentionsByCommentId" 
-    	resultType="org.zerock.wego.domain.CommentViewVO">
-    	
-    	SELECT 
-  				*
-  		FROM 
-  			comment_v
-        <where>
-        	mention_id = #{commentId}
-        	AND
-        	status IN ('N', 'P')
-        </where>
-        ORDER BY
-         	COMMENT_ID ASC
-    </select> 
-    
-     
-  	<!-- ***********댓글 코드로 댓글 조회************ -->
-     <select
-    	id="selectById" 
-    	resultType="org.zerock.wego.domain.CommentViewVO">
-    	
-    	SELECT 
-  				*
-  		FROM 
-  			comment_v
-        WHERE
-         comment_id = #{commentId}
-    </select> 
-    
-    
-  	<!-- ***********댓글 코드로 멘션 유무 조회 ************ -->
-    <select
-    	id="hasMentionById" 
-    	resultType="Integer">
-    		
-    	SELECT 1
-    	FROM dual
-    	WHERE EXISTS(
-  				SELECT 1
-  				FROM comment_tb
-  				WHERE mention_id = #{commentId} 
-  				AND status = 'N' 
-  			)
-    </select> 
-    
-  	<!-- ***********유저 코드로 댓글 조회************ -->
-    <select
-    	id="selectCommentByUser" 
-    	resultType="org.zerock.wego.domain.CommentViewVO">
-    	
-    	SELECT 
-  				*
-  		FROM 
-  			comment_v
-         	
-         <where>
-         user_id = #{userId}
-         </where>
-    </select>
-    
-    
-    <!-- ***************** 댓글 삭제 ******************** -->
-    <delete
-    	id="deleteById">
-    	
-    	DELETE
-    	FROM 
-    		comment_tb
-    	
-    	<where>
-    	comment_id = #{commentId}
-    	</where>
-    
-    </delete>
-    
-    <!-- ***************** 댓글 작성 ******************** -->
-    <insert
-    	id="insertComment">
-    	
-    	INSERT INTO comment_tb(
-    		target_gb,
-    		target_cd,
-    		user_id, 
-    		contents)
-    	VALUES(
-    		#{targetGb},
-    		#{targetCd},
-    		#{userId},
-    		#{contents}	
-	    	)
-	    <selectKey keyProperty="commentId" resultType ="Integer" order ="AFTER">
-	    	SELECT
-	    		MAX(comment_id)
-	    	FROM
-	    		comment_tb
-	    </selectKey>
-    </insert>
-    
-    <!-- ***************** 멘션 작성 ******************** -->
-    <insert
-    	id="insertMention"
+	<!-- *********** 타겟 댓글 총합 ************ -->
+
+	<select id="selectTotalCountByTarget" resultType="Integer">
+
+		SELECT
+		NVL(COUNT(comment_id), 0)
+		FROM
+		comment_tb
+		<where>
+			status = 'N'
+			AND
+			target_gb = #{targetGb}
+			AND
+			target_cd = #{targetCd}
+		</where>
+	</select>
+
+
+	<!-- ***********타겟으로 댓글만 오프셋 조회************ -->
+	<select id="selectOnlyCommentOffsetByTarget"
+		resultType="org.zerock.wego.domain.CommentViewVO">
+
+		SELECT
+		*
+		FROM
+		comment_v
+
+		<where>
+			<if test="lastCommentId > 0">
+				comment_id &lt; #{lastCommentId}
+				AND
+			</if>
+			target_cd = #{target.targetCd}
+			AND
+			target_gb = #{target.targetGb}
+			AND
+			status IN ('N', 'P')
+			AND
+			comment_gb = 'COMMENT'
+		</where>
+		ORDER BY
+		COMMENT_ID DESC
+
+		OFFSET 0 ROWS
+		FETCH NEXT #{target.amount} ROWS ONLY
+	</select>
+
+
+	<!-- ***********댓글코드로 멘션만 조회************ -->
+	<select id="selectOnlyMentionsByCommentId"
+		resultType="org.zerock.wego.domain.CommentViewVO">
+
+		SELECT
+		*
+		FROM
+		comment_v
+		<where>
+			mention_id = #{commentId}
+			AND
+			status IN ('N', 'P')
+		</where>
+		ORDER BY
+		COMMENT_ID ASC
+	</select>
+
+
+	<!-- ***********댓글 코드로 댓글 조회************ -->
+	<select id="selectById"
+		resultType="org.zerock.wego.domain.CommentViewVO">
+
+		SELECT
+		*
+		FROM
+		comment_v
+		WHERE
+		comment_id = #{commentId}
+	</select>
+
+
+	<!-- ***********댓글 코드로 멘션 유무 조회 ************ -->
+	<select id="hasMentionById" resultType="Integer">
+
+		SELECT 1
+		FROM dual
+		WHERE EXISTS(
+		SELECT 1
+		FROM comment_tb
+		WHERE mention_id = #{commentId}
+		AND status = 'N'
+		)
+	</select>
+
+	<!-- ***********유저 코드로 댓글 조회************ -->
+	<select id="selectCommentByUser"
+		resultType="org.zerock.wego.domain.CommentViewVO">
+
+		SELECT
+		*
+		FROM
+		comment_v
+
+		<where>
+			user_id = #{userId}
+		</where>
+	</select>
+
+
+	<!-- ***************** 댓글 삭제 ******************** -->
+	<delete id="deleteById">
+
+		DELETE
+		FROM
+		comment_tb
+
+		<where>
+			comment_id = #{commentId}
+		</where>
+
+	</delete>
+
+	<!-- ***************** 댓글 작성 ******************** -->
+	<insert id="insertComment">
+
+		INSERT INTO comment_tb(
+		target_gb,
+		target_cd,
+		user_id,
+		contents)
+		VALUES(
+		#{targetGb},
+		#{targetCd},
+		#{userId},
+		#{contents}
+		)
+		<selectKey keyProperty="commentId" resultType="Integer"
+			order="AFTER">
+			SELECT
+			MAX(comment_id)
+			FROM
+			comment_tb
+		</selectKey>
+	</insert>
+
+	<!-- ***************** 멘션 작성 ******************** -->
+	<insert id="insertMention"
 		parameterType="org.zerock.wego.domain.CommentViewVO">
-    	
-    	INSERT INTO comment_tb(
-    		target_gb,
-    		target_cd,
-    		user_id,
-    		mention_id,
-    		comment_gb, 
-    		contents)
-    	VALUES(
-    		#{targetGb},
-    		#{targetCd},
-    		#{userId},
-    		#{mentionId},
-    		'MENTION',
-    		#{contents}	
-	    	)
-	    <selectKey keyProperty="commentId" resultType ="Integer" order ="AFTER">
-	    	SELECT
-	    		MAX(comment_id)
-	    	FROM
-	    		comment_tb
-	    </selectKey>
-    </insert>
-    
-    
-    
-    <!-- ***************** 댓글 수정 ******************** -->
-    <update
-    	id="updateComment">
-    	
-    	UPDATE 
-    		comment_tb
-    	SET
-    		contents = #{contents},
-    		modified_dt = current_timestamp,
-    		
-    		<if test="#{status} != null">
-    		status = #{status}
-    		</if>
-    	WHERE
-    		comment_id = #{commentId}
-    </update>
-    
-<!--         ***************** 댓글 상태값 수정 ******************** -->
-<!--     <update -->
-<!--     	id="updateCommentStatus"> -->
-    	
-<!--     	UPDATE  -->
-<!--     		comment_tb -->
-<!--     	SET -->
-<!--     		contents = #{contents}, -->
-<!--     		status = #{status} -->
-    		
-<!--     	WHERE -->
-<!--     		comment_id = #{commentId} -->
-<!--     </update> -->
-    
-     <!-- ***************** 댓글 영구삭제  ******************** -->
-    
-    	<delete id="deleteDeadComment">
-    		DELETE
-    		FROM
-    			comment_tb
-    		<where>
-    			status = 'Y'
-    		</where>		
-    	</delete>
-  </mapper>
+
+		INSERT INTO comment_tb(
+		target_gb,
+		target_cd,
+		user_id,
+		mention_id,
+		comment_gb,
+		contents)
+		VALUES(
+		#{targetGb},
+		#{targetCd},
+		#{userId},
+		#{mentionId},
+		'MENTION',
+		#{contents}
+		)
+		<selectKey keyProperty="commentId" resultType="Integer"
+			order="AFTER">
+			SELECT
+			MAX(comment_id)
+			FROM
+			comment_tb
+		</selectKey>
+	</insert>
+
+
+
+	<!-- ***************** 댓글 수정 ******************** -->
+	<update id="updateComment">
+
+		UPDATE
+		comment_tb
+		SET
+		contents = #{contents},
+		modified_dt = current_timestamp,
+
+		<if test="#{status} != null">
+			status = #{status}
+		</if>
+		WHERE
+		comment_id = #{commentId}
+	</update>
+
+	<!-- ***************** 댓글 상태값 수정 ******************** -->
+	<!-- <update -->
+	<!-- id="updateCommentStatus"> -->
+
+	<!-- UPDATE -->
+	<!-- comment_tb -->
+	<!-- SET -->
+	<!-- contents = #{contents}, -->
+	<!-- status = #{status} -->
+
+	<!-- WHERE -->
+	<!-- comment_id = #{commentId} -->
+	<!-- </update> -->
+
+	<!-- ***************** 댓글 영구삭제 ******************** -->
+
+	<delete id="deleteDeadComment">
+		DELETE
+		FROM
+		comment_tb
+		<where>
+			status = 'Y'
+		</where>
+	</delete>
+</mapper>
   
   
   

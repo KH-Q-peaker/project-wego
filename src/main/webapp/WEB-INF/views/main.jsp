@@ -11,7 +11,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<link rel="shortcut icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="/resources/ico/favicon.ico"
+	type="image/x-icon" />
 <link rel="icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
 
 <link rel="stylesheet" href="/resources/css/header.css" />
@@ -22,13 +23,15 @@
 <script src="/resources/js/main.js" defer></script>
 <script src="/resources/js/favorite.js" defer></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
 </head>
 <body>
 	<div class="total-wrap">
 		<%@include file="/WEB-INF/views/common/header.jsp"%>
-		
+
 		<section>
 			<div class="rank">
 				<div class="rankers">
@@ -166,7 +169,8 @@
 					<c:forEach var="item" items="${sanInfoList}">
 						<a href="/info/${item.sanInfoId}">
 							<div class="mountain-item">
-								<img class="mountain-img" src="/img/${fn:substring(item.img, 10, 55)}" alt="img" />
+								<img class="mountain-img"
+									src="/img/${fn:substring(item.img, 10, 55)}" alt="img" />
 								<h3 class="mountain-name" id="mountainName">${item.sanName}</h3>
 								<p class="mountain-contents" id="text">${item.details}</p>
 								<div class="mountain-like">
@@ -193,10 +197,12 @@
 					<c:forEach var="item" items="${partyList}">
 						<a href="/party/${item.sanPartyId}">
 							<div class="recruit-item">
-								<img class="user-img" src="/img/${fn:substring(item.userPic, 10, 55)}" alt="img" />
+								<img class="user-img"
+									src="/img/${fn:substring(item.userPic, 10, 55)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>
-								<img class="recruit-img" src="/img/${fn:substring(item.partyPic, 10, 55)}" alt="img" />
+								<img class="recruit-img"
+									src="/img/${fn:substring(item.partyPic, 10, 55)}" alt="img" />
 								<p class="recruit-title" id="title">${item.title}</p>
 								<p class="recruit-schedule-schedule">날짜:</p>
 								<p class="recruit-schedule" id="schedule">
@@ -238,7 +244,8 @@
 					<c:forEach var="item" items="${reviewList}">
 						<a href="/review/${item.sanReviewId}">
 							<div class="review-item">
-								<img class="user-img" src="/img/${fn:substring(item.userPic, 10, 55)}" alt="img" />
+								<img class="user-img"
+									src="/img/${fn:substring(item.userPic, 10, 55)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>
 								<img class="review-img" src="/img/defaultImg.png" alt="img" />

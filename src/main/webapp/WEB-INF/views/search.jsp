@@ -59,40 +59,41 @@
 					<div class="wrap-recruit">
 						<c:forEach var="item" items="${partyList}">
 							<a href="/party/detail/${item.sanPartyId}">
-							<div class="recruit-item">
-								<img class="user-img" src="${item.userPic}" alt="img" />
-								<p class="user-name" id="userName">${item.nickName}</p>
-								<p class="mountain-name" id="mountainName">${item.sanName}</p>
-								<img class="recruit-img" src="" alt="img" />
-								<p class="recruit-title" id="title">${item.title}</p>
-								<p class="recruit-schedule-schedule">날짜:</p>
-								<p class="recruit-schedule" id="schedule">
-									<fmt:formatDate value="${item.partyDt}" pattern="yyyy-MM-dd" />
-								</p>
-								<p class="recruit-schedule-time">시간:</p>
-								<p class="recruit-time" id="time">
-									<fmt:formatDate value="${item.partyDt}" pattern="HH:mm" />
-								</p>
-								<p class="recruit-schedule-member">참여 인원:</p>
-								<p class="recruit-member" id="memberCount">${item.userCnt}/
-									${item.partyMax}</p>
-								<div class="recruit-like">
-									<c:set var="doneLoop" value="false" />
-									<c:set var="status" value="" />
-									<c:forEach var="userFavorite" items="${favoriteList}">
-										<c:if
-											test="${userFavorite.targetGb == 'SAN_PARTY' 
+								<div class="recruit-item">
+									<img class="user-img" src="${item.userPic}" alt="img" />
+									<p class="user-name" id="userName">${item.nickName}</p>
+									<p class="mountain-name" id="mountainName">${item.sanName}</p>
+									<img class="recruit-img" src="" alt="img" />
+									<p class="recruit-title" id="title">${item.title}</p>
+									<p class="recruit-schedule-schedule">날짜:</p>
+									<p class="recruit-schedule" id="schedule">
+										<fmt:formatDate value="${item.partyDt}" pattern="yyyy-MM-dd" />
+									</p>
+									<p class="recruit-schedule-time">시간:</p>
+									<p class="recruit-time" id="time">
+										<fmt:formatDate value="${item.partyDt}" pattern="HH:mm" />
+									</p>
+									<p class="recruit-schedule-member">참여 인원:</p>
+									<p class="recruit-member" id="memberCount">${item.userCnt}/
+										${item.partyMax}</p>
+									<div class="recruit-like">
+										<c:set var="doneLoop" value="false" />
+										<c:set var="status" value="" />
+										<c:forEach var="userFavorite" items="${favoriteList}">
+											<c:if
+												test="${userFavorite.targetGb == 'SAN_PARTY' 
 											&& userFavorite.targetCd == item.sanPartyId}">
-											<c:set var="status" value=" on" />
-										</c:if>
-									</c:forEach>
-									<button type="button" name="favorite" class="favorite${status}"></button>
-									<span class="favorite-count">${item.likeCnt}</span>
-								</div>
-								<p class="recruit-date" id="date">
-									<fmt:formatDate value="${item.createdDt}" pattern="yyyy-MM-dd" />
-								</p>
-							</div> <!-- item -->
+												<c:set var="status" value=" on" />
+											</c:if>
+										</c:forEach>
+										<button type="button" name="favorite"
+											class="favorite${status}"></button>
+										<span class="favorite-count">${item.likeCnt}</span>
+									</div>
+									<p class="recruit-date" id="date">
+										<fmt:formatDate value="${item.createdDt}" pattern="yyyy-MM-dd" />
+									</p>
+								</div> <!-- item -->
 							</a>
 						</c:forEach>
 					</div>
@@ -106,8 +107,7 @@
 					<div class="wrap">
 						<c:forEach var="item" items="${reviewList}">
 							<div class="item">
-								<a id="itemPath"
-									href="/review/detail/${item.sanReviewId}">
+								<a id="itemPath" href="/review/detail/${item.sanReviewId}">
 									<div class="item-info">
 										<h3 id="itemTitle">${item.title}</h3>
 										<div class="itemDetail">

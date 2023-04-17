@@ -10,58 +10,67 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
-	
+
 	<!-- properties -->
-	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<value>classpath:config/wego.properties</value>
 		</property>
 	</bean>
-	
+
 	<!-- DB -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
-		<property name = "jdbcUrl" value = "${db.url}"/>
-		<property name = "username" value = "${db.user.name}"/>
-		<property name = "password" value = "${db.password}"/>
+		<property name="driverClassName"
+			value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
+		<property name="jdbcUrl" value="${db.url}" />
+		<property name="username" value="${db.user.name}" />
+		<property name="password" value="${db.password}" />
 
 		<property name="maximumPoolSize" value="10" />
 		<property name="minimumIdle" value="2" />
 		<property name="idleTimeout" value="10000" />
 		<property name="connectionTimeout" value="2000" />
-		<property name="connectionTestQuery" value="SELECT 1 FROM dual" />
+		<property name="connectionTestQuery"
+			value="SELECT 1 FROM dual" />
 		<property name="connectionInitSql" value="SELECT 1 FROM dual" />
 		<property name="dataSourceJNDI" value="jdbc/HikariCP" />
 		<property name="poolName" value="* HikariDataSource *" />
-   </bean>
-   
-   <bean id="hikariDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
- 		<constructor-arg ref="hikariConfig" />
-   </bean>
-   
-   <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
- 		<property name="dataSource" ref="hikariDataSource" />
-   </bean>
-   
-	<mybatis-spring:scan base-package="org.zerock.wego.mapper" />
-	
+	</bean>
+
+	<bean id="hikariDataSource"
+		class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<constructor-arg ref="hikariConfig" />
+	</bean>
+
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="hikariDataSource" />
+	</bean>
+
+	<mybatis-spring:scan
+		base-package="org.zerock.wego.mapper" />
+
 	<!-- Transaction Manager -->
-	<bean 
-		id = "transactionManger"
-		class = "org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name = "dataSource" ref = "hikariDataSource"/>
+	<bean id="transactionManger"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="hikariDataSource" />
 	</bean>
 
 	<tx:annotation-driven />
-	
+
 	<!-- AOP -->
-	<context:annotation-config/>
-	<aop:aspectj-autoproxy/>
-		
+	<context:annotation-config />
+	<aop:aspectj-autoproxy />
+
 	<!-- bean -->
-	<context:component-scan base-package="org.zerock.wego.aop"/>
-	<context:component-scan base-package="org.zerock.wego.service"/>
-	<context:component-scan base-package="org.zerock.wego.config"/>
-	<context:component-scan base-package="org.zerock.wego.oauth"/>
-		
+	<context:component-scan
+		base-package="org.zerock.wego.aop" />
+	<context:component-scan
+		base-package="org.zerock.wego.service" />
+	<context:component-scan
+		base-package="org.zerock.wego.config" />
+	<context:component-scan
+		base-package="org.zerock.wego.oauth" />
+
 </beans>

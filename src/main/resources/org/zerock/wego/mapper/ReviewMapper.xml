@@ -8,8 +8,8 @@
 
 	<select id="selectAll"
 		resultType="org.zerock.wego.domain.ReviewViewVO">
-		SELECT * 
-		FROM san_review_v 
+		SELECT *
+		FROM san_review_v
 		ORDER BY created_Dt DESC
 	</select>
 
@@ -17,59 +17,60 @@
 		resultType="org.zerock.wego.domain.ReviewViewVO">
 		SELECT *
 		FROM
-			(
-			SELECT *
-			FROM san_review_v
-			ORDER BY dbms_random.random
-			)
+		(
+		SELECT *
+		FROM san_review_v
+		ORDER BY dbms_random.random
+		)
 		WHERE rownum &lt;= 10
 	</select>
 
-	<!--  ************* 존재 여부 *************** -->
+	<!-- ************* 존재 여부 *************** -->
 	<select id="isExist">
-		SELECT 
-			COUNT(san_review_id)
-		FROM 
-			san_review_tb
-		WHERE 
-			san_review_id = #{reviewId}
+		SELECT
+		COUNT(san_review_id)
+		FROM
+		san_review_tb
+		WHERE
+		san_review_id = #{reviewId}
 
 	</select>
-	
-	<!--  ************* 특정 후기글 조회  *************** -->
-	<select id="selectById" 
-  			resultType = "org.zerock.wego.domain.ReviewViewVO">
-  		
-  		SELECT
-  			*
-  		FROM
-  			san_review_v
-  			
-  		<where>
-  		san_review_id = #{reviewId}
-  		</where>
-  			
-  	</select>
 
-	<!--  ************* 후기글 삭제 *************** -->
-	<delete
-  		id="delete">
-  		
-  		DELETE 
-  		FROM
-  			san_review_tb
-  		<where>
-  			san_review_id = #{reviewId}
-  		</where>
-  		
-  	</delete>
+	<!-- ************* 특정 후기글 조회 *************** -->
+	<select id="selectById"
+		resultType="org.zerock.wego.domain.ReviewViewVO">
+
+		SELECT
+		*
+		FROM
+		san_review_v
+
+		<where>
+			san_review_id = #{reviewId}
+		</where>
+
+	</select>
+
+	<!-- ************* 후기글 삭제 *************** -->
+	<delete id="delete">
+
+		DELETE
+		FROM
+		san_review_tb
+		<where>
+			san_review_id = #{reviewId}
+		</where>
+
+	</delete>
 
 
-	<insert id="insert" parameterType="org.zerock.wego.domain.ReviewDTO">
-		INSERT INTO 
-			san_review_tb(san_info_id, user_id, title, contents)
-			VALUES(#{sanInfoId}, #{userId}, #{title}, #{contents})
-		<selectKey keyProperty="sanReviewId" resultType="int" order="AFTER" >
+	<insert id="insert"
+		parameterType="org.zerock.wego.domain.ReviewDTO">
+		INSERT INTO
+		san_review_tb(san_info_id, user_id, title, contents)
+		VALUES(#{sanInfoId}, #{userId}, #{title}, #{contents})
+		<selectKey keyProperty="sanReviewId" resultType="int"
+			order="AFTER">
 			SELECT max(san_review_id)
 			FROM san_review_tb
 		</selectKey>
@@ -78,20 +79,20 @@
 	<update id="update">
 		UPDATE san_review_tb
 		SET
-			san_info_id = #{sanInfoId},
-			title = #{title},
-			contents = #{contents},
-			modified_dt = current_timestamp
+		san_info_id = #{sanInfoId},
+		title = #{title},
+		contents = #{contents},
+		modified_dt = current_timestamp
 		WHERE
-			san_review_id = #{sanReviewId}
+		san_review_id = #{sanReviewId}
 	</update>
 
 	<update id="visitCountUp">
 		UPDATE san_review_tb
 		SET
-			VISIT_CNT = VISIT_CNT + 1
+		VISIT_CNT = VISIT_CNT + 1
 		WHERE
-			san_review_id = #{reviewId}
+		san_review_id = #{reviewId}
 	</update>
 </mapper>
 
