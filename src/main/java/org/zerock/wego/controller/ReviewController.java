@@ -1,12 +1,7 @@
 package org.zerock.wego.controller;
 
-import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import javax.servlet.http.Cookie;
@@ -18,10 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -35,7 +30,6 @@ import org.zerock.wego.domain.review.ReviewDTO;
 import org.zerock.wego.domain.review.ReviewViewVO;
 import org.zerock.wego.exception.AccessBlindException;
 import org.zerock.wego.exception.ControllerException;
-import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.service.common.CommentService;
 import org.zerock.wego.service.common.FavoriteService;
 import org.zerock.wego.service.common.FileService;
@@ -145,92 +139,62 @@ public class ReviewController {
 	}// removeReview
 	
 	
-	@GetMapping(	
-			path = "/modify/{reviewId}"
-			)
-	public String modify(@SessionAttribute("__AUTH__")UserVO auth,
-			@PathVariable("reviewId") Integer reviewId, Model model)
-					throws Exception  {
-		log.trace("modify({}, {}, {}) invoked.", auth, reviewId, model);
+	@GetMapping(path = "/modify/{reviewId}")
+	public String modify(@SessionAttribute("__AUTH__") UserVO auth, 
+			@PathVariable("reviewId") Integer reviewId,
+			Model model) throws Exception {
+		log.trace("modify(auth, reviewId, model) invoked.");
 		
-		ReviewViewVO reviewVO = this.reviewService.getById(reviewId);
-		Integer postUserId = reviewVO.getUserId();
-		
-		if(auth == null || !auth.getUserId().equals(postUserId)) {
-			return "error";
-		} // if
-		
-		List<FileVO> fileVO = this.fileService.getList("SAN_REVIEW", reviewId);
-		
-		model.addAttribute("review", reviewVO);
-		model.addAttribute("fileList", fileVO);
-		
-		return "/review/modify";		
+		try {
+			ReviewViewVO reviewVO = this.reviewService.getById(reviewId);
+			Integer postUserId = reviewVO.getUserId();
+
+			if (!auth.getUserId().equals(postUserId)) {
+				throw new ControllerException("잘못된 접근입니다.");
+			} // if
+
+			List<FileVO> fileVO = this.fileService.getList("SAN_REVIEW", reviewId);
+
+			model.addAttribute("review", reviewVO);
+			model.addAttribute("fileList", fileVO);
+
+			return "/review/modify";
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
 	} // modify
 	
 	@PostMapping("/modify")
-	public String modify(
-			@SessionAttribute("__AUTH__")UserVO auth, 
-			Integer sanReviewId, String sanName, List<MultipartFile> imgFiles, 
-			ReviewDTO reviewDTO, FileDTO fileDTO) throws ControllerException { 
-		log.trace("modify(auth, sanReviewId, sanName, imgFiles, reviewDTO, fileDTO) invoked.");
+	public String modify(@SessionAttribute("__AUTH__") UserVO auth, Integer sanReviewId, String sanName,
+			@RequestParam(value = "imgFiles", required = false) List<MultipartFile> newImageFiles,
+			@RequestParam(value = "oldImgFiles", required = false) String oldImageFiles,
+			@RequestParam(value = "imgOrder", required = false) String imageOrder, ReviewDTO reviewDTO, FileDTO fileDTO,
+			@CookieValue(value = "posted", required = false) boolean posted, HttpServletResponse response)
+			throws ControllerException {
+		log.trace("modify(auth, sanReviewId, sanName, newImageFiles, oldImageFiles, reviewDTO, fileDTO) invoked.");
 
 		try {
-			if(auth.getUserId() == reviewDTO.getUserId()) {
-				return "error";
+			if (!posted) {
+				Cookie cookie = new Cookie("posted", "true");
+				cookie.setMaxAge(30);
+				response.addCookie(cookie);
 			} // if
-			
+
 			ReviewViewVO vo = this.reviewService.getById(sanReviewId);
-
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
-      
+
 			reviewDTO.setSanInfoId(sanId);
-			
+
 			this.reviewService.modify(reviewDTO);
-			
-			if (imgFiles != null) {
-				boolean isRemoveSuccess = this.fileService.isRemoveByTarget("SAN_REVIEW", sanReviewId);
-				log.trace("isRemoveSuccess: {}", isRemoveSuccess);
-				
-				DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-				String createdDate = dateFormat.format(vo.getCreatedDt());
-				log.info("getCreatedDt: {}", createdDate);
 
-				String basePath = "C:/upload/" + createdDate;
-				File Folder = new File(basePath);
-
-				if (!Folder.exists()) { 
-					Folder.mkdir();
-				} // if
-
-				imgFiles.forEach(imgFile -> {
-					if (!"".equals(imgFile.getOriginalFilename())) {
-						String originalName = imgFile.getOriginalFilename();
-						String uuid = UUID.randomUUID().toString();
-
-						String imgPath = basePath + "/" + uuid;
-						try {
-							imgFile.transferTo(new File(imgPath));
-						} catch (Exception e) {
-							e.printStackTrace();
-						} // try-catch
-
-						fileDTO.setTargetGb("SAN_REVIEW");
-						fileDTO.setTargetCd(reviewDTO.getSanReviewId());
-						fileDTO.setFileName(originalName);
-						fileDTO.setUuid(uuid);
-						fileDTO.setPath(imgPath);
-
-						try {
-							boolean isFileUploadSuccess = this.fileService.isRegister(fileDTO);
-							log.info("isFileUploadSuccess: {}", isFileUploadSuccess);
-						} catch (ServiceException e) {
-							e.printStackTrace();
-						} // try-catch
-					} // if
-				});
+			// TODO: 현재 신규 이미지가 추가된 경우에만 순서 변경 가능
+			//       기존 이미지만으로 순서 변경안됨
+			if (newImageFiles != null) {
+				List<String> oldFiles = Arrays.asList(oldImageFiles.split(","));
+				List<String> order = Arrays.asList(imageOrder.split(","));
+				this.fileService.isChangeImage(newImageFiles, oldFiles, order, "SAN_REVIEW", sanReviewId, fileDTO);
 			} // if
-			
+
 			return "redirect:/review/" + reviewDTO.getSanReviewId();
 		} catch (Exception e) {
 			throw new ControllerException(e);
@@ -238,29 +202,26 @@ public class ReviewController {
 	} // modify
 
 	@GetMapping("/register")
-	public void register() {
+	public String register(@SessionAttribute("__AUTH__") UserVO auth) {
 		log.trace("register() invoked.");
+
+		return "/review/register";
 	} // register
 
 	@PostMapping("/register")
-	public String register(
-			@SessionAttribute("__AUTH__")UserVO auth, String sanName, List<MultipartFile> imageFiles, 
-			ReviewDTO reviewDTO, FileDTO fileDTO,
-			@CookieValue(value="posted", required=false)boolean posted,
+	public String register(@SessionAttribute("__AUTH__") UserVO auth, String sanName,
+			@RequestParam(value = "imgFiles", required = false) List<MultipartFile> imageFiles, ReviewDTO reviewDTO,
+			FileDTO fileDTO, @CookieValue(value = "posted", required = false) boolean posted,
 			HttpServletResponse response) throws ControllerException {
 		log.trace("register(auth, sanName, imageFiles, reviewDTO, fileDTO, posted, response) invoked.");
 
 		try {
-			if(auth == null) {
-				return "error";
+			if (!posted) {
+				Cookie cookie = new Cookie("posted", "true");
+				cookie.setMaxAge(30);
+				response.addCookie(cookie);
 			} // if
 
-			if(!posted) { // false
-				Cookie cookie = new Cookie("posted", "true");				
-	            cookie.setMaxAge(30);
-	            response.addCookie(cookie);
-			} // if
-			
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 
 			reviewDTO.setSanInfoId(sanId);
@@ -268,48 +229,16 @@ public class ReviewController {
 			reviewDTO.setUserId(auth.getUserId());
 
 			this.reviewService.register(reviewDTO);
-	
+
 			if (imageFiles != null) {
-				String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-
-				String basePath = "C:/upload/" + today;
-				File Folder = new File(basePath);
-
-				if (!Folder.exists()) { 
-					Folder.mkdir();
-				} // if
-
-				imageFiles.forEach(imgFile -> {
-					if (!"".equals(imgFile.getOriginalFilename())) {
-						String originalName = imgFile.getOriginalFilename();
-						String uuid = UUID.randomUUID().toString();
-
-						String imgPath = basePath + "/" + uuid;
-						try {
-							imgFile.transferTo(new File(imgPath));
-						} catch (Exception e) {
-							e.printStackTrace();
-						} // try-catch
-
-						fileDTO.setTargetGb("SAN_REVIEW");
-						fileDTO.setTargetCd(reviewDTO.getSanReviewId());
-						fileDTO.setFileName(originalName);
-						fileDTO.setUuid(uuid);
-						fileDTO.setPath(imgPath);
-
-						try {
-							boolean isFileUploadSuccess = this.fileService.isRegister(fileDTO);
-							log.info("isFileUploadSuccess: {}", isFileUploadSuccess);
-						} catch (ServiceException e) {
-							e.printStackTrace();
-						} // try-catch
-					} // if
-				});
+				boolean isImageUploadSuccess = this.fileService.isImageRegister(imageFiles, "SAN_REVIEW",
+						reviewDTO.getSanReviewId(), fileDTO);
+				log.info("isImageUploadSuccess: {}", isImageUploadSuccess);
 			} // if
+
+			return "redirect:/review/" + reviewDTO.getSanReviewId();
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
-
-		return "redirect:/review/" + reviewDTO.getSanReviewId();
 	} // register
 }// end class
