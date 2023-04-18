@@ -4,9 +4,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.zerock.wego.domain.UserVO;
+import org.zerock.wego.domain.common.UserVO;
 import org.zerock.wego.exception.ServiceException;
-import org.zerock.wego.service.UserService;
+import org.zerock.wego.service.common.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

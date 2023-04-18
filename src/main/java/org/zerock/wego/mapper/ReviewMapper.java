@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
-import org.zerock.wego.domain.ReviewDTO;
-import org.zerock.wego.domain.ReviewViewVO;
+import org.zerock.wego.domain.review.ReviewDTO;
+import org.zerock.wego.domain.review.ReviewViewVO;
 
 
 public interface ReviewMapper {

@@ -3,7 +3,7 @@ package org.zerock.wego.mapper;
 import java.util.List;
 import java.util.Set;
 
-import org.zerock.wego.domain.SanInfoViewVO;
+import org.zerock.wego.domain.info.SanInfoViewVO;
 
 
 public interface SanInfoMapper {

@@ -45,7 +45,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 value="${profileVO.createDt}"
               ></fmt:formatDate>
             </td>
-            <td class="t4">${profileVO.visitCount}</td>
+            <td class="t4">100</td>
             <td class="t5">&#128149;${profileVO.likeCnt}</td>
           </tr>
         </c:forEach>
@@ -72,8 +72,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
           end="${pageMaker.endPage}"
         >
           <!-- 조건문으로 지금 현재 페이지확인 : 전송파라미터중 현페이지번호가같다면 비운다. -->
-          <li class="${param.currPage eq pageNum ? 'currPage' : ''}">
-            <span id="currPageNum" onclick="selectClickCurrPage()">${pageNum}</span
+          <li class="${param.currPage eq pageNum ? 'currPage' : ''}" id="currPageNum" onclick="selectClickCurrPage()">
+            <span>${pageNum}</span
             >
           </li>
           <!-- 숫자만 표시됨. -->
@@ -92,3 +92,44 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     </form>
   </div>
 </div>
+<script>
+	function selectClickCurrPage() {
+	              var currPage = event.target.innerText;
+	              var amount = 5;
+	              $.ajax({
+	                    type: 'get',
+	                    url: '/profile/userposts',
+	                    data:{"currPage":currPage,"amount":5,userId:"${userId}"},
+	                    success: function(data){
+	                        $(".cotents").load("/profile/userposts?userId="+userId+"&currPage="+currPage+"&amount="+amount);
+	                    }//success
+	             	 });//ajax
+	          }//selectClickCurrPage
+	          
+	function selectClickCurrPagePrev () {
+			 var currPage = $( '#currPagePrev' ).val();
+			 var amount = 5;
+			 $.ajax({
+				   type: 'get',
+			      url: '/profile/userposts',
+			      data:{"currPage":currPage,"amount":5,userId:"${userId}"},
+			      success: function(data){
+			          $(".cotents").load("/profile/userposts?userId="+userId+"&currPage="+currPage+"&amount="+amount);
+			      }//success
+			   }); //ajax
+			} //selectClickCurrPagePrev
+	
+	 function selectClickCurrPageNext () {
+		     var amount = 5;
+	         var currPage = $( '#currPageNext' ).val();
+	         $.ajax({
+		  		   type: 'get',
+		  	       url: '/profile/userposts',
+		  	       data:{"currPage":currPage,"amount":5,userId:"${userId}"},
+		  	       success: function(data){
+		  	           $(".cotents").load("/profile/userposts?userId="+userId+"&currPage="+currPage+"&amount="+amount);
+	  	       	}//success
+	         }); //ajax
+	} //selectClickCurrPageNext
+          
+</script>

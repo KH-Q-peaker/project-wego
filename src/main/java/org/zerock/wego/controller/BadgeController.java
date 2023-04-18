@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.zerock.wego.config.BadgeConfig;
-import org.zerock.wego.domain.BadgeGetVO;
+import org.zerock.wego.domain.badge.BadgeGetVO;
 import org.zerock.wego.exception.NotFoundUserException;
 import org.zerock.wego.exception.ServiceException;
-import org.zerock.wego.service.BadgeGetService;
-import org.zerock.wego.service.UserService;
+import org.zerock.wego.service.badge.BadgeGetService;
+import org.zerock.wego.service.common.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

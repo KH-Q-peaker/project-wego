@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
-import org.zerock.wego.domain.CommentDTO;
-import org.zerock.wego.domain.CommentViewVO;
-import org.zerock.wego.domain.PageInfo;
-import org.zerock.wego.domain.UserVO;
+import org.zerock.wego.domain.common.CommentDTO;
+import org.zerock.wego.domain.common.CommentViewVO;
+import org.zerock.wego.domain.common.PageInfo;
+import org.zerock.wego.domain.common.UserVO;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.exception.NotFoundPageException;
 import org.zerock.wego.exception.OperationFailException;
-import org.zerock.wego.service.CommentService;
+import org.zerock.wego.service.common.CommentService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -120,7 +120,7 @@ public class CommentController {
 	@PostMapping(path="/reply")
 	ModelAndView registerMention(@RequestBody CommentDTO dto, 
 								@SessionAttribute("__AUTH__") UserVO user) throws ControllerException{
-//		log.trace("registerMention({}, {}) invoked.", dto, user);
+		log.trace("registerMention() invoked.");
 		
 		ModelAndView mav = new ModelAndView();
 
@@ -171,7 +171,6 @@ public class CommentController {
 //		log.trace("modifyComment({}) invoked.", dto);
 		
 		try {
-
 			this.commentService.modify(dto);
 
 			return ResponseEntity.ok().build();

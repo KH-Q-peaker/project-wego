@@ -7,10 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.zerock.wego.domain.SanInfoViewVO;
-import org.zerock.wego.domain.UserVO;
+import org.zerock.wego.domain.common.UserVO;
+import org.zerock.wego.domain.info.SanInfoViewVO;
 import org.zerock.wego.exception.ControllerException;
-import org.zerock.wego.service.SanInfoService;
+import org.zerock.wego.service.info.SanInfoService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

@@ -7,14 +7,14 @@
 <mapper namespace="org.zerock.wego.mapper.ReviewMapper">
 
 	<select id="selectAll"
-		resultType="org.zerock.wego.domain.ReviewViewVO">
+		resultType="org.zerock.wego.domain.review.ReviewViewVO">
 		SELECT * 
 		FROM san_review_v 
 		ORDER BY created_Dt DESC
 	</select>
 
 	<select id="selectRandom10"
-		resultType="org.zerock.wego.domain.ReviewViewVO">
+		resultType="org.zerock.wego.domain.review.ReviewViewVO">
 		SELECT *
 		FROM
 			(
@@ -38,7 +38,7 @@
 	
 	<!--  ************* 특정 후기글 조회  *************** -->
 	<select id="selectById" 
-  			resultType = "org.zerock.wego.domain.ReviewViewVO">
+  			resultType = "org.zerock.wego.domain.review.ReviewViewVO">
   		
   		SELECT
   			*
@@ -65,7 +65,7 @@
   	</delete>
 
 
-	<insert id="insert" parameterType="org.zerock.wego.domain.ReviewDTO">
+	<insert id="insert" parameterType="org.zerock.wego.domain.review.ReviewDTO">
 		INSERT INTO 
 			san_review_tb(san_info_id, user_id, title, contents)
 			VALUES(#{sanInfoId}, #{userId}, #{title}, #{contents})

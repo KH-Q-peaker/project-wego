@@ -4,8 +4,8 @@ import java.util.Deque;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.zerock.wego.domain.BadgeVO;
-import org.zerock.wego.service.BadgeService;
+import org.zerock.wego.domain.badge.BadgeVO;
+import org.zerock.wego.service.badge.BadgeService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

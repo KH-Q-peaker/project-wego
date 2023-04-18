@@ -3,9 +3,9 @@ package org.zerock.wego.mapper;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import org.apache.ibatis.annotations.Param;
-import org.zerock.wego.domain.CommentDTO;
-import org.zerock.wego.domain.CommentViewVO;
-import org.zerock.wego.domain.PageInfo;
+import org.zerock.wego.domain.common.CommentDTO;
+import org.zerock.wego.domain.common.CommentViewVO;
+import org.zerock.wego.domain.common.PageInfo;
 
 public interface CommentMapper {
 
@@ -20,8 +20,8 @@ public interface CommentMapper {
 	// 특정 글 댓글 offset 조회 (5개씩) 
 //	public abstract LinkedBlockingDeque<CommentViewVO> selectCommentsOffsetByTarget(@Param("target")PageInfo target);
 //	public abstract LinkedBlockingDeque<CommentViewVO> ttt(@Param("target")PageInfo target, @Param("lastComment")Integer lastComment);
-	public abstract LinkedBlockingDeque<CommentViewVO> selectOnlyCommentOffsetByTarget(@Param("target")PageInfo target, @Param("lastCommentId")Integer lastCommentId);
-	public abstract LinkedBlockingDeque<CommentViewVO> selectOnlyMentionsByCommentId(Integer commentId);
+	public abstract LinkedBlockingDeque<CommentViewVO> selectCommentOffsetByTarget(@Param("target")PageInfo target, @Param("lastCommentId")Integer lastCommentId);
+	public abstract LinkedBlockingDeque<CommentViewVO> selectMentionsByCommentId(Integer commentId);
 	
 	
 	// 댓글 코드로 댓글 조회 

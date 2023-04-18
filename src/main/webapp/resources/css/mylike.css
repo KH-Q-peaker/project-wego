@@ -1,0 +1,446 @@
+/* 내용물  */
+.contents-main {
+  overflow-x: auto;
+  height: max-content;
+  padding: 20px;
+  background-color: rgb(220 237 195 / 36%);
+  position: relative;
+  border-radius: 15px;
+}
+/* container child - common */
+h2 {
+  margin: 0;
+}
+.container img {
+  /* 드래그 방지 */
+  -webkit-user-drag: none;
+}
+/* container child - common */
+.rank,
+.mountain-info,
+.recruit,
+.review {
+  width: 100%;
+}
+section div > h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+.cotents-wrap {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 10px;
+  overflow: scroll;
+  white-space: nowrap;
+  user-select: none;
+  padding-bottom: 32px;
+  scroll-behavior: auto;
+}
+.cotents-wrap::-webkit-scrollbar {
+  display: none;
+}
+.item {
+  display: inline-block;
+  width: 200px;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 0 10px;
+  text-align: center;
+  background-color: #fff;
+}
+.item > img {
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+.item > form {
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 10px 0 0;
+}
+.favorite {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  background: url(../svg/favorite.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+/* mountain-info */
+.mountain-item {
+  width: 200px;
+  height: 330px;
+  padding: 15px;
+  border: 0;
+  border-radius: 10px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25), 0 3px 3px rgba(0, 0, 0, 0.22);
+
+  background-color: #fff;
+
+  text-align: center;
+
+  display: grid;
+  grid-template-rows: 165px 45px 90px 30px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-areas:
+    "photo       photo   photo"
+    ". mountname ."
+    "contents  contents  contents"
+    "like        .     .";
+
+  align-items: center;
+  justify-items: center;
+}
+.mountain-img {
+  grid-area: photo;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+.mountain-name {
+  grid-area: mountname;
+  margin: 0;
+
+  font-size: 20px;
+}
+.contents {
+  width: 195px;
+  margin: 0 0 0 5px;
+
+  font-size: 15px;
+
+  grid-area: contents;
+  text-align: left;
+
+  white-space: nowrap;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+.mountain-like {
+  grid-area: like;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.favorite-count {
+  font-size: 12px;
+}
+#title {
+  margin: 10px auto;
+}
+#text {
+  white-space: nowrap;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+/* recruit */
+.recruit-item {
+  width: 200px;
+  height: 330px;
+  padding: 15px;
+  border: 0;
+  border-radius: 10px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25), 0 3px 3px rgba(0, 0, 0, 0.22);
+
+  background-color: #fff;
+
+  text-align: center;
+
+  display: grid;
+  grid-template-rows: 35px 140px 35px 30px 30px 30px 30px;
+  grid-template-columns: 40px 40px 40px 10px 70px;
+  grid-template-areas:
+    "recruitUserImg recruitUserName recruitUserName recruitUserName recruitMountainName"
+    "recruitImg recruitImg recruitImg recruitImg recruitImg"
+    "recruitTitle recruitTitle recruitTitle recruitTitle recruitTitle"
+    "recruitScheduleSchedule recruitSchedule recruitSchedule recruitSchedule recruitSchedule"
+    "recruitScheduleTime recruitTime recruitTime recruitTime recruitTime"
+    "recruitScheduleMember recruitScheduleMember recruitMember recruitMember recruitMember"
+    "recruitLike recruitLike recruitLike recruitLike recruitDate";
+
+  align-items: center;
+  justify-items: center;
+}
+
+.recruit-item > p {
+  margin: 0;
+  justify-self: left;
+}
+
+.recruit-item > .user-img {
+  grid-area: recruitUserImg;
+
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+
+  justify-self: left;
+}
+
+.recruit-item > .user-name {
+  grid-area: recruitUserName;
+
+  font-size: 14px;
+
+  justify-self: left;
+}
+
+.recruit-item > .mountain-name {
+  grid-area: recruitMountainName;
+  font-size: 14px;
+  justify-self: right;
+}
+
+.recruit-item > .recruit-img {
+  grid-area: recruitImg;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+
+  justify-self: center;
+}
+
+.recruit-item > .recruit-title {
+  grid-area: recruitTitle;
+
+  font-size: 20px;
+  margin: 0;
+
+  justify-self: center;
+}
+
+.recruit-item > .recruit-schedule-schedule {
+  grid-area: recruitScheduleSchedule;
+
+  font-size: 15px;
+}
+
+.recruit-schedule {
+  grid-area: recruitSchedule;
+
+  font-size: 15px;
+}
+
+.recruit-schedule-time {
+  grid-area: recruitScheduleTime;
+
+  font-size: 15px;
+}
+.recruit-time {
+  grid-area: recruitTime;
+
+  font-size: 15px;
+}
+
+.recruit-schedule-member {
+  grid-area: recruitScheduleMember;
+
+  font-size: 15px;
+}
+.recruit-member {
+  grid-area: recruitMember;
+
+  font-size: 15px;
+}
+
+.recruit-item > .recruit-like {
+  grid-area: recruitLike;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  justify-self: left;
+}
+.recruit-like > .favorite {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  background: url(../svg/favorite.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.recruit-like > .favorite-count {
+  font-size: 12px;
+}
+
+.recruit-item > .recruit-date {
+  grid-area: recruitDate;
+
+  font-size: 12px;
+  justify-self: right;
+}
+
+/* review */
+.review-item {
+  width: 200px;
+  height: 330px;
+  padding: 15px;
+  border: 0;
+  border-radius: 10px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25), 0 3px 3px rgba(0, 0, 0, 0.22);
+
+  background-color: #fff;
+
+  text-align: center;
+
+  display: grid;
+  grid-template-rows: 35px 140px 35px 90px 30px;
+  grid-template-columns: 40px 80px 10px 70px;
+  grid-template-areas:
+    "reviewUserImg reviewUserName reviewUserName reviewMountainName"
+    "reviewImg reviewImg reviewImg reviewImg"
+    "reviewTitle reviewTitle reviewTitle reviewTitle"
+    "reviewContents reviewContents reviewContents reviewContents"
+    "reviewLike reviewLike . reviewDate";
+
+  align-items: center;
+  justify-items: center;
+}
+
+.review-item > p {
+  margin: 0;
+  justify-self: left;
+}
+
+.review-item > .user-img {
+  grid-area: reviewUserImg;
+
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+
+  justify-self: left;
+}
+
+.review-item > .user-name {
+  grid-area: reviewUserName;
+
+  font-size: 14px;
+  margin: 0;
+
+  justify-self: left;
+}
+
+.review-item > .mountain-name {
+  grid-area: reviewMountainName;
+  font-size: 14px;
+  margin: 0;
+  justify-self: right;
+}
+
+.review-item > .review-img {
+  grid-area: reviewImg;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+
+  justify-self: center;
+}
+
+.review-item > .review-title {
+  grid-area: reviewTitle;
+
+  font-size: 20px;
+  margin: 0;
+
+  justify-self: center;
+}
+.review-item > .review-contents {
+  grid-area: reviewContents;
+
+  width: 195px;
+  margin: 0;
+
+  font-size: 15px;
+
+  justify-self: center;
+  text-align: left;
+
+  white-space: nowrap;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+.review-item > .review-like {
+  grid-area: reviewLike;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  justify-self: left;
+}
+.review-like > .favorite {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  background: url(../svg/favorite.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.review-like > .favorite-count {
+  font-size: 12px;
+}
+
+.review-item > .review-date {
+  grid-area: reviewDate;
+
+  font-size: 12px;
+  justify-self: right;
+}
+@media screen and (min-width: 426px) and (max-width: 768px) {
+  .cotents {
+    width: -webkit-fill-available;
+    /* 웹브라우저크기에 맞게 단 파이어폭스에서 적용이 안됨*/
+    width: -moz-available;
+    /* 이게 파이어폭스넓이에 맞춰서임. */
+    font-size: 15px;
+    max-width: 750px;
+  }
+  .rankers {
+    grid-template-rows: auto;
+    grid-template-columns: auto auto;
+
+    row-gap: 2%;
+  }
+  .rank #rankers {
+    grid-template-columns: auto auto;
+  }
+  #rankers #gold {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+  }
+}
+@media screen and (min-width: 375px) and (max-width: 425px) {
+  .cotents {
+    width: auto;
+    margin: 0;
+    font-size: 12px;
+  }
+  .rankers {
+    row-gap: 2%;
+  }
+  .ranker-img {
+    width: 125px;
+    height: 125px;
+  }
+}
