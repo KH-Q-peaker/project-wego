@@ -1,0 +1,642 @@
+h2 {
+  font-size: 20px;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+.chatting {
+  display: block;
+  border: 0;
+  border-radius: 5px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #4ec53d;
+  margin: auto;
+  cursor: pointer;
+  font-size: 13px;
+}
+.chatting-off {
+  display: block;
+  border: 0;
+  border-radius: 5px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #aabaa8;
+  margin: auto;
+  cursor: pointer;
+  font-size: 13px;
+}
+.mypage-container {
+  margin: auto;
+  padding: 0px 2.5%;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.profile {
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: space-around;
+}
+/* 마이페이지 구간  */
+.profile-image-button {
+  position: absolute;
+  left: 24%;
+  top: 26px;
+  bottom: 80%;
+}
+.profile-image-button img:hover {
+  cursor: pointer;
+}
+.profile-image {
+  margin-top: 23px;
+  width: 200px;
+  height: 200px;
+  background: url(../img/profile.png);
+  background-repeat: no-repeat;
+  background-size: 200px;
+  border-radius: 50%;
+  box-shadow: 0 14px 28px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 22%);
+}
+
+.profile-image > img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgb(220, 237, 195);
+}
+
+.div-name-setting {
+  position: relative;
+  /*width: 130px;*/
+  /* height: 30px; */
+}
+
+.div-name-setting > .nickname {
+  margin: 5px 20px 5px 20px;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 1.2;
+  color: rgb(41, 41, 41);
+  overflow-wrap: break-word;
+  word-break: break-all;
+}
+
+.name-setting img {
+    position: absolute;
+    /* left: 75%; */
+    /* width: 18%; */
+    width: 25px;
+    top: 1px;
+}
+.name-badge-setting {
+  display: grid;
+  align-items: center;
+  justify-content: space-around;
+  align-content: space-around;
+  height: 250px;
+  border-radius: 10px;
+}
+.badge-collection {
+  box-sizing: border-box;
+  padding: 15px;
+  background-color: rgba(78, 197, 61, 0.75);
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 22%);
+}
+.badge-header {
+  font-size: larger;
+  font-weight: bolder;
+}
+.badge-header img {
+  position: relative;
+  width: 35px;
+  top: -7%;
+}
+.badge-medal {
+  margin: 10px auto;
+  text-align: center;
+}
+.badge-medal img {
+  display: inline-block;
+  margin: 10px 10px 0px 10px;
+}
+.content-header-menu > a {
+  text-decoration: none;
+}
+#content-section {
+  position: relative;
+  text-align: center;
+}
+.content-header-menu {
+  line-height: 50px;
+  margin-top: 0px;
+  margin-bottom: 32px;
+  background: #fff;
+  border-radius: 15px;
+  position: relative;
+  display: grid;
+  box-shadow: 0 4px 4px rgb(0 0 0 / 25%), 0 4px 4px rgb(0 0 0 / 22%);
+  grid-template-columns: auto auto auto auto;
+}
+.content-header-menu-item {
+  display: inline-block;
+  justify-content: center;
+  border-radius: 15px;
+}
+
+.content-header-menu li:hover {
+  background-color: #7ccf144a;
+  border-radius: 15px;
+  /* padding: 0px 10px; */
+  z-index: 1;
+  /* transform: scale(1);
+  transition: all 400ms ease; */
+}
+.content-header-menu li:active {
+  background: rgba(78, 197, 61, 0.75);
+  border-radius: 15px;
+  /* padding: 0px 10px; */
+}
+.content-header-menu #item-point {
+  font-weight: bold;
+  background-color: rgba(78, 197, 61, 0.75);
+  border-radius: 15px;
+}
+.content-header-menu a:active {
+  color: #fff;
+  font-weight: bold;
+}
+.content-header-menu #item-point a {
+  color: #fff;
+  font-weight: bold;
+}
+
+/* 사진추가 */
+.add-profile-image {
+  display: none;
+  width: 500px;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  padding: 20px;
+  background-color: #fff;
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  z-index: 2;
+  transform: translateX(-50%);
+}
+.top {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+.folder-icon {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background: url(../svg/folder.svg);
+  background-repeat: no-repeat;
+}
+.folder-icon + span {
+  font-size: 20px;
+  font-weight: bold;
+}
+.add-profile-image .cancel {
+  display: block;
+  width: 25px;
+  height: 25px;
+  border: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: url(../svg/cancle.svg);
+  background-repeat: no-repeat;
+}
+
+
+.file-upload .form-control:before {
+  content: attr(data-message);
+  width: 100%;
+  font: normal normal normal 14px/1 FontAwesome;
+  line-height: 100%;
+  font-size: 1.5em;
+  text-align: center;
+}
+.file-upload .form-control input[type="file"] {
+  cursor: pointer;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+body.dragged .file-upload .form-control input[type="file"] {
+  /* Make sure it is full screen, whatever the position absolute container */
+  position: fixed;
+  top: -50vh;
+  bottom: -50vh;
+  left: -50vw;
+  right: -50vw;
+  height: 200vh;
+  width: 200vw;
+  z-index: 10002;
+}
+
+body:after {
+  content: 'You can drop the file. :-)';
+  font-size: 2em;
+  text-align: center;
+  line-height: 100vh;
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  background-color: #eee;
+  z-index: 10000;
+  border-radius: 4px;
+  border: thin solid #ccc;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s ease;
+}
+
+body.dragged:after {
+  opacity: 1;
+  visibility: visible;
+}
+
+.drag-and-drop {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border: 1px dashed gray;
+  border-radius: 10px;
+  margin: 20px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  z-index: 1;
+  cursor: pointer;
+}
+#document_file {
+  cursor: pointer;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+.picture {
+  width: 50px;
+  height: 40px;
+  background: url(../svg/picture.svg);
+  background-repeat: no-repeat;
+}
+.drag-and-drop + button,
+.alert-window button {
+  display: block;
+  width: 150px;
+  height: 50px;
+  border: 0;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #4ec53d;
+  margin: auto;
+}
+/* 재확인버튼 style */
+.check-again .upload,
+.check-again .unload {
+  display: none;
+  width: 300px;
+  /* border: 1px solid gray; */
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  padding: 30px;
+  text-align: center;
+  background-image: none;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.check-again .upload {
+  height: 150px;
+}
+.check-again .upload > input,
+.check-again .unload > input {
+  display: inline-block;
+  width: 100px;
+  height: 35px;
+  border: 0;
+  border-radius: 10px;
+  margin: 30px 10px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #fff;
+}
+.check-again .unload input[type="reset"] {
+  background-color: rgb(255, 37, 37);
+}
+/* Add - alert-window */
+.alert-window {
+  width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  padding: 20px;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+}
+/* 닉네임 변경 */
+.nickname-box {
+  box-sizing: border-box;
+  display: none;
+  opacity: 0;
+  z-index: -1;
+  position: fixed;
+  width: 400px;
+  height: 300px;
+  left: 50%;
+  top: 50%;
+  padding: 40px;
+  transform: translate(-50%, -50%);
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 22%);
+}
+.nickname-box.active {
+  z-index: 10;
+  display: block;
+  opacity: 1;
+}
+.nickname-box > .nick-header {
+  height: 30px;
+  line-height: 30px;
+  margin: 40px 0px 0px 5px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.nickname-box .bottom {
+  height: 30px;
+  line-height: 30px;
+  margin: 0px 0px 30px 5px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.nickname-input {
+  height: 50px;
+}
+.nickname-input input {
+  box-sizing: border-box;
+  position: relative;
+  font-size: 20px;
+  font-weight: 500;
+  color: #000000;
+  width: 320px;
+  height: 50px;
+  border: 3px solid #4ebc7a;
+  border-radius: 10px;
+}
+.nickname-input .ion {
+  position: relative;
+  align-items: center;
+  display: flex;
+  left: 250px;
+  bottom: 40px;
+  width: 60px;
+  justify-content: space-between;
+  font-size: 30px;
+}
+.nickname-send {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  border: 0px;
+  transform: translate(-50%);
+  width: 170px;
+  height: 50px;
+  line-height: 50px;
+  background-color: #4ec53d;
+  border-radius: 10px;
+  font-size: 20px;
+  color: #fff;
+}
+.closebutton2 {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 2em;
+}
+/* 뱃지 */
+.badge-collection {
+  box-sizing: border-box;
+  padding: 15px;
+  background-color: rgba(78, 197, 61, 0.75);
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 22%);
+  height: auto;
+  gap: 5px;
+  display: grid;
+  grid-template-rows: 35px 100px;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-areas:
+    "badge-header badge-header badge-header badge-header badge-header"
+    "badge-item1 badge-item2 badge-item3 badge-item4 badge-item5";
+}
+.badge-header {
+  display: flex;
+  font-size: larger;
+  font-weight: bolder;
+  color: white;
+  grid-area: badge-header;
+}
+/* 그리드 영역 분배 */
+.badge-item1 {
+  grid-area: badge-item1;
+}
+.badge-item2 {
+  grid-area: badge-item2;
+}
+.badge-item3 {
+  grid-area: badge-item3;
+}
+.badge-item4 {
+  grid-area: badge-item4;
+}
+.badge-item5 {
+  grid-area: badge-item5;
+}
+
+.sanBadge {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 1);
+}
+
+/* 모바일일때  */
+@media screen and (max-width: 821px) {
+  .mypage-container {
+    padding: 0px 2.5%;
+    gap: 0;
+    width: auto;
+    box-sizing: border-box;
+  }
+  .profile {
+    justify-content: space-around;
+    display: grid;
+    gap: 10px;
+    flex-direction: row;
+    align-items: center;
+    align-content: space-around;
+    justify-items: center;
+  }
+  .profile-image {
+    margin-top: 0;
+    width: 150px;
+    height: 150px;
+    background-size: contain;
+  }
+  .profile-image-button {
+    left: 58%;
+    top: 9px;
+  }
+  .add-profile-image {
+    width: 50%;
+  }
+  .folder-icon {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background: url(../svg/folder.svg);
+    background-repeat: no-repeat;
+    background-size: 30px;
+  }
+  .folder-icon + span {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .picture {
+    width: 40px;
+    height: 30px;
+    background: url(../svg/picture.svg);
+    background-repeat: no-repeat;
+    background-size: 40px;
+  }
+  .drag-and-drop {
+    height: 150px;
+    flex-direction: column;
+    gap: 0;
+  }
+  .drag-and-drop > p {
+    margin-bottom: 0;
+  }
+  .drag-and-drop + button {
+    display: block;
+    width: 100px;
+    height: 30px;
+    border: 0;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #4ec53d;
+    margin: auto;
+  }
+  .wrap span {
+    display: inline-block;
+    margin: 0 5px 0 5px;
+  }
+  .bunttons {
+    align-items: center;
+  }
+
+  /* 작아졌을떄~ */
+  .name-badge-setting {
+    width: auto;
+    gap: 10px;
+    height: fit-content;
+    border-radius: 10px;
+    justify-items: center;
+    align-content: stretch;
+  }
+  .content-header-menu {
+    width: auto;
+    line-height: 45px;
+    grid-template-columns: auto auto;
+  }
+  .cotents {
+    margin: 0;
+    font-size: 13px;
+    min-height: max-content;
+  }
+  .profile-image-button > img {
+    width: 34px;
+    position: absolute;
+  }
+  .badge-medal {
+    margin: 10px auto;
+    text-align: center;
+    margin-bottom: 0px;
+  }
+  .badge-medal img {
+    background-size: contain;
+    margin: 2px 2px 0px 2px;
+    width: 50px;
+  }
+  .badge-header {
+    font-size: medium;
+  }
+  .badge-header img {
+    top: -13%;
+  }
+  #content-section li {
+    width: auto;
+  }
+  .name-setting img {
+    top: 21%;
+  }
+  .badge-collection {
+    grid-template-rows: 35px auto;
+  }
+  .sanBadge {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 1);
+  }
+}
+@media screen and (max-width: 425px) {
+  .nickname-input {
+    width: 350px;
+  }
+
+  .nickname-input input {
+    width: 65%;
+  }
+}

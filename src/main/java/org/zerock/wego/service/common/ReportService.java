@@ -2,7 +2,6 @@ package org.zerock.wego.service.common;
 
 import org.springframework.stereotype.Service;
 import org.zerock.wego.domain.common.ReportDTO;
-import org.zerock.wego.exception.AccessBlindException;
 import org.zerock.wego.exception.DuplicateKeyException;
 import org.zerock.wego.exception.OperationFailException;
 import org.zerock.wego.exception.ServiceException;
@@ -20,14 +19,7 @@ public class ReportService {
 	
 	private final ReportMapper reportMapper;
 	
-	// 존재 여부 
-	public boolean isExist(ReportDTO dto) throws Exception{
-		
-		return (this.reportMapper.find(dto) != null);
-		
-	}// isExist
-	
-	
+
 	// 타겟 신고 총합 조회 
 	public int getTotalCount(ReportDTO dto) throws ServiceException{
 		
@@ -43,21 +35,22 @@ public class ReportService {
 	public void create(ReportDTO dto) throws Exception {
 //		log.trace("create({}) invoked.", dto);
 		
-		if(isExist(dto)) {
+		
+		if(this.reportMapper.isExist(dto)) {
 			throw new DuplicateKeyException();
 		}// if
 		
 		this.reportMapper.insert(dto);
+
 		
-		if(!isExist(dto)) {
+		if(!this.reportMapper.isExist(dto)) {
 			throw new OperationFailException();
 		}// if
-		
 	}// modifyComment
 
 	
 	// 신고 삭제 
-	public void removeByTarget(String targetGb, Integer targetCd) throws Exception{
+	public void removeAllByTarget(String targetGb, Integer targetCd) throws Exception{
 //		log.trace("removeAllByTarget({}, {})", targetGb, targetCd);
 		
 		this.reportMapper.deleteAllByTarget(targetGb, targetCd);
@@ -67,7 +60,9 @@ public class ReportService {
 									.targetCd(targetCd)
 									.build();
 		
-		if(isExist(report)) {
+		boolean isExist = this.reportMapper.isExist(report);
+		
+		if(isExist) {
 			throw new OperationFailException();
 		}// if
 	}// isRemovedByTarget
