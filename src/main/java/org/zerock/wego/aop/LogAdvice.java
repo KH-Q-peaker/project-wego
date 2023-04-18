@@ -15,7 +15,7 @@ import lombok.extern.log4j.Log4j2;
 @Component
 public class LogAdvice {
 
-	@Around("execution(* org.zerock.wego.service.*Service.*(..))")
+	@Around("execution(* org.zerock.wego.service.**.*Service.*(..))")
 	public Object logging(ProceedingJoinPoint pjp) throws Throwable{
 
 		String className = pjp.getSignature().getDeclaringTypeName();
