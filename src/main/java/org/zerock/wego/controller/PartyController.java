@@ -149,14 +149,10 @@ public class PartyController {
 
 		try {
 			Integer postUserId = this.partyService.getUserIdByPartyId(partyId);
-			
-			if (auth == null) {
-				return "redirect:/login";
-			} // if
 
-//			if (!auth.getUserId().equals(postUserId)) {
-//				throw new ControllerException("잘못된 접근입니다.");
-//			} // if
+			if (!auth.getUserId().equals(postUserId)) {
+				throw new ControllerException("잘못된 접근입니다.");
+			} // if
 			
 			PartyViewVO vo = this.partyService.getById(partyId);
 			model.addAttribute("party", vo);
@@ -200,14 +196,6 @@ public class PartyController {
 		log.trace("PostMapping - modify() invoked.");
 
 		try {	
-			if (auth == null) {
-				return "redirect:/login";
-			} // if
-
-//			if (auth.getUserId() != partyDTO.getUserId()) {
-//				throw new ControllerException("잘못된 접근입니다.");
-//			} // if
-
 			if (!posted) {
 				Cookie cookie = new Cookie("posted", "true");
 				cookie.setMaxAge(30);
@@ -242,10 +230,6 @@ public class PartyController {
 	public String register(@SessionAttribute("__AUTH__") UserVO auth) {
 		log.trace("register() invoked.");
 
-		if (auth == null) {
-			return "redirect:/login";
-		} // if
-
 		return "/party/register";
 	} // register
 
@@ -259,10 +243,6 @@ public class PartyController {
 		log.trace("PostMapping - register() invoked.");
 
 		try {
-			if (auth == null) {
-				return "redirect:/login";
-			} // if
-			
 			if(!posted) {
 				Cookie cookie = new Cookie("posted", "true");				
 	            cookie.setMaxAge(30);

@@ -1,11 +1,7 @@
 package org.zerock.wego.controller;
 
-import java.io.File;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import javax.servlet.http.Cookie;
@@ -34,7 +30,6 @@ import org.zerock.wego.domain.review.ReviewDTO;
 import org.zerock.wego.domain.review.ReviewViewVO;
 import org.zerock.wego.exception.AccessBlindException;
 import org.zerock.wego.exception.ControllerException;
-import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.service.common.CommentService;
 import org.zerock.wego.service.common.FavoriteService;
 import org.zerock.wego.service.common.FileService;
@@ -149,24 +144,24 @@ public class ReviewController {
 			@PathVariable("reviewId") Integer reviewId,
 			Model model) throws Exception {
 		log.trace("modify(auth, reviewId, model) invoked.");
+		
+		try {
+			ReviewViewVO reviewVO = this.reviewService.getById(reviewId);
+			Integer postUserId = reviewVO.getUserId();
 
-		if (auth == null) {
-			return "redirect:/login";
-		} // if
+			if (!auth.getUserId().equals(postUserId)) {
+				throw new ControllerException("잘못된 접근입니다.");
+			} // if
 
-		ReviewViewVO reviewVO = this.reviewService.getById(reviewId);
-		Integer postUserId = reviewVO.getUserId();
+			List<FileVO> fileVO = this.fileService.getList("SAN_REVIEW", reviewId);
 
-		if (!auth.getUserId().equals(postUserId)) {
-			throw new ControllerException("잘못된 접근입니다.");
-		} // if
+			model.addAttribute("review", reviewVO);
+			model.addAttribute("fileList", fileVO);
 
-		List<FileVO> fileVO = this.fileService.getList("SAN_REVIEW", reviewId);
-
-		model.addAttribute("review", reviewVO);
-		model.addAttribute("fileList", fileVO);
-
-		return "/review/modify";
+			return "/review/modify";
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
 	} // modify
 	
 	@PostMapping("/modify")
@@ -179,14 +174,6 @@ public class ReviewController {
 		log.trace("modify(auth, sanReviewId, sanName, newImageFiles, oldImageFiles, reviewDTO, fileDTO) invoked.");
 
 		try {
-			if (auth == null) {
-				return "redirect:/login";
-			} // if
-
-//			if (auth.getUserId() != reviewDTO.getUserId()) { // ID가 NULL로 나옴
-//				throw new ControllerException("잘못된 접근입니다.");
-//			} // if
-
 			if (!posted) {
 				Cookie cookie = new Cookie("posted", "true");
 				cookie.setMaxAge(30);
@@ -218,10 +205,6 @@ public class ReviewController {
 	public String register(@SessionAttribute("__AUTH__") UserVO auth) {
 		log.trace("register() invoked.");
 
-		if (auth == null) {
-			return "redirect:/login";
-		} // if
-
 		return "/review/register";
 	} // register
 
@@ -233,10 +216,6 @@ public class ReviewController {
 		log.trace("register(auth, sanName, imageFiles, reviewDTO, fileDTO, posted, response) invoked.");
 
 		try {
-			if (auth == null) {
-				return "redirect:/login";
-			} // if
-
 			if (!posted) {
 				Cookie cookie = new Cookie("posted", "true");
 				cookie.setMaxAge(30);
