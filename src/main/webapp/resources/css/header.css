@@ -239,7 +239,6 @@ header {
 }
 
 .user-profile-img {
-  /* display: none; */
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -249,7 +248,7 @@ header {
   width: 40px;
   height: 40px;
   border: 0;
-  background: url(../svg/login.svg);
+  background: url(../img/login.svg);
   background-repeat: no-repeat;
   background-size: contain;
 }
@@ -296,7 +295,7 @@ header {
   border: 0;
   color: gray;
   display: inline-block;
-  background: url(../svg/search.svg);
+  background: url(../img/search.svg);
   background-repeat: no-repeat;
   background-size: contain;
   cursor: pointer;
@@ -307,7 +306,7 @@ header {
   width: 25px;
   height: 25px;
   border: 0;
-  background: url(../svg/cancle.svg);
+  background: url(../img/cancle.svg);
   background-repeat: no-repeat;
 }
 
@@ -372,7 +371,7 @@ header {
     width: 33px;
     height: 33px;
     border: 0;
-    background: url(../svg/login.svg);
+    background: url(../img/login.svg);
     background-repeat: no-repeat;
     background-size: contain;
   }
