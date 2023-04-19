@@ -33,6 +33,18 @@
 			)
 		WHERE rownum &lt;= 10
 	</select>
+	
+	<select id="selectSearchParty3ByQuery"
+		resultType="org.zerock.wego.domain.party.PartyViewVO">
+		SELECT *
+		FROM san_party_v
+		WHERE
+			(
+			title LIKE '%'||#{search}||'%'
+			OR contents LIKE '%'||#{search}||'%'
+			)
+			AND rownum &lt;= 3
+	</select>
 
 	<!-- *********** 식별자로 모집글 존재여부  ************ -->
   	<select id="isExist" 
