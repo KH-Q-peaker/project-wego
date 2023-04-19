@@ -126,13 +126,13 @@ mountains.map(
 const date = new Date();
 const today = `${date.getFullYear()}-${
   date.getMonth() < 10 ? "0" + (date.getMonth() + 1) : date.getMonth()
-}-${date.getDate() < 10 ? ("0" + date.getDate()) : date.getDate()}`;
+}-${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`;
 selector("#date").min = today;
 
 // 모집글에서 모집인원범위(2~45)를 벗어날 경우 빨간색 숫자로 변경
-selector("input[name=partyMax]").addEventListener("input", e => {
-  const member = e.target.value
-  if(member >= 2 && member <= 45 || member === "") {
+selector("input[name=partyMax]").addEventListener("input", (e) => {
+  const member = e.target.value;
+  if ((member >= 2 && member <= 45) || member === "") {
     e.target.style.color = "black";
   } else {
     e.target.style.color = "red";
@@ -195,11 +195,11 @@ selector(".check-again .unload input[type=button]").addEventListener(
 selector(".check-again .unload input[type=reset]").addEventListener(
   "click",
   () => {
-	if(selector("#upload").innerText == "수정") {
-		self.location = `/party/${selector("input[name=sanPartyId]").value}`;
-	} else {
-		self.location = "/party";
-	} /// if-else
+    if (selector("#upload").innerText == "수정") {
+      self.location = `/party/${selector("input[name=sanPartyId]").value}`;
+    } else {
+      self.location = "/party";
+    } /// if-else
   }
 ); // .addEventListener
 
@@ -328,7 +328,8 @@ selector(".drag-and-drop + button").onclick = (e) => {
   } // if
 
   selector(".add-photo").style.display = "none";
-  selector(".photo").innerHTML = imgPath + `<button type="button" class="img-upload-cancle"></button>`;
+  selector(".photo").innerHTML =
+    imgPath + `<button type="button" class="img-upload-cancle"></button>`;
 
   imgPath = null;
 };
@@ -393,15 +394,16 @@ const formCheck = () => {
 
   // 위 필수입력값이 모두 입력되었다면 폼 데이터에 저장
   // 이미지는 업로드와 동시에 바로 폼 데이터에 저장
-  if(selector("#upload").innerText == "수정") {
-	// input:hidden으로 수정할 모집글 번호를 전송
-	formData.set("sanPartyId", form.elements.sanPartyId.value);
+  if (selector("#upload").innerText == "수정") {
+    // input:hidden으로 수정할 모집글 번호를 전송
+    formData.set("sanPartyId", form.elements.sanPartyId.value);
   } // if
-  
-  if(selector(".photo img") === null) { // 폼 데이터 전송 전 사용자가 이미지 추가를 취소했을 경우
-	formData.delete("imgFile");
+
+  if (selector(".photo img") === null) {
+    // 폼 데이터 전송 전 사용자가 이미지 추가를 취소했을 경우
+    formData.delete("imgFile");
   } // if
-  
+
   formData.set("sanName", form.elements.sanName.value);
   formData.set("title", form.elements.title.value);
   formData.set("contents", form.elements.contents.value);
@@ -418,26 +420,17 @@ const formCheck = () => {
 selector(".upload input[type=submit]").onclick = (e) => {
   e.preventDefault();
 
-  const cookies = document.cookie.split(";");
-  let value;
+  e.target.disabled = true;
 
-  for (let index in cookies) {
-    if (cookies[index].split("=")[0].trim() == "posted") {
-      value = cookies[index].split("=")[1].trim();
-    } // if
-  } // for
-
-  if (value !== "true") {
-    fetch(
-      selector("#upload").innerText == "등록"
-        ? "/party/register"
-        : "/party/modify",
-      {
-        method: "POST",
-        body: formData,
-      }
-    ).then((res) => {
-      self.location = res.url;
-    });
-  } // if
+  fetch(
+    selector("#upload").innerText == "등록"
+      ? "/party/register"
+      : "/party/modify",
+    {
+      method: "POST",
+      body: formData,
+    }
+  ).then((res) => {
+    self.location = res.url;
+  });
 };
