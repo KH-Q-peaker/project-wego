@@ -7,7 +7,9 @@ import org.zerock.wego.domain.info.SanInfoViewVO;
 import org.zerock.wego.domain.party.PartyViewVO;
 import org.zerock.wego.domain.review.ReviewViewVO;
 import org.zerock.wego.exception.ServiceException;
-import org.zerock.wego.mapper.SearchMapper;
+import org.zerock.wego.mapper.PartyMapper;
+import org.zerock.wego.mapper.ReviewMapper;
+import org.zerock.wego.mapper.SanInfoMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -19,14 +21,16 @@ import lombok.extern.log4j.Log4j2;
 @Service
 public class SearchService {
 
-	private final SearchMapper mapper;
+	private final SanInfoMapper sanInfoMapper;
+	private final PartyMapper partyMapper;
+	private final ReviewMapper reviewMapper;
 
 	
 	public Set<SanInfoViewVO> selectSearchSanInfo3(String search) throws ServiceException {
 		log.trace("selectSearchSanInfo3({}) invoked.", search);
 		
 		try {
-			return this.mapper.selectSearchSanInfo3ByQuery(search);
+			return this.sanInfoMapper.selectSearchSanInfo3ByQuery(search);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -36,7 +40,7 @@ public class SearchService {
 		log.trace("selectSearchParty3({}) invoked.", search);
 		
 		try {
-			return this.mapper.selectSearchParty3ByQuery(search);
+			return this.partyMapper.selectSearchParty3ByQuery(search);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -46,7 +50,7 @@ public class SearchService {
 		log.trace("selectSearchReview3({}) invoked.", search);
 		
 		try {
-			return this.mapper.selectSearchReview3ByQuery(search);
+			return this.reviewMapper.selectSearchReview3ByQuery(search);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch

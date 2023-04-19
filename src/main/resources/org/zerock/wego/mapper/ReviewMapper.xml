@@ -24,6 +24,18 @@
 			)
 		WHERE rownum &lt;= 10
 	</select>
+	
+	<select id="selectSearchReview3ByQuery"
+		resultType="org.zerock.wego.domain.review.ReviewViewVO">
+		SELECT *
+		FROM san_review_v
+		WHERE
+			(
+			title LIKE '%'||#{search}||'%'
+			OR contents LIKE '%'||#{search}||'%'
+			)
+			AND rownum &lt;= 3
+	</select>
 
 	<!--  ************* 존재 여부 *************** -->
 	<select id="isExist">

@@ -12,6 +12,7 @@ public interface ReviewMapper {
 
 	public abstract List<ReviewViewVO> selectAll();	// 전체 목록 조회	
 	public abstract Set<ReviewViewVO> selectRandom10(); // 10개의 게시글 랜덤 조회
+	public abstract Set<ReviewViewVO> selectSearchReview3ByQuery(String query);
 	
 	// 존재여부 
 	public abstract boolean isExist(@Param("reviewId")Integer reviewId);
