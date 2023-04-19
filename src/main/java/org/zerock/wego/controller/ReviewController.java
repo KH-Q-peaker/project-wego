@@ -4,13 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingDeque;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -168,19 +164,11 @@ public class ReviewController {
 	public String modify(@SessionAttribute("__AUTH__") UserVO auth, Integer sanReviewId, String sanName,
 			@RequestParam(value = "imgFiles", required = false) List<MultipartFile> newImageFiles,
 			@RequestParam(value = "oldImgFiles", required = false) String oldImageFiles,
-			@RequestParam(value = "imgOrder", required = false) String imageOrder, ReviewDTO reviewDTO, FileDTO fileDTO,
-			@CookieValue(value = "posted", required = false) boolean posted, HttpServletResponse response)
-			throws ControllerException {
+			@RequestParam(value = "imgOrder", required = false) String imageOrder, ReviewDTO reviewDTO, FileDTO fileDTO
+			) throws ControllerException {
 		log.trace("modify(auth, sanReviewId, sanName, newImageFiles, oldImageFiles, reviewDTO, fileDTO) invoked.");
 
 		try {
-			if (!posted) {
-				Cookie cookie = new Cookie("posted", "true");
-				cookie.setMaxAge(30);
-				response.addCookie(cookie);
-			} // if
-
-			ReviewViewVO vo = this.reviewService.getById(sanReviewId);
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 
 			reviewDTO.setSanInfoId(sanId);
@@ -211,17 +199,10 @@ public class ReviewController {
 	@PostMapping("/register")
 	public String register(@SessionAttribute("__AUTH__") UserVO auth, String sanName,
 			@RequestParam(value = "imgFiles", required = false) List<MultipartFile> imageFiles, ReviewDTO reviewDTO,
-			FileDTO fileDTO, @CookieValue(value = "posted", required = false) boolean posted,
-			HttpServletResponse response) throws ControllerException {
+			FileDTO fileDTO) throws ControllerException {
 		log.trace("register(auth, sanName, imageFiles, reviewDTO, fileDTO, posted, response) invoked.");
 
 		try {
-			if (!posted) {
-				Cookie cookie = new Cookie("posted", "true");
-				cookie.setMaxAge(30);
-				response.addCookie(cookie);
-			} // if
-
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 
 			reviewDTO.setSanInfoId(sanId);
