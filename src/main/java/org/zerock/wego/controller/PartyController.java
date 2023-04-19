@@ -5,14 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingDeque;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -161,7 +157,7 @@ public class PartyController {
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
-	} // detailAndModify
+	} // modify
 
 	
 
@@ -190,18 +186,11 @@ public class PartyController {
 			@SessionAttribute("__AUTH__")UserVO auth,
 			Integer sanPartyId, String sanName, 
 			@RequestParam(value = "imgFile", required = false)List<MultipartFile> imageFiles, 
-			String date, String time, PartyDTO partyDTO, FileDTO fileDTO,
-			@CookieValue(value = "posted", required = false) boolean posted,
-			HttpServletResponse response) throws ControllerException { 
+			String date, String time, PartyDTO partyDTO, FileDTO fileDTO
+			) throws ControllerException { 
 		log.trace("PostMapping - modify() invoked.");
 
-		try {	
-			if (!posted) {
-				Cookie cookie = new Cookie("posted", "true");
-				cookie.setMaxAge(30);
-				response.addCookie(cookie);
-			} // if
-			
+		try {			
 			// TODO: 산이름으로 산ID 조회는 유틸 서비스로 분리 필요
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 			partyDTO.setSanInfoId(sanId);
@@ -237,18 +226,11 @@ public class PartyController {
 	public String register(
 			@SessionAttribute("__AUTH__")UserVO auth, String sanName, 
 			@RequestParam(value = "imgFile", required = false)List<MultipartFile> imageFiles,
-			String date, String time, PartyDTO partyDTO, FileDTO fileDTO,
-			@CookieValue(value="posted", required=false)boolean posted,
-			HttpServletResponse response) throws ControllerException {
+			String date, String time, PartyDTO partyDTO, FileDTO fileDTO
+			) throws ControllerException {
 		log.trace("PostMapping - register() invoked.");
 
-		try {
-			if(!posted) {
-				Cookie cookie = new Cookie("posted", "true");				
-	            cookie.setMaxAge(30);
-	            response.addCookie(cookie);
-			} // if
-			
+		try {			
 			partyDTO.setUserId(auth.getUserId());
 			
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
@@ -256,7 +238,7 @@ public class PartyController {
 
 			Timestamp dateTime = Timestamp.valueOf(date + " " + time + ":00");
 			partyDTO.setPartyDt(dateTime);
-
+			
 			boolean isSuccess = this.partyService.register(partyDTO);
 			log.info("isSuccess: {}", isSuccess);
 
@@ -267,7 +249,6 @@ public class PartyController {
 			} // if
 
 			return "redirect:/party/" + partyDTO.getSanPartyId();
-			
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch

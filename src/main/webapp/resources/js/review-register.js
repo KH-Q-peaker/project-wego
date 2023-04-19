@@ -131,11 +131,11 @@ selector("#cancle").addEventListener("click", () => {
 selector(".check-again .unload input[type=reset]").addEventListener(
   "click",
   () => {
-	if(selector("#upload").innerText == "수정") {
-		self.location = `/review/${selector("input[name=sanReviewId]").value}`;
-	} else {
-		self.location = "/review";
-	} /// if-else
+    if (selector("#upload").innerText == "수정") {
+      self.location = `/review/${selector("input[name=sanReviewId]").value}`;
+    } else {
+      self.location = "/review";
+    } /// if-else
   }
 ); // .addEventListener
 
@@ -263,7 +263,6 @@ selector(".drag-and-drop + button").onclick = (e) => {
 // ========================= 업로드 파일 용량 및 형식 이벤트
 // 업로드 파일 용량 체크
 const isFileMaxSize = (file) => {
-
   if (file[0].size > 20971520) {
     selector(".drag-and-drop").innerHTML = `
     <p>최대 업로드 용량은 20MB입니다.<br>
@@ -276,7 +275,6 @@ const isFileMaxSize = (file) => {
 
 // 파일형식 체크
 const isWrongFile = (file) => {
-
   if (
     file[0].type !== "image/jpeg" &&
     file[0].type !== "image/png" &&
@@ -303,7 +301,6 @@ const handleUpdate = (files) => {
     const reader = new FileReader();
 
     reader.addEventListener("load", (e) => {
-
       imgPath = `<img src="${e.target.result}" alt="${files[0].name}"></img><br>`;
     });
 
@@ -370,7 +367,6 @@ const formCheck = () => {
         // 신규 이미지로 판단
         imgFileNames.push(contentChildNodes[i].alt);
         imgOrder.push(contentChildNodes[i].alt);
-
       } else {
         // 기존 이미지로 판단
         oldImgFiles.push(contentChildNodes[i].alt);
@@ -399,13 +395,12 @@ const formCheck = () => {
   formData.set("title", form.elements.title.value);
   formData.set("contents", contentResult);
 
-
   for (let key in imgFiles) {
     if (imgFileNames.includes(imgFiles[key].name)) {
       formData.append("imgFiles", imgFiles[key]);
     } // if
   } // for
-  
+
   return true;
 };
 
@@ -413,29 +408,19 @@ const formCheck = () => {
 selector(".upload input[type=submit]").onclick = (e) => {
   e.preventDefault();
 
-  const cookies = document.cookie.split(";");
-  let value;
+  e.target.disabled = true;
 
-  for (let index in cookies) {
-    if (cookies[index].split("=")[0].trim() == "posted") {
-      value = cookies[index].split("=")[1].trim();
-    } // if
-  } // for
-
-  
-  if (value !== "true") {
-    fetch(
-      selector("#upload").innerText == "등록"
-        ? "/review/register"
-        : "/review/modify",
-      {
-        method: "POST",
-        body: formData,
-      }
-    ).then((res) => {
-      self.location = res.url;
-    });
-  } // if
+  fetch(
+    selector("#upload").innerText == "등록"
+      ? "/review/register"
+      : "/review/modify",
+    {
+      method: "POST",
+      body: formData,
+    }
+  ).then((res) => {
+    self.location = res.url;
+  });
 };
 
 // 후기글 수정 시 이미지 경로 삽입
