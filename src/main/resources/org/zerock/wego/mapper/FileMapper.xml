@@ -26,12 +26,10 @@
 			target_cd = ${targetCd}	
 	</select>
 	
-	
-
 	<insert id="insert">
 		INSERT INTO
-			file_tb(target_gb, target_cd, file_name, uuid, path)
-			VALUES(#{targetGb}, #{targetCd}, #{fileName}, #{uuid}, #{path})
+			file_tb(target_gb, target_cd, file_name, uuid, path, status)
+			VALUES(#{targetGb}, #{targetCd}, #{fileName}, #{uuid}, #{path}, #{status})
 	</insert>
 
 	<update id="update">

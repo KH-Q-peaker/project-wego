@@ -23,6 +23,18 @@
 			)
 		WHERE rownum &lt;= 10
 	</select>
+	
+	<select id="selectSearchSanInfo3ByQuery"
+		resultType="org.zerock.wego.domain.info.SanInfoViewVO">
+		SELECT *
+		FROM san_info_v
+		WHERE
+			(
+			san_name LIKE '%'||#{search}||'%'
+			OR details LIKE '%'||#{search}||'%'
+			)
+			AND rownum &lt;= 3
+	</select>
 
 	<select id="selectById"
 		resultType="org.zerock.wego.domain.info.SanInfoViewVO">

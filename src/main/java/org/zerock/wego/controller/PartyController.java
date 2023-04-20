@@ -1,17 +1,14 @@
 package org.zerock.wego.controller;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingDeque;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -139,9 +136,7 @@ public class PartyController {
 	}// showDetailById
 	
 	
-	@GetMapping(
-			path = "/modify/{partyId}"
-			)
+	@GetMapping(path = "/modify/{partyId}")
 	public String modify(
 			@SessionAttribute("__AUTH__")UserVO auth,
 			@PathVariable("partyId") Integer partyId, Model model) 
@@ -150,9 +145,9 @@ public class PartyController {
 
 		try {
 			Integer postUserId = this.partyService.getUserIdByPartyId(partyId);
-			
-			if(auth == null || !auth.getUserId().equals(postUserId)) {
-				return "error";
+
+			if (!auth.getUserId().equals(postUserId)) {
+				throw new ControllerException("잘못된 접근입니다.");
 			} // if
 			
 			PartyViewVO vo = this.partyService.getById(partyId);
@@ -162,7 +157,7 @@ public class PartyController {
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
-	} // detailAndModify
+	} // modify
 
 	
 
@@ -191,15 +186,12 @@ public class PartyController {
 			@SessionAttribute("__AUTH__")UserVO auth,
 			Integer sanPartyId, String sanName, 
 			@RequestParam(value = "imgFile", required = false)List<MultipartFile> imageFiles, 
-			String date, String time, PartyDTO partyDTO, FileDTO fileDTO) throws ControllerException { 
-		log.trace("modify({}, {}, {}, {}, {}, {}, {}) invoked.", auth, sanPartyId, sanName, imageFiles, date, time, partyDTO);
+			String date, String time, PartyDTO partyDTO, FileDTO fileDTO
+			) throws ControllerException { 
+		log.trace("PostMapping - modify() invoked.");
 
-		try {	
-			if(auth.getUserId() == partyDTO.getUserId()) {
-				return "error";
-			} // if
-			
-			// TODO: 아래 2가지도 서비스로 분리해야 될지 고민
+		try {			
+			// TODO: 산이름으로 산ID 조회는 유틸 서비스로 분리 필요
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 			partyDTO.setSanInfoId(sanId);
 
@@ -210,7 +202,10 @@ public class PartyController {
 			log.info("isModifySuccess: {}", isModifySuccess);
 
 			if (imageFiles != null) {
-				boolean isChangeImgeSuccess = this.fileService.isChangeImage(imageFiles, "SAN_PARTY", partyDTO.getSanPartyId(), fileDTO);
+				List<String> oldImageFiles = Arrays.asList(this.fileService.getList("SAN_PARTY", partyDTO.getSanPartyId()).get(0).getFileName());
+				List<String> order = Arrays.asList(imageFiles.get(0).getOriginalFilename());
+				boolean isChangeImgeSuccess = this.fileService.isChangeImage(imageFiles, oldImageFiles, order, "SAN_PARTY",
+						partyDTO.getSanPartyId(), fileDTO);
 				log.info("isChangeImgeSuccess: {}", isChangeImgeSuccess);
 			} // if
 
@@ -221,31 +216,21 @@ public class PartyController {
 	} // modify
 
 	@GetMapping("/register")
-	public void register() { 
+	public String register(@SessionAttribute("__AUTH__") UserVO auth) {
 		log.trace("register() invoked.");
+
+		return "/party/register";
 	} // register
 
 	@PostMapping("/register")
 	public String register(
-			@SessionAttribute("__AUTH__")UserVO auth,
-			String sanName, @RequestParam(value = "imgFile", required = false)List<MultipartFile> imageFiles,
-			String date, String time, PartyDTO partyDTO, FileDTO fileDTO,
-			@CookieValue(value="posted", required=false)boolean posted,
-			HttpServletResponse response) throws ControllerException {
-		log.trace("register({}, {}, {}, {}, {}, {}, {}) invoked.", auth, sanName, imageFiles, date, time, partyDTO, fileDTO);
+			@SessionAttribute("__AUTH__")UserVO auth, String sanName, 
+			@RequestParam(value = "imgFile", required = false)List<MultipartFile> imageFiles,
+			String date, String time, PartyDTO partyDTO, FileDTO fileDTO
+			) throws ControllerException {
+		log.trace("PostMapping - register() invoked.");
 
-		try {
-			if(auth == null) {
-				return "error";
-			} // if
-			
-			if(!posted) {
-				Cookie cookie = new Cookie("posted", "true");				
-	            cookie.setMaxAge(30);
-	            response.addCookie(cookie);
-			} // if
-			
-			// TODO: 아래 3가지도 서비스로 분리해야 될지 고민
+		try {			
 			partyDTO.setUserId(auth.getUserId());
 			
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
@@ -253,17 +238,17 @@ public class PartyController {
 
 			Timestamp dateTime = Timestamp.valueOf(date + " " + time + ":00");
 			partyDTO.setPartyDt(dateTime);
-
+			
 			boolean isSuccess = this.partyService.register(partyDTO);
 			log.info("isSuccess: {}", isSuccess);
 
 			if (imageFiles != null) {
-				boolean isImageUploadSuccess = this.fileService.isImageRegister(imageFiles, "SAN_PARTY", partyDTO.getSanPartyId(), fileDTO);
+				boolean isImageUploadSuccess = this.fileService.isImageRegister(imageFiles, "SAN_PARTY",
+						partyDTO.getSanPartyId(), fileDTO);
 				log.info("isImageUploadSuccess: {}", isImageUploadSuccess);
 			} // if
 
 			return "redirect:/party/" + partyDTO.getSanPartyId();
-			
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch

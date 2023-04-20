@@ -131,11 +131,11 @@ selector("#cancle").addEventListener("click", () => {
 selector(".check-again .unload input[type=reset]").addEventListener(
   "click",
   () => {
-	if(selector("#upload").innerText == "수정") {
-		self.location = `/review/${selector("input[name=sanReviewId]").value}`;
-	} else {
-		self.location = "/review";
-	} /// if-else
+    if (selector("#upload").innerText == "수정") {
+      self.location = `/review/${selector("input[name=sanReviewId]").value}`;
+    } else {
+      self.location = "/review";
+    } /// if-else
   }
 ); // .addEventListener
 
@@ -183,7 +183,6 @@ document.querySelector("#contents").addEventListener("input", (e) => {
     cutText(e.target.innerText, 1500);
     // return false;
   } // if
-  console.log(e.target.innerText.length);
 });
 
 async function cutText(text, length) {
@@ -232,7 +231,6 @@ selector(".drag-and-drop").onclick = () => {
 
   input.addEventListener("input", (e) => {
     const files = e.target.files;
-    console.log("input-file: ", files);
 
     // 업로드 파일 용량 체크
     if (isFileMaxSize(files)) {
@@ -265,7 +263,6 @@ selector(".drag-and-drop + button").onclick = (e) => {
 // ========================= 업로드 파일 용량 및 형식 이벤트
 // 업로드 파일 용량 체크
 const isFileMaxSize = (file) => {
-  console.log("call isFileMaxSize", file);
   if (file[0].size > 20971520) {
     selector(".drag-and-drop").innerHTML = `
     <p>최대 업로드 용량은 20MB입니다.<br>
@@ -278,7 +275,6 @@ const isFileMaxSize = (file) => {
 
 // 파일형식 체크
 const isWrongFile = (file) => {
-  console.log("call isRightFile", file);
   if (
     file[0].type !== "image/jpeg" &&
     file[0].type !== "image/png" &&
@@ -305,7 +301,6 @@ const handleUpdate = (files) => {
     const reader = new FileReader();
 
     reader.addEventListener("load", (e) => {
-      console.log("e.target", e.target);
       imgPath = `<img src="${e.target.result}" alt="${files[0].name}"></img><br>`;
     });
 
@@ -362,25 +357,20 @@ const formCheck = () => {
   let contentResult = ""; // formData에 contents로 담을 텍스트
   const imgFileNames = []; // 이미지 파일명 저장(중간 제거된 이미지 유무를 위함)
   const oldImgFiles = []; // 기존 이미지 파일 체크
+  const imgOrder = [];
 
   for (let i = 0; i < contentChildNodes.length; i++) {
     if (contentChildNodes[i].nodeName === "IMG") {
       contentResult += "<img>";
 
       if (contentChildNodes[i].src.slice(0, 4) === "data") {
-        // 신규 이미지로 판단(MultipartFile)
+        // 신규 이미지로 판단
         imgFileNames.push(contentChildNodes[i].alt);
-        console.log("new img ---> ", contentChildNodes[i].alt);
+        imgOrder.push(contentChildNodes[i].alt);
       } else {
         // 기존 이미지로 판단
-        // UUID를 객체에 저장
-        oldImgFiles.push(
-          contentChildNodes[i].src.slice(
-            contentChildNodes[i].src.lastIndexOf("/") + 1
-          )
-        );
-        console.log("old img --->", contentChildNodes[i].src.slice(
-            contentChildNodes[i].src.lastIndexOf("/") + 1));
+        oldImgFiles.push(contentChildNodes[i].alt);
+        imgOrder.push(contentChildNodes[i].alt);
       } // if-else
     } // if
 
@@ -396,13 +386,14 @@ const formCheck = () => {
   if (selector("#upload").innerText == "수정") {
     // input:hidden으로 수정할 후기글 번호를 전송
     formData.set("sanReviewId", form.elements.sanReviewId.value);
+    // 수정할 때만 기존 이미지 정보 및 이미지 순서를 보냄
+    formData.set("oldImgFiles", oldImgFiles);
+    formData.set("imgOrder", imgOrder);
   } // if
 
   formData.set("sanName", form.elements.sanName.value);
   formData.set("title", form.elements.title.value);
   formData.set("contents", contentResult);
-  formData.set("oldImgFiles", oldImgFiles);
-  console.log("oldImgFiles", oldImgFiles);
 
   for (let key in imgFiles) {
     if (imgFileNames.includes(imgFiles[key].name)) {
@@ -417,30 +408,19 @@ const formCheck = () => {
 selector(".upload input[type=submit]").onclick = (e) => {
   e.preventDefault();
 
-  const cookies = document.cookie.split(";");
-  let value;
+  e.target.disabled = true;
 
-  for (let index in cookies) {
-    if (cookies[index].split("=")[0].trim() == "posted") {
-      value = cookies[index].split("=")[1].trim();
-    } // if
-  } // for
-
-  console.log("value: ", value);
-  
-  if (value !== "true") {
-    fetch(
-      selector("#upload").innerText == "등록"
-        ? "/review/register"
-        : "/review/modify",
-      {
-        method: "POST",
-        body: formData,
-      }
-    ).then((res) => {
-      self.location = res.url;
-    });
-  } // if
+  fetch(
+    selector("#upload").innerText == "등록"
+      ? "/review/register"
+      : "/review/modify",
+    {
+      method: "POST",
+      body: formData,
+    }
+  ).then((res) => {
+    self.location = res.url;
+  });
 };
 
 // 후기글 수정 시 이미지 경로 삽입
@@ -449,8 +429,10 @@ window.onload = function () {
     let order = 0;
     selector("#contents").childNodes.forEach((item) => {
       if (item.nodeName === "IMG") {
-        item.src = fileList[order++];
-      }
+        item.src = fileList[order];
+        item.alt = fileAltList[order];
+        order++;
+      } // if
     });
   }
 };
