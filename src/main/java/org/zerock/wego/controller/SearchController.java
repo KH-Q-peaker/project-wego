@@ -42,4 +42,20 @@ public class SearchController {
 		} // try-catch
 
 	} // searchResult
+	
+	@GetMapping("/info/search")
+	public String infoSearchResult(String query, Model model) throws ControllerException {
+		log.trace("searchResult({}) invoked.", query);
+
+		try {
+			Set<SanInfoViewVO> sanInfoList = this.service.selectSearchSanInfo(query);
+			model.addAttribute("sanInfoList", sanInfoList);
+
+			return "info/infoSearch";
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+
+	} // searchResult
+	
 } // end class

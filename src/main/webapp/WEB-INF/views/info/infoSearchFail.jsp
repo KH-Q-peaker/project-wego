@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="/resources/css/header.css" />
 <link rel="stylesheet" href="/resources/css/footer.css" />
 <link rel="stylesheet" href="/resources/css/sanInfoItem.css?after" />
-<link rel="stylesheet" href="/resources/css/sanInfoFrame.css?after" />
+<link rel="stylesheet" href="/resources/css/searchFail.css?after" />
 <link rel="stylesheet" href="/resources/css/remote.css?after" />
 <link rel="stylesheet" href="/resources/css/sort.css?after" />
 
@@ -29,7 +29,6 @@
 <script src="/resources/js/sort.js" defer></script>
 <script src="/resources/js/top.js" defer></script>
 <script src="/resources/js/favorite.js" defer></script>
-<script src="/resources/js/board-type.js" defer></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
@@ -49,24 +48,33 @@
 
 			<div class="container">
 
-				<div class="mountain-info">
-
-					<div class="info-board">
-						<h2>❤️ 산 ❤️</h2>
+				<div class="search-results">
+				
+					<div class="result-line">
+						<div class="hr-sect">검색결과</div>
 					</div>
-
-					<!-- 정렬 -->
-					<div class="select-sort">
-						<button class="btn-select">정렬 기준</button>
-						<ul class="sortBy">  
-							<li class="sortByItem"><button id="sort-abc" type="button">ㄱㄴㄷ순</button></li>
-							<li class="sortByItem"><button id="sort-likes" type="button">좋아요순</button></li>
-						</ul>
+				
+					<div class="guide">
+						<p class="none">검색결과가 없습니다.</p>
+						<p>
+							검색어를 다시 한번 더 확인해 주세요. <br>
+							검색어의 단어를 하나로 줄이거나, 다른 검색어로 검색해 주세요. <br>
+						</p>
+						<br>
 					</div>
-
 				</div>
 
-				<div class="data-container">
+
+				<div class="suggestion">
+				
+					<div class="suggestion-line">
+						<div class="hr-sect">추천</div>
+					</div>
+				
+				</div>
+				
+				<div class="suggestion-item">
+					
 					<!-- Item -->
 					<c:forEach var="item" items="${sanInfoList}">
 						<a href="/info/${item.sanInfoId}">
@@ -90,9 +98,9 @@
 							</div>
 						</a>
 					</c:forEach>
-  				</div>
-  				
-  				
+
+				</div>
+
 			</div>
 		</section>
 		<!-- main end -->
@@ -103,7 +111,6 @@
 	<a href="#" class="scrollToTop"> <img src="/resources/svg/top.svg"></a>
 
 	<%@include file="/WEB-INF/views/common/footer.jsp"%>
-
 </body>
 
 </html>

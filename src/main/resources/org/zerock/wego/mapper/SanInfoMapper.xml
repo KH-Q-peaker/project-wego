@@ -10,6 +10,20 @@
 		resultType="org.zerock.wego.domain.info.SanInfoViewVO">
 		SELECT * 
 		FROM san_info_v
+		ORDER BY san_info_id
+		OFFSET (#{cri.currPage} - 1 ) * #{cri.amount} ROWS
+		FETCH NEXT #{cri.amount} ROWS ONLY
+	</select>
+	
+	<select id="selectSearchSanInfoByQuery"
+		resultType="org.zerock.wego.domain.info.SanInfoViewVO">
+		SELECT *
+		FROM san_info_v
+		WHERE
+			(
+			san_name LIKE '%'||#{search}||'%'
+			OR details LIKE '%'||#{search}||'%'
+			)
 	</select>
 
 	<select id="selectRandom10"

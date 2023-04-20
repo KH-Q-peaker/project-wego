@@ -1,9 +1,9 @@
 package org.zerock.wego.service.info;
 
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
+import org.zerock.wego.domain.common.Criteria;
 import org.zerock.wego.domain.info.SanInfoViewVO;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.SanInfoMapper;
@@ -21,11 +21,21 @@ public class SanInfoService {
 	private final SanInfoMapper mapper;
 
 
-	public List<SanInfoViewVO> getList() throws ServiceException {
+	public Integer getTotalAmount() throws ServiceException {
+		log.trace("getTotalAmount() invoked.");
+		
+		try {
+			return this.mapper.selectTotalCount();
+		} catch(Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	} // getTotalAmount
+	
+	public Set<SanInfoViewVO> getList(Criteria cri) throws ServiceException {
 		log.trace("getList() invoked.");
 		
 		try {
-			return this.mapper.selectAll();
+			return this.mapper.selectAll(cri);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch

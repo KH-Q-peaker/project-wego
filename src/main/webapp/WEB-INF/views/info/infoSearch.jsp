@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="/resources/css/header.css" />
 <link rel="stylesheet" href="/resources/css/footer.css" />
 <link rel="stylesheet" href="/resources/css/sanInfoItem.css?after" />
-<link rel="stylesheet" href="/resources/css/sanInfoFrame.css?after" />
+<link rel="stylesheet" href="/resources/css/sanInfoSearch.css?after" />
 <link rel="stylesheet" href="/resources/css/remote.css?after" />
 <link rel="stylesheet" href="/resources/css/sort.css?after" />
 
@@ -49,9 +49,13 @@
 
 			<div class="container">
 
-				<div class="mountain-info">
+				<div class="search-results">
 
-					<div class="info-board">
+					<div class="result-line">
+						<div class="hr-sect">검색결과</div>
+					</div>
+
+					<div class="info-search-board">
 						<h2>❤️ 산 ❤️</h2>
 					</div>
 
@@ -63,8 +67,8 @@
 							<li class="sortByItem"><button id="sort-likes" type="button">좋아요순</button></li>
 						</ul>
 					</div>
-
 				</div>
+
 
 				<div class="data-container">
 					<!-- Item -->
@@ -90,9 +94,9 @@
 							</div>
 						</a>
 					</c:forEach>
-  				</div>
-  				
-  				
+				</div>
+
+
 			</div>
 		</section>
 		<!-- main end -->
@@ -103,7 +107,6 @@
 	<a href="#" class="scrollToTop"> <img src="/resources/svg/top.svg"></a>
 
 	<%@include file="/WEB-INF/views/common/footer.jsp"%>
-
 </body>
 
 </html>
