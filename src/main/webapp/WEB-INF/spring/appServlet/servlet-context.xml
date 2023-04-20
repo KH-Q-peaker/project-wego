@@ -32,6 +32,8 @@
 		<!-- =================================================================================== -->
 			
 			<exclude-mapping path="/"/>
+			<exclude-mapping path="/resources/**"/>
+			<exclude-mapping path="/img/**"/>
 			<exclude-mapping path="/login/**"/>
 			<exclude-mapping path="/info/**"/> 
 			<exclude-mapping path="/search/**"/> 
