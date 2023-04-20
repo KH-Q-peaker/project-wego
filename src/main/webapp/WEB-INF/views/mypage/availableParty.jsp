@@ -21,10 +21,10 @@
                 
                  <c:forEach items="${availableParty}" var="YesParty">
                   <tr>
-                    <td class="t1"> ${YesParty.sanInfoId} </td>
+                    <td class="t1"> ${YesParty.sanName} </td>
                     <td class="t2">${YesParty.title}</td>
                     <td class="t3">${YesParty.partyDt}</td>
-                    <td class="t4">?/${YesParty.partyMax}</td>
+                    <td class="t4">${YesParty.partyCount}/${YesParty.partyMax}</td>
                     <td class="t5">
                       <button class="chatting">채팅입장</button>
                     </td>
@@ -40,7 +40,7 @@
                 
                 <input type="hidden" id="userId" value="${userId}" />
                 
-                  <ul>
+                  <ul class="paginUl">
                     <%-- PREV 표시 c:if --%>
                       <c:if test="${availPage.prev}" >
                               <li class="prev">
@@ -52,7 +52,7 @@
                   
                     <%-- 페이지번호목록  --%>
                       <c:forEach var="pageNum" begin="${availPage.startPage}" end="${availPage.endPage}">   <%--  begin end는 마치 between연산자와 비슷 --%>
-                              <li class="${param.currPage eq pageNum? 'currPage' : ''}">
+                              <li class="${param.currPage eq pageNum? 'currPage' : ''} availablePartyPage${pageNum}">
                               <span class="availPageNum" id="availPageNum" data-temp = " ${availPage.cri.setCurrPage(pageNum)}" onclick="selectClickAvailableCurrPage()">${pageNum}</span>
                               <input type="hidden" id="availcurrPageNum" value="">
                               </li>
@@ -73,6 +73,11 @@
   		  </div>          
               
           <script>
+          
+          var aCurrPage = "${__aCurrPage__}";
+	      if(aCurrPage == 1) {
+	       	$('.availablePartyPage1').addClass("currPage");
+	      }
 
           var userId = document.querySelector("#userId").value;
           var amount = 10;

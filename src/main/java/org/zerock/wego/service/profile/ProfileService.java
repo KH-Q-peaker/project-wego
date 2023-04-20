@@ -9,7 +9,7 @@ import org.zerock.wego.domain.common.Criteria;
 import org.zerock.wego.domain.common.FileDTO;
 import org.zerock.wego.domain.common.UserDTO;
 import org.zerock.wego.domain.common.UserVO;
-import org.zerock.wego.domain.party.PartyVO;
+import org.zerock.wego.domain.profile.MyPartyVO;
 import org.zerock.wego.domain.profile.ProfileCommentVO;
 import org.zerock.wego.domain.profile.ProfileVO;
 import org.zerock.wego.exception.ServiceException;
@@ -120,17 +120,6 @@ public class ProfileService {	// POJO
 		} // try-catch
 	}//updateUserPicByUserDTO		
 	
-	// 8. user_tb테이블의 user_pic 패쓰 경로를 통해 프로필 사진을 보여주기.
-	public String showUserPicbyUserId(@Param("userId")Integer userId) throws ServiceException {
-		log.trace("showUserPicbyUserId({}) invoked", userId);
-		try {
-	        Objects.requireNonNull(this.mapper);
-	        return this.mapper.selectProfilePicturePath(userId);
-		} catch(Exception e) {
-			throw new ServiceException(e);
-		} // try-catch
-	}//showUserPicbyUserId	
-	
 	//9. 닉네임 변경하기
 	public Integer modifyNickByUserDTO(UserDTO dto) throws ServiceException {
 		log.trace("modifyNickByUserDTO({}) invoked",dto);
@@ -143,7 +132,7 @@ public class ProfileService {	// POJO
 	}//modify
 	
 	//10. 내가 신청한 등산모집 리스트 보기(신청가능한)
-	public List<PartyVO> showAvailablePartyByUserIdAndAcri(Integer userId, Criteria cri) throws ServiceException {
+	public List<MyPartyVO> showAvailablePartyByUserIdAndAcri(Integer userId, Criteria cri) throws ServiceException {
 		log.trace("showAvailablePartyByUserIdAndAcri({}) invoked",userId);
 		try {
 			Objects.requireNonNull(this.mapper);
@@ -154,7 +143,7 @@ public class ProfileService {	// POJO
 	}//availableParty
 	
 	//11. 내가 신청한 등산모집 리스트 보기(마감된)
-	public List<PartyVO> showPastPartyByUserIdAndPcri(Integer userId,Criteria cri) throws ServiceException {
+	public List<MyPartyVO> showPastPartyByUserIdAndPcri(Integer userId,Criteria cri) throws ServiceException {
 		log.trace("showPastPartyByUserIdAndPcri({}) invoked",userId);
 		try {
 			Objects.requireNonNull(this.mapper);
