@@ -28,6 +28,7 @@
 <body>
 	<div class="total-wrap">
 		<%@include file="/WEB-INF/views/common/header.jsp"%>
+		<c:set var="imgBasePath" value="/img/" />
 		
 		<section>
 			<div class="rank">
@@ -166,7 +167,7 @@
 					<c:forEach var="item" items="${sanInfoList}">
 						<a href="/info/${item.sanInfoId}">
 							<div class="mountain-item">
-								<img class="mountain-img" src="/img/${fn:substring(item.img, 10, 55)}" alt="img" />
+								<img class="mountain-img" src="${empty item.img ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.img, 10, 55)}" alt="img" />
 								<h3 class="mountain-name" id="mountainName">${item.sanName}</h3>
 								<p class="mountain-contents" id="text">${item.details}</p>
 								<div class="mountain-like">
@@ -196,7 +197,7 @@
 								<img class="user-img" src="/img/${fn:substring(item.userPic, 10, 55)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>
-								<img class="recruit-img" src="/img/${fn:substring(item.partyPic, 10, 55)}" alt="img" />
+								<img class="recruit-img" src="${empty item.partyPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.partyPic, 10, 55)}" alt="img" />
 								<p class="recruit-title" id="title">${item.title}</p>
 								<p class="recruit-schedule-schedule">날짜:</p>
 								<p class="recruit-schedule" id="schedule">
@@ -241,7 +242,8 @@
 								<img class="user-img" src="/img/${fn:substring(item.userPic, 10, 55)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>
-								<img class="review-img" src="/img/defaultImg.png" alt="img" />
+								<img class="review-img" src="${empty item.path ? 
+								"/resources/img/leaf.png" : imgBasePath += fn:substring(item.path, 10, 55)}" alt="img" />
 								<h3 class="review-title" id="title">${item.title}</h3>
 								<p class="review-contents" id="text">${item.contents}</p>
 								<div class="review-like">
