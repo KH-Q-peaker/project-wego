@@ -262,16 +262,26 @@ $("document").ready(function () {
     "합천군",
   ];
   var area16 = ["서귀포시", "제주시", "남제주군", "북제주군"];
-
+  
+  var addressValue = document.querySelector("#address").value;
+  const addressArray = addressValue.split(' ');
+  console.log("시/도: " + addressArray[0] + " 시/구/군: " + addressArray[1]);
+  
   // 시/도 선택 박스 초기화
-
   $("select[name=sido1]").each(function () {
     $selsido = $(this);
     $.each(eval(area0), function () {
       $selsido.append("<option value='" + this + "'>" + this + "</option>");
-    });
-    $selsido.next().append("<option value=''>시/구/군 선택</option>");
-  });
+    }); //each
+     if(addressArray[1]) { //만약, user에게 저장된 주소가 있다면. (시/구/군)
+		$selsido.next().append("<option value=''>" + addressArray[1] + "</option>");
+	} else { //만약, user에게 저장된 주소가 없다면. (시/구/군)
+    	$selsido.next().append("<option value=''>시/구/군 선택</option>");
+    } //if-else
+    if(addressArray[0] && area0.includes(addressArray[0])) {//저장된 주소가 있고, 그 주소가 유효한 주소라면
+    	$selsido.val(addressArray[0]).prop("selected",true); //디포트 선택값 설정
+    }//if
+  });//each
 
   // 시/도 선택시 구/군 설정
 
@@ -289,73 +299,24 @@ $("document").ready(function () {
     }
   });
 });
-// 위의 값 반영해서 글자로 보여주는 js
-// 추후 넣기
-function sidoFirst(val) {
-  var defVal = "시/도";
-
-  if (val == "") {
-    //구현2 reset할때
-    //label값(시/도) 초기값으로
-    document.getElementById("city1").innerHTML = defVal;
-    document.getElementById("city1").options.selectedIndex = 0;
-  } else {
-    //구현1
-    // 매개변수 this.value 값 = val
-    // val = document.getElementById("city1").options[idx].value;
-    // var idx = document.getElementById("city1").selectedIndex;
-    //매개변수 val이용하여 코드 간단하게 작성
-    document.getElementById("city1").innerHTML = val;
-  }
-}
-// 드디어 들어감 근데 DB연결은 모름
-function gugunSecond(val) {
-  var defVal = "시/군/구";
-
-  if (val == "") {
-    //해당값이 없을때 같은말: if(!val)
-    document.getElementById("city2").innerHTML = defVal;
-    document.getElementById("city2").options.selectedIndex = 0;
-  } else {
-    // val = document.getElementById("city2").options[idx].value;
-    // var idx = document.getElementById("city2").selectedIndex;
-    document.getElementById("city2").innerHTML = val;
-  }
-}
 
 // 변경한 내용최종 전송
 console.log("---------------- 1 ---------------------");
 let modal1 = document.querySelector(".myinfo-update");
 let upload = document.querySelector("#upload");
-let restart = document.querySelector("#restart");
-let preferences = document.querySelector(".only-one");
-let myPick = document.querySelector(".userPick");
 
-
-
-restart.addEventListener("click", () => {
-  console.log("---------------- 2 ---------------------");
-  modal1.style.display = "none";
-  $$("#city1").innerHTML = "시/도";
-  $$("#city2").innerHTML = "시/군/구";
-  document.querySelector("select[name=gugun1]").value = "";
-  document.querySelector("select[name=sido1]").value = "";
-
-  // "select[name=gugun1]") 이건 왜 초기화가 안되지;
-});
 
 upload.addEventListener("click", () => {
-  console.log("---------------- 3 ---------------------");
   modal1.style.display = "block";
 
   //로그 test
-  console.log(
-    "My Info 위치 submit test : ",
-    document.querySelector("select[name=sido1]").value
-  );
-  console.log(
-    "My Info 시군구 submit test : ",
-    document.querySelector("select[name=gugun1]").value
+   console.log(
+   "My Info 위치 submit test : ",
+   document.querySelector("select[name=sido1]").value
+   );
+   console.log(
+   "My Info 시군구 submit test : ",
+   document.querySelector("select[name=gugun1]").value
   );
 });
 

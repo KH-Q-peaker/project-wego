@@ -5,10 +5,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,16 +25,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.zerock.wego.domain.common.Criteria;
+import org.zerock.wego.domain.common.FavoriteVO;
 import org.zerock.wego.domain.common.FileDTO;
 import org.zerock.wego.domain.common.PageDTO;
 import org.zerock.wego.domain.common.UserDTO;
 import org.zerock.wego.domain.common.UserVO;
-import org.zerock.wego.domain.party.PartyVO;
+import org.zerock.wego.domain.info.SanInfoViewVO;
+import org.zerock.wego.domain.party.PartyViewVO;
+import org.zerock.wego.domain.profile.MyPartyVO;
 import org.zerock.wego.domain.profile.ProfileCommentVO;
 import org.zerock.wego.domain.profile.ProfileVO;
+import org.zerock.wego.domain.review.ReviewViewVO;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.exception.ServiceException;
+import org.zerock.wego.service.common.FavoriteService;
+import org.zerock.wego.service.info.SanInfoService;
+import org.zerock.wego.service.party.PartyService;
 import org.zerock.wego.service.profile.ProfileService;
+import org.zerock.wego.service.review.ReviewService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -60,20 +70,22 @@ public class ProfileController {
 	    	Integer sessionUserId = user.getUserId();
 	    	log.info("sessionUserId: {}",sessionUserId);
 	    	log.info("userId:{}",userId);
-	    	log.info("**********************??????????" + sessionUserId.equals(userId));
+	    	log.info("sessionUserId.equals(userId) : {}", sessionUserId.equals(userId));
 	    	if(sessionUserId.equals(userId)) {
 	    		UserVO vo = service.getUserById(userId);
-				String path = service.showUserPicbyUserId(userId);
+	    		String path = vo.getUserPic();
 				
 				if(! ( path == null || path.isEmpty())) {
 					log.info("path: "+ path);
-					String [] pathArray = path.split("upload");
-					log.info("pathArray[1]:"+pathArray[1]);
-					model.addAttribute("UserPicName", pathArray[1]);
-					log.info(path);
+					if(path.contains("upload")) {
+						String [] pathArray = path.split("upload");
+						log.info("pathArray[1]:"+pathArray[1]);
+						model.addAttribute("UserPicName", pathArray[1]);
+					}
+					log.info("path: {} " , path);
 				}
 				model.addAttribute("vo",vo);
-				return "/mypage/mypage";
+				return "mypage/mypage";
 	    	} else {
 		    	// 유저 정보 먼저 만들어놓기. 
 		    	UserVO getUserInfoList = this.service.getUserById(userId);
@@ -96,6 +108,7 @@ public class ProfileController {
 	        // Step 1. 현재 페이지 번호를 가져와서 null이거나 1보다 작은 경우 1로 설정
 	        int currPage = cri.getCurrPage() == null || cri.getCurrPage() < 1 ? 1 : cri.getCurrPage();
 	        cri.setCurrPage(currPage);
+	        cri.setAmount(10);
 			
 			// Step 1. 페이징 처리된 현제 currPage에 해당하는 게시글목록을 받아옴 
 			List<ProfileVO> writtenList = this.service.getListByUserId(userId,cri);
@@ -108,6 +121,7 @@ public class ProfileController {
 			log.info("\t+ pageDTO: {}", pageDTO);
 
 			model.addAttribute("pageMaker",pageDTO);
+			model.addAttribute("__UserPostsCurrPage__",cri.getCurrPage());
 			
 			return "profile/userposts";
 		} catch(Exception e) {
@@ -124,6 +138,7 @@ public class ProfileController {
 
 	        int currPage = cri2.getCurrPage() == null || cri2.getCurrPage() < 1 ? 1 : cri2.getCurrPage();
 	        cri2.setCurrPage(currPage);
+	        cri2.setAmount(10);
 			
 			List<ProfileCommentVO> commentList = this.service.getListComment(userId,cri2);
 			model.addAttribute("commentList", commentList); 
@@ -134,6 +149,7 @@ public class ProfileController {
 			log.info("\t+ pageDTO: {}", pageDTO2);
 
 			model.addAttribute("pageMaker",pageDTO2);
+			model.addAttribute("__CommentCurrPage__",cri2.getCurrPage());
 			
 			return "profile/comment";
 		} catch(Exception e) {
@@ -164,7 +180,8 @@ public class ProfileController {
 			@RequestParam("userId") Integer userId, Model model) throws ServiceException {
 		log.trace("showMyInfo({},{}) invoked ",userId, model);
 		try {
-			model.addAttribute("userId",userId);
+			UserVO vo = service.getUserById(userId);
+			model.addAttribute("__VO__",vo);
 			return "mypage/myinfo";
 		}catch(Exception e) {
 			throw new ServiceException(e);
@@ -176,8 +193,9 @@ public class ProfileController {
 	public String showMyAvailableParty(Criteria acri,
 			@RequestParam("userId")Integer userId, Model model) throws ControllerException{
 		try {
-			List<PartyVO> vo = new ArrayList<>();
+			List<MyPartyVO> vo = new ArrayList<>();
 			Integer.valueOf(userId);
+			acri.setAmount(10);
 			vo = this.service.showAvailablePartyByUserIdAndAcri(Integer.valueOf(userId), acri);
 			
 			assert vo != null;
@@ -205,14 +223,14 @@ public class ProfileController {
 	public String showMyPastParty(Criteria pcri,
 			@RequestParam("userId")Integer userId, Model model) throws ControllerException{
 		try {
-			
-			List<PartyVO> vo2 = new ArrayList<>();
+			pcri.setAmount(10);
+			List<MyPartyVO> vo2 = new ArrayList<>();
 			vo2 = this.service.showPastPartyByUserIdAndPcri(Integer.valueOf(userId),pcri);
 	
 			assert vo2 != null;
 			log.info("~~~~!!!!! vo2:{}", vo2);
 			model.addAttribute("pastParty",vo2);
-
+			
 			int totalPastPartyAmount = this.service.getTotalAmountPastPartyByUserId(Integer.valueOf(userId));
 			PageDTO pastPageDTO = new PageDTO(pcri,totalPastPartyAmount);
 			log.info("*************************pageDTO:{}", pastPageDTO);
@@ -254,17 +272,15 @@ public class ProfileController {
 		Timestamp ts=new Timestamp(date.getTime());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String str = sdf.format(date);
-		str = str.replace("-", File.separator);
+		str = str.replace("-", "");
 		
 		String ori_filename=part.getOriginalFilename();
-		UUID uuid = UUID.randomUUID();
-        String fileName = uuid.toString() + "_" + ori_filename;
+		String uuid = UUID.randomUUID().toString();
         File uploadPath = new File("C:\\upload", str);
-        File saveFile = new File(uploadPath, fileName);
+        File saveFile = new File(uploadPath, uuid);
         log.info("~~~~~~ saveFile.getPath: {}",saveFile.getPath());
-        String path = "C:\\upload\\" + str + "\\" + fileName;
+        String path = "C:\\upload\\" + str + "\\" + uuid;
         Path directoryPath = Paths.get("C:\\upload\\" + str);
-
     	if (!uploadPath.exists()) {
     		try{
     			Files.createDirectories(directoryPath);
@@ -283,18 +299,110 @@ public class ProfileController {
 				.targetGb("USER_PROFILE")
 				.targetCd(userId)
 				.fileName(ori_filename)
-				.uuid(fileName)
+				.uuid(uuid)
 				.path(path)
 				.build();
 		
 		service.saveUserPictureInFileTbByFileDTO(dto);
 		log.info("**********userId:{}",userId);
 		
-		UserDTO dto2 = new UserDTO(userId,null,null,null,null,null,fileName);
+		UserDTO dto2 = new UserDTO(userId,null,null,null,null,null,path);
 		service.updateUserPicByUserDTO(dto2);
 	
 		return "redirect: /profile/" + userId;
-	}
+	}//saveProfileImage
+	
+	@GetMapping("/mypost")
+	public String myPostsByProfile(@RequestParam("userId") Integer userId,Criteria cri, Model model) throws ControllerException {	// 게시판전체목록조회 요청처리 핸들러
+		log.trace("postsByProfile({}, {}, {}) invoked.", userId,cri,model);
+		
+		try {
+			log.info(">>>>>>>>>>>>>>>>!!!!!!!!!myPostsByProfile이 실행되었습니다.");
+
+	        // Step 1. 현재 페이지 번호를 가져와서 null이거나 1보다 작은 경우 1로 설정
+	        int currPage = cri.getCurrPage() == null || cri.getCurrPage() < 1 ? 1 : cri.getCurrPage();
+	        cri.setCurrPage(currPage);
+	        cri.setAmount(10);
+			// Step 1. 페이징 처리된 현제 currPage에 해당하는 게시글목록을 받아옴 
+			List<ProfileVO> writtenList = this.service.getListByUserId(userId,cri);
+			model.addAttribute("writtenList", writtenList); 
+			model.addAttribute("userId", userId);
+
+			// Step2. Pagination 위한 각종 변수 값을 계산하기
+			int totalAmount = this.service.getTotalAmountByUserId(userId);
+			PageDTO pageDTO = new PageDTO(cri,totalAmount);
+			log.info("\t+ pageDTO: {}", pageDTO);
+
+			model.addAttribute("pageMaker",pageDTO);
+			model.addAttribute("__MyPostCurrPage__",cri.getCurrPage());
+			
+			return "mypage/myPost";
+		} catch(Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	} // myPostsByProfile
+	
+	@GetMapping("/mycomment")
+	public String myCommentByProfile(@RequestParam("userId") Integer userId,Criteria cri2, Model model) throws ControllerException {	
+		log.trace("comment({}, {}, {}) invoked.", userId,cri2,model);
+		
+		try {
+			log.info(">>>>>>>>>>>>>>>>!!!!!!!!!myCommentByProfile이 실행되었습니다.");
+
+	        int currPage = cri2.getCurrPage() == null || cri2.getCurrPage() < 1 ? 1 : cri2.getCurrPage();
+	        cri2.setCurrPage(currPage);
+	        cri2.setAmount(10);
+	        
+			List<ProfileCommentVO> commentList = this.service.getListComment(userId,cri2);
+			model.addAttribute("commentList", commentList); 
+			model.addAttribute("userId", userId);
+			
+			int totalAmount = this.service.getTotalAmountComment(userId);
+			PageDTO pageDTO2 = new PageDTO(cri2,totalAmount);
+			log.info("\t+ pageDTO: {}", pageDTO2);
+
+			model.addAttribute("pageMaker",pageDTO2);
+			model.addAttribute("__MyCommentCurrPage__",cri2.getCurrPage());
+			
+			return "mypage/myComment";
+		} catch(Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	} // myCommentByProfile
+	
+	
+	private SanInfoService sanInfoService;
+	private PartyService partyService;
+	private ReviewService reviewService;
+	private FavoriteService favoriteService;
+	
+	
+	@GetMapping("/mylike")
+	public String main(
+			@SessionAttribute(value = "__AUTH__", required = false)UserVO auth, Model model) 
+					throws ControllerException {
+		log.trace("main({}, {}) invoked.", auth, model);
+
+		try {
+			if(auth != null) {
+				Set<FavoriteVO> favoriteList = this.favoriteService.getUserFavoriteOnList(auth.getUserId());
+				model.addAttribute("favoriteList", favoriteList);
+			} // if
+
+			Set<SanInfoViewVO> sanInfoList = this.sanInfoService.getRandom10List();
+			model.addAttribute("sanInfoList", sanInfoList);
+
+			Set<PartyViewVO> partyList = this.partyService.getRandom10List();
+			model.addAttribute("partyList", partyList);
+
+			Set<ReviewViewVO> reviewList = this.reviewService.getRandom10List();
+			model.addAttribute("reviewList", reviewList);
+
+			return "mypage/myLike";
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	} // main
 	
 	
 } // end class
