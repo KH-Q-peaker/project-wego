@@ -194,7 +194,7 @@
 					<c:forEach var="item" items="${partyList}">
 						<a href="/party/${item.sanPartyId}">
 							<div class="recruit-item">
-								<img class="user-img" src="/img/${fn:substring(item.userPic, 10, 55)}" alt="img" />
+								<img class="user-img" src="${empty item.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.userPic, 10, 55)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>
 								<img class="recruit-img" src="${empty item.partyPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.partyPic, 10, 55)}" alt="img" />
@@ -239,7 +239,7 @@
 					<c:forEach var="item" items="${reviewList}">
 						<a href="/review/${item.sanReviewId}">
 							<div class="review-item">
-								<img class="user-img" src="/img/${fn:substring(item.userPic, 10, 55)}" alt="img" />
+								<img class="user-img" src="${empty item.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.userPic, 10, 55)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>
 								<img class="review-img" src="${empty item.path ? 

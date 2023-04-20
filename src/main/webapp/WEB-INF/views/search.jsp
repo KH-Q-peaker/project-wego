@@ -26,6 +26,7 @@
 <body>
 	<div class="total-wrap">
 		<%@include file="/WEB-INF/views/common/header.jsp"%>
+		<c:set var="imgBasePath" value="/img/" />
 		<section>
 			<div class="container">
 				<div class="mountain-info">
@@ -41,7 +42,7 @@
 										<h3 id="itemTitle">${item.sanName}</h3>
 										<div class="itemDetail">
 											<p id="itemContent">${item.details}</p>
-											<img id="itemImg" src="/resources/img/gray.png" alt="img" />
+											<img id="itemImg" src="${empty item.img ? "/resources/img/leaf.png" : "/img/" + fn:substring(item.img, 10, 55)}" alt="img" />
 										</div>
 									</div>
 								</a>
@@ -60,10 +61,12 @@
 						<c:forEach var="item" items="${partyList}">
 							<a href="/party/detail/${item.sanPartyId}">
 							<div class="recruit-item">
-								<img class="user-img" src="${item.userPic}" alt="img" />
+								<img class="user-img" src="${empty item.userPic ? 
+								"/resources/img/leaf.png" : imgBasePath += fn:substring(item.userPic, 10, 55)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>
-								<img class="recruit-img" src="" alt="img" />
+								<img class="recruit-img" src="${empty item.partyPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.partyPic, 10, 55)}
+								" alt="img" />
 								<p class="recruit-title" id="title">${item.title}</p>
 								<p class="recruit-schedule-schedule">날짜:</p>
 								<p class="recruit-schedule" id="schedule">
@@ -112,7 +115,8 @@
 										<h3 id="itemTitle">${item.title}</h3>
 										<div class="itemDetail">
 											<p id="itemContent">${item.contents}</p>
-											<img id="itemImg" src="" alt="img" />
+											<img id="itemImg" src="${empty item.path ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.path, 10, 55)}
+											" alt="img" />
 										</div>
 									</div>
 								</a>
