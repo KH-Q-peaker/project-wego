@@ -200,7 +200,7 @@ header {
   top: 25px;
   right: 30px;
   background-color: #fff;
-  z-index: 2;
+  z-index: 10;
 }
 
 .menubar li {
@@ -223,7 +223,7 @@ header {
   transition: all 400ms ease;
 }
 
-.menubar li:nth-last-of-type(1)>a {
+.menubar li#logout> a {
   display: inline-block;
   margin-top: 20px;
   color: #F14A4A;
@@ -231,11 +231,9 @@ header {
   transition: all 400ms ease;
 }
 
-.menubar li:nth-last-of-type(1)>a:hover {
+.menubar li#logout > a:hover {
   background-color: #F14A4A;
   color: #fff;
-
-  transition: all 400ms ease;
 }
 
 .user-profile-img {
