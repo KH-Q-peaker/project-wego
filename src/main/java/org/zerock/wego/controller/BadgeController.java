@@ -31,8 +31,7 @@ public class BadgeController {
 	private final BadgeConfig badgeConfig;
 	private final BadgeGetService badgeGetService;
 
-
-
+	
 	@GetMapping("/{targetUserId}")
 	public ModelAndView showCollection(@PathVariable("targetUserId") Integer targetUserId, ModelAndView mav) {
 		log.trace("showCollection({},ModelAndView) invoked.", targetUserId);

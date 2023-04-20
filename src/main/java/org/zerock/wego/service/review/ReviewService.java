@@ -11,7 +11,9 @@ import org.zerock.wego.exception.AccessBlindException;
 import org.zerock.wego.exception.NotFoundPageException;
 import org.zerock.wego.exception.OperationFailException;
 import org.zerock.wego.exception.ServiceException;
+import org.zerock.wego.mapper.BadgeGetMapper;
 import org.zerock.wego.mapper.ReviewMapper;
+import org.zerock.wego.service.badge.BadgeGetService;
 import org.zerock.wego.service.common.FileService;
 import org.zerock.wego.service.common.ReportService;
 
@@ -28,6 +30,7 @@ public class ReviewService {
 	private final ReviewMapper reviewMapper;
 	private final ReportService reportService;
 	private final FileService fileService;
+	private final BadgeGetService badgeGetService;
 	
 	
 	public List<ReviewViewVO> getList() throws ServiceException {
@@ -101,7 +104,7 @@ public class ReviewService {
 			this.reviewMapper.delete(reviewId);
 			this.reportService.removeAllByTarget("SAN_REVIEW", reviewId);
 			this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId);
-			// TO_DO : 좋아요 내역 삭제도 추기돼야 함, 파일 서비스 수정되면 수정해야됨 
+			// TO_DO : 좋아요 내역 삭제도 추기돼야 함, 파일 서비스 수정되면 수정해야됨 뱃지도 같이 삭제되어야 할까?
 			
 			isExist = this.reviewMapper.isExist(reviewId);
 			

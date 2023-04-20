@@ -18,5 +18,7 @@ public class ReviewViewVO {
 	private String contents; 
 	private Integer likeCnt; 
 	private Integer reportCnt; 
+	private Integer visitCnt;
+	private String path;
 	
 } // end class
