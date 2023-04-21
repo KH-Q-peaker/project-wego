@@ -359,28 +359,41 @@ const formCheck = () => {
   const oldImgFiles = []; // 기존 이미지 파일 체크
   const imgOrder = [];
 
-  for (let i = 0; i < contentChildNodes.length; i++) {
-    if (contentChildNodes[i].nodeName === "IMG") {
+for (let index = 0; index < contentChildNodes.length; index++) {
+  if(contentChildNodes[index].childNodes.length > 0) {
+    write(contentChildNodes[index].childNodes);
+  } else {
+	write(new Array(contentChildNodes[index]));
+  } // if-else
+} // for
+
+function write(nodes) {
+  for (let index = 0; index < nodes.length; index++) {
+    if (nodes[index].nodeName === "IMG") {
       contentResult += "<img>";
 
-      if (contentChildNodes[i].src.slice(0, 4) === "data") {
+      if (nodes[index].src.slice(0, 4) === "data") {
         // 신규 이미지로 판단
-        imgFileNames.push(contentChildNodes[i].alt);
-        imgOrder.push(contentChildNodes[i].alt);
+        imgFileNames.push(nodes[index].alt);
+        imgOrder.push(nodes[index].alt);
       } else {
         // 기존 이미지로 판단
-        oldImgFiles.push(contentChildNodes[i].alt);
-        imgOrder.push(contentChildNodes[i].alt);
+        oldImgFiles.push(nodes[index].alt);
+        imgOrder.push(nodes[index].alt);
       } // if-else
     } // if
 
-    if (contentChildNodes[i].nodeName === "#text") {
-      contentResult += contentChildNodes[i].nodeValue;
+    if (nodes[index].nodeName === "#text") {
+      contentResult += nodes[index].nodeValue + "\n";
       continue;
     } // if
 
-    contentResult += contentChildNodes[i].innerText;
+    if (nodes[index].nodeName === "BR") {
+      contentResult += "\n";
+    } // if
   } // for
+} // write
+
 
   // 폼 데이터 저장(산이름, 제목, 내용)
   if (selector("#upload").innerText == "수정") {
