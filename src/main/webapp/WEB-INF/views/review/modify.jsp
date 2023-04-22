@@ -71,8 +71,7 @@ const fileAltList = [];
 						</div>
 						<button type="button">등록</button>
 					</div>
-					<div contenteditable="true" name="contents" id="contents">
-						${review.contents}</div>
+					<div contenteditable="true" name="contents" id="contents">${review.contents}</div>
 				</div>
 				<div class="buttons">
 					<button type="button" id="cancle">취소</button>
