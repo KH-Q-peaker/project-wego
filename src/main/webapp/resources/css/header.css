@@ -248,7 +248,7 @@ header {
   width: 40px;
   height: 40px;
   border: 0;
-  background: url(../img/login.svg);
+  background: url(../svg/login.svg);
   background-repeat: no-repeat;
   background-size: contain;
 }
@@ -295,7 +295,7 @@ header {
   border: 0;
   color: gray;
   display: inline-block;
-  background: url(../img/search.svg);
+  background: url(../svg/search.svg);
   background-repeat: no-repeat;
   background-size: contain;
   cursor: pointer;
@@ -371,7 +371,7 @@ header {
     width: 33px;
     height: 33px;
     border: 0;
-    background: url(../img/login.svg);
+    background: url(../svg/login.svg);
     background-repeat: no-repeat;
     background-size: contain;
   }
