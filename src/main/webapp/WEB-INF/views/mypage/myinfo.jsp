@@ -2,8 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="path" value="${pageContext.request.contextPath}" />
-<!DOCTYPE html>
-<html lang="ko">
 
 <head>
    <!--<jsp:include page="./head.jsp" />-->
@@ -12,9 +10,10 @@
 </head>
 
         <!-- 해당 네비 내용물들 -->
+        <input type="hidden" name="address" id="address" value="${__VO__.address}" /> 
         <form action="/profile/infoset" method="post" id="setform">
           <!-- 내용물 시작  -->
-		<input type="hidden" name="userId" id="userId" value="${userId}" />
+		<input type="hidden" name="userId" id="userId" value="${__VO__.userId}" /> 
           <div class="cotents">
             <div class="my-location">
               <h2>
@@ -29,8 +28,12 @@
                   <label id="city2">시/군/구</label>
                 </span>
                 <span id="my-">
-                  <select name="sido1" id="sido1" class="sido" onchange="sidoFirst(this.value)"></select>
-                  <select name="gugun1" id="gugun1" class="gugun" onchange="gugunSecond(this.value)"></select></span>
+                  <select name="sido1" id="sido1" class="sido">
+                  <!-- onchange="sidoFirst(this.value)" -->
+                  </select>
+                  <select name="gugun1" id="gugun1" class="gugun">
+                  <!--onchange="gugunSecond(this.value)" -->
+                  </select></span>
               </p>
             </div>
 
@@ -141,16 +144,26 @@
 
   <script>
   
-  
-  
-  var _showPage = function() {
-      var loader = $("div.loader");
-      var container = $("div.container");
-      loader.css("display","block");
-      container.css("display","block");
-      };
-  
-  
+  // 사용자 info정보 나타내기
+  	var userId = document.querySelector("#userId").value;
+	var sanRange1 = "${__VO__.sanRange}";
+	var sanTaste1= "${__VO__.sanTaste}";
+	
+	//해당속성을 가지고 있다면 checked로 바꿔주는 함수
+	$.fn.radioSelect = function(val) {
+		 this.each(function() {
+		 var $this = $(this);
+		 if($this.val() == val)
+		   $this.attr('checked', true);
+		 });
+		 return this;
+	};
+	
+	$(":radio[name='preferences']").radioSelect(sanRange1);
+	$(":radio[name='user-taste-pick']").radioSelect(sanTaste1);
+	
+  	console.log(sanRange1, sanTaste1);
+  	
     // 나의 취향 submit
   	var setButton = document.querySelector("#setButton");
     var sido1 = document.querySelector("#sido1");
@@ -160,8 +173,13 @@
 
     setButton.addEventListener('click', function(){
       var form = document.querySelector("#setform");
-
       var addressText = sido1.value+ " " + gugun1.value;
+      
+    //주소로 유효하지 않은 값을 선택한 경우, 빈문자열을 주소로 저장. 
+      if(addressText.includes("선택")) {
+    	  var addressText = "";
+      }
+    
       var address = document.createElement("input");
       address.setAttribute("type","hidden");
       address.setAttribute("name","address");
@@ -185,8 +203,6 @@
       form.submit();
     });
     
-    
-  
   </script>
   
   

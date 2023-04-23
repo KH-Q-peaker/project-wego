@@ -43,13 +43,12 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("/review")
 @Controller
 public class ReviewController {
-	
+
 	private final SanInfoService sanInfoService;
 	private final ReviewService reviewService;
 	private final CommentService commentService;
 	private final FileService fileService;
 	private final FavoriteService favoriteService;
-
 
 	@GetMapping("")
 	public String openReview(Model model) throws ControllerException {
@@ -66,81 +65,75 @@ public class ReviewController {
 		} // try-catch
 	} // openReview
 
-
-
-	@GetMapping(path="/{reviewId}")
-	public ModelAndView showDetailById(@PathVariable("reviewId")Integer reviewId,
-									@SessionAttribute("__AUTH__")UserVO user,
-									PageInfo target) throws Exception{
+	@GetMapping(path = "/{reviewId}")
+	public ModelAndView showDetailById(@PathVariable("reviewId") Integer reviewId,
+			@SessionAttribute("__AUTH__") UserVO user, PageInfo target) throws Exception {
 		log.trace("showDetail({}, {}) invoked.", reviewId, target);
 
-			target.setTargetGb("SAN_REVIEW");
-			target.setTargetCd(reviewId);
-			
-			ModelAndView mav = new ModelAndView();
-			
-			ReviewViewVO review = this.reviewService.getById(reviewId);
-			Integer userId = user.getUserId();
-			
-			// TO_DO : 내글이면 블라인드 되도 보여야되는데 왜 막히냐 ? 
-			if((review.getReportCnt() >= 5) && review.getUserId() != userId) {
-				throw new AccessBlindException();
-			}// if
-			
-			// TO_DO : 좋아요 바뀌면 바꿔야됨 
-			FavoriteDTO favorite = new FavoriteDTO();
-			favorite.setTargetGb("SAN_REVIEW");
-			favorite.setTargetCd(reviewId);
-			favorite.setUserId(userId);
-			
-			boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
+		target.setTargetGb("SAN_REVIEW");
+		target.setTargetCd(reviewId);
 
-			int commentCount = this.commentService.getTotalCountByTarget(target);
-			
-			LinkedBlockingDeque<CommentViewVO> comments 
-							= this.commentService.getCommentOffsetByTarget(target, 0);
+		ModelAndView mav = new ModelAndView();
 
-			/*후기글 사진 넣는거 필요함 */
-			mav.addObject("review", review);
-			mav.addObject("isFavorite", isFavorite);
-			mav.addObject("commentCount", commentCount);
+		ReviewViewVO review = this.reviewService.getById(reviewId);
+		Integer userId = user.getUserId();
+
+		// TO_DO : 내글이면 블라인드 되도 보여야되는데 왜 막히냐 ?
+		if ((review.getReportCnt() >= 5) && review.getUserId() != userId) {
+			throw new AccessBlindException();
+		} // if
+
+		// TO_DO : 좋아요 바뀌면 바꿔야됨
+		FavoriteDTO favorite = new FavoriteDTO();
+		favorite.setTargetGb("SAN_REVIEW");
+		favorite.setTargetCd(reviewId);
+		favorite.setUserId(userId);
+
+		boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
+
+		int commentCount = this.commentService.getTotalCountByTarget(target);
+
+		LinkedBlockingDeque<CommentViewVO> comments = this.commentService.getCommentOffsetByTarget(target, 0);
+
+		/* 후기글 사진 넣는거 필요함 */
+		mav.addObject("review", review);
+		mav.addObject("isFavorite", isFavorite);
+		mav.addObject("commentCount", commentCount);
 //			mav.addObject("userPic", userPic);
-			
-			if(comments != null) {
-				
-				mav.addObject("comments", comments);
-			}// if
-			
-			ObjectMapper objectMapper = new ObjectMapper();
-			String targetJson = objectMapper.writeValueAsString(target);
-			mav.addObject("target", targetJson);
 
-			mav.setViewName("/review/detail");
-			
-			return mav;
+		if (comments != null) {
+
+			mav.addObject("comments", comments);
+		} // if
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		String targetJson = objectMapper.writeValueAsString(target);
+		mav.addObject("target", targetJson);
+
+		mav.setViewName("/review/detail");
+
+		return mav;
 	}// viewReviewDetail
-	
-	@DeleteMapping(path= "/{reviewId}", produces= "text/plain; charset=UTF-8")
-	public ResponseEntity<String> removeById(@PathVariable("reviewId")Integer reviewId) throws ControllerException{
+
+	@DeleteMapping(path = "/{reviewId}", produces = "text/plain; charset=UTF-8")
+	public ResponseEntity<String> removeById(@PathVariable("reviewId") Integer reviewId) throws ControllerException {
 		log.trace("removeById({}) invoked.", reviewId);
 
 		try {
 			this.reviewService.removeById(reviewId);
 //			this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId); 
-			return ResponseEntity.ok("🗑 후기글이 삭제되었습니다.️"); // 인코딩해서 넣던가 안넣던가 
+			return ResponseEntity.ok("🗑 후기글이 삭제되었습니다.️"); // 인코딩해서 넣던가 안넣던가
 
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
-		}// try-catch
+		} // try-catch
 	}// removeReview
-	
-	
+
 	@GetMapping(path = "/modify/{reviewId}")
-	public String modify(@SessionAttribute("__AUTH__") UserVO auth, 
-			@PathVariable("reviewId") Integer reviewId,
+	public String modify(@SessionAttribute("__AUTH__") UserVO auth, @PathVariable("reviewId") Integer reviewId,
 			Model model) throws Exception {
 		log.trace("modify(auth, reviewId, model) invoked.");
-		
+
 		try {
 			ReviewViewVO reviewVO = this.reviewService.getById(reviewId);
 			Integer postUserId = reviewVO.getUserId();
@@ -159,13 +152,13 @@ public class ReviewController {
 			throw new ControllerException(e);
 		} // try-catch
 	} // modify
-	
+
 	@PostMapping("/modify")
 	public String modify(@SessionAttribute("__AUTH__") UserVO auth, Integer sanReviewId, String sanName,
 			@RequestParam(value = "imgFiles", required = false) List<MultipartFile> newImageFiles,
 			@RequestParam(value = "oldImgFiles", required = false) String oldImageFiles,
-			@RequestParam(value = "imgOrder", required = false) String imageOrder, ReviewDTO reviewDTO, FileDTO fileDTO
-			) throws ControllerException {
+			@RequestParam(value = "imgOrder", required = false) String imageOrder, ReviewDTO reviewDTO, FileDTO fileDTO)
+			throws ControllerException {
 		log.trace("modify(auth, sanReviewId, sanName, newImageFiles, oldImageFiles, reviewDTO, fileDTO) invoked.");
 
 		try {
@@ -174,14 +167,11 @@ public class ReviewController {
 			reviewDTO.setSanInfoId(sanId);
 
 			this.reviewService.modify(reviewDTO);
-
-			// TODO: 현재 신규 이미지가 추가된 경우에만 순서 변경 가능
-			//       기존 이미지만으로 순서 변경안됨
-			if (newImageFiles != null) {
-				List<String> oldFiles = Arrays.asList(oldImageFiles.split(","));
-				List<String> order = Arrays.asList(imageOrder.split(","));
-				this.fileService.isChangeImage(newImageFiles, oldFiles, order, "SAN_REVIEW", sanReviewId, fileDTO);
-			} // if
+			
+			List<String> oldFiles = Arrays.asList(oldImageFiles.split(","));
+			List<String> order = Arrays.asList(imageOrder.split(","));
+			
+			this.fileService.isChangeImage(newImageFiles, oldFiles, order, "SAN_REVIEW", sanReviewId, fileDTO);
 
 			return "redirect:/review/" + reviewDTO.getSanReviewId();
 		} catch (Exception e) {

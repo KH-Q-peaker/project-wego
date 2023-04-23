@@ -1,0 +1,55 @@
+
+
+@media screen and (max-width: 768px) {
+  .cotents {
+    margin: 0;
+    min-height: max-content;
+    font-size: 15px;
+  }
+  /* 모바일일때 글내용 작게해줘~  */
+  table {
+    width: 100%;
+    min-width: fit-content;
+  }
+  th,
+  td {
+    font-size: 15px;
+  }
+  tbody > td {
+    margin: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+  .middle .t1 {
+    width: 60px;
+  }
+  .middle .t2 {
+    width: 140px;
+  }
+  .middle .t3 {
+    width: 60px;
+  }
+  .middle .t4 {
+    width: 45px;
+  }
+}
+/* @media screen and (max-width: 570px) {
+
+} */
+@media screen and (max-width: 600px) {
+  .cotents {
+    width: auto;
+    margin: 5px;
+    font-size: 12px;
+    min-height: max-content;
+  }
+  .middle .t3 {
+    display: none;
+  }
+  .middle .t2 {
+    width: 140px;
+  }
+  .middle .t4 {
+    width: 45px;
+  }
+}

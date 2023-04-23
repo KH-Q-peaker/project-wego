@@ -6,31 +6,6 @@
 
     <head>
       <jsp:include page="./head.jsp" />
-      <style>
-	#pagination {
-	    display: flex;
-	    justify-content: center;
-	}
-	#pagination li {
-        float: left;
-        margin: 0px 10px;
-        height: 30px;
-        list-style: none;
-        text-align: center;
-        line-height: 30px;
-        cursor: pointer;
-    }
-    #pagination li:hover {
-        font-weight: bold;
-    }
-    li.currPage {
-        font-weight: bold;
-        color: rgb(3, 250, 3);
-    }
-    h2 {
-		float: none;
-    }
-</style>
     </head>
 
     <body>
@@ -79,7 +54,7 @@
       <!-- 로딩 -->
       <div class="loader">
 	  </div>
-	  <div class="container" style="display:none;">
+	  <div class="container" style="display:none">
 	  <div>
 	
 	
@@ -129,8 +104,7 @@
               alert("닉네임은 빈 칸을 포함 할 수 없습니다.");
 
            //닉네임 한글 1~10자, 영문 및 숫자 2~20자   
-           } //else if (nickname.length<2 || nickname.length>20) {
-           else if (nickLength<2 || nickLength>20) {
+           } else if (nickLength<2 || nickLength>20) {
               alert("닉네임은 한글 1~6자, 영문 및 숫자 2~20자 입니다.");
 
            //닉네임 특수문자 포함 안됨   
@@ -158,6 +132,7 @@
         
         //프로필 변경시 로딩 화면
         var _showPage = function() {
+        console.log("_showPage invoked");        
         var loader = $("div.loader");
         var container = $("div.container");
         loader.css("display","block");
