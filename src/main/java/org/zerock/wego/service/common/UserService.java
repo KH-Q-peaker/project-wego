@@ -27,7 +27,7 @@ public class UserService {
 		boolean isNotExistUser = !isExistById(userId);
 
 		if(isNotExistUser) {
-			throw new NotFoundUserException("없는 유저 입니다.");
+			throw new NotFoundUserException(userId + "없는 유저 입니다.");
 		} // if
 
 		return userMapper.selectByUserId(userId);

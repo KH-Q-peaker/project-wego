@@ -31,3 +31,20 @@ selector("#userImg").addEventListener("click", () => {
 
 // header에서 검색바를 제거하는 함수
 const removeSearch = () => selector(".search-bar").remove();
+
+$(() => {
+
+  $("nav li#ranking").on({
+    mouseenter: function () {
+      $(this).children(".rankMenu").css("display","block")
+    },
+    mouseleave:function (){
+      $(this).children(".rankMenu").css("display","none")
+    }
+  })
+
+})
+
+
+
+

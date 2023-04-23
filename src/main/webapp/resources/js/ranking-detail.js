@@ -1,0 +1,1 @@
+removeSearch(); // header.js
