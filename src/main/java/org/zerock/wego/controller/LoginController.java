@@ -82,7 +82,7 @@ public class LoginController {
 		mav.setViewName("redirect:" + this.naverOAuth.getLoginURLToGetAuthorizationCode(naverSessionState));
 
 		return mav;
-	}// kakaoLogin
+	}// naverLogin
 
 
 	@GetMapping("/naver/oauth")
