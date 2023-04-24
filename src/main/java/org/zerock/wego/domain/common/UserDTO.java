@@ -1,6 +1,7 @@
 package org.zerock.wego.domain.common;
 
 import org.zerock.wego.domain.oauth.kakao.KakaoUserInfoDTO;
+import org.zerock.wego.domain.oauth.naver.NaverUserInfoDTO;
 
 import lombok.Builder;
 import lombok.Data;
@@ -28,10 +29,21 @@ public class UserDTO {
 		this.userPic = userPic;
 	} // constructer
 	
+	
 	public static UserDTO createByKakao(KakaoUserInfoDTO kakaoInfo) {
 		UserDTO userDTO = UserDTO.builder()
 									.nickname(kakaoInfo.getId() + "K")
 									.socialId(kakaoInfo.getKakao_account().getEmail())
+									.build();
+		
+		return userDTO;
+	} // createByKakao
+	
+	
+	public static UserDTO createByNaver(NaverUserInfoDTO naverInfo) {
+		UserDTO userDTO = UserDTO.builder()
+									.nickname(naverInfo.getResponse().getId() + "N")
+									.socialId(naverInfo.getResponse().getEmail())
 									.build();
 		
 		return userDTO;
