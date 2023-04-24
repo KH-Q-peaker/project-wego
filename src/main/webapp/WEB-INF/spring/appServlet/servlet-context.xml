@@ -54,9 +54,10 @@
 		</interceptor>
 		
 		<interceptor> 	
+			<mapping path="/login/google" />
 			<mapping path="/login/naver" />
 			
-			<beans:ref bean="naverLoginInterceptor"/> 
+			<beans:ref bean="loginInterceptor"/> 
 		</interceptor>
 		
 		<!-- <interceptor> 

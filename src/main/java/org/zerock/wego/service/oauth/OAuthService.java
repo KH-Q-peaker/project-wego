@@ -1,18 +1,18 @@
 package org.zerock.wego.service.oauth;
 
-import java.util.Objects;
-
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.zerock.wego.domain.common.UserDTO;
 import org.zerock.wego.domain.common.UserVO;
+import org.zerock.wego.domain.oauth.google.GoogleOAuthTokenDTO;
+import org.zerock.wego.domain.oauth.google.GoogleUserInfoDTO;
 import org.zerock.wego.domain.oauth.kakao.KakaoOAuthTokenDTO;
 import org.zerock.wego.domain.oauth.kakao.KakaoUserInfoDTO;
 import org.zerock.wego.domain.oauth.naver.NaverOAuthTokenDTO;
 import org.zerock.wego.domain.oauth.naver.NaverUserInfoDTO;
 import org.zerock.wego.exception.ServiceException;
+import org.zerock.wego.oauth.GoogleOAuth;
 import org.zerock.wego.oauth.KakaoOAuth;
 import org.zerock.wego.oauth.NaverOAuth;
 
@@ -31,6 +31,71 @@ public class OAuthService {
 	private final LoginService loginService;
 	private final KakaoOAuth kakaoOAuth;
 	private final NaverOAuth naverOAuth;
+	private final GoogleOAuth googleOAuth;
+	
+	
+	public UserVO googleLogin(String authorizationCode, String state) throws JsonProcessingException {
+		log.trace("googleLogin(authorizationCode, {}) invoked.", state);
+
+		GoogleOAuthTokenDTO googleOAuthTokenDTO = this.getGoogleAccessToken(authorizationCode);
+		GoogleUserInfoDTO googleUserInfoDTO = this.getGoogleUserInfo(googleOAuthTokenDTO);
+		
+		String targetSocialId = googleUserInfoDTO.getEmail();
+		
+		boolean isAlreadySignUp = loginService.isSignUp(targetSocialId);
+		
+		if(!isAlreadySignUp) {
+			UserDTO userDTO = UserDTO.createByGoogle(googleUserInfoDTO);
+			
+			this.loginService.signUp(userDTO);
+		} // if
+		
+		return this.loginService.socialLogin(targetSocialId);
+		
+	} // googleLogin
+
+	
+	public GoogleOAuthTokenDTO getGoogleAccessToken(String authorizationCode) throws JsonProcessingException {
+		log.trace("getGoogleAccessToken(authorizationCode) invoked.");
+
+			ResponseEntity<String> responseEntity = this.googleOAuth.requestAccessToken(authorizationCode);
+
+			HttpStatus responseStateCode = responseEntity.getStatusCode();
+
+			if(responseStateCode == HttpStatus.OK) {
+
+				GoogleOAuthTokenDTO naverOAuthTokenDTO = this.googleOAuth.parseOAuthTokenDTO(responseEntity.getBody());
+
+				return naverOAuthTokenDTO;
+			} else {
+				throw new ServiceException("naver getAccessToken");
+			} // if-else
+
+	}// getGoogleAccessToken
+
+
+	public GoogleUserInfoDTO getGoogleUserInfo(GoogleOAuthTokenDTO OAuthToken) throws ServiceException{
+		log.trace("getGoogleUserInfo(OAuthToken) invoked.");
+
+		try {
+			ResponseEntity<String> responseEntity = this.googleOAuth.requestUserInfo(OAuthToken);
+
+			HttpStatus responseStateCode = responseEntity.getStatusCode();
+
+			if(responseStateCode == HttpStatus.OK) {
+
+				GoogleUserInfoDTO googleUserInfoDTO = this.googleOAuth.parseUserInfoDTO(responseEntity.getBody());
+
+				return googleUserInfoDTO;
+			} else {
+				throw new ServiceException("naver getAccessToken");
+			} // if-else
+		}
+		catch(Exception e) {
+			throw new ServiceException(e);
+		}// try-catch
+
+	}// getGoogleUserInfo
 
 
 	public UserVO kakaoLogin(String authorizationCode) throws JsonProcessingException {
@@ -109,8 +174,6 @@ public class OAuthService {
 		
 		if(!isAlreadySignUp) {
 			UserDTO userDTO = UserDTO.createByNaver(naverUserInfoDTO);
-			
-			System.err.println(userDTO);
 			
 			this.loginService.signUp(userDTO);
 		} // if

@@ -39,11 +39,11 @@ implements HandlerInterceptor{
 				
 				if (session != null) {
 
-					String state = (String)session.getAttribute(SessionConfig.NAVER_STATE_NAME);
+					String state = (String)session.getAttribute(SessionConfig.SIGN_IN_STATE_NAME);
 
 					if(state != null) {
 
-						session.removeAttribute(SessionConfig.NAVER_STATE_NAME);
+						session.removeAttribute(SessionConfig.SIGN_IN_STATE_NAME);
 					} // if
 
 				} // if 
