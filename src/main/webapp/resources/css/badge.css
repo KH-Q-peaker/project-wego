@@ -37,7 +37,7 @@
     font-size: 32px;
 }
 .badge .head .boxName span#svg{
-    background : url(../img/badgeTitle.svg);
+    background : url(../svg/badgeTitle.svg);
     background-repeat: no-repeat;
     background-size: contain;
 
@@ -77,7 +77,7 @@
 .badge .pick5Setting button span#svg {
     display: block;
 
-    background : url(../img/setting.svg);
+    background : url(../svg/setting.svg);
     background-repeat: no-repeat;
     background-size: contain;
 
@@ -189,7 +189,7 @@ dialog form button {
     height: 45px;
 }
 #pick5 .boxName #svg{
-    background : url(../img/badgeTitle.svg);
+    background : url(../svg/badgeTitle.svg);
 
     background-repeat: no-repeat;
     background-size: contain;
@@ -198,7 +198,7 @@ dialog form button {
     height: 55px;
 }
 #rank .boxName #svg{
-    background : url(../img/ranking.svg);
+    background : url(../svg/ranking.svg);
 
     background-repeat: no-repeat;
     background-size: contain;
