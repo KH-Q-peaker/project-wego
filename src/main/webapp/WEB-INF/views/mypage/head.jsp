@@ -14,7 +14,9 @@
       <link rel="stylesheet" href="${path}/resources/css/myPageindex.css" />
       <link rel="stylesheet" href="${path}/resources/css/mypage.css" />
       <link rel="stylesheet" href="${path}/resources/css/top.css" />
+      <link rel="stylesheet" href="${path}/resources/css/mytext.css" />
       
+      <script src="${path}/resources/js/favorite.js" defer></script>
       <script src="${path}/resources/js/header.js" defer></script>
       <script src="${path}/resources/js/mypage.js" defer></script>
       <script src="${path}/resources/js/top.js" defer></script>

@@ -68,7 +68,7 @@
             </form>
 
             
-            <div class="wrap">
+            <div class="main-wrap">
               <div class="profile-image-button">
                 <img src="${path}/resources/img/profileset.png" alt="프로필사진변경" />
               </div>

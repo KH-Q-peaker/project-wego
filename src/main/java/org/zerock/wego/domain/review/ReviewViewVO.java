@@ -6,7 +6,7 @@ import lombok.Value;
 
 @Value
 public class ReviewViewVO {
-
+	
 	private Integer sanReviewId; 
 	private String sanName; 
 	private Integer userId; 
@@ -16,9 +16,11 @@ public class ReviewViewVO {
 	private String modifiedDt; 
 	private String title; 
 	private String contents; 
+	private String reviewPic;
 	private Integer likeCnt; 
 	private Integer reportCnt; 
 	private Integer visitCnt;
-	private String path;
+	private Integer commentCnt;
+
 	
 } // end class

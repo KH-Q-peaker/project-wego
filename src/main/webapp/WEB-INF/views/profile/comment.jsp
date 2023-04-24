@@ -71,7 +71,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
         <c:if test="${pageMaker.prev}">
             <li class="prev">
 	            <span
-	              data-temp="${pageMaker.cri.setCurrPage(pageMaker.startPage - 1 )}" onclick="selectClickCurrPagePrev()">Prev</span>
+	              data-temp="${pageMaker.cri.setCurrPage(pageMaker.startPage - 1 )}" onclick="selectClickCurrPagePrev1()">Prev</span>
 	            <input type="hidden" id="currPagePrev" value="${pageMaker.startPage - 1}">
           </li>
         </c:if>
@@ -83,7 +83,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
           end="${pageMaker.endPage}"
         >
           <!-- 조건문으로 지금 현재 페이지확인 : 전송파라미터중 현페이지번호가같니?그럼비워 -->
-          <li class="${param.currPage eq pageNum ? 'currPage' : ''}" id="currPageNum" onclick="selectClickCurrPage()">
+          <li class="${param.currPage eq pageNum ? 'currPage' : ''} commentPage${pageNum}" id="currPageNum" onclick="selectClickCurrPage1()">
             <span data-temp="${pageMaker.cri.setCurrPage(pageNum)}">${pageNum}</span
             >
           </li>
@@ -95,7 +95,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
         <c:if test="${pageMaker.next}">
           <li class="next">
             <span
-              data-temp="${pageMaker.cri.setCurrPage(pageMaker.endPage+1)}" onclick="selectClickCurrPageNext()">Next</span>
+              data-temp="${pageMaker.cri.setCurrPage(pageMaker.endPage+1)}" onclick="selectClickCurrPageNext1()">Next</span>
               <input type="hidden" id="currPageNext" value="${pageMaker.endPage+1}">
           </li>
         </c:if>
@@ -107,41 +107,44 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 
 
 <script>
-function selectClickCurrPage() {
+
+var commentCurrPage = "${__CommentCurrPage__}";
+if(commentCurrPage == 1) {
+  $('.commentPage1').addClass("currPage");
+}
+
+function selectClickCurrPage1() {
     var currPage = event.target.innerText;
-    var amount = 5;
     $.ajax({
           type: 'get',
           url: '/profile/comment',
-          data:{"currPage":currPage,"amount":5,userId:"${userId}"},
+          data:{"currPage":currPage,userId:"${userId}"},
           success: function(data){
-              $(".cotents").load("/profile/comment?userId="+userId+"&currPage="+currPage+"&amount="+amount);
+              $(".cotents").load("/profile/comment?userId="+userId+"&currPage="+currPage);
           }//success
    	 });//ajax
 }//selectClickCurrPage
 
-function selectClickCurrPagePrev () {
+function selectClickCurrPagePrev1() {
 var currPage = $( '#currPagePrev' ).val();
-var amount = 5;
 $.ajax({
 	   type: 'get',
     url: '/profile/comment',
-    data:{"currPage":currPage,"amount":5,userId:"${userId}"},
+    data:{"currPage":currPage,userId:"${userId}"},
     success: function(data){
-        $(".cotents").load("/profile/comment?userId="+userId+"&currPage="+currPage+"&amount="+amount);
+        $(".cotents").load("/profile/comment?userId="+userId+"&currPage="+currPage);
     }//success
  }); //ajax
 } //selectClickCurrPagePrev
 
-function selectClickCurrPageNext () {
-var amount = 5;
+function selectClickCurrPageNext1() {
 var currPage = $( '#currPageNext' ).val();
 $.ajax({
 	   type: 'get',
        url: '/profile/comment',
-       data:{"currPage":currPage,"amount":5,userId:"${userId}"},
+       data:{"currPage":currPage,userId:"${userId}"},
        success: function(data){
-           $(".cotents").load("/profile/comment?userId="+userId+"&currPage="+currPage+"&amount="+amount);
+           $(".cotents").load("/profile/comment?userId="+userId+"&currPage="+currPage);
    	}//success
 }); //ajax
 } //selectClickCurrPageNext

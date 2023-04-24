@@ -1,49 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8" />
-<title>메인페이지</title>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-<link rel="shortcut icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
-<link rel="icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
-
-<link rel="stylesheet" href="/resources/css/header.css" />
-<link rel="stylesheet" href="/resources/css/footer.css" />
-<link rel="stylesheet" href="/resources/css/main.css" />
-<link rel="stylesheet" href="/resources/css/ranking.css" />
-
-<script src="/resources/js/header.js" defer></script>
-<script src="/resources/js/main.js" defer></script>
-<script src="/resources/js/ranking.js" defer></script>
-<script src="/resources/js/favorite.js" defer></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
-</head>
-<body>
-	<div class="total-wrap">
-		<%@include file="/WEB-INF/views/common/header.jsp"%>
-		<c:set var="imgBasePath" value="/img/" />
-		
-		<section>
-		
-			<%@include file="/WEB-INF/views/ranking/ranking.jsp"%>
-			
-			<div class="mountain-info">
+    
+    <script src="${path}/resources/js/main.js" defer></script>
+    <link rel="stylesheet" href="${path}/resources/css/main.css" />
+    
+   <style>
+	    .my-like.cotents {
+		    background-color: transparent;
+		    padding-top: 0;
+		}
+    </style> 
+    
+    <div class="my-like cotents">
+    	<div class="mountain-info">
 				<h2>❤️ 산 ❤️</h2>
 				<div class="wrap">
 					<c:forEach var="item" items="${sanInfoList}">
 						<a href="/info/${item.sanInfoId}">
 							<div class="mountain-item">
-								<img class="mountain-img" src="${empty item.img ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.img, 10, 55)}" alt="img" />
+								<img class="mountain-img" src="/img/${fn:substring(item.img, 10, 55)}" alt="img" />
 								<h3 class="mountain-name" id="mountainName">${item.sanName}</h3>
 								<p class="mountain-contents" id="text">${item.details}</p>
 								<div class="mountain-like">
@@ -70,10 +48,10 @@
 					<c:forEach var="item" items="${partyList}">
 						<a href="/party/${item.sanPartyId}">
 							<div class="recruit-item">
-								<img class="user-img" src="${empty item.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.userPic, 10, 55)}" alt="img" />
+								<img class="user-img" src="/img/${fn:substring(item.userPic, 10, 55)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>
-								<img class="recruit-img" src="${empty item.partyPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.partyPic, 10, 55)}" alt="img" />
+								<img class="recruit-img" src="/img/${fn:substring(item.partyPic, 10, 55)}" alt="img" />
 								<p class="recruit-title" id="title">${item.title}</p>
 								<p class="recruit-schedule-schedule">날짜:</p>
 								<p class="recruit-schedule" id="schedule">
@@ -115,11 +93,10 @@
 					<c:forEach var="item" items="${reviewList}">
 						<a href="/review/${item.sanReviewId}">
 							<div class="review-item">
-								<img class="user-img" src="${empty item.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.userPic, 10, 55)}" alt="img" />
+								<img class="user-img" src="/img/${fn:substring(item.userPic, 10, 55)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>
-								<img class="review-img" src="${empty item.reviewPic ? 
-								"/resources/img/leaf.png" : imgBasePath += fn:substring(item.reviewPic, 10, 55)}" alt="img" />
+								<img class="review-img" src="/img/defaultImg.png" alt="img" />
 								<h3 class="review-title" id="title">${item.title}</h3>
 								<p class="review-contents" id="text">${item.contents}</p>
 								<div class="review-like">
@@ -143,12 +120,4 @@
 					</c:forEach>
 				</div>
 			</div>
-			<a href="#" class="scrollToTop"> <img
-				src="/resources/svg/top.svg" />
-			</a> <a href="#" class="chat"> <img src="/resources/svg/chat.svg" />
-			</a>
-		</section>
-	</div>
-	<%@include file="/WEB-INF/views/common/footer.jsp"%>
-</body>
-</html>
+		</div>

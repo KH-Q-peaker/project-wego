@@ -7,7 +7,7 @@ import org.zerock.wego.domain.common.Criteria;
 import org.zerock.wego.domain.common.FileDTO;
 import org.zerock.wego.domain.common.UserDTO;
 import org.zerock.wego.domain.common.UserVO;
-import org.zerock.wego.domain.party.PartyVO;
+import org.zerock.wego.domain.profile.MyPartyVO;
 import org.zerock.wego.domain.profile.ProfileCommentVO;
 import org.zerock.wego.domain.profile.ProfileVO;
 
@@ -38,17 +38,14 @@ public interface ProfileMapper {
 	// 7. 나의 프로필사진을 업데이트 하기.
 	public abstract Integer updateProfile(UserDTO dto); 		
 	
-	// 8. user_tb테이블의 user_pic 패쓰 경로를 통해 프로필 사진을 보여주기.
-	public abstract String selectProfilePicturePath(@Param("userId")Integer userId); 		
-	
 	//9. 닉네임 변경
 	abstract Integer updateNick(UserDTO dto);
 	
 	//10. 신청가능한 모집일정 리스트 보여주기
-	public abstract List<PartyVO> selectAvailableParty(@Param("userId")Integer userId,@Param("currPage")Integer currPage,@Param("amount")Integer amount);
+	public abstract List<MyPartyVO> selectAvailableParty(@Param("userId")Integer userId,@Param("currPage")Integer currPage,@Param("amount")Integer amount);
 	
 	//11. 지난 등산일정 리스트 보여주기
-	public abstract List<PartyVO> selectPastParty(@Param("userId")Integer userId,@Param("currPage")Integer currPage,@Param("amount")Integer amount);
+	public abstract List<MyPartyVO> selectPastParty(@Param("userId")Integer userId,@Param("currPage")Integer currPage,@Param("amount")Integer amount);
 	
 	//12. 참여가능한 나의모집 페이지 총 카운트
 	public abstract Integer selectTotalCountAvailableParty(Integer userId);		
