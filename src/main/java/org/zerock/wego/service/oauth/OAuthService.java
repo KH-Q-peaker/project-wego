@@ -61,15 +61,12 @@ public class OAuthService {
 
 			HttpStatus responseStateCode = responseEntity.getStatusCode();
 
-			log.info("responseCode = {}", responseStateCode);
-
 			if(responseStateCode == HttpStatus.OK) {
 
 				KakaoOAuthTokenDTO kakaoOAuthTokenDTO = this.kakaoOAuth.parseOAuthTokenDTO(responseEntity.getBody());
 
 				return kakaoOAuthTokenDTO;
-			}
-			else {
+			} else {
 				throw new ServiceException("kakao getAccessToken");
 			} // if-else
 
@@ -84,15 +81,12 @@ public class OAuthService {
 
 			HttpStatus responseStateCode = responseEntity.getStatusCode();
 
-			log.info("responseCode = {}", responseStateCode);
-
 			if(responseStateCode == HttpStatus.OK) {
 
 				KakaoUserInfoDTO kakaoUserInfoDTO = this.kakaoOAuth.parseUserInfoDTO(responseEntity.getBody());
 
 				return kakaoUserInfoDTO;
-			}
-			else {
+			} else {
 				throw new ServiceException("kakao getAccessToken");
 			} // if-else
 		}
@@ -116,6 +110,8 @@ public class OAuthService {
 		if(!isAlreadySignUp) {
 			UserDTO userDTO = UserDTO.createByNaver(naverUserInfoDTO);
 			
+			System.err.println(userDTO);
+			
 			this.loginService.signUp(userDTO);
 		} // if
 		
@@ -131,15 +127,12 @@ public class OAuthService {
 
 			HttpStatus responseStateCode = responseEntity.getStatusCode();
 
-			log.info("responseCode = {}", responseStateCode);
-
 			if(responseStateCode == HttpStatus.OK) {
 
 				NaverOAuthTokenDTO naverOAuthTokenDTO = this.naverOAuth.parseOAuthTokenDTO(responseEntity.getBody());
 
 				return naverOAuthTokenDTO;
-			}
-			else {
+			} else {
 				throw new ServiceException("naver getAccessToken");
 			} // if-else
 
@@ -154,15 +147,12 @@ public class OAuthService {
 
 			HttpStatus responseStateCode = responseEntity.getStatusCode();
 
-			log.info("responseCode = {}", responseStateCode);
-
 			if(responseStateCode == HttpStatus.OK) {
 
 				NaverUserInfoDTO naverUserInfoDTO = this.naverOAuth.parseUserInfoDTO(responseEntity.getBody());
 
 				return naverUserInfoDTO;
-			}
-			else {
+			} else {
 				throw new ServiceException("naver getAccessToken");
 			} // if-else
 		}

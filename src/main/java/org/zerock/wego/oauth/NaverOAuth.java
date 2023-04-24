@@ -59,7 +59,7 @@ public class NaverOAuth {	// https://developers.naver.com/docs/login/api/api.md 
 
 	// 인가 코드로 Access Token 요청
 	public ResponseEntity<String> requestAccessToken(String authorizationCode, String state) {
-		log.trace("requestAccessToken({}) invoked.", authorizationCode);
+		log.trace("requestAccessToken(authorizationCode) invoked.");
 
 		HttpHeaders headers = new HttpHeaders();
 		RestTemplate restTemplate = new RestTemplate();
