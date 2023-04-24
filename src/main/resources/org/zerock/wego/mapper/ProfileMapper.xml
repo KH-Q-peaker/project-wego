@@ -120,39 +120,43 @@
 		where user_id = #{userId}
 	</update>
 	
-	<select id ="selectProfilePicturePath">
-		SELECT path
-		FROM file_tb
-		WHERE uuid = (
-			SELECT user_pic
-			FROM user_tb
-			WHERE user_id = #{userId}
-			)
-	</select>
-	
 	<update id ="updateNick">
 		UPDATE user_tb
 		SET nickname= #{nickname}
 		WHERE user_id = #{userId}
 	</update>
 	
-	<select id ="selectAvailableParty" resultType="org.zerock.wego.domain.party.PartyVO">
+	<select id ="selectAvailableParty" resultType="org.zerock.wego.domain.profile.MyPartyVO">
 	 <![CDATA[
-			SELECT san_Party_Id, san_Info_Id, user_Id, created_Dt, modified_Dt,
-					title, contents, party_Dt, party_Max, items, condition
-			FROM san_party_tb
-			WHERE TO_CHAR(SYSDATE, 'yyyy/MM/dd HH:MM') <= TO_CHAR(PARTY_DT, 'yyyy/MM/dd HH:MM') AND user_id=#{userId}
+	  SELECT san_Party_Id, (SELECT SAN_NAME FROM SAN_INFO_TB WHERE SAN_INFO_TB.SAN_INFO_ID=san_party_tb.SAN_INFO_ID) AS SAN_NAME,
+	        user_Id, created_Dt, modified_Dt,
+	        title, contents, party_Dt, 
+	        (SELECT count(san_party_id)
+	        FROM Join_tb
+	        WHERE Join_tb.SAN_PARTY_ID=san_party_tb.SAN_PARTY_ID
+	        GROUP BY san_party_id),
+	        party_Max, items, condition
+		 FROM san_party_tb
+		 WHERE TO_CHAR(SYSDATE, 'yyyy/MM/dd HH:MM') <= TO_CHAR(PARTY_DT, 'yyyy/MM/dd HH:MM')
+		    AND SAN_PARTY_ID in (SELECT SAN_PARTY_ID FROM JOIN_TB WHERE USER_ID = #{userId})
 			OFFSET ( #{currPage} - 1 ) * #{amount} ROWS
 			FETCH NEXT #{amount} ROWS ONLY
 		]]>
 	</select>
 	
-	<select id ="selectPastParty" resultType="org.zerock.wego.domain.party.PartyVO">
+	<select id ="selectPastParty" resultType="org.zerock.wego.domain.profile.MyPartyVO">
 		<![CDATA[
-			SELECT san_Party_Id, san_Info_Id, user_Id, created_Dt, modified_Dt,
-					title, contents, party_Dt, party_Max, items, condition
-			FROM san_party_tb
-			WHERE TO_CHAR(SYSDATE, 'yyyy/MM/dd HH:MM') > TO_CHAR(PARTY_DT, 'yyyy/MM/dd HH:MM') AND user_id=#{userId}
+	  SELECT san_Party_Id, (SELECT SAN_NAME FROM SAN_INFO_TB WHERE SAN_INFO_TB.SAN_INFO_ID=san_party_tb.SAN_INFO_ID) AS SAN_NAME,
+	        user_Id, created_Dt, modified_Dt,
+	        title, contents, party_Dt,
+	        (SELECT count(san_party_id)
+	        FROM Join_tb
+	        WHERE Join_tb.SAN_PARTY_ID=san_party_tb.SAN_PARTY_ID
+	        GROUP BY san_party_id),
+	        party_Max, items, condition
+		 FROM san_party_tb
+		 WHERE TO_CHAR(SYSDATE, 'yyyy/MM/dd HH:MM') > TO_CHAR(PARTY_DT, 'yyyy/MM/dd HH:MM')
+		    AND SAN_PARTY_ID in (SELECT SAN_PARTY_ID FROM JOIN_TB WHERE USER_ID = #{userId})
 			OFFSET ( #{currPage} - 1 ) * #{amount} ROWS
 			FETCH NEXT #{amount} ROWS ONLY
 		]]>
@@ -162,14 +166,16 @@
 		<![CDATA[
 			SELECT count(san_party_id)
 			FROM san_party_tb
-			WHERE TO_CHAR(SYSDATE, 'yyyy/MM/dd HH:MM') <= TO_CHAR(PARTY_DT, 'yyyy/MM/dd HH:MM') AND user_id=#{userId}
+			WHERE TO_CHAR(SYSDATE, 'yyyy/MM/dd HH:MM') <= TO_CHAR(PARTY_DT, 'yyyy/MM/dd HH:MM')
+		    	AND SAN_PARTY_ID in (SELECT SAN_PARTY_ID FROM JOIN_TB WHERE USER_ID = #{userId})
 		]]>
 	</select>
 	
 	<select id ="selectTotalCountPastParty" resultType="Integer">
 		SELECT count(san_party_id)
 		FROM san_party_tb
-		WHERE TO_CHAR(SYSDATE, 'yyyy/MM/dd HH:MM') > TO_CHAR(PARTY_DT, 'yyyy/MM/dd HH:MM') AND user_id=#{userId}
+		WHERE TO_CHAR(SYSDATE, 'yyyy/MM/dd HH:MM') > TO_CHAR(PARTY_DT, 'yyyy/MM/dd HH:MM')
+		    AND SAN_PARTY_ID in (SELECT SAN_PARTY_ID FROM JOIN_TB WHERE USER_ID = #{userId})
 	</select>
 	
 	 <update id="updateMyInfo">
@@ -177,7 +183,13 @@
 		SET address=#{address}, san_range=#{sanRange}, san_taste=#{sanTaste}
 		WHERE user_id=#{userId}
 	 </update>
-  
+	 
+	 <!--<select id="selectMyInfo" resultType="org.zerock.wego.domain.common.UserVO">
+  		SELECT *
+		FROM USER_TB
+		WHERE user_id=#{userId}
+	 </select>-->
+	 
      <!--<delete id="deleteMyAccount">
     	DELETE
     	FROM

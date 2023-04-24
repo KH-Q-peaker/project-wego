@@ -1,10 +1,12 @@
 package org.zerock.wego.service.badge;
 
+import java.util.Deque;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.zerock.wego.domain.badge.BadgeGetVO;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.BadgeGetMapper;
@@ -21,7 +23,13 @@ public class BadgeGetService {
 
 	private final BadgeGetMapper badgeGetMapper;
 	
-
+	
+	// 뱃지 획득
+	public boolean register(Integer badgeId, Integer userId) {
+		log.trace("register({}, {}) invoked", badgeId, userId);
+		
+		return this.badgeGetMapper.insertByBadgeIdAndUserID(badgeId, userId) == 1;
+	} // register
 
 	// 유저의 뱃지 획득 내역을 불러온다.
 	public LinkedBlockingDeque<BadgeGetVO> getAllByUserId(Integer userId) throws RuntimeException {

@@ -6,17 +6,20 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 import org.zerock.wego.config.SessionConfig;
+import org.zerock.wego.domain.common.UserVO;
 
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 
 @Log4j2
-@NoArgsConstructor
+@RequiredArgsConstructor
 
-@Component("authInterceptor")
-public class AuthInterceptor 
+@Component("logoutInterceptor")
+public class LogoutInterceptor 
 	implements HandlerInterceptor{
 	
 
@@ -27,26 +30,11 @@ public class AuthInterceptor
 
 		HttpSession session = req.getSession(false);
 
-		//		===================================================== 로그인 확인.
-		if (session == null) {
-			
-			res.sendRedirect("/login");
-			
-			return false;
-		} else {
-			
-			Object auth = session.getAttribute(SessionConfig.AUTH_KEY_NAME);
-
-			if (auth == null) {
-				
-				res.sendRedirect("/login");
-
-				return false;
-			} // if-else
-		} // if-else
-
+		session.removeAttribute(SessionConfig.AUTH_KEY_NAME);
+		
 		return true;
 	} // preHandle
+
 
 
 } // end class

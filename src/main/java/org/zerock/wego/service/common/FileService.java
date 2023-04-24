@@ -24,11 +24,11 @@ public class FileService {
 
 	private final FileMapper fileMapper;
 
-
+//	@Transactional
 	public boolean isImageRegister(List<MultipartFile> imgFiles, String targetGb, Integer targetCd, FileDTO fileDTO)
 			throws ServiceException {
 		log.trace("isImageRegister() invoked.");
-		
+
 		try {
 			String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
@@ -39,29 +39,28 @@ public class FileService {
 				Folder.mkdir();
 			} // if
 
-			imgFiles.forEach(imgFile -> {
-				if (!"".equals(imgFile.getOriginalFilename())) {
-					String originalName = imgFile.getOriginalFilename();
+			for (int order = 0; order < imgFiles.size(); order++) {
+				if (!"".equals(imgFiles.get(order).getOriginalFilename())) {
+					String originalName = imgFiles.get(order).getOriginalFilename();
 					String uuid = UUID.randomUUID().toString();
 
 					String imgPath = basePath + "/" + uuid;
 
-					try {
-						imgFile.transferTo(new File(imgPath));
-					} catch (Exception e) {
-						e.printStackTrace();
-					} // try-catch
+					imgFiles.get(order).transferTo(new File(imgPath));
+					
+					FileDTO dto = FileDTO.builder()
+							.targetGb(targetGb)
+							.targetCd(targetCd)
+							.fileName(originalName)
+							.uuid(uuid)
+							.path(imgPath)
+							.status(order + 1)
+							.build();
 
-					fileDTO.setTargetGb(targetGb);
-					fileDTO.setTargetCd(targetCd);
-					fileDTO.setFileName(originalName);
-					fileDTO.setUuid(uuid);
-					fileDTO.setPath(imgPath);
-
-					boolean isFileUploadSuccess = this.isRegister(fileDTO);
+					boolean isFileUploadSuccess = this.isRegister(dto);
 					log.info("isFileUploadSuccess: {}", isFileUploadSuccess);
 				} // if
-			});
+			} // for
 
 			return true;
 		} catch (Exception e) {
@@ -69,25 +68,105 @@ public class FileService {
 		} // try-catch
 	} // isImageRegister
 
-	public boolean isChangeImage(List<MultipartFile> newFiles, String targetGb, Integer targetCd, FileDTO fileDTO) 
-			throws ServiceException {
+//	@Transactional
+	public boolean isChangeImage(List<MultipartFile> newFiles, List<String> oldFiles, List<String> order,
+			String targetGb, Integer targetCd, FileDTO fileDTO) throws ServiceException {
+		log.trace("isChangeImage() invoked.");
 		try {
-			List<FileVO> fileVo = this.getList(targetGb, targetCd);
-			log.info("*****isChangeImage - fileVo: {}", fileVo);
-			
-			if(fileVo.isEmpty()) {
+			// 기존 이미지 정보 불러오기
+			List<FileVO> fileVO = this.getList(targetGb, targetCd);
+
+			// 기존 이미지 정보가 없으면 새로 등록으로 이동
+			if (fileVO.isEmpty() && newFiles != null) {
 				return this.isImageRegister(newFiles, targetGb, targetCd, fileDTO);
 			} // if
-			Integer oldFileId = fileVo.get(0).getFileId();
 
-			// TODO: forEach로 변경 필요
-			newFiles.get(0).transferTo(new File(fileVo.get(0).getPath()));
+			// 기존 이미지 정보를 DB에서 삭제
+			boolean removeSuccess = this.isRemoveByTarget(targetGb, targetCd);
+			log.info("removeSuccess: {}", removeSuccess);
 
-			return this.isModify(targetGb, targetCd, oldFileId, newFiles.get(0).getOriginalFilename());
+			// 기존 이미지 중 oldFiles에 없는 이미지를 파일시스템에서 제거
+			// 메소드로 빼면 파라미터는 List<FileVO> fileVO
+			if(!fileVO.isEmpty()) {
+				fileVO.forEach(item -> {
+					if (!oldFiles.contains(item.getFileName())) {
+						File file = new File(item.getPath());
+
+						if (file.exists()) {
+							file.delete();
+						} // if
+					} // if
+				});
+			} // if
+			
+			// 이미지 순서대로 DB에 이미지 정보 저장
+			if (oldFiles != null) {
+				// 1. 기존 이미지
+				oldFiles.forEach(file -> {
+					int fileOrder = order.indexOf(file);
+					if (fileOrder != -1) {
+						// VO에서 일치하는 파일명의 정보를 가져온다.
+						fileVO.forEach(imgInfo -> {
+							if(file.equals(imgInfo.getFileName())) {
+								// 기존 파일 시스템에 존재하므로 DB에만 저장
+								FileDTO dto = FileDTO.builder()
+										.targetGb(targetGb)
+										.targetCd(targetCd)
+										.fileName(imgInfo.getFileName())
+										.uuid(imgInfo.getUuid())
+										.path(imgInfo.getPath())
+										.status(fileOrder + 1)
+										.build();
+								
+								this.fileMapper.insert(dto);
+							} // if
+						});
+					} // if
+				});
+			} // if
+			
+			if(newFiles != null ) {
+				// 이미지를 저장할 경로 지정(이전 경로 중 하나에서 날짜 추출)
+				String prevPath = fileVO.get(0).getPath();
+				int start = fileVO.get(0).getPath().lastIndexOf("/") - 8;
+				String date = prevPath.substring(start, start + 8);
+				String basePath = "C:/upload/" + date;
+				
+				// 2. 신규 이미지
+				newFiles.forEach(file -> {
+					int fileOrder = order.indexOf(file.getOriginalFilename());
+					if (fileOrder != -1) {
+						String uuid = UUID.randomUUID().toString();
+						String imgPath = basePath + "/" + uuid;
+						
+						// 파일 시스템에 저장
+						try {
+							file.transferTo(new File(imgPath));
+						} catch (Exception e) {
+							e.printStackTrace();
+						} // try-catch
+						
+						// DB에 저장
+						FileDTO dto = FileDTO.builder()
+								.targetGb(targetGb)
+								.targetCd(targetCd)
+								.fileName(file.getOriginalFilename())
+								.uuid(uuid)
+								.path(imgPath)
+								.status(fileOrder + 1)
+								.build();
+						
+						this.fileMapper.insert(dto);
+					} // if
+				});
+			} // if
+
+			return true;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
 	} // isChangeImage
+	
 
 	public List<FileVO> getList(String targetGb, Integer targetCd) throws ServiceException {
 		log.trace("getList() invoked.");
