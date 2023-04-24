@@ -3,11 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<c:set var="path" value="${pageContext.request.contextPath}"/>
 
 <head>
-<script type="text/javascript" src="${path}/resources/js/join.js" defer></script>
-<link type="text/css" rel="stylesheet" href="${path}/resources/css/join.css"/>
+<script type="text/javascript" src="/resources/js/join.js" defer></script>
+<link type="text/css" rel="stylesheet" href="/resources/css/join.css"/>
 </head>
 <body>
 	<div class="joinModal">

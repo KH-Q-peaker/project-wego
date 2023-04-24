@@ -39,7 +39,9 @@
 <script type="text/javascript" src="${path}/resources/js/review-detail.js" defer></script>
 	
 
-<script> var target = JSON.parse('${target}'); </script>
+<script> 
+	var target = JSON.parse('${target}');
+</script>
 </head>
 <body>
 	<div class="total-wrap">		
@@ -68,7 +70,7 @@
 					</div>
 				</div>
 
-				<div class="cnt">댓글 (${commentCount})</div>
+				<div class="cnt">댓글 (<span id="cmtcnt">${review.commentCnt }</span>)</div>
 				<c:set var="comments" value="${comments}" />
 				<jsp:include page="../comment/comment.jsp" />
 
