@@ -13,6 +13,8 @@ import org.zerock.wego.exception.OperationFailException;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.CommentMapper;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -26,11 +28,11 @@ public class CommentService {
 
 	
 	// 댓글 총합 
-	public int getTotalCountByTarget(PageInfo target) throws ServiceException {
+	public int getTotalCountByTarget(String targetGb, Integer targetCd) throws ServiceException {
 //		log.trace("getCommentsCount({}) invoked.", target);
 		
 		try {
-			int totalCount = this.commentMapper.selectTotalCountByTarget(target);
+			int totalCount = this.commentMapper.selectTotalCountByTarget(targetGb, targetCd);
 
 			return totalCount;
 
@@ -38,6 +40,23 @@ public class CommentService {
 			throw new ServiceException(e);
 		} // try-catch
 	}// getCommentCnt
+	
+	// 댓글 총합 
+		public int getTotalCountByTarget(CommentDTO dto) throws ServiceException {
+//			log.trace("getCommentsCount({}) invoked.", target);
+			
+			try {
+				
+				int totalCount 
+					= this.commentMapper.selectTotalCountByTarget(dto.getTargetGb(), dto.getTargetCd());
+					
+				return totalCount;
+
+			} catch (Exception e) {
+				throw new ServiceException(e);
+			} // try-catch
+		}// getCommentCnt
+		//========================================================뭐로하지? 
 
 	// 댓글 offset 로딩
 	public LinkedBlockingDeque<CommentViewVO> getCommentOffsetByTarget(PageInfo target, Integer lastCommentId)
@@ -104,18 +123,20 @@ public class CommentService {
 		try {
 			if(dto.getMentionId() == null) {
 				
-				this.commentMapper.insertComment(dto); 
+				this.commentMapper.insertComment(dto);
 			}else {
 				
 				this.commentMapper.insertMention(dto);
 			}// if-else 
-		
+			
 			boolean isExist 
 				= (this.commentMapper.selectById(dto.getCommentId()) != null);
 			
 			if(!isExist) {
 				throw new OperationFailException();
 			}// if
+			
+			this.commentMapper.updateTargetCommentCnt(dto, "INSERT");
 			
 		} catch(OperationFailException e) {
 			throw e;
@@ -146,6 +167,10 @@ public class CommentService {
 				this.removeMention(commentId);
 			} // if-else
 			
+			CommentDTO dto = CommentDTO.convertCommentViewVOToCommentDTO(originComment);
+			
+			this.commentMapper.updateTargetCommentCnt(dto, "DELETE");
+			
 		} catch (OperationFailException e) {
 			throw e;
 
@@ -161,25 +186,32 @@ public class CommentService {
 //		log.trace("removeComment() invoked.");
 		try {
 
-			CommentDTO comment = new CommentDTO();
-			comment.setCommentId(commentId);
-			comment.setContents("삭제된 댓글입니다.");
-
+//			CommentDTO comment = new CommentDTO();
+//			comment.setCommentId(commentId);
+//			comment.setContents("삭제된 댓글입니다.");
+			
 			boolean isExist = (this.commentMapper.selectById(commentId) != null);
-
+			
 			if (!isExist) {
 				throw new NotFoundPageException();
 			} // if
-
+			
 			boolean isMentionExist = (this.commentMapper.hasMentionById(commentId) != null);
+			
+			CommentDTO comment = CommentDTO.builder()
+										.commentId(commentId)
+										.contents("삭제된 댓글입니다.")
+										.status(isMentionExist ? "P" : "Y") // 삼항을 허락해주세요 
+										.build();
 
-			if (isMentionExist) {
-
-				comment.setStatus("P");
-			} else {
-
-				comment.setStatus("Y");
-			} // if-else
+//
+//			if (isMentionExist) {
+//
+//				comment.setStatus("P");
+//			} else {
+//
+//				comment.setStatus("Y");
+//			} // if-else
 
 			this.commentMapper.updateComment(comment);
 			
@@ -198,10 +230,16 @@ public class CommentService {
 //		log.trace("removeMention() invoked.");
 
 		try {
-			CommentDTO comment = new CommentDTO();
-			comment.setCommentId(commentId);
-			comment.setContents("삭제된 댓글입니다.");
-			comment.setStatus("Y");
+//			CommentDTO comment = new CommentDTO();
+//			comment.setCommentId(commentId);
+//			comment.setContents("삭제된 댓글입니다.");
+//			comment.setStatus("Y");
+			
+			CommentDTO comment = CommentDTO.builder()
+										.commentId(commentId)
+										.contents("삭제된 댓글입니다.")
+										.status("Y")
+										.build();
 
 			CommentViewVO originComment = this.commentMapper.selectById(commentId);
 
@@ -230,7 +268,6 @@ public class CommentService {
 	}// removeComment
 
 	
-	
 	// 댓글 수정 
 	public void modify(CommentDTO dto) throws ServiceException{
 //		log.trace("isModified({}) invoked", dto);
@@ -250,7 +287,7 @@ public class CommentService {
 			throw new ServiceException(e);
 		}// try-catch
 	}// modifyComment
-
+	
 	// 댓글 영구 삭제
 	@Async
 	@Scheduled(fixedRate = 100000)

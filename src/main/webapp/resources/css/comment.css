@@ -14,12 +14,11 @@
 	display: grid;
 	padding: 20px;
 	margin: 7px 0;
-	/* width: 100%; */
 	position: relative;
 	height: auto;
 	background-color: rgb(255 255 255/ 0.95);
 	grid-column: 1/-1;
-	grid-template-columns: 30px minmax(70px, 1fr) minmax(auto, 90%)
+	grid-template-columns: 30px minmax(70px, auto) minmax(auto, 90%)
 		minmax(100px, 110px);
 	grid-template-rows: 20px auto 20px;
 	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 5px 5px

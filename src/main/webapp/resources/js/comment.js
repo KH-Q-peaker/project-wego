@@ -1,4 +1,29 @@
+function loadMoreComments() {
 
+	let lastCommentId = $('.comments:last #commentId').val();
+
+	$.ajax({
+		url: "/comment/load",
+		type: "GET",
+		data: {
+			targetGb: target.targetGb,
+			targetCd: target.targetCd,
+			amount: target.amount,
+			lastComment: lastCommentId
+		},
+
+		success: function(data) {
+			if (data.length != 0) {
+				$(".cmtcontainer").append(data);
+			} else {
+				$(window).off('scroll');
+			}
+		},
+		error: () => {
+			console.log('댓글로딩오류 ');/* 바꿔야됨  */
+		}
+	});
+}
 function toggleBtn(inputElem, buttonElem) {
 	
   if (inputElem.val() !== '') {
@@ -27,16 +52,6 @@ function toggleMentionBtn(buttonElem) {
 	}
 }
 
-//function createMentionElement(comment) {
-//    var $commentDiv = $('<div>').addClass('comments mention');
-//    var $commentPic = $('<img>').addClass('cmtuserPic').attr('src', comment.userPic);
-//    var $commentUser = $('<a>').addClass('cmtuser').attr('href', 'http://localhost:8080/profile/' + comment.userId).text(comment.nickname);
-//    var $commentDate = $('<div>').addClass('cmtdate').html(comment.createdDt);
-//    var $commentContents = $('<div>').addClass('comment').html(comment.contents);
-//    $commentDiv.append($commentPic, $commentUser, $commentDate, $commentContents);
-//    return $commentDiv;
-//}
-
 $(() => { /* 새 댓글 post 전송  */
 	
 	$('textarea').off('keydown').on( 'keydown', function (){
@@ -59,35 +74,36 @@ $(() => { /* 새 댓글 post 전송  */
 		});
 	});
 	$(".ncmt").off('click').on('click', function() {
-
+		
+		$(".ncmt").prop('disabled', true);
 		$.ajax({
 			url: "/comment/register",
 			type: "POST",
 			data:
-			JSON.stringify({
+			{
 				targetGb: target.targetGb,
 				targetCd: target.targetCd,
 				contents: $(this).prev().val()
-			}),
-			contentType: "application/json",
+			},
 			success: function(data) {
 				setMessage("💬 댓글이 등록되었습니다.");
 				showModal();
 				setTimeout(hideModal, 700);
-				page=1;
 				$(window).off('scroll').on('scroll', scrollCommentLoading);
 				$("#contents").val('');
 				$(".cmtcontainer").replaceWith(data);
+				$('#cmtcnt').text(commentCnt);
 		},
-		error : function() {
-			setMessage("⚠️ 댓글 등록 실패.");
-			showModal();
-			setTimeout(hideModal, 700);
+		error : function(data) {
+			if(data.status == 403){
+				setMessage(data.responseText);
+				showModal();
+				setTimeout(hideModal, 5000);
+			}
 		}
 		});
 	});
 });
-
 
 $(() => { /* 답글 관련 */
 	
@@ -102,6 +118,7 @@ $(() => { /* 답글 관련 */
 		let mentionList = $(this).parent().next().next('.mentionList');
 		let mentionbtn = $(this);
 		
+//		function loadMention(){
 			$.ajax({
 				url: "/comment/mention",
 				type: "GET",
@@ -117,35 +134,55 @@ $(() => { /* 답글 관련 */
 					console.log('멘션로딩 실패');
 				}
 			});
-		
+//		}
+//		loadMention();
 			/* 등록버튼 클릭 시 멘션 등록 post전송   */
 			$(".men").off('click').on('click', function() {
-
+				$(".men").prop('disabled', true);
+				var mentionCnt = $(this).parent().prev().find('#mentionCnt');
+				
+				$.ajax({
+				url: "/comment/mention",
+				type: "GET",
+				data:
+				{
+					commentId: mentionId
+				},
+				success: function(data) {
+					mentionList.html(data);
+					if(data == null){
+						loadCnt = 0;
+					}
+					mentionCnt.text(loadCnt + 1);
+				},
+				error: function() {
+					console.log('멘션로딩 실패');
+				}
+			});
 				$.ajax({
 					url: "/comment/reply",
 					type: "POST",
 					data:
-					JSON.stringify({
+					{
 						targetGb: target.targetGb,
 						targetCd: target.targetCd,
 						mentionId: mentionId,
 						contents: $(this).prev().val()
-					}),
-					contentType : 'application/json',
+					},
 					success: function(data) {
-						console.log(data);
 						setMessage("️💬 답글이 등록되었습니다.");
 						showModal();
 						setTimeout(hideModal, 700);
 						$('.mcontents').val('');
 						mentionList.append(data);
-//						let newMention = createMentionElement(data);
-//						mentionList.append(newMention);
+						$('#cmtcnt').text(commentCnt);
 					},
-					error: function() {
-						setMessage("⚠️ 답글 등록 실패."); // 이거 고쳐ㅕㅕㅕㅕㅕㅕㅕㅕㅕ
-						showModal();
-						setTimeout(hideModal, 700);
+					error: function(data) {
+						if (data.status == 403) {
+							setMessage(data.responseText);
+							showModal();
+							setTimeout(hideModal, 5000);
+						}
 					}
 				});
 			});

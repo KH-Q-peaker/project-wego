@@ -1,8 +1,14 @@
 package org.zerock.wego.domain.common;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CommentDTO {
 
 	private Integer commentId;			// 댓글 식별자
@@ -14,4 +20,18 @@ public class CommentDTO {
 	private String contents;			// 댓글 내용 * 
 	private String status;				// 삭제 상태값 
 	
+
+	public static CommentDTO convertCommentViewVOToCommentDTO(CommentViewVO vo) {
+		
+		return CommentDTO.builder().commentId(vo.getCommentId())	// 왜 
+									  .targetGb(vo.getTargetGb())
+									  .targetCd(vo.getTargetCd())
+									  .commentGb(vo.getCommentGb())
+									  .mentionId(vo.getMentionId())
+									  .userId(vo.getUserId())
+									  .contents(vo.getContents())
+									  .status(vo.getStatus())
+									  .build(); 
+		
+	}// convertCommentViewVOToCommentDTO 
 }// end class

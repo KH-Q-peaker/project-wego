@@ -89,10 +89,8 @@ public class PartyController {
 			
 			PartyViewVO party = this.partyService.getById(partyId);
 			Integer userId = user.getUserId();
-			log.error(userId);
-			log.error(party.getUserId());
-			log.error(party.getUserId() != userId);
-			if((!party.getUserId().equals(userId)) && (party.getReportCnt() >= 5)) {
+
+			if((!userId.equals(party.getUserId())) && (party.getReportCnt() >= 5)) {
 				throw new AccessBlindException();
 			} // if	
 			
@@ -110,7 +108,7 @@ public class PartyController {
 			
 			boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
 			
-			int commentCount = this.commentService.getTotalCountByTarget(pageInfo);
+//			int commentCount = this.commentService.getTotalCountByTarget(pageInfo);
 			
 			LinkedBlockingDeque<CommentViewVO> comments 
 						= commentService.getCommentOffsetByTarget(pageInfo, 0);
@@ -119,7 +117,7 @@ public class PartyController {
 			mav.addObject("party", party);
 			mav.addObject("isJoin", isJoin);
 			mav.addObject("isFavorite", isFavorite);
-			mav.addObject("commentCount", commentCount);
+//			mav.addObject("commentCount", commentCount);
 			
 			if(comments != null) {
 				mav.addObject("comments", comments);

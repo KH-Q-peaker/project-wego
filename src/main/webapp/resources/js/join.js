@@ -13,7 +13,6 @@ var showJoinModal = function() {
 	$(".joinModal").show('fast').css('display', 'flex');
 
 	$(document).off('mouseup').on('mouseup', function(e) { /* 외부 영역 클릭 시 닫기 */
-
 		if ($(".joinModal").has(e.target).length === 0) {
 			hideJoinModal();
 		}
@@ -21,7 +20,6 @@ var showJoinModal = function() {
 	$(document).off('keydown').on('keydown', function(e) {/* esc입력시 닫기 */
 
 		var code = e.keyCode || e.which;
-
 		if (code == 27) { // 27은 ESC 키번호
 			hideJoinModal();
 		}
@@ -57,9 +55,14 @@ $(() => { /* 참여하기 모달창 on/off  */
 			},
 			error : function(data){
 			 	hideJoinModal();
-		 		setMessage(data.responseText);
-		 		showModal();
-		 		setTimeout(hideModal, 700);
+				setMessage(data.responseText);
+				showModal();
+			 	
+				if (data.status == 403) {
+					setTimeout(hideModal, 5000);
+				}else{
+		 			setTimeout(hideModal, 700);
+				}
 			}
 			});
 		});	
@@ -84,11 +87,17 @@ $(() => { /* 참여하기 모달창 on/off  */
 						$('#clsjoin').attr('id', 'join').val('참여하기');
 						$('#currentCount').html(data);
 					},
-					error: function() {
+					error: function(data) {
 						hideJoinModal();
-						setMessage("⚠️ 취소할 수 없습니다. "); 
+						
+						if (data.status == 403) {
+							setMessage(data.responseText);
+							setTimeout(hideModal, 5000);
+						} else {
+							setMessage("⚠️ 취소할 수 없습니다. "); 
+							setTimeout(hideModal, 700);
+						}
 						showModal();
-						setTimeout(hideModal, 700);
 					}
 				});
 			});

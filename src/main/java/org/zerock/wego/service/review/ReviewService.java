@@ -72,10 +72,7 @@ public class ReviewService {
 				throw new NotFoundPageException();
 			}// if
 			
-//			if(review.getReportCnt() >= 5) {
-//				throw new AccessBlindException();
-//			}// if
-			
+
 			this.reviewMapper.visitCountUp(reviewId); //조회수증가.
 			
 			return review;
