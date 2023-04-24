@@ -2,6 +2,7 @@ package org.zerock.wego.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -21,25 +22,37 @@ public class AfterLoginInterceptor
 implements HandlerInterceptor{
 
 	@Override
-	public void postHandle(
-			HttpServletRequest req,
-			HttpServletResponse res,
-			Object handler,
-			ModelAndView modelAndView
-			) throws Exception {
+	public void postHandle(HttpServletRequest req, HttpServletResponse res, Object handler, ModelAndView modelAndView) throws Exception {
+		
 		if(modelAndView != null) {
 			UserVO authUserVO = (UserVO) modelAndView.getModelMap().getAttribute(SessionConfig.AUTH_KEY_NAME);
 
 			if(authUserVO != null) {
-				log.trace("postHandle(req,res,handler,modelAndView) invoked.");
 
 				modelAndView.getModelMap().remove(SessionConfig.AUTH_KEY_NAME);
 
 				req.getSession().setAttribute(SessionConfig.AUTH_KEY_NAME,  authUserVO);
+				
+				log.trace("{} login.", authUserVO.getUserId());
+				
+				HttpSession session = req.getSession(false);
+				
+				if (session != null) {
+
+					String state = (String)session.getAttribute(SessionConfig.NAVER_STATE_NAME);
+
+					if(state != null) {
+
+						session.removeAttribute(SessionConfig.NAVER_STATE_NAME);
+					} // if
+
+				} // if 
+				
 			} // if
+			
 		} // if
 
 	} // postHandle
-
+	
 
 } // end class
