@@ -17,6 +17,7 @@ public class SanInfoViewVO {
 	private Integer lat; 
 	private String img; 
 	private Integer likeCnt;
+	
 
 	
 } // end class

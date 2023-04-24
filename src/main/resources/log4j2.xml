@@ -15,7 +15,7 @@
         <Logger name="org.zerock.wego" level="trace" />
         <Logger name="com.zaxxer.hikari" level="info" />
         <Logger name="org.springframework" level="info" />
-
+		
         <logger name="log4jdbc.log4j2" level="debug" additivity="false">
 			<MarkerFilter marker="LOG4JDBC_JDBC" onMatch="DENY" onMismatch="NEUTRAL"/>
 			<appender-ref ref="ConsoleAppender"/>

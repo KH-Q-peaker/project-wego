@@ -1,0 +1,258 @@
+@charset "utf-8";
+
+
+#hugis{
+    background-color: #4ec53d;
+    
+    border-radius: 10px;
+    border-style: none;
+  }
+  #mozip{
+    background-color: #4ec53d;
+    border-radius: 10px;
+    border-style: none;
+
+  }
+
+
+
+.cotents {
+    overflow-x: auto;
+    height: max-content;
+    padding: 20px;
+    background-color: #ffffff;
+    position: relative;
+    border-radius: 15px;
+    margin-left: 17%;
+    margin-right: 17%
+  }
+  .contents > h2 {
+    text-align: center;
+  }
+  .content1 {
+    margin-bottom: 32px;
+  }
+  
+  .total-wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin: auto;
+
+    /* min-width: 320px; */
+    min-width: 340px;
+    max-width: 1024px;
+}
+
+section {
+    width: 100%;
+}
+.container {
+    background-color: #f1fce3;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    /* grid-template-rows: minmax(150px, auto); */
+    grid-template-rows: auto auto auto auto;
+    /* grid-gap: 20px; */
+    box-sizing: content-box;
+    text-align: center;
+  
+
+    
+   
+}
+.profile{
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 5;
+    display: flex;
+    justify-content: flex-end
+} 
+.weather{
+    grid-column-start: 4;
+    grid-column-end: 5;
+    grid-row-start: 1;
+    grid-row-end: 5;
+    display: flex;
+    justify-content: flex-start
+}
+.moname{
+    grid-row-start: 1;
+    grid-row-end: 2;
+    grid-column-start: 2;
+    grid-column-end: 4;
+    display: flex;
+    justify-content: space-evenly;
+   
+    
+}
+.moaddress{
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 2;
+    grid-column-end: 4;
+    display: flex;
+    justify-content: space-evenly;
+}
+.like{
+  grid-column-start: 2;
+  grid-column-end: 3;
+  display: flex;
+  justify-content: flex-end;
+  
+}
+.num{
+  grid-column-start: 3;
+  grid-column-end: 4;
+  display: flex;
+  justify-content: flex-start
+  
+}
+
+.weather-image{
+    
+    height: 98px;
+    
+}
+.profile-image{
+
+  height: 200px;
+  
+  
+
+}
+
+.heart{
+    height: 50px;
+    
+    
+   
+}
+.likenum{
+
+  
+   
+   
+    
+}
+p{
+  text-align: center;
+}
+    
+
+.content{
+  grid-row-start: 3;
+  grid-row-start: 4;
+  
+  grid-column-start: 2;
+  grid-column-end: 3;
+  display: flex;
+  justify-content: space-between;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    align-content: flex-start;
+}
+.hugi{
+  grid-row-start: 3;
+  grid-row-start: 4;
+  grid-column-start: 3;
+  grid-column-end: 4;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start
+}
+
+.content-header-menu > a {
+  text-decoration: none;
+}
+#content-section {
+  position: relative;
+  text-align: center;
+}
+.content-header-menu {
+  line-height: 50px;
+  margin-top: 32px;
+  margin-bottom: 32px;
+  background: #fff;
+  border-radius: 15px;
+  position: relative;
+  display: grid;
+  box-shadow: 0 4px 4px rgb(0 0 0 / 25%), 0 4px 4px rgb(0 0 0 / 22%);
+  grid-template-columns: auto auto auto auto;
+  margin-left: 17%;
+  margin-right: 17%;
+}
+.content-header-menu-item {
+  display: inline-block;
+  justify-content: center;
+  border-radius: 15px;
+}
+
+.content-header-menu li:hover {
+  background-color: #7ccf144a;
+  border-radius: 15px;
+  padding: 0px 10px;
+  z-index: 1;
+  transform: scale(1);
+  transition: all 400ms ease;
+}
+.content-header-menu li:active {
+  background: rgba(78, 197, 61, 0.75);
+  border-radius: 15px;
+  padding: 0px 10px;
+}
+.content-header-menu #item-point {
+  font-weight: bold;
+  background-color: rgba(78, 197, 61, 0.75);
+  border-radius: 15px;
+}
+.content-header-menu a:active {
+  color: #fff;
+  font-weight: bold;
+}
+.content-header-menu #item-point a {
+  color: #fff;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 821px) {
+  .content-header-menu {
+    width: auto;
+    line-height: 45px;
+    grid-template-columns: auto auto;
+  }
+  .cotents {
+    
+    font-size: 13px;
+    min-height: max-content;
+  }
+  .profile-image {
+    height: 180px;
+}
+.weather-image {
+  height: 90px;
+}
+ 
+
+
+}
+@media screen and (max-width: 425px){
+
+  .content-header-menu li:hover {
+    font-weight: bold;
+    color: #fff;
+    background-color: #7ccf144a;
+    border-radius: 150px;
+    padding: 1px 23px;
+    z-index: 1;
+    /* transition: 0.7s; */
+    transform: scale(1.1);
+    transition: all 400ms ease;
+}
+
+
+}
