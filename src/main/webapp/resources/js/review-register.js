@@ -168,7 +168,6 @@ selector(".add-photo .cancel").addEventListener("click", () => {
 selector(".photo").addEventListener("click", () => {
 
   // TODO: 현재 이미지 개수를 체크하는 로직 필요
-  console.log("imgCount: ", imgCount());
   if(imgCount() < 5) {
     selector(".drag-and-drop").innerHTML = `
     <div class="picture"></div>
@@ -469,8 +468,27 @@ selector(".upload input[type=submit]").onclick = (e) => {
       method: "POST",
       body: formData,
     }
-  ).then((res) => {
-    self.location = res.url;
+  )
+  .then((res) => {
+    return res.json();
+  })
+  .then(resBody => {
+	if(resBody.state === "failed") {
+		const target = resBody.errorField === "sanInfoId" ? "select[name=sanName]" : `#${resBody.errorField}`;
+
+		alert();
+    	alertWindow(selector(`${target}`));
+    	selector(".check-again .upload").style.display = "none";
+    	e.target.disabled = false;
+    	return;
+	} // if
+	
+	if(resBody.state === "successed") {
+		self.location = resBody.redirectUrl;
+	} // if
+  })
+  .catch((error) => {
+    console.error("error: ", error);
   });
 };
 
