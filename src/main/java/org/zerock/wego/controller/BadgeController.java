@@ -3,6 +3,8 @@ package org.zerock.wego.controller;
 import java.util.Deque;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,27 +33,30 @@ public class BadgeController {
 	private final BadgeConfig badgeConfig;
 	private final BadgeGetService badgeGetService;
 
-	
-	@GetMapping("/{targetUserId}")
-	public ModelAndView showCollection(@PathVariable("targetUserId") Integer targetUserId, ModelAndView mav) {
-		log.trace("showCollection({},ModelAndView) invoked.", targetUserId);
+
+	@GetMapping(path = "/{targetUserId}")
+	public ModelAndView showCollection(@PathVariable("targetUserId") Integer targetUserId) 
+		throws RuntimeException{
+		log.trace("showCollection({}) invoked.", targetUserId);
 
 		try {
-			mav.setViewName("/badge/badge");
-
 			String targetUserNickname = userService.getById(targetUserId).getNickname();
+
+			ModelAndView mav = new ModelAndView();
+			
+			mav.setViewName("/badge/badge");
 
 			mav.addObject("targetUserNickname", targetUserNickname);
 			mav.addObject("badgeConfig", badgeConfig);
 			mav.addObject("targetUserId", targetUserId);
-			
-			return mav;
-		} catch (NotFoundUserException e) {
-			mav.setViewName("/error/notFoundUser");
 
 			return mav;
+		} catch (NotFoundUserException e) {
+
+			throw new RuntimeException(e);
 		} // try-catch
 	} // showCollection
+
 
 	@PostMapping(path = "/{targetUserId}")
 	public Deque<BadgeGetVO> updatePickBadge(
