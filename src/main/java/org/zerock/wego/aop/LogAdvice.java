@@ -15,13 +15,13 @@ import lombok.extern.log4j.Log4j2;
 @Component
 public class LogAdvice {
 
-	@Around("execution(* org.zerock.wego.service.*Service.*(..))")
+	@Around("execution(* org.zerock.wego.service.**.*Service.*(..))")
 	public Object logging(ProceedingJoinPoint pjp) throws Throwable{
 
 		String className = pjp.getSignature().getDeclaringTypeName();
 		String methodName = pjp.getSignature().getName();
 		
-		log.trace(">> {}.{} invoked...", className, methodName);
+		log.trace(">>>> {}.{} invoked...", className, methodName);
 		
 //		long start = System.nanoTime();
 		long start = System.currentTimeMillis();
@@ -32,7 +32,7 @@ public class LogAdvice {
 		long end = System.currentTimeMillis();
 		
 //		log.info(">> runtime = {} ns", (end - start));
-		log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> runtime = {} ms", (end - start));
+		log.info(">>>> {}.{} >>>> runtime = {} ms", className, methodName,  (end - start));
 //		log.info(":: result = {}", result);
 		
 		return result;

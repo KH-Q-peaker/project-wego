@@ -28,17 +28,29 @@
 		<interceptor> 
 		<!-- =================================================================================== -->
 		<!-- 로그인 테스트 하고 싶은 페이지의 url 추가 -->
-			<mapping path="/review/**" />
-			<mapping path="/party/**" />
-			<mapping path="/profile/**" />
-			<mapping path="/badge/**" />
+			<mapping path="/**" />
 		<!-- =================================================================================== -->
 			
-			<!-- <exclude-mapping path="/"/>  -->
+			<exclude-mapping path="/"/>
+			<exclude-mapping path="/resources/**"/>
+			<exclude-mapping path="/img/**"/>
+			<exclude-mapping path="/login/**"/>
 			<exclude-mapping path="/info/**"/> 
 			<exclude-mapping path="/search/**"/> 
 			
 			<beans:ref bean="authInterceptor"/> 
+		</interceptor> 
+
+		<interceptor> 	
+			<mapping path="/**" />
+			
+			<beans:ref bean="afterLoginInterceptor"/> 
+		</interceptor>
+		
+		<interceptor> 
+			<mapping path="/login/logout" />
+			
+			<beans:ref bean="logoutInterceptor"/> 
 		</interceptor> 
 
 		<interceptor> 	

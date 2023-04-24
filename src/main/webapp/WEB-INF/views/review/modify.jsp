@@ -24,8 +24,10 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
 <script>
 const fileList = [];
+const fileAltList = [];
 <c:forEach var="item" items="${fileList}">
-fileList.push("/img/${fn:substring(item.path, 10, 55)}") ;
+	fileList.push("/img/${fn:substring(item.path, 10, 55)}");
+	fileAltList.push("${item.fileName}");
 </c:forEach>
 </script>
 </head>
@@ -69,8 +71,7 @@ fileList.push("/img/${fn:substring(item.path, 10, 55)}") ;
 						</div>
 						<button type="button">등록</button>
 					</div>
-					<div contenteditable="true" name="contents" id="contents">
-						${review.contents}</div>
+					<div contenteditable="true" name="contents" id="contents">${review.contents}</div>
 				</div>
 				<div class="buttons">
 					<button type="button" id="cancle">취소</button>

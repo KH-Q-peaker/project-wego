@@ -76,7 +76,7 @@ label[for="title"] {
   resize: none;
   overflow: scroll;
   overflow-x: hidden;
-  white-space: pre-line;
+  white-space: pre-wrap;
 }
 #contents img {
   width: 100%;

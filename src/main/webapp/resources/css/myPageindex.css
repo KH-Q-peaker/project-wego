@@ -43,7 +43,7 @@ h2 {
   position: absolute;
   left: 24%;
   top: 26px;
-  bottom: 80%;
+  /*bottom: 80%;*/
 }
 .profile-image-button img:hover {
   cursor: pointer;
@@ -567,7 +567,7 @@ body.dragged:after {
     background-color: #4ec53d;
     margin: auto;
   }
-  .wrap span {
+  .main-wrap span {
     display: inline-block;
     margin: 0 5px 0 5px;
   }

@@ -12,5 +12,6 @@ public class FileVO {
 	private String fileName; 
 	private String uuid; 
 	private String path; 
+	private Integer status;
 
 } // end class
