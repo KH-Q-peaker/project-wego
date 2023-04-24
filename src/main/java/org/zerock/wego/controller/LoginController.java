@@ -1,25 +1,16 @@
 package org.zerock.wego.controller;
 
-import java.io.IOException;
-import java.util.Objects;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.zerock.wego.config.SessionConfig;
-import org.zerock.wego.domain.common.UserDTO;
 import org.zerock.wego.domain.common.UserVO;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.oauth.KakaoOAuth;
-import org.zerock.wego.service.oauth.LoginService;
 import org.zerock.wego.service.oauth.OAuthService;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,7 +22,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 
 @RequestMapping("/login")
-@Controller
+@RestController
 public class LoginController {
 
 	private final KakaoOAuth kakaoOAuth;
@@ -39,31 +30,46 @@ public class LoginController {
 
 
 	@GetMapping
-	public String showLogin() throws ControllerException{
-		log.trace("showLogin() invoked.");
+	public ModelAndView showLogin(ModelAndView mav) throws ControllerException{
+		log.trace("showLogin(ModelAndView) invoked.");
 
-		return "common/login";
+		mav.setViewName("common/login");
+		
+		return mav;
 	}// showLogin
+	
+	@GetMapping("/logout")
+	public ModelAndView logout(ModelAndView mav) throws ControllerException{
+		log.trace("logout(ModelAndView) invoked.");
+
+		mav.setViewName("redirect:/");
+		
+		return mav;
+	}// logout
 
 
 	@GetMapping("/kakao")
-	public String getKakaoLogin() throws ControllerException{
-		log.trace("getKakaoLogin() invoked.");
+	public ModelAndView kakaoLogin(ModelAndView mav) throws ControllerException{
+		log.trace("getKakaoLogin(ModelAndView) invoked.");
+		
+		mav.setViewName("redirect:" + this.kakaoOAuth.getLoginURLToGetAuthorizationCode());
 
-		return "redirect:" + kakaoOAuth.getLoginURLToGetAuthorizationCode();
-	}// getKakaoLogin
+		return mav;
+	}// kakaoLogin
 
 
 	@GetMapping("/kakao/oauth")
-	public String getKakaoCallBack(@RequestParam("code") String authorizationCode, Model model) throws JsonProcessingException {
-		log.trace("getAccessToken({}, ModelAndView) invoked.", authorizationCode);
+	public ModelAndView kakaoLoginSuccess(@RequestParam("code") String authorizationCode, ModelAndView mav) throws JsonProcessingException {
+		log.trace("kakaoLoginSecces({}, ModelAndView) invoked.", authorizationCode);
 
-		UserVO kakaoUserVO = oAuthService.kakaoLogin(authorizationCode);
+		UserVO kakaoUserVO = this.oAuthService.kakaoLogin(authorizationCode);
+		
+		mav.setViewName("redirect:/");
 
-		model.addAttribute(SessionConfig.AUTH_KEY_NAME, kakaoUserVO);
+		mav.addObject(SessionConfig.AUTH_KEY_NAME, kakaoUserVO);
 
-		return "redirect:/";
-	}// getKakaoCallBack
+		return mav;
+	}// kakaoLoginSecces
 
 
 }// end class

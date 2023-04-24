@@ -18,10 +18,10 @@
                 <tbody>
                  <c:forEach items="${pastParty}" var="NoParty">
                   <tr>
-                    <td class="t1"> ${NoParty.sanInfoId}</td>
+                    <td class="t1"> ${NoParty.sanName}</td>
                     <td class="t2">${NoParty.title}</td>
                     <td class="t3">${NoParty.partyDt}</td>
-                    <td class="t4">?/${NoParty.partyMax}</td>
+                    <td class="t4">${NoParty.partyCount}/${NoParty.partyMax}</td>
                     <td class="t5">
                       <button class="chatting-off">채팅입장</button>
                     </td>
@@ -33,7 +33,7 @@
 
               <div id="pagination">
                 
-                  <ul>
+                  <ul class="paginUl">
                     <%-- PREV 표시 c:if --%>
                       <c:if test="${pastPage.prev}" >
                               <li class="prev">
@@ -44,7 +44,7 @@
                   
                     <%-- 페이지번호목록  --%>
                       <c:forEach var="pageNum" begin="${pastPage.startPage}" end="${pastPage.endPage}"> 
-                              <li class="${param.currPage eq pageNum? 'currPage' : ''}">
+                              <li class="${param.currPage eq pageNum? 'currPage' : ''} pastPartyPage${pageNum}">
                               <span class="pastPageNum" id="pastPageNum" data-temp = " ${pastPage.cri.setCurrPage(pageNum)}" onclick="selectClickPastCurrPage()">${pageNum}</span>
                               </li>
                               <input type="hidden" id="pastCurrPage" value="">
@@ -67,7 +67,12 @@
             
   		 </div>         
          <script>
-
+        	 
+          var pCurrPage = "${__pCurrPage__}";
+ 	      if(pCurrPage == 1) {
+ 	       	$('.pastPartyPage1').addClass("currPage");
+ 	      }
+			
           var userId = document.querySelector("#userId").value;
           var amount = 10;
         
