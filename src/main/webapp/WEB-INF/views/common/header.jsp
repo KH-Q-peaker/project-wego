@@ -16,7 +16,14 @@
 				<ul class="navbar">
 					<li><a href="/info">산정보</a></li>
 					<li><a href="/review">등산후기</a></li>
-					<li><a href="#">랭킹</a></li>
+					<li id="ranking">랭킹
+						<ul class="rankMenu" style = "display:none">
+							<li><a href="/ranking/one-way">한우물왕</a></li>
+							<li><a href="/ranking/highest">제일높왕</a></li>
+							<li><a href="/ranking/party-king">참대왕</a></li>
+							<li><a href="/ranking/review-king">후기왕</a></li>
+						</ul>
+					</li>
 					<li><a href="/party">모집</a></li>
 				</ul>
 			</nav>

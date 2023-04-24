@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.zerock.wego.mapper.RankingMapper">
+
+	<!-- 한우물왕 조회 범위 (start ~ end) -->
+	<select id="selectOneWayFromStartToEnd"
+		resultType="org.zerock.wego.domain.ranking.RankingVO">
+		SELECT 
+			*
+		FROM
+			one_way_ranking_v
+		WHERE
+			ranking &gt;= #{start}
+			AND ranking &lt;= #{end}
+	</select>
+	
+	<!-- 한우물왕 조회 특정 유저만 -->
+	<select id="selectOneWayByUserId"
+		resultType="org.zerock.wego.domain.ranking.RankingVO">
+		SELECT 
+			*
+		FROM
+			one_way_ranking_v
+		WHERE
+			user_id = #{userId}
+	</select>
+	
+	<!-- 제일높왕 조회 범위 (start ~ end) -->
+	<select id="selectHighestFromStartToEnd"
+		resultType="org.zerock.wego.domain.ranking.RankingVO">
+		SELECT 
+			*
+		FROM
+			highest_ranking_v
+		WHERE
+			ranking &gt;= #{start}
+			AND ranking &lt;= #{end}
+	</select>
+	
+	<!-- 제일높왕 조회 특정 유저만 -->
+	<select id="selectHighestByUserId"
+		resultType="org.zerock.wego.domain.ranking.RankingVO">
+		SELECT 
+			*
+		FROM
+			highest_ranking_v
+		WHERE
+			user_id = #{userId}
+	</select>
+	
+	<!--  참대왕 조회 범위 (start ~ end) -->
+	<select id="selectPartyKingFromStartToEnd"
+		resultType="org.zerock.wego.domain.ranking.RankingVO">
+		SELECT 
+			*
+		FROM
+			party_king_ranking_v
+		WHERE
+			ranking &gt;= #{start}
+			AND ranking &lt;= #{end}
+	</select>
+	
+	<!--  참대왕 조회 특정 유저만 -->
+	<select id="selectPartyKingByUserId"
+		resultType="org.zerock.wego.domain.ranking.RankingVO">
+		SELECT 
+			*
+		FROM
+			party_king_ranking_v
+		WHERE
+			user_id = #{userId}
+	</select>
+	
+	<!-- 후기왕 조회 범위 (start ~ end) -->
+	<select id="selectReviewKingFromStartToEnd"
+		resultType="org.zerock.wego.domain.ranking.RankingVO">
+		SELECT 
+			*
+		FROM
+			review_king_ranking_v
+		WHERE
+			ranking &gt;= #{start}
+			AND ranking &lt;= #{end}
+	</select>
+	
+	<!-- 후기왕 조회 특정 유저만 -->
+	<select id="selectReviewKingByUserId"
+		resultType="org.zerock.wego.domain.ranking.RankingVO">
+		SELECT 
+			*
+		FROM
+			review_king_ranking_v
+		WHERE
+			user_id = #{userId}
+	</select>
+	
+</mapper>

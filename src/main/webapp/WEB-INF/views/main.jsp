@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -17,9 +18,11 @@
 <link rel="stylesheet" href="/resources/css/header.css" />
 <link rel="stylesheet" href="/resources/css/footer.css" />
 <link rel="stylesheet" href="/resources/css/main.css" />
+<link rel="stylesheet" href="/resources/css/ranking.css" />
 
 <script src="/resources/js/header.js" defer></script>
 <script src="/resources/js/main.js" defer></script>
+<script src="/resources/js/ranking.js" defer></script>
 <script src="/resources/js/favorite.js" defer></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
@@ -31,136 +34,9 @@
 		<c:set var="imgBasePath" value="/img/" />
 		
 		<section>
-			<div class="rank">
-				<div class="rankers">
-					<div class="boxStyle" id="rankBox">
-						<a href="/rank"> <!-- ranker detail -->
-							<div class="boxStyle" id="rankers" style="display: none">
-								<div class="item" id="silver">
-									<div class="rankerMedal">🥈</div>
-									<div class="rankerPic"></div>
-									<div class="rankerName">요셉</div>
-									<div class="rankerVal">10002</div>
-									<div class="ranker-img"></div>
-								</div>
-								<div class="item" id="gold">
-									<div class="rankerMedal">🥇</div>
-									<div class="rankerPic"></div>
-									<div class="rankerName">김동희</div>
-									<div class="rankerVal">10003</div>
-									<div class="ranker-img"></div>
-								</div>
-								<div class="item" id="bronze">
-									<div class="rankerMedal">🥉</div>
-									<div class="rankerPic"></div>
-									<div class="rankerName">저셉</div>
-									<div class="rankerVal">10001</div>
-									<div class="ranker-img"></div>
-								</div>
-							</div> <!-- ranker -->
-							<div class="item" id="deep-king">
-								<div class="title">한우물왕</div>
-								<div class="ranker-img"></div>
-							</div>
-						</a>
-					</div>
-					<div class="boxStyle" id="rankBox">
-						<a href="/rank"> <!-- ranker detaile -->
-							<div class="boxStyle" id="rankers" style="display: none">
-								<div class="item" id="silver">
-									<div class="rankerMedal">🥈</div>
-									<div class="rankerPic"></div>
-									<div class="rankerName">요셉</div>
-									<div class="rankerVal">10002</div>
-									<div class="ranker-img"></div>
-								</div>
-								<div class="item" id="gold">
-									<div class="rankerMedal">🥇</div>
-									<div class="rankerPic"></div>
-									<div class="rankerName">김동희</div>
-									<div class="rankerVal">10003</div>
-									<div class="ranker-img"></div>
-								</div>
-								<div class="item" id="bronze">
-									<div class="rankerMedal">🥉</div>
-									<div class="rankerPic"></div>
-									<div class="rankerName">저셉</div>
-									<div class="rankerVal">10001</div>
-									<div class="ranker-img"></div>
-								</div>
-							</div> <!-- ranker -->
-							<div class="item" id="high-king">
-								<div class="title">제일높왕</div>
-								<div class="ranker-img"></div>
-							</div>
-						</a>
-					</div>
-
-					<div class="boxStyle" id="rankBox">
-						<a href="/rank"> <!-- ranker detaile -->
-							<div class="boxStyle" id="rankers" style="display: none">
-								<div class="item" id="silver">
-									<div class="rankerMedal">🥈</div>
-									<div class="rankerPic"></div>
-									<div class="rankerName">요셉</div>
-									<div class="rankerVal">10002</div>
-									<div class="ranker-img"></div>
-								</div>
-								<div class="item" id="gold">
-									<div class="rankerMedal">🥇</div>
-									<div class="rankerPic"></div>
-									<div class="rankerName">김동희</div>
-									<div class="rankerVal">10003</div>
-									<div class="ranker-img"></div>
-								</div>
-								<div class="item" id="bronze">
-									<div class="rankerMedal">🥉</div>
-									<div class="rankerPic"></div>
-									<div class="rankerName">저셉</div>
-									<div class="rankerVal">10001</div>
-									<div class="ranker-img"></div>
-								</div>
-							</div> <!-- ranker -->
-							<div class="item" id="true-king">
-								<div class="title">참대왕</div>
-								<div class="ranker-img"></div>
-							</div>
-						</a>
-					</div>
-
-					<div class="boxStyle" id="rankBox">
-						<a href="/rank"> <!-- ranker detaile -->
-							<div class="boxStyle" id="rankers" style="display: none">
-								<div class="item" id="silver">
-									<div class="rankerMedal">🥈</div>
-									<div class="rankerPic"></div>
-									<div class="rankerName">요셉</div>
-									<div class="rankerVal">10002</div>
-									<div class="ranker-img"></div>
-								</div>
-								<div class="item" id="gold">
-									<div class="rankerMedal">🥇</div>
-									<div class="rankerPic"></div>
-									<div class="rankerName">김동희</div>
-									<div class="rankerVal">10003</div>
-									<div class="ranker-img"></div>
-								</div>
-								<div class="item" id="bronze">
-									<div class="rankerMedal">🥉</div>
-									<div class="rankerPic"></div>
-									<div class="rankerName">저셉</div>
-									<div class="rankerVal">10001</div>
-									<div class="ranker-img"></div>
-								</div>
-							</div> <!-- ranker -->
-							<div class="item" id="review-king">
-								<div class="title">후기왕</div>
-								<div class="ranker-img"></div>
-							</div>
-						</a>
-					</div>
-				</div>
-			</div>
+		
+			<%@include file="/WEB-INF/views/ranking/ranking.jsp"%>
+			
 			<div class="mountain-info">
 				<h2>❤️ 산 ❤️</h2>
 				<div class="wrap">
