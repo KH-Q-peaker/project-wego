@@ -20,3 +20,14 @@ $(".modify").off('click').on('click', function(){
 });
 
 
+$(() =>{
+	let idx = 0;
+	console.log('1'+ $('.content').html());
+	console.log('2' + $('.content').innerHTML);
+	console.log(aaa);
+	$('.content').find('img').each(function() {
+		
+		console.log(fileList.get(idx).get(path));
+		$(this).attr('src', fileList.get(idx++).get(path));
+  });
+});

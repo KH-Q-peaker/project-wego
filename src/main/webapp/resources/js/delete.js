@@ -55,6 +55,7 @@ $(() => { /* 삭제 관련 */
 							commentId : targetComment.children('#mentionId').val()
 						},
 						success: function(data) {
+							targetComment.parent().prevAll(".comments").first().find('#mentionCnt').text(loadCnt - 1);
 							targetComment.parent().html(data);
 						},
 						error: () => {
@@ -82,7 +83,6 @@ $(() => { /* 삭제 관련 */
 					});
 					}
 					$('#cmtcnt').html(data);
-					
 //		 			if(targetComment.find('#mentionCnt').html() > 0 ){
 //						targetComment.children().not('.comment, .mentionbtn, #commentId, .mentionCnt').remove();
 //						targetComment.children('.comment').html('삭제된 댓글입니다.');

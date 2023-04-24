@@ -44,11 +44,7 @@ public class CommentController {
 		
 		LinkedBlockingDeque<CommentViewVO> comments = 
 					this.commentService.getCommentOffsetByTarget(target, lastComment);
-		
-		if(comments == null) {
-			
-			return null;
-		}
+
 		mav.addObject("comments", comments);
 
 		return mav;
@@ -61,11 +57,7 @@ public class CommentController {
 		
 		LinkedBlockingDeque<CommentViewVO> mentions = 
 					this.commentService.getMentionsByCommentId(commentId);
-		
-		if(mentions == null) {
-			
-			return null;
-		}
+
 		mav.addObject("comments", mentions);
 		mav.setViewName("comment/load");
 

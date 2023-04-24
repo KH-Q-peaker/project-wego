@@ -4,14 +4,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.zerock.wego.domain.common.FileVO;
 import org.zerock.wego.domain.review.ReviewDTO;
 import org.zerock.wego.domain.review.ReviewViewVO;
-import org.zerock.wego.exception.AccessBlindException;
 import org.zerock.wego.exception.NotFoundPageException;
 import org.zerock.wego.exception.OperationFailException;
 import org.zerock.wego.exception.ServiceException;
-import org.zerock.wego.mapper.BadgeGetMapper;
 import org.zerock.wego.mapper.ReviewMapper;
 import org.zerock.wego.service.badge.BadgeGetService;
 import org.zerock.wego.service.common.FileService;
@@ -54,13 +52,7 @@ public class ReviewService {
 		} // try-catch
 	} // getList
 	
-	
-//	// 존재여부 
-//	public boolean isExist(Integer reviewId) throws ServiceException{
-//		
-//		return (this.reviewMapper.find(reviewId) != null);
-//	}// isExist
-	
+
 	// 특정 후기글 조회 
 	public ReviewViewVO getById(Integer reviewId) throws Exception {
 //		log.trace("getById({}) invoked.", reviewId);	
@@ -74,7 +66,7 @@ public class ReviewService {
 			
 
 			this.reviewMapper.visitCountUp(reviewId); //조회수증가.
-			
+			log.error(review.getContents());
 			return review;
 			
 		} catch (NotFoundPageException e) { 

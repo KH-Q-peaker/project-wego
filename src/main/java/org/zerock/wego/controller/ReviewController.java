@@ -81,6 +81,8 @@ public class ReviewController {
 				throw new AccessBlindException();
 			}// if
 			
+			List<FileVO> fileList = this.fileService.getList("SAN_REVIEW", reviewId);
+			
 			// TO_DO : 좋아요 바뀌면 바꿔야됨 
 			FavoriteDTO favorite = new FavoriteDTO();
 			favorite.setTargetGb("SAN_REVIEW");
@@ -97,6 +99,7 @@ public class ReviewController {
 			/*후기글 사진 넣는거 필요함 */
 			mav.addObject("review", review);
 			mav.addObject("isFavorite", isFavorite);
+			mav.addObject("fileList", fileList);
 //			mav.addObject("commentCount", commentCount);
 			
 			if(comments != null) {
