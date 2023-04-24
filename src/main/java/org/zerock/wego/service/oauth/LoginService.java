@@ -55,7 +55,6 @@ public class LoginService {
 		log.trace("loginBySocialId({}) invoked.", socialId);
 
 		return userMapper.selectBySocialId(socialId);
-
 	}// loginBySocialId
 
 }// end class

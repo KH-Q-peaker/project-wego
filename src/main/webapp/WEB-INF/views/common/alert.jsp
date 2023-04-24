@@ -21,8 +21,6 @@
 }
 
 #message {
-/*   padding: 20px; */
-/*   margin: auto; */
   color: rgb(78, 197, 61);
   font-size: 15px;
   text-align: center;

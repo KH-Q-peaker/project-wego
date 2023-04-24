@@ -24,12 +24,12 @@ public class LogoutInterceptor
 	
 
 	@Override
-	public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler)
-			throws Exception {
-		log.trace("preHandle(req, res, handler) invoked \n \t\t\t\t>>>>>>>> requestURI : {}", req.getRequestURI());
+	public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler) throws Exception {
 
 		HttpSession session = req.getSession(false);
 
+		log.trace("{} logout.", ((UserVO)session.getAttribute(SessionConfig.AUTH_KEY_NAME)).getUserId());
+		
 		session.removeAttribute(SessionConfig.AUTH_KEY_NAME);
 		
 		return true;

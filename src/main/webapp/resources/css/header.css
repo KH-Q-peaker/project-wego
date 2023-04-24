@@ -161,8 +161,50 @@ header {
   padding: 12px 15px;
   background-color: #fff;
 
-  z-index: 3;
+  z-index: 2;
   transform: scale(1.1);
+  transition: all 400ms ease;
+}
+
+.navbar li#ranking:hover {
+  border-radius: 20px;
+  padding: 12px 15px;
+  background-color: #fff;
+
+  z-index: 2;
+  transform: scale(1.1);
+  transition: all 100ms ease;
+}
+
+.navbar li .rankMenu{
+
+  position: absolute;
+
+  border: 0px;
+  border-radius: 10px;
+
+  margin: 0px;
+
+  padding: 15px 0 6px;
+  
+  background-color: #fff;
+
+  z-index: -1;
+
+  transition: all 400ms ease;
+}
+.rankMenu > li{
+  margin: 8px 0 6px;
+  padding: 12px 0;
+
+  transition: all 400ms ease;
+}
+.rankMenu > li:hover{
+  padding: 12px 0;
+  background-color: rgba(255, 255, 255, 0);
+
+  z-index: 3;
+  transform: scale(1.2);
   transition: all 400ms ease;
 }
 
@@ -190,36 +232,38 @@ header {
 
 .menubar {
   display: none;
-  width: 120px;
-  height: 180px;
   border: 0px;
   border-radius: 5px;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
-  padding: 10px 10px 30px;
+  padding: 10px 10px 25px;
   position: absolute;
   top: 25px;
-  right: 30px;
   background-color: #fff;
   z-index: 10;
 }
+.menubar ul{
+	display: flex;
+	
+	flex-direction: column;
+}	
 
 .menubar li {
-  margin: 15px 5px;
+  margin: 5px 5px;
 }
 
 .menubar li a {
-  padding: 5px 5px;
+  padding: 8px 12px;
   border-radius: 10px;
 
   transition: all 400ms ease;
 }
 
 .menubar li a:hover {
-  z-index: 3;
-
   background-color: rgba(78, 197, 61, 1);
   color: #fff;
-
+  
+  z-index: 55;
+  transform: scale(1.1);
   transition: all 400ms ease;
 }
 
@@ -394,8 +438,13 @@ header {
   }
 
   .navbar li {
-    padding: 0 5px;
+    padding: 5 5px;
     margin: 0px;
   }
-
+  .rankMenu > li{
+    padding: 7px 0;
+  }
+  .rankMenu > li:hover{
+    padding: 7px 0;
+  }
 }

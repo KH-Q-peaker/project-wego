@@ -51,12 +51,12 @@
 			<mapping path="/login/logout" />
 			
 			<beans:ref bean="logoutInterceptor"/> 
-		</interceptor> 
-
+		</interceptor>
+		
 		<interceptor> 	
-			<mapping path="/**" />
+			<mapping path="/login/naver" />
 			
-			<beans:ref bean="afterLoginInterceptor"/> 
+			<beans:ref bean="naverLoginInterceptor"/> 
 		</interceptor>
 		
 		<!-- <interceptor> 

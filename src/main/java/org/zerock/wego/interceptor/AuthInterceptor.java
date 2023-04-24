@@ -21,8 +21,7 @@ public class AuthInterceptor
 	
 
 	@Override
-	public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler)
-			throws Exception {
+	public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler) throws Exception {
 		log.trace("preHandle(req, res, handler) invoked \n \t\t\t\t>>>>>>>> requestURI : {}", req.getRequestURI());
 
 		HttpSession session = req.getSession(false);

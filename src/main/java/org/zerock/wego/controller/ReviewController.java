@@ -65,68 +65,66 @@ public class ReviewController {
 		} // try-catch
 	} // openReview
 
-	@GetMapping(path = "/{reviewId}")
-	public ModelAndView showDetailById(@PathVariable("reviewId") Integer reviewId,
-			@SessionAttribute("__AUTH__") UserVO user, PageInfo target) throws Exception {
+	@GetMapping(path="/{reviewId}")
+	public ModelAndView showDetailById(@PathVariable("reviewId")Integer reviewId,
+									@SessionAttribute("__AUTH__")UserVO user,
+									PageInfo target, ModelAndView mav) throws Exception{
 		log.trace("showDetail({}, {}) invoked.", reviewId, target);
 
-		target.setTargetGb("SAN_REVIEW");
-		target.setTargetCd(reviewId);
+			target.setTargetGb("SAN_REVIEW");
+			target.setTargetCd(reviewId);
+			
+			ReviewViewVO review = this.reviewService.getById(reviewId);
+			Integer userId = user.getUserId();
+			
+			if((review.getReportCnt() >= 5) && (!userId.equals(review.getUserId()))) {
+				throw new AccessBlindException();
+			}// if
+			
+			// TO_DO : 좋아요 바뀌면 바꿔야됨 
+			FavoriteDTO favorite = new FavoriteDTO();
+			favorite.setTargetGb("SAN_REVIEW");
+			favorite.setTargetCd(reviewId);
+			favorite.setUserId(userId);
+			
+			boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
 
-		ModelAndView mav = new ModelAndView();
+//			int commentCount = this.commentService.getTotalCountByTarget(target);
+			
+			LinkedBlockingDeque<CommentViewVO> comments 
+							= this.commentService.getCommentOffsetByTarget(target, 0);
 
-		ReviewViewVO review = this.reviewService.getById(reviewId);
-		Integer userId = user.getUserId();
+			/*후기글 사진 넣는거 필요함 */
+			mav.addObject("review", review);
+			mav.addObject("isFavorite", isFavorite);
+//			mav.addObject("commentCount", commentCount);
+			
+			if(comments != null) {
+				
+				mav.addObject("comments", comments);
+			}// if
+			
+			ObjectMapper objectMapper = new ObjectMapper();
+			String targetJson = objectMapper.writeValueAsString(target);
+			mav.addObject("target", targetJson);
 
-		// TO_DO : 내글이면 블라인드 되도 보여야되는데 왜 막히냐 ?
-		if ((review.getReportCnt() >= 5) && review.getUserId() != userId) {
-			throw new AccessBlindException();
-		} // if
+			mav.setViewName("/review/detail");
+			
+			return mav;
+	}// showDetailById
 
-		// TO_DO : 좋아요 바뀌면 바꿔야됨
-		FavoriteDTO favorite = new FavoriteDTO();
-		favorite.setTargetGb("SAN_REVIEW");
-		favorite.setTargetCd(reviewId);
-		favorite.setUserId(userId);
-
-		boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
-
-		int commentCount = this.commentService.getTotalCountByTarget(target);
-
-		LinkedBlockingDeque<CommentViewVO> comments = this.commentService.getCommentOffsetByTarget(target, 0);
-
-		/* 후기글 사진 넣는거 필요함 */
-		mav.addObject("review", review);
-		mav.addObject("isFavorite", isFavorite);
-		mav.addObject("commentCount", commentCount);
-//			mav.addObject("userPic", userPic);
-
-		if (comments != null) {
-
-			mav.addObject("comments", comments);
-		} // if
-
-		ObjectMapper objectMapper = new ObjectMapper();
-		String targetJson = objectMapper.writeValueAsString(target);
-		mav.addObject("target", targetJson);
-
-		mav.setViewName("/review/detail");
-
-		return mav;
-	}// viewReviewDetail
-
-	@DeleteMapping(path = "/{reviewId}", produces = "text/plain; charset=UTF-8")
-	public ResponseEntity<String> removeById(@PathVariable("reviewId") Integer reviewId) throws ControllerException {
+	@DeleteMapping(path= "/{reviewId}", produces= "text/plain; charset=UTF-8")
+	public ResponseEntity<String> removeById(@PathVariable("reviewId")Integer reviewId) throws ControllerException{
 		log.trace("removeById({}) invoked.", reviewId);
 
 		try {
 			this.reviewService.removeById(reviewId);
 //			this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId); 
-			return ResponseEntity.ok("🗑 후기글이 삭제되었습니다.️"); // 인코딩해서 넣던가 안넣던가
+			return ResponseEntity.ok("후기글이 삭제되었습니다.️");
 
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
-		} // try-catch
+		}// try-catch
 	}// removeReview
 
 	@GetMapping(path = "/modify/{reviewId}")

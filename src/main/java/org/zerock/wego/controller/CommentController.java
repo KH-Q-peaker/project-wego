@@ -4,6 +4,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 import org.zerock.wego.domain.common.CommentDTO;
@@ -29,8 +29,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @RequiredArgsConstructor
 
-//@Controller
-@RestController
+@Controller
 @RequestMapping("/comment")
 public class CommentController {
 
@@ -39,11 +38,9 @@ public class CommentController {
 	
 	// 댓글 offset 로딩 
 	@GetMapping(path="/load")
-	ModelAndView loadCommentOffset(PageInfo target, Integer lastComment) throws Exception{
+	ModelAndView loadCommentOffset(PageInfo target, Integer lastComment, ModelAndView mav) throws Exception{
 		log.trace("loadCommentOffset({}, {}) invoked.", target, lastComment);
 		
-		
-		ModelAndView mav = new ModelAndView();
 		
 		LinkedBlockingDeque<CommentViewVO> comments = 
 					this.commentService.getCommentOffsetByTarget(target, lastComment);
@@ -59,11 +56,8 @@ public class CommentController {
 
 	// 댓글 멘션 로딩 
 	@GetMapping(path="/mention")
-	ModelAndView loadMentionsByCommentId(Integer commentId) throws Exception{
+	ModelAndView loadMentionsByCommentId(Integer commentId, ModelAndView mav) throws Exception{
 		log.trace("loadMentionsByCommentId({}) invoked", commentId);
-		
-				
-		ModelAndView mav = new ModelAndView();
 		
 		LinkedBlockingDeque<CommentViewVO> mentions = 
 					this.commentService.getMentionsByCommentId(commentId);
@@ -81,14 +75,11 @@ public class CommentController {
 
 	// 댓글 작성 
 	@PostMapping(path="/register")
-	ModelAndView registerComment(@RequestBody CommentDTO dto, 
-								@SessionAttribute("__AUTH__") UserVO user) throws ControllerException{
+	ModelAndView registerComment(CommentDTO dto, PageInfo target,
+								@SessionAttribute("__AUTH__") UserVO user,
+								ModelAndView mav) throws ControllerException{
 		log.trace("registerComment() invoked.");
 		
-		ModelAndView mav = new ModelAndView();
-
-		
-		PageInfo target = new PageInfo();
 		target.setTargetGb(dto.getTargetGb());
 		target.setTargetCd(dto.getTargetCd());
 		
@@ -101,8 +92,13 @@ public class CommentController {
 
 			LinkedBlockingDeque<CommentViewVO> comments 
 						= this.commentService.getCommentOffsetByTarget(target, 0);
-
+			
+			
+			int commentCnt = this.commentService.getTotalCountByTarget(dto);
+			
 			mav.addObject("comments", comments);
+			mav.addObject("commentCnt", commentCnt);
+			
 			mav.setViewName("comment/comment");
 
 			return mav;
@@ -118,12 +114,11 @@ public class CommentController {
 	
 	// 멘션 작성 
 	@PostMapping(path="/reply")
-	ModelAndView registerMention(@RequestBody CommentDTO dto, 
-								@SessionAttribute("__AUTH__") UserVO user) throws ControllerException{
+	ModelAndView registerMention(CommentDTO dto, 
+								@SessionAttribute("__AUTH__") UserVO user,
+								ModelAndView mav) throws ControllerException{
 		log.trace("registerMention() invoked.");
 		
-		ModelAndView mav = new ModelAndView();
-
 		Integer userId = user.getUserId();
 		dto.setUserId(userId);
 
@@ -131,12 +126,16 @@ public class CommentController {
 			this.commentService.registerCommentOrMention(dto);
 			
 			CommentViewVO comment = this.commentService.getById(dto.getCommentId());
-
-			mav.addObject("comment", comment);
+			int commentCnt = this.commentService.getTotalCountByTarget(dto);
 			
+			mav.addObject("comment", comment);
+			mav.addObject("commentCnt", commentCnt);
 			
 			return mav;
-
+			
+		} catch (OperationFailException | NotFoundPageException e) {
+			throw e;
+			
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		}// try-catch
@@ -144,15 +143,20 @@ public class CommentController {
 	
 	
 	// 댓글 삭제 
-//	@PostMapping("/remove")
 	@DeleteMapping(path="/{commentId}")
-	ResponseEntity<String> removeCommentOrMention(@PathVariable("commentId")Integer commentId) throws Exception{
-//		log.trace("removeComment({}) invoked.", commentId);
+	ResponseEntity<Integer> removeCommentOrMention(@PathVariable("commentId")Integer commentId) throws Exception{
+		log.trace("removeComment({}) invoked.", commentId);
 		
 		try {
-			this.commentService.removeCommentOrMention(commentId); 
+			CommentViewVO vo = this.commentService.getById(commentId);
+			
+			this.commentService.removeCommentOrMention(commentId);
+			
+			int totalCount = 
+				this.commentService.getTotalCountByTarget(vo.getTargetGb(), vo.getTargetCd());
+			
 		
-			return ResponseEntity.ok().build();
+			return ResponseEntity.ok(totalCount);
 			
 		} catch(Exception e) {
 			return ResponseEntity.notFound().build();
