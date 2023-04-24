@@ -242,8 +242,8 @@
 								<img class="user-img" src="${empty item.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.userPic, 10, 55)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>
-								<img class="review-img" src="${empty item.path ? 
-								"/resources/img/leaf.png" : imgBasePath += fn:substring(item.path, 10, 55)}" alt="img" />
+								<img class="review-img" src="${empty item.reviewPic ? 
+								"/resources/img/leaf.png" : imgBasePath += fn:substring(item.reviewPic, 10, 55)}" alt="img" />
 								<h3 class="review-title" id="title">${item.title}</h3>
 								<p class="review-contents" id="text">${item.contents}</p>
 								<div class="review-like">

@@ -115,7 +115,7 @@
 										<h3 id="itemTitle">${item.title}</h3>
 										<div class="itemDetail">
 											<p id="itemContent">${item.contents}</p>
-											<img id="itemImg" src="${empty item.path ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.path, 10, 55)}
+											<img id="itemImg" src="${empty item.reviewPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.reviewPic, 10, 55)}
 											" alt="img" />
 										</div>
 									</div>
