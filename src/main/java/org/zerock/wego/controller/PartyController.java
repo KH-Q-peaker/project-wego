@@ -95,9 +95,9 @@ public class PartyController {
 			PartyViewVO party = this.partyService.getById(partyId);
 			Integer userId = user.getUserId();
 
-			if((!userId.equals(party.getUserId())) && (party.getReportCnt() >= 5)) {
+			if((party.getReportCnt() >= 5) && (!userId.equals(party.getUserId()))) {
 				throw new AccessBlindException();
-			} // if	
+			} // if
 			
 			JoinDTO join = new JoinDTO();
 			join.setSanPartyId(partyId);
@@ -113,8 +113,6 @@ public class PartyController {
 			
 			boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
 			
-//			int commentCount = this.commentService.getTotalCountByTarget(pageInfo);
-			
 			LinkedBlockingDeque<CommentViewVO> comments 
 						= commentService.getCommentOffsetByTarget(pageInfo, 0);
 
@@ -122,7 +120,6 @@ public class PartyController {
 			mav.addObject("party", party);
 			mav.addObject("isJoin", isJoin);
 			mav.addObject("isFavorite", isFavorite);
-//			mav.addObject("commentCount", commentCount);
 			
 			if(comments != null) {
 				mav.addObject("comments", comments);
@@ -138,7 +135,22 @@ public class PartyController {
 
 	}// showDetailById
 	
-	
+	// 모집글 삭제
+	@Transactional
+	@DeleteMapping(path = "/{partyId}", produces = "text/plain; charset=UTF-8")
+	public ResponseEntity<String> removeById(@PathVariable("partyId") Integer partyId) throws Exception {
+		log.trace("removeById({}) invoked.", partyId);
+
+		try {
+			this.partyService.removeById(partyId);
+
+			return ResponseEntity.ok("모집글이 삭제되었습니다.️");
+
+		} catch (NotFoundPageException | OperationFailException e) { // 그냥 모든 예외 상관없이 다잡아도 되는건가?
+			return ResponseEntity.badRequest().build();
+		} // try-catch
+	}// removeById
+		
 	@GetMapping(path = "/modify/{partyId}")
 	public String modify(
 			@SessionAttribute("__AUTH__")UserVO auth,
@@ -161,28 +173,6 @@ public class PartyController {
 			throw new ControllerException(e);
 		} // try-catch
 	} // modify
-
-	
-
-	// 모집글 삭제
-	@Transactional
-	@DeleteMapping(path= "/{partyId}", produces= "text/plain; charset=UTF-8")
-	public ResponseEntity<String> removeById(@PathVariable Integer partyId) throws Exception {
-	log.trace("removeById({}) invoked.", partyId);
-
-		try {
-			this.partyService.removeById(partyId);
-			this.fileService.isRemoveByTarget("SAN_PARTY", partyId);
-			this.favoriteService.removeAllByTarget("SAN_PARTY", partyId);
-			this.reportService.removeAllByTarget("SAN_PARTY", partyId);
-
-			return ResponseEntity.ok("🗑 모집글이 삭제되었습니다.️");
-			
-		} catch (NotFoundPageException | OperationFailException e) {
-			return ResponseEntity.badRequest().build();
-		}// try-catch
-	}// removeById
-	
 
 	@PostMapping("/modify")
 	public ResponseEntity<Map<String, String>> modify(
@@ -299,7 +289,7 @@ public class PartyController {
 			Integer currentCount = this.joinService.getCurrentCount(join);
 
 			return ResponseEntity.ok(currentCount.toString());
-
+			
 		} catch (OperationFailException e) {
 			return ResponseEntity.badRequest().body("모집 인원이 가득 찼습니다.");
 

@@ -56,7 +56,23 @@ public class CommentService {
 				throw new ServiceException(e);
 			} // try-catch
 		}// getCommentCnt
-		//========================================================뭐로하지? 
+		
+		// 댓글 총합
+		public int getTotalCountByTarget(CommentViewVO vo) throws ServiceException {
+//					log.trace("getCommentsCount({}) invoked.", target);
+
+			try {
+
+				int totalCount 
+					= this.commentMapper.selectTotalCountByTarget(vo.getTargetGb(), vo.getTargetCd());
+
+				return totalCount;
+
+			} catch (Exception e) {
+				throw new ServiceException(e);
+			} // try-catch
+		}// getCommentCnt
+		// ========================================================뭐로하지?
 
 	// 댓글 offset 로딩
 	public LinkedBlockingDeque<CommentViewVO> getCommentOffsetByTarget(PageInfo target, Integer lastCommentId)
@@ -87,13 +103,7 @@ public class CommentService {
 				LinkedBlockingDeque<CommentViewVO> mentions 
 							= this.commentMapper.selectMentionsByCommentId(commentId);
 
-				if (mentions.isEmpty()) {
-
-					return null;
-				} else {
-
 					return mentions;
-				} // if-else
 
 			} catch (Exception e) {
 				throw new ServiceException(e);

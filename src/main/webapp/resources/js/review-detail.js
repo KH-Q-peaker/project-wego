@@ -20,3 +20,20 @@ $(".modify").off('click').on('click', function(){
 });
 
 
+$(() => {
+	
+	let idx = 0;
+	console.log('여기는 옴 ');
+	$('#contents').children().each(function(idx, item){
+		console.log('each');
+		if($(item).is("img")){
+			console.log('img');
+			
+			$(item).attr({
+				src : fileList[idx],
+				alt : fileAltList[idx]
+			});
+			idx++;
+		}
+	});
+});

@@ -33,6 +33,7 @@ $(() => { /* 삭제 관련 */
 		showDeleteModal();
 	
 		let targetComment = $(this).parent().parent();
+		let mentionList = targetComment.parent();
 		let commentId = $(this).siblings("#commentId").val();
 		/* 댓글 삭제 post 전송 */
 		$(".del").off('click').on('click', function(){
@@ -55,7 +56,8 @@ $(() => { /* 삭제 관련 */
 							commentId : targetComment.children('#mentionId').val()
 						},
 						success: function(data) {
-							targetComment.parent().html(data);
+							mentionList.html(data);
+							mentionList.prevAll().find('#mentionCnt').text(loadCnt);
 						},
 						error: () => {
 							console.log('댓글로딩오류 ');/* 바꿔야됨  */
@@ -82,13 +84,6 @@ $(() => { /* 삭제 관련 */
 					});
 					}
 					$('#cmtcnt').html(data);
-					
-//		 			if(targetComment.find('#mentionCnt').html() > 0 ){
-//						targetComment.children().not('.comment, .mentionbtn, #commentId, .mentionCnt').remove();
-//						targetComment.children('.comment').html('삭제된 댓글입니다.');
-//					}else{
-//		 				targetComment.remove();
-//					}
 				},
 				error : function(){
 		 			hideDeleteModal();

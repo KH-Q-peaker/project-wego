@@ -88,6 +88,8 @@ public class ReviewController {
 				throw new AccessBlindException();
 			}// if
 			
+			List<FileVO> fileList = this.fileService.getList("SAN_REVIEW", reviewId);
+			
 			// TO_DO : 좋아요 바뀌면 바꿔야됨 
 			FavoriteDTO favorite = new FavoriteDTO();
 			favorite.setTargetGb("SAN_REVIEW");
@@ -96,15 +98,13 @@ public class ReviewController {
 			
 			boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
 
-//			int commentCount = this.commentService.getTotalCountByTarget(target);
-			
 			LinkedBlockingDeque<CommentViewVO> comments 
 							= this.commentService.getCommentOffsetByTarget(target, 0);
 
 			/*후기글 사진 넣는거 필요함 */
 			mav.addObject("review", review);
 			mav.addObject("isFavorite", isFavorite);
-//			mav.addObject("commentCount", commentCount);
+			mav.addObject("fileList", fileList);
 			
 			if(comments != null) {
 				
@@ -126,7 +126,8 @@ public class ReviewController {
 
 		try {
 			this.reviewService.removeById(reviewId);
-//			this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId); 
+			this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId); 
+			
 			return ResponseEntity.ok("후기글이 삭제되었습니다.️");
 
 		} catch (Exception e) {
