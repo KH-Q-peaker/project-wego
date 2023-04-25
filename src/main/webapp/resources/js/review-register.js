@@ -166,10 +166,8 @@ selector(".add-photo .cancel").addEventListener("click", () => {
 
 // 이미지 추가 버튼 클릭 이벤트(후기는 최대 5장 추가 가능)
 selector(".photo").addEventListener("click", () => {
-
   // TODO: 현재 이미지 개수를 체크하는 로직 필요
-  console.log("imgCount: ", imgCount());
-  if(imgCount() < 5) {
+  if (imgCount() < 5) {
     selector(".drag-and-drop").innerHTML = `
     <div class="picture"></div>
     <p>
@@ -178,17 +176,15 @@ selector(".photo").addEventListener("click", () => {
     (최대 20MB)
     </p>`;
   } else {
-	selector(".drag-and-drop").innerHTML = `
+    selector(".drag-and-drop").innerHTML = `
     <div class="picture"></div>
     <p>
     최대 업로드 가능한<br />
     이미지는 5개입니다.
     </p>`;
-    
+
     selector(".drag-and-drop + button").innerText = "확인";
   } // if-else
-
-  
 
   selector(".add-photo").style.display = "block";
   $(".add-photo").attr("tabindex", -1).focus();
@@ -197,13 +193,13 @@ selector(".photo").addEventListener("click", () => {
 // ========================= 이미지 개수 체크
 function imgCount() {
   let count = 0;
-  
-  selector("#contents").childNodes.forEach(item => {
-	if(item.nodeName == "IMG") {
-		count++;
-	} // if
+
+  selector("#contents").childNodes.forEach((item) => {
+    if (item.nodeName == "IMG") {
+      count++;
+    } // if
   });
-  
+
   return count;
 } // imgCount
 
@@ -235,9 +231,9 @@ selector(".drag-and-drop").ondragleave = (e) => e.preventDefault();
 // 드래그 앤 드롭 이벤트 - 업로드 최대 용량: 20,971,520byte(20MB)
 selector(".drag-and-drop").ondrop = (e) => {
   e.preventDefault();
-  
-  if(imgCount() < 5) {
-	const files = [...e.dataTransfer?.files];
+
+  if (imgCount() < 5) {
+    const files = [...e.dataTransfer?.files];
 
     // 업로드 파일 용량 체크
     if (isFileMaxSize(files)) {
@@ -257,8 +253,8 @@ selector(".drag-and-drop").ondrop = (e) => {
 
 // 드래그 앤 드롭 대신 클릭으로 업로드 할 때
 selector(".drag-and-drop").onclick = () => {
-  if(imgCount() < 5) {
-	const input = document.createElement("input");
+  if (imgCount() < 5) {
+    const input = document.createElement("input");
     input.id = "test";
     input.type = "file";
     input.accept = ".jpg, .jpeg, .png";
@@ -287,8 +283,10 @@ selector(".drag-and-drop").onclick = () => {
 
 // 이미지 추가 -> 등록 버튼 클릭 이벤트
 selector(".drag-and-drop + button").onclick = (e) => {
-  if ((imgPath === undefined || imgPath === null) 
-    && (e.target.innerText !== "확인") ) {
+  if (
+    (imgPath === undefined || imgPath === null) &&
+    e.target.innerText !== "확인"
+  ) {
     return false;
   } // if
 
@@ -380,12 +378,21 @@ const formCheck = () => {
   if (form.elements.sanName.value === "") {
     alert();
     alertWindow(selector("select[name=sanName]"));
+
     return false;
   } // if
 
   if (form.elements.title.value.length < 2) {
     alert();
     alertWindow(selector("#title"));
+
+    return false;
+  } // if
+
+  if (selector("#contents").innerText.length < 2) {
+    alert();
+    alertWindow(selector("#contents"));
+
     return false;
   } // if
 
@@ -397,41 +404,40 @@ const formCheck = () => {
   const oldImgFiles = []; // 기존 이미지 파일 체크
   const imgOrder = [];
 
-for (let index = 0; index < contentChildNodes.length; index++) {
-  if(contentChildNodes[index].childNodes.length > 0) {
-    write(contentChildNodes[index].childNodes);
-  } else {
-	write(new Array(contentChildNodes[index]));
-  } // if-else
-} // for
-
-function write(nodes) {
-  for (let index = 0; index < nodes.length; index++) {
-    if (nodes[index].nodeName === "IMG") {
-      contentResult += "<img>";
-
-      if (nodes[index].src.slice(0, 4) === "data") {
-        // 신규 이미지로 판단
-        imgFileNames.push(nodes[index].alt);
-        imgOrder.push(nodes[index].alt);
-      } else {
-        // 기존 이미지로 판단
-        oldImgFiles.push(nodes[index].alt);
-        imgOrder.push(nodes[index].alt);
-      } // if-else
-    } // if
-
-    if (nodes[index].nodeName === "#text") {
-      contentResult += nodes[index].nodeValue + "\n";
-      continue;
-    } // if
-
-    if (nodes[index].nodeName === "BR") {
-      contentResult += "\n";
-    } // if
+  for (let index = 0; index < contentChildNodes.length; index++) {
+    if (contentChildNodes[index].childNodes.length > 0) {
+      write(contentChildNodes[index].childNodes);
+    } else {
+      write(new Array(contentChildNodes[index]));
+    } // if-else
   } // for
-} // write
 
+  function write(nodes) {
+    for (let index = 0; index < nodes.length; index++) {
+      if (nodes[index].nodeName === "IMG") {
+        contentResult += "<img>";
+
+        if (nodes[index].src.slice(0, 4) === "data") {
+          // 신규 이미지로 판단
+          imgFileNames.push(nodes[index].alt);
+          imgOrder.push(nodes[index].alt);
+        } else {
+          // 기존 이미지로 판단
+          oldImgFiles.push(nodes[index].alt);
+          imgOrder.push(nodes[index].alt);
+        } // if-else
+      } // if
+
+      if (nodes[index].nodeName === "#text") {
+        contentResult += nodes[index].nodeValue + "\n";
+        continue;
+      } // if
+
+      if (nodes[index].nodeName === "BR") {
+        contentResult += "\n";
+      } // if
+    } // for
+  } // write
 
   // 폼 데이터 저장(산이름, 제목, 내용)
   if (selector("#upload").innerText == "수정") {
@@ -469,9 +475,25 @@ selector(".upload input[type=submit]").onclick = (e) => {
       method: "POST",
       body: formData,
     }
-  ).then((res) => {
-    self.location = res.url;
-  });
+  )
+    .then((res) => {
+      return res.json();
+    })
+    .then((resBody) => {
+      if (resBody.state === "failed") {
+        selector(".check-again .upload").style.display = "none";
+        e.target.disabled = false;
+
+        return formCheck();
+      } // if
+
+      if (resBody.state === "successed") {
+        self.location = resBody.redirectUrl;
+      } // if
+    })
+    .catch((error) => {
+      console.error("error: ", error);
+    });
 };
 
 // 후기글 수정 시 이미지 경로 삽입
