@@ -12,6 +12,7 @@ import org.zerock.wego.exception.OperationFailException;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.ReviewMapper;
 import org.zerock.wego.service.badge.BadgeGetService;
+import org.zerock.wego.service.common.CommentService;
 import org.zerock.wego.service.common.FavoriteService;
 import org.zerock.wego.service.common.FileService;
 import org.zerock.wego.service.common.ReportService;
@@ -30,6 +31,7 @@ public class ReviewService {
 	private final ReportService reportService;
 	private final FileService fileService;
 	private final FavoriteService favoriteService;
+	private final CommentService commentService;
 	private final BadgeGetService badgeGetService;
 	
 	
@@ -95,6 +97,7 @@ public class ReviewService {
 			this.reportService.removeAllByTarget("SAN_REVIEW", reviewId);
 			this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId);
 			this.favoriteService.removeAllByTarget("SAN_REVIEW", reviewId);
+			this.commentService.removeAllByTarget("SAN_REVIEW", reviewId);
 			// TO_DO : 좋아요 내역 삭제도 추기돼야 함,
 			
 			isExist = this.reviewMapper.isExist(reviewId);

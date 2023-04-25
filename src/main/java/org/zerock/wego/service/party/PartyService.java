@@ -12,6 +12,7 @@ import org.zerock.wego.exception.OperationFailException;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.PartyMapper;
 import org.zerock.wego.service.badge.BadgeGetService;
+import org.zerock.wego.service.common.CommentService;
 import org.zerock.wego.service.common.FavoriteService;
 import org.zerock.wego.service.common.FileService;
 import org.zerock.wego.service.common.ReportService;
@@ -29,6 +30,7 @@ public class PartyService {
 	private final ReportService reportService;
 	private final FileService fileService;
 	private final FavoriteService favoriteService;
+	private final CommentService commentService;
 	private final BadgeGetService badgeGetService;
 
 
@@ -99,6 +101,7 @@ public class PartyService {
 			this.reportService.removeAllByTarget("SAN_PARTY", partyId);
 			this.fileService.isRemoveByTarget("SAN_PARTY", partyId);
 			this.favoriteService.removeAllByTarget("SAN_PARTY", partyId);
+			this.commentService.removeAllByTarget("SAN_PARTY", partyId);
 			
 			isExist = this.partyMapper.isExist(partyId);
 			
