@@ -1,0 +1,249 @@
+@charset "utf-8";
+
+/* common */
+.container {
+    width: 100%;
+
+    text-align: center;
+
+    color: #fff
+}
+
+/* rank */
+.rank a {
+    color: #fff !important;
+}
+
+.rank .head {
+    display: flex;
+    margin: 0 0 24px;
+    
+    justify-content: center;
+    align-items: center;
+}
+.boxStyle {
+    border: 0;
+    border-radius: 10px;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.15), 0 3px 3px rgba(0, 0, 0, 0.20);
+    background-color: rgba(78, 197, 61, 0.75);
+
+    transition: all 400ms ease-in-out;
+}
+.rank .title {
+    display: flex;
+
+    justify-content: space-around;
+    align-items: center;
+
+    padding: 6px 8px;
+
+    font-size: 32px;
+}
+.rank .title span{
+    font-size: 20px !important;
+    font-weight: bold;
+}
+.rank .title span#svg{
+    background : url(../svg/rankTilte.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    width: 32px;
+    height: 32px;
+}
+.rank .item {
+    display: flex;
+
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+
+    padding: 20px 10px;
+}
+/* rankers */
+.rankers {
+    display: grid;
+
+    grid-template-rows: auto;
+    grid-template-columns: auto auto auto auto;
+
+    column-gap: 2%;
+
+    justify-content: center;
+    justify-items: center;
+}
+.rankers .title {
+    box-sizing: border-box;
+
+    padding: 0 0 20px;
+
+    font-size: 20px;
+    font-weight: bold;
+}
+.ranker-img {
+    width: 150px;
+    height: 150px;
+    background: url(../svg/rank.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+/* ranker */
+.rank #ranker {
+    z-index: 2;
+
+    position: absolute;
+
+    display: grid;
+
+    grid-template-columns: auto auto auto;
+    column-gap: 2%;
+
+    justify-content: space-evenly;
+    align-items: end;
+
+    padding: 20px;
+
+    background-color: rgba(78, 197, 61, 1);
+
+    animation: fadein 400ms;
+    
+    box-sizing: border-box;
+}
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+#ranker .title{
+	display: flex;
+    justify-content: center;
+	
+    grid-column-start: 1;
+    grid-column-end: 4;
+
+    margin: 0 0 25px 0;
+}
+.rank #ranker .item {
+    padding: 0;
+}
+.item#gold{
+	grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 3;
+}
+.item#silver{
+	grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 2;
+    grid-row-end: 3;
+}
+.item#bronze{
+	grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 2;
+    grid-row-end: 3;
+}
+#ranker .item .rankerMedal{
+    margin: 0 0 18px;
+}
+#ranker .item .rankerMedal #svg{
+    display: block;
+
+    width: 55px;
+    height: 55px;
+}
+.item#gold #svg{
+    background : url(../svg/rankingGold.svg);
+    
+    background-repeat: no-repeat;
+    background-size: contain;
+
+}
+.item#silver #svg{
+    background : url(../svg/rankingSilver.svg);
+    
+    background-repeat: no-repeat;
+    background-size: contain;
+
+}
+.item#bronze #svg{
+    background : url(../svg/rankingBronze.svg);
+    
+    background-repeat: no-repeat;
+    background-size: contain;
+
+}
+#ranker .item .rankerProfile .rankerPic{
+    display: inline-block;
+
+    margin: 0 0 12px;
+
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    
+    background-color: #fff;
+}
+#ranker .item .rankerProfile .rankerName {
+	display: flex;
+	
+	justify-content: center;
+	
+    margin: 0 0 12px;
+
+    font-size: 15px;
+    font-weight: bold;
+}
+#ranker .item .rankerVal {
+    margin: 0 0 12px;
+}
+#ranker .item#gold .rankerVal {
+    margin: 0 0 32px;
+}
+
+#ranker .ranker-img {
+    width: 150px;
+    height: 150px;
+    background: url(../svg/rank.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Tablet*/
+@media screen and (max-width: 768px) {
+    .rankers {
+        grid-template-rows: auto;
+        grid-template-columns: auto auto;
+        
+        row-gap: 2%;
+    }
+    .rank #ranker {
+        grid-template-columns: auto auto;
+    }
+    #ranker .title{
+        grid-column-start: 1;
+        grid-column-end: 3;
+    }
+    #ranker #gold{
+        grid-column-start: 1;
+        grid-column-end: 3;
+        grid-row-start: 2;
+    }
+}
+
+
+/* Phone */
+@media screen and (max-width: 425px) {
+    .rankers {
+        row-gap: 2%;
+    }
+    .ranker-img {
+        width: 125px;
+        height: 125px;
+    }
+}
+

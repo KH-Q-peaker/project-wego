@@ -2,11 +2,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" 
 		pageEncoding="UTF-8"%>
 <%@page import="java.util.*"%>
-<%@page import="org.zerock.wego.domain.*"%>
+<%@page import="org.zerock.wego.domain.party.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<c:set var="path" value="${pageContext.request.contextPath}"/>
 
 <jsp:include page="../common/report.jsp"></jsp:include><%-- 신고 --%>
 <jsp:include page="../common/delete.jsp"></jsp:include><%-- 삭제 --%>
@@ -23,26 +22,26 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="description" content="등산멤버 모집 커뮤니티" />
 
-	<link rel="shortcut icon" href="${path}/resources/ico/favicon.ico" type="image/x-icon" />
-	<link rel="icon" href="${path}/resources/ico/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
+	<link rel="icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
 	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 	
-	<link rel="stylesheet" type="text/css"  href="${path}/resources/css/default.css"/>
-	<link rel="stylesheet" type="text/css" href="${path}/resources/css/header.css"/>
-	<link rel="stylesheet" type="text/css" href="${path}/resources/css/footer.css"/>
-	<link rel="stylesheet" type="text/css" href="${path}/resources/css/like.css"/>
-	<link rel="stylesheet" type="text/css" href="${path}/resources/css/comment.css"/>
-	<link rel="stylesheet" type="text/css" href="${path}/resources/css/party-detail.css"/>
+	<link rel="stylesheet" type="text/css"  href="/resources/css/default.css"/>
+	<link rel="stylesheet" type="text/css" href="/resources/css/header.css"/>
+	<link rel="stylesheet" type="text/css" href="/resources/css/footer.css"/>
+	<link rel="stylesheet" type="text/css" href="/resources/css/like.css"/>
+	<link rel="stylesheet" type="text/css" href="/resources/css/comment.css"/>
+	<link rel="stylesheet" type="text/css" href="/resources/css/party-detail.css"/>
 	
-	<script type="text/javascript" src="${path}/resources/js/header.js"  defer></script>
-	<script type="text/javascript" src="${path}/resources/js/footer.js"  defer></script>
-	<script type="text/javascript" src="${path}/resources/js/default.js"  defer></script>
-	<script type="text/javascript" src="${path}/resources/js/like.js"  defer></script>
-	<script type="text/javascript" src="${path}/resources/js/scroll.js"  defer></script>
-	<script type="text/javascript" src="${path}/resources/js/comment.js"  defer></script>
-	<script type="text/javascript" src="${path}/resources/js/party-detail.js"  defer></script>
+	<script type="text/javascript" src="/resources/js/header.js"  defer></script>
+	<script type="text/javascript" src="/resources/js/footer.js"  defer></script>
+	<script type="text/javascript" src="/resources/js/default.js"  defer></script>
+	<script type="text/javascript" src="/resources/js/like.js"  defer></script>
+	<script type="text/javascript" src="/resources/js/scroll.js"  defer></script>
+	<script type="text/javascript" src="/resources/js/comment.js"  defer></script>
+	<script type="text/javascript" src="/resources/js/party-detail.js"  defer></script>
 
 	<script> 
 		var target = JSON.parse('${target}');
@@ -80,7 +79,7 @@
 							<span><fmt:formatDate pattern="HH시 mm분" value="${party.partyDt}"></fmt:formatDate></span> 
 						</div>
 						<div class="info">
-							<span class="list">참여인원</span> <span id="currentCount">${party.userCnt}</span><span>/  ${party.partyMax }</span>
+							<span class="list">참여인원</span> <span id="currentCount">${party.userCnt}</span><span>/</span><span>${party.partyMax }</span>
 						</div>
 						<c:if test="${party.items != null}">
 							<div class="info">
@@ -99,25 +98,33 @@
 					</div>
 					<div class="btns">
 						<c:if test="${party.userId == sessionScope.__AUTH__.userId}"> 
-<%-- 						<a href="/party/modify/${party.sanPartyId }" class="modify" name="modify" value="수정" />  --%>
 						<input type="button" class="modify" name="modify" value="수정" /> 
 						<input type="button" class="delete" name="delete" value="삭제" /> 
 						</c:if>
 						<input type="button" class="report" name="report" value="신고" />
 					</div>
-					<c:choose>
-						<c:when test="${party.userCnt >= party.partyMax }">
-							<input type="button" class="join" style="background-color: #727272" disabled value="모집완료" />
-						</c:when>
-						<c:when test="${isJoin == false }">
-							<input type="button" class="join" id="join" name="join" value="참여하기" />
-						</c:when>
-						<c:otherwise>
-							<input type="button" class="join" id="clsjoin" name="join" value="취소하기" />
-						</c:otherwise>
-					</c:choose>
+					<% 
+						Date now = new Date();
+						PartyViewVO party = (PartyViewVO)request.getAttribute("party");
+						boolean after = now.before(party.getPartyDt());
+						request.setAttribute("after", after);
+					%>
+						<c:choose>
+							<c:when test="${after }">
+								<input type="button" class="join" style="background-color: #727272" disabled value="모집종료" />
+							</c:when>
+							<c:when test="${isJoin == false }">
+								<input type="button" class="join" id="join" name="join" value="참여하기" />
+							</c:when>
+							<c:when test="${isJoin == true }">
+								<input type="button" class="join" id="clsjoin" name="join" value="취소하기" />
+							</c:when>
+							<c:when test="${party.userCnt >= party.partyMax }">
+								<input type="button" class="join" style="background-color: rgb(252, 170, 64)" disabled value="모집완료" />
+							</c:when>
+						</c:choose>
 				</div>
-				<div class="cnt">댓글 (${commentCount})</div>
+				<div class="cnt">댓글 (<span id="cmtcnt">${party.commentCnt }</span>)</div>
 				<c:set var="comments" value="${comments}" />
 				<%@ include file="../comment/comment.jsp"%>
 				<div class="to top">top</div>

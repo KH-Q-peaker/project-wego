@@ -28,58 +28,7 @@ public class KakaoService {
 
 	private final KakaoOAuth kakaoOAuth; 
 
-
-	public KakaoOAuthTokenDTO getAccessToken(String authorizationCode) throws JsonProcessingException {
-		log.trace("getAccessToken({}) invoked.", authorizationCode);
-
-			ResponseEntity<String> responseEntity = kakaoOAuth.requestAccessToken(authorizationCode);
-
-			int responseCode = responseEntity.getStatusCodeValue();
-
-			log.info("responseCode = {}", responseCode);
-
-			// 200이면 성공
-			if(responseCode == 200) {
-
-				KakaoOAuthTokenDTO kakaoOAuthTokenDTO = kakaoOAuth.parseOAuthTokenDTO(responseEntity.getBody());
-
-				return kakaoOAuthTokenDTO;
-			}
-			else {
-				throw new ServiceException("kakao getAccessToken");
-			} // if-else
-
-	}// getAccessToken
-
-
-	public KakaoUserInfoDTO getUserInfo(KakaoOAuthTokenDTO OAuthToken) throws ServiceException{
-		log.trace("getUserInfo({}) invoked.", OAuthToken);
-
-		try {
-			ResponseEntity<String> responseEntity = kakaoOAuth.requestUserInfo(OAuthToken);
-
-			int responseCode = responseEntity.getStatusCodeValue();
-
-			log.info("responseCode = {}", responseCode);
-
-			// 200이면 성공
-			if(responseCode == 200) {
-
-				KakaoUserInfoDTO kakaoUserInfoDTO = kakaoOAuth.parseUserInfoDTO(responseEntity.getBody());
-
-				return kakaoUserInfoDTO;
-			}
-			else {
-				throw new ServiceException("kakao getAccessToken");
-			} // if-else
-		}
-		catch(Exception e) {
-			throw new ServiceException(e);
-		}// try-catch
-
-	}// getUserInfo
-
-
+	// 탈퇴하기?
 	public void unlinkKakao(String accessToken) {
 
 		String requestURL = "https://kapi.kakao.com/v1/user/unlink";

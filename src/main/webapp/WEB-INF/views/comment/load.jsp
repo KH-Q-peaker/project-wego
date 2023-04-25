@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="org.zerock.wego.domain.common.CommentViewVO" %>
-<%-- <%@page import= "java.util.List" %> --%>
-<%-- <%@page import= "java.util.ArrayList"%> --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%-- <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> --%>
@@ -9,7 +7,10 @@
 <script type="text/javascript" src="/resources/js/comment.js" defer ></script>
 <script type="text/javascript" src="/resources/js/delete.js" defer ></script>
 <script type="text/javascript" src="/resources/js/report.js" defer ></script>
-
+<script>
+var loadCnt = ${comments == null ? 0 : comments.size()};
+var commentCnt = ${commentCnt == null ? 0 : commentCnt};
+</script>
 	
 			<c:forEach items="${comments}" var="c">
 				<c:if test="${c.status != 'Y' }">
@@ -30,7 +31,7 @@
 				</div>
 				<div class="btns">
 					<input type="hidden" id= "commentId" name="commentId" value="${c.commentId}">
-					<c:if test="${c.userId == sessionScope.__AUTH__.userId && c.reportCnt < 5 }"> <!--  이거 조건 바꿔야된다!!!! -->
+					<c:if test="${c.userId == sessionScope.__AUTH__.userId && c.reportCnt < 5 }"> 
 					<input type="button" class="modifycmt" name="modifycmt" value="수정" /> 
 					<input type="button" class="deletecmt" name="deletecmt" value="삭제" /> 
 					</c:if>
@@ -45,9 +46,7 @@
 					<div class="comment">${c.contents}</div>
 					<c:if test="${c.mentionId == null}">
 					<input type="button" class="mentionbtn" name="mentionbtn" value="↪ ︎답글" />
-						<c:if test="${c.mentionCnt != 0 }">
-						<span class="mentionCnt">답글  <span id="mentionCnt">${c.mentionCnt }</span>개</span>
-						</c:if>
+					<span class="mentionCnt">답글  <span id="mentionCnt">${c.mentionCnt }</span>개</span>
 					</c:if>
 				</c:otherwise>
 				</c:choose>

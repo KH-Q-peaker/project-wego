@@ -361,34 +361,51 @@ const alertWindow = (item) =>
 // 모집 글 작성 폼 검증
 const formCheck = () => {
   const form = document.forms[0];
+  const partyDt =
+    selector("#date").value + " " + selector("#time").value + ":00";
+  const now = new Date();
+  const time = `${
+    now.getHours() < 10 ? "0" + now.getHours() : now.getHours()
+  }:${now.getMinutes() < 10 ? "0" + now.getMinutes() : now.getMinutes()}`;
 
   if (form.elements.sanName.value === "") {
     alert();
     alertWindow(selector("select[name=sanName]"));
+
     return false;
   } // if
 
   if (form.elements.title.value.length < 2) {
     alert();
     alertWindow(selector("#title"));
+
     return false;
   } // if
 
   if (form.elements.date.value === "" || form.elements.date.value < today) {
     alert();
     alertWindow(selector("#date"));
+
     return false;
   } // if
+	console.log(form.elements.date.value === today);
+	console.log(form.elements.time.value);
+	console.log(form.elements.time.value < time);
+	
+	console.log("!!!!!!!")
+  if (form.elements.time.value === "" || 
+    form.elements.date.value === today && form.elements.time.value < time) {
 
-  if (form.elements.time.value === "") {
     alert();
     alertWindow(selector("#time"));
+
     return false;
   } // if
 
   if (form.elements.partyMax.value < 2 || form.elements.partyMax.value > 45) {
     alert();
     alertWindow(selector("#member"));
+
     return false;
   } // if
 
@@ -407,8 +424,7 @@ const formCheck = () => {
   formData.set("sanName", form.elements.sanName.value);
   formData.set("title", form.elements.title.value);
   formData.set("contents", form.elements.contents.value);
-  formData.set("date", form.elements.date.value);
-  formData.set("time", form.elements.time.value);
+  formData.set("partyDt", partyDt);
   formData.set("partyMax", form.elements.partyMax.value);
   formData.set("items", form.elements.items.value);
   formData.set("condition", form.elements.condition.value);
@@ -430,7 +446,23 @@ selector(".upload input[type=submit]").onclick = (e) => {
       method: "POST",
       body: formData,
     }
-  ).then((res) => {
-    self.location = res.url;
-  });
+  )
+    .then((res) => {
+      return res.json();
+    })
+    .then((resBody) => {
+      if (resBody.state === "failed") {
+        selector(".check-again .upload").style.display = "none";
+        e.target.disabled = false;
+
+        return formCheck();
+      } // if
+
+      if (resBody.state === "successed") {
+        self.location = resBody.redirectUrl;
+      } // if
+    })
+    .catch((error) => {
+      console.error("error: ", error);
+    });
 };

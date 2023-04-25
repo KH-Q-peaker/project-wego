@@ -27,23 +27,23 @@ import lombok.extern.log4j.Log4j2;
 public class KakaoOAuth {	// https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api 참조
  
 	@Value("${kakao.rest.api.key}")
-	private String kakaoClientId;	// REST key
+	private String clientId;	// REST key
 
-	private final String KAKAO_AUTHORIZE_REQUEST_URL = "https://kauth.kakao.com/oauth/authorize?";	// 인가 코드 요청 URL
+	private final String AUTHORIZE_REQUEST_URL = "https://kauth.kakao.com/oauth/authorize?";	// 인가 코드 요청 URL
 	private final String REDIRECT_URI = "http://localhost:8080/login/kakao/oauth";	// 인가 코드를 전달받을 서비스 서버의 URI >>>>>>>>>>>>>> 도메인 수정필요 kakao에서도 수정필요
 	private final String RESPONSE_TYPE = "code";	// 인가 코드 요청시 param >>> code로 고정
 	private final String GRANT_TYPE = "authorization_code"; // 토큰 요청시 param >>> authorization_code로 고정 
-	private final String KAKAO_TOKEN_REQUEST_URL = "https://kauth.kakao.com/oauth/token";	// 인가 코드를 전달받을 서비스 서버의 URI
-	private final String KAKAO_USER_INFO_REQUEST_URL = "https://kapi.kakao.com/v2/user/me";	// 사용자 정보 요청 URI
+	private final String TOKEN_REQUEST_URL = "https://kauth.kakao.com/oauth/token";	// 인가 코드를 전달받을 서비스 서버의 URI
+	private final String USER_INFO_REQUEST_URL = "https://kapi.kakao.com/v2/user/me";	// 사용자 정보 요청 URI
 
 
 	public String getLoginURLToGetAuthorizationCode() {
 		log.trace("getLoginURLToGetAuthorizationCode() invoked.");
 
-		StringBuffer LoginURL = new StringBuffer(KAKAO_AUTHORIZE_REQUEST_URL);
+		StringBuffer LoginURL = new StringBuffer(AUTHORIZE_REQUEST_URL);
 
 		LoginURL	// 파라미터 설정
-			.append("client_id=").append(kakaoClientId)	
+			.append("client_id=").append(clientId)	
 			.append("&").append("redirect_uri=").append(REDIRECT_URI)
 			.append("&").append("response_type=").append(RESPONSE_TYPE);
 
@@ -64,14 +64,14 @@ public class KakaoOAuth {	// https://developers.kakao.com/docs/latest/ko/kakaolo
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>(); // 바디에 파라미터 설정
 
 		params.add("grant_type", GRANT_TYPE);
-		params.add("client_id", kakaoClientId);
+		params.add("client_id", clientId);
 		params.add("redirect_uri", REDIRECT_URI);
 		params.add("code", authorizationCode);
 
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
 
 		ResponseEntity<String> response = restTemplate.postForEntity(
-				KAKAO_TOKEN_REQUEST_URL,
+				TOKEN_REQUEST_URL,
 				request,
 				String.class);
 
@@ -104,7 +104,7 @@ public class KakaoOAuth {	// https://developers.kakao.com/docs/latest/ko/kakaolo
 		HttpEntity<MultiValueMap<String, String>> kakaoUserInfoRequest = new HttpEntity<>(headers);
 		
 		ResponseEntity<String> response = restTemplate.postForEntity(
-				KAKAO_USER_INFO_REQUEST_URL,
+				USER_INFO_REQUEST_URL,
 				kakaoUserInfoRequest, 
 				String.class);
 
