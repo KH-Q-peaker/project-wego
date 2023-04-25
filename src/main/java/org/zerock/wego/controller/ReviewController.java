@@ -91,8 +91,6 @@ public class ReviewController {
 			
 			boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
 
-//			int commentCount = this.commentService.getTotalCountByTarget(target);
-			
 			LinkedBlockingDeque<CommentViewVO> comments 
 							= this.commentService.getCommentOffsetByTarget(target, 0);
 
@@ -100,7 +98,6 @@ public class ReviewController {
 			mav.addObject("review", review);
 			mav.addObject("isFavorite", isFavorite);
 			mav.addObject("fileList", fileList);
-//			mav.addObject("commentCount", commentCount);
 			
 			if(comments != null) {
 				
@@ -122,7 +119,8 @@ public class ReviewController {
 
 		try {
 			this.reviewService.removeById(reviewId);
-//			this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId); 
+			this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId); 
+			
 			return ResponseEntity.ok("후기글이 삭제되었습니다.️");
 
 		} catch (Exception e) {

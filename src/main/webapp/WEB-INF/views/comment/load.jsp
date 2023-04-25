@@ -8,7 +8,8 @@
 <script type="text/javascript" src="/resources/js/delete.js" defer ></script>
 <script type="text/javascript" src="/resources/js/report.js" defer ></script>
 <script>
-var loadCnt = ${comments.size() == null ? 0 : comments.size()};
+var loadCnt = ${comments == null ? 0 : comments.size()};
+var commentCnt = ${commentCnt == null ? 0 : commentCnt};
 </script>
 	
 			<c:forEach items="${comments}" var="c">
