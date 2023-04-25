@@ -63,5 +63,6 @@
 	<context:component-scan base-package="org.zerock.wego.service"/>
 	<context:component-scan base-package="org.zerock.wego.config"/>
 	<context:component-scan base-package="org.zerock.wego.oauth"/>
+	<context:component-scan base-package="org.zerock.wego.verification"/>
 		
 </beans>

@@ -4,12 +4,17 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.zerock.wego.domain.party.PartyDTO;
 import org.zerock.wego.domain.party.PartyViewVO;
 import org.zerock.wego.exception.NotFoundPageException;
 import org.zerock.wego.exception.OperationFailException;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.PartyMapper;
+import org.zerock.wego.service.badge.BadgeGetService;
+import org.zerock.wego.service.common.FavoriteService;
+import org.zerock.wego.service.common.FileService;
+import org.zerock.wego.service.common.ReportService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,6 +26,10 @@ import lombok.extern.log4j.Log4j2;
 public class PartyService {
 	
 	private final PartyMapper partyMapper;
+	private final ReportService reportService;
+	private final FileService fileService;
+	private final FavoriteService favoriteService;
+	private final BadgeGetService badgeGetService;
 
 
 	public List<PartyViewVO> getList() throws ServiceException {
@@ -75,6 +84,35 @@ public class PartyService {
 		}// try-catch
 	}// getById
 	
+	// 모집글 삭제 
+	@Transactional
+	public void removeById(Integer partyId) throws Exception{
+//		log.trace("isRemovedById({}) invoked.", partyId);
+		try {
+			boolean isExist = this.partyMapper.isExist(partyId);
+			
+			if(!isExist) {
+				throw new NotFoundPageException();
+			}// if
+			
+			this.partyMapper.deleteById(partyId);
+			this.reportService.removeAllByTarget("SAN_PARTY", partyId);
+			this.fileService.isRemoveByTarget("SAN_PARTY", partyId);
+			this.favoriteService.removeAllByTarget("SAN_PARTY", partyId);
+			
+			isExist = this.partyMapper.isExist(partyId);
+			
+			if(isExist) {
+				throw new OperationFailException();
+			}// if
+			
+		} catch (NotFoundPageException | OperationFailException e) {
+			throw e;
+		
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}// try-catch
+	}// removeParty
 	
 	public boolean register(PartyDTO dto) throws ServiceException {
 		log.trace("register({}) invoked.", dto);
@@ -95,30 +133,6 @@ public class PartyService {
 		} // try-catch
 	} // modify
 	
-	
-	// 모집글 삭제 
-	public void removeById(Integer partyId) throws Exception{
-//		log.trace("isRemovedById({}) invoked.", partyId);
-		try {
-			boolean isExist = this.partyMapper.isExist(partyId);
-			
-			if(!isExist) {
-				throw new NotFoundPageException();
-			}// if
-			
-			this.partyMapper.deleteById(partyId);
-			isExist = this.partyMapper.isExist(partyId);
-			
-			if(isExist) {
-				throw new OperationFailException();
-			}// if
-			
-		} catch (NotFoundPageException e) {
-			throw e;
-			
-		} catch (Exception e) {
-			throw new ServiceException(e);
-		}// try-catch
-	}// removeParty
-	
 }// end class
+
+

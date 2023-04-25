@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
-import org.zerock.wego.domain.common.FileVO;
 import org.zerock.wego.domain.review.ReviewDTO;
 import org.zerock.wego.domain.review.ReviewViewVO;
 import org.zerock.wego.exception.NotFoundPageException;
@@ -12,6 +11,7 @@ import org.zerock.wego.exception.OperationFailException;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.ReviewMapper;
 import org.zerock.wego.service.badge.BadgeGetService;
+import org.zerock.wego.service.common.FavoriteService;
 import org.zerock.wego.service.common.FileService;
 import org.zerock.wego.service.common.ReportService;
 
@@ -28,6 +28,7 @@ public class ReviewService {
 	private final ReviewMapper reviewMapper;
 	private final ReportService reportService;
 	private final FileService fileService;
+	private final FavoriteService favoriteService;
 	private final BadgeGetService badgeGetService;
 	
 	
@@ -64,9 +65,8 @@ public class ReviewService {
 				throw new NotFoundPageException();
 			}// if
 			
-
 			this.reviewMapper.visitCountUp(reviewId); //조회수증가.
-			log.error(review.getContents());
+			
 			return review;
 			
 		} catch (NotFoundPageException e) { 
@@ -93,6 +93,7 @@ public class ReviewService {
 			this.reviewMapper.delete(reviewId);
 			this.reportService.removeAllByTarget("SAN_REVIEW", reviewId);
 			this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId);
+			this.favoriteService.removeAllByTarget("SAN_REVIEW", reviewId);
 			// TO_DO : 좋아요 내역 삭제도 추기돼야 함, 파일 서비스 수정되면 수정해야됨 뱃지도 같이 삭제되어야 할까?
 			
 			isExist = this.reviewMapper.isExist(reviewId);
@@ -101,17 +102,13 @@ public class ReviewService {
 				throw new OperationFailException();
 			}// if
 			
-		} catch(NotFoundPageException e) {
-			throw e;
-			
-		} catch(OperationFailException e) {
+		} catch(NotFoundPageException | OperationFailException e) {
 			throw e;
 			
 		} catch(Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
 	} // remove
-	
 	
 	public void register(ReviewDTO dto) throws Exception {
 		log.trace("register({}) invoked.");
