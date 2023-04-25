@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.zerock.wego.domain.common.FileDTO;
 import org.zerock.wego.domain.common.FileVO;
@@ -24,7 +25,7 @@ public class FileService {
 
 	private final FileMapper fileMapper;
 
-//	@Transactional
+	@Transactional
 	public boolean isImageRegister(List<MultipartFile> imgFiles, String targetGb, Integer targetCd, FileDTO fileDTO)
 			throws ServiceException {
 		log.trace("isImageRegister() invoked.");
@@ -68,7 +69,7 @@ public class FileService {
 		} // try-catch
 	} // isImageRegister
 
-//	@Transactional
+	@Transactional
 	public boolean isChangeImage(List<MultipartFile> newFiles, List<String> oldFiles, List<String> order,
 			String targetGb, Integer targetCd, FileDTO fileDTO) throws ServiceException {
 		log.trace("isChangeImage() invoked.");
