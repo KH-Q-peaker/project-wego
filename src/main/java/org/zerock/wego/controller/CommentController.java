@@ -60,10 +60,10 @@ public class CommentController {
 		
 		CommentViewVO vo = this.commentService.getById(commentId);
 		
-		int commentCnt = this.commentService.getTotalCountByTarget(vo);
+		int totalCnt = this.commentService.getTotalCountByTarget(vo.getTargetGb(), vo.getTargetCd());
 		
 		mav.addObject("comments", mentions);
-		mav.addObject("commentCnt", commentCnt);
+		mav.addObject("totalCnt", totalCnt);
 		mav.setViewName("comment/load");
 
 		return mav;
@@ -83,7 +83,6 @@ public class CommentController {
 		Integer userId = user.getUserId();
 		dto.setUserId(userId);
 		
-		
 		try {
 			this.commentService.registerCommentOrMention(dto);
 
@@ -91,10 +90,10 @@ public class CommentController {
 						= this.commentService.getCommentOffsetByTarget(target, 0);
 			
 			
-			int commentCnt = this.commentService.getTotalCountByTarget(dto);
+			int totalCnt = this.commentService.getTotalCountByTarget(dto.getTargetGb(), dto.getTargetCd());
 			
 			mav.addObject("comments", comments);
-			mav.addObject("commentCnt", commentCnt);
+			mav.addObject("totalCnt", totalCnt);
 			
 			mav.setViewName("comment/comment");
 		
@@ -120,10 +119,10 @@ public class CommentController {
 		try {
 			this.commentService.registerCommentOrMention(dto);
 
-			return ResponseEntity.ok().build();
+			return ResponseEntity.ok().build(); 
 
 		} catch (OperationFailException | NotFoundPageException e) {
-			throw e;
+			throw e; // 응답 보낼까 예외로 넘길까 ....
 
 		} catch (Exception e) {
 			throw new ControllerException(e);
@@ -136,15 +135,9 @@ public class CommentController {
 		log.trace("removeComment({}) invoked.", commentId);
 		
 		try {
-			CommentViewVO vo = this.commentService.getById(commentId);
-			
 			this.commentService.removeCommentOrMention(commentId);
 			
-			int totalCount = 
-				this.commentService.getTotalCountByTarget(vo.getTargetGb(), vo.getTargetCd());
-			
-		
-			return ResponseEntity.ok(totalCount);
+			return ResponseEntity.ok().build();
 			
 		} catch(Exception e) {
 			return ResponseEntity.notFound().build();
@@ -154,7 +147,7 @@ public class CommentController {
 	
 	
 	// 댓글 수정 
-	@PatchMapping(path="/{commentId}")
+	@PatchMapping(path="/{commentId}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<String> modifyComment(@RequestBody CommentDTO dto) throws Exception{
 		log.trace("modifyComment(dto) invoked.");
 		

@@ -60,7 +60,6 @@ public class PartyController {
 	private final SanInfoService sanInfoService;
 	private final FileService fileService;
 	private final FavoriteService favoriteService;
-	private final ReportService reportService;
 	private final PartyValidator partyValidator;
   
 	

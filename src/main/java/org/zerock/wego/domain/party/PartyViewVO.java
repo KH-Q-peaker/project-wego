@@ -9,21 +9,23 @@ import lombok.Value;
 public class PartyViewVO {
 	
 	private Integer	sanPartyId; 
-	private String sanName; 
+	private String 	sanName; 
 	private Integer userId; 
-	private String nickName; 
-	private String userPic; 
-	private Date createdDt;
-	private Date modifiedDt; 
-	private String title; 
-	private String contents; 
-	private Date partyDt; 
+	private String	nickName; 
+	private String 	userPic; 
+	private Date 	createdDt;
+	private Date 	modifiedDt; 
+	private String 	title; 
+	private String 	contents; 
+	private Date 	partyDt; 
 	private Integer partyMax; 
 	private Integer userCnt; 
-	private String items; 
-	private String condition; 
-	private String partyPic; 
+	private String 	items; 
+	private String 	condition; 
+	private String 	partyPic; 
 	private Integer likeCnt; 
 	private Integer reportCnt; 
+	private Integer visitCnt;
+	private Integer commentCnt;
 	
 } // end class

@@ -38,15 +38,19 @@
 	</select>
 
 	<!--  ************* 존재 여부 *************** -->
-	<select id="isExist">
-		SELECT 
-			COUNT(san_review_id)
-		FROM 
-			san_review_tb
-		WHERE 
-			san_review_id = #{reviewId}
-
-	</select>
+	<select id="isExist" 
+  			resultType = "java.lang.Boolean">
+  		
+  		SELECT
+        CASE WHEN 
+        	EXISTS (
+            	SELECT 1 
+            	FROM san_review_tb
+            	WHERE san_review_id = #{reviewId}
+        		) 
+        		THEN 1 ELSE 0 END AS exist
+    	FROM dual
+  	</select>
 	
 	<!--  ************* 특정 후기글 조회  *************** -->
 	<select id="selectById" 

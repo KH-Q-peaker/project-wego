@@ -7,7 +7,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <script>
-var commentCnt = ${commentCnt};
+var commentCnt = ${totalCnt};
 </script>
 <script type="text/javascript" src="/resources/js/comment.js" defer ></script>
 <script type="text/javascript" src="/resources/js/delete.js" defer ></script>
@@ -25,7 +25,6 @@ var commentCnt = ${commentCnt};
 		</div>
 		
 			<c:forEach items="${comments}" var="c">
-				<c:if test="${c.status != 'Y' }">
 				<div class="comments ${c.mentionId == null ? '' : 'mention'}">
 				
 				<input type="hidden" id="commentId" value="${c.commentId }"/>
@@ -58,9 +57,7 @@ var commentCnt = ${commentCnt};
 <%-- 					<c:if test="${c.mentionId == null && c.status == 'N'}"> --%>
 					<c:if test="${c.mentionId == null}">
 					<input type="button" class="mentionbtn" name="mentionbtn" value="↪답글" />
-<%-- 						<c:if test="${c.mentionCnt != 0 }"> --%>
 						<span class="mentionCnt">답글 <span id="mentionCnt">${c.mentionCnt }</span>개</span>
-<%-- 						</c:if> --%>
 					</c:if>
 				</c:otherwise>
 				</c:choose>
@@ -82,7 +79,6 @@ var commentCnt = ${commentCnt};
 				</div>
 				<div class="mentionList"> </div>
 			</c:if>
-		</c:if>
 		</c:forEach>
 	
 		</div>
