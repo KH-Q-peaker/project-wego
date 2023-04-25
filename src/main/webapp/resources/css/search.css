@@ -28,6 +28,11 @@
 	border-radius: 35px;
 	margin-bottom: 10px;
 }
+
+.item > #itemPath {
+	display: inline-block;
+	width: 100%;
+}
 /* container child - common */
 .recruit {
 	margin: 0 0 30px;
@@ -84,6 +89,7 @@
 	display: inline-block;
 	border-radius: 10px;
 }
+
 /* recruit */
 .wrap-recruit {
 	display: grid;
@@ -225,115 +231,6 @@
 
 .recruit-item>.recruit-date {
 	grid-area: recruitDate;
-	font-size: 12px;
-	justify-self: right;
-}
-
-/* review */
-.review-item {
-	width: 200px;
-	height: 330px;
-	padding: 15px;
-	border: 0;
-	border-radius: 10px;
-	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25), 0 3px 3px rgba(0, 0, 0, 0.22);
-	background-color: #fff;
-	text-align: center;
-	display: grid;
-	grid-template-rows: 35px 140px 35px 90px 30px;
-	grid-template-columns: 40px 80px 10px 70px;
-	grid-template-areas:
-		"reviewUserImg reviewUserName reviewUserName reviewMountainName"
-		"reviewImg reviewImg reviewImg reviewImg"
-		"reviewTitle reviewTitle reviewTitle reviewTitle"
-		"reviewContents reviewContents reviewContents reviewContents"
-		"reviewLike reviewLike . reviewDate";
-	align-items: center;
-	justify-items: center;
-}
-
-.review-item>p {
-	margin: 0;
-	justify-self: left;
-}
-
-.review-item>.user-img {
-	grid-area: reviewUserImg;
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-	justify-self: left;
-}
-
-.review-item>.user-name {
-	grid-area: reviewUserName;
-	font-size: 14px;
-	margin: 0;
-	justify-self: left;
-}
-
-.review-item>.mountain-name {
-	grid-area: reviewMountainName;
-	font-size: 14px;
-	margin: 0;
-	justify-self: right;
-}
-
-.review-item>.review-img {
-	grid-area: reviewImg;
-	width: 130px;
-	height: 130px;
-	border-radius: 50%;
-	justify-self: center;
-}
-
-.review-item>.review-title {
-	grid-area: reviewTitle;
-	font-size: 20px;
-	margin: 0;
-	justify-self: center;
-}
-
-.review-item>.review-contents {
-	grid-area: reviewContents;
-	width: 195px;
-	margin: 0;
-	font-size: 15px;
-	justify-self: center;
-	text-align: left;
-	white-space: nowrap;
-	display: -webkit-box;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: normal;
-	-webkit-line-clamp: 3;
-	-webkit-box-orient: vertical;
-}
-
-.review-item>.review-like {
-	grid-area: reviewLike;
-	text-align: left;
-	display: flex;
-	align-items: center;
-	gap: 5px;
-	justify-self: left;
-}
-
-.review-like>.favorite {
-	width: 30px;
-	height: 30px;
-	border: 0;
-	background: url(../svg/favorite.svg);
-	background-repeat: no-repeat;
-	background-size: contain;
-}
-
-.review-like>.favorite-count {
-	font-size: 12px;
-}
-
-.review-item>.review-date {
-	grid-area: reviewDate;
 	font-size: 12px;
 	justify-self: right;
 }
