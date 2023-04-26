@@ -153,8 +153,8 @@
 #ranker .item .rankerMedal #svg{
     display: block;
 
-    width: 55px;
-    height: 55px;
+    width: 60px;
+    height: 60px;
 }
 .item#gold #svg{
     background : url(../svg/rankingGold.svg);
@@ -177,7 +177,7 @@
     background-size: contain;
 
 }
-#ranker .item .rankerProfile .rankerPic{
+#ranker .item .rankerProfile .rankerPic, #ranker .item .rankerProfile .rankerPic img{
     display: inline-block;
 
     margin: 0 0 12px;
@@ -227,12 +227,31 @@
     #ranker .title{
         grid-column-start: 1;
         grid-column-end: 3;
+        
+        margin: 0 0 12px 0;
     }
-    #ranker #gold{
-        grid-column-start: 1;
-        grid-column-end: 3;
-        grid-row-start: 2;
-    }
+   .item#gold{
+	grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 3;
+}
+.item#silver{
+	grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 3;
+    grid-row-end: 4;
+}
+.item#bronze{
+	grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 3;
+    grid-row-end: 4;
+}
+#ranker .ranker-img {
+	display: none;
+	}
+    
 }
 
 
