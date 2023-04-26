@@ -19,9 +19,9 @@
 			(
 			SELECT *
 			FROM san_info_v
-			ORDER BY dbms_random.random
+			ORDER BY DBMS_RANDOM.RANDOM
 			)
-		WHERE rownum &lt;= 10
+		WHERE ROWNUM &lt;= 10
 	</select>
 	
 	<select id="selectSearchSanInfo3ByQuery"
@@ -33,7 +33,7 @@
 			san_name LIKE '%'||#{search}||'%'
 			OR details LIKE '%'||#{search}||'%'
 			)
-			AND rownum &lt;= 3
+			AND ROWNUM &lt;= 3
 	</select>
 
 	<select id="selectById"
@@ -43,7 +43,8 @@
 		WHERE san_info_id = #{sanInfoId}
 	</select>
 
-	<select id="selectIdBySanName" resultType="Integer">
+	<select id="selectIdBySanName" 
+		resultType="Integer">
 		SELECT san_info_id
 		FROM san_info_v
 		WHERE san_name = #{sanName}

@@ -29,9 +29,9 @@
 			(
 			SELECT *
 			FROM san_party_v
-			ORDER BY dbms_random.random
+			ORDER BY DBMS_RANDOM.RANDOM
 			)
-		WHERE rownum &lt;= 10
+		WHERE ROWNUM &lt;= 10
 	</select>
 	
 	<select id="selectSearchParty3ByQuery"
@@ -43,13 +43,12 @@
 			title LIKE '%'||#{search}||'%'
 			OR contents LIKE '%'||#{search}||'%'
 			)
-			AND rownum &lt;= 3
+			AND ROWNUM &lt;= 3
 	</select>
 
 	<!-- *********** 식별자로 모집글 존재여부  ************ -->
   	<select id="isExist" 
-  			resultType = "java.lang.Boolean">
-  		
+  		resultType = "java.lang.Boolean">
   		SELECT
         CASE WHEN 
         	EXISTS (
@@ -63,12 +62,12 @@
   	
   	<!-- *********** 식별자로 모집글 조회  ************ -->
   	<select id="selectById" 
-  			resultType = "org.zerock.wego.domain.party.PartyViewVO">
-  		
+  		resultType = "org.zerock.wego.domain.party.PartyViewVO">
   		SELECT
   			*
   		FROM
   			san_party_v
+  			
   		<where>
   		san_party_id = #{partyId}
   		</where>
@@ -76,10 +75,10 @@
   	
   	<!-- ************ 모집글 삭제 ************ -->
   	<delete id="deleteById">
-  	
   		DELETE
   		FROM
   			san_party_tb
+  			
   		<where>
   		san_party_id = #{partyId}
   		</where>
@@ -87,7 +86,7 @@
   	
 
 	<insert id="insert" 
-			parameterType="org.zerock.wego.domain.party.PartyViewVO">
+		parameterType="org.zerock.wego.domain.party.PartyViewVO">
 		INSERT INTO
 			san_party_tb(
 				san_info_id, user_id, title, contents,
@@ -97,6 +96,7 @@
 				#{sanInfoId}, #{userId}, #{title}, #{contents},
 				#{partyDt}, #{partyMax}, #{items}, #{condition}
 			)
+			
 			<selectKey keyProperty="sanPartyId" resultType="int" order="AFTER">
 				SELECT max(san_party_id)
 				FROM san_party_tb

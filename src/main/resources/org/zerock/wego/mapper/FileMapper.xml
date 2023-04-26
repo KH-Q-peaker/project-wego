@@ -6,32 +6,31 @@
 
 <mapper namespace="org.zerock.wego.mapper.FileMapper">
 
-	<select id="selectByTargetGbAndTargetCd" resultType="org.zerock.wego.domain.common.FileVO">
+	<select id="selectByTargetGbAndTargetCd" 
+		resultType="org.zerock.wego.domain.common.FileVO">
 		SELECT *
 		FROM file_tb
 		WHERE
-			target_gb = #{targetGb} AND target_cd = #{targetCd}
+			target_gb = #{targetGb} 
+			AND target_cd = #{targetCd}
 		ORDER BY 
 			status ASC
 	</select>
 	
-	<select
-		id="selectTotalCountByTarget">
-		
+	<select id="selectTotalCountByTarget">
 		SELECT
-			NVL(count(file_id), 0)
+			NVL(COUNT(file_id), 0)
 		FROM
 			file_tb
 		WHERE
 			target_gb = #{targetGb}
-			AND
-			target_cd = ${targetCd}	
+			AND target_cd = ${targetCd}	
 	</select>
 	
 	<insert id="insert">
 		INSERT INTO
-			file_tb(target_gb, target_cd, file_name, uuid, path, status)
-			VALUES(#{targetGb}, #{targetCd}, #{fileName}, #{uuid}, #{path}, #{status})
+			file_tb (target_gb, target_cd, file_name, uuid, path, status)
+			VALUES (#{targetGb}, #{targetCd}, #{fileName}, #{uuid}, #{path}, #{status})
 	</insert>
 
 	<update id="update">
@@ -47,13 +46,16 @@
 	<delete id="deleteByTargetGbAndTargetCdAndUuid">
 		DELETE FROM file_tb
 		WHERE
-		target_gb = #{targetGb} AND target_cd = #{targetCd} AND uuid = #{uuid}
+			target_gb = #{targetGb} 
+			AND target_cd = #{targetCd} 
+			AND uuid = #{uuid}
 	</delete>
 
 	<delete id="deleteByTarget">
 		DELETE FROM file_tb
 		WHERE
-			target_gb = #{targetGb} AND target_cd = #{targetCd}
+			target_gb = #{targetGb} 
+			AND target_cd = #{targetCd}
 	</delete>
 
 </mapper>
