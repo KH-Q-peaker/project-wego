@@ -9,11 +9,10 @@
 <script type="text/javascript" src="/resources/js/report.js" defer ></script>
 <script>
 var loadCnt = ${comments == null ? 0 : comments.size()};
-var commentCnt = ${commentCnt == null ? 0 : commentCnt};
+var commentCnt = ${totalCnt == null ? 0 : totalCnt};
 </script>
 	
 			<c:forEach items="${comments}" var="c">
-				<c:if test="${c.status != 'Y' }">
 				<div class="comments ${c.mentionId == null ? '' : 'mention'}">
 				
 				<input type="hidden" id="commentId" value="${c.commentId }"/>
@@ -68,5 +67,4 @@ var commentCnt = ${commentCnt == null ? 0 : commentCnt};
 				</div>
 				<div class="mentionList"> </div>
 			</c:if>
-		</c:if>
 		</c:forEach>

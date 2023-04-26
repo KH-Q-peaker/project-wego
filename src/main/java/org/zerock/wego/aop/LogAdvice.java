@@ -23,17 +23,13 @@ public class LogAdvice {
 		
 		log.trace(">>>> {}.{} invoked...", className, methodName);
 		
-//		long start = System.nanoTime();
 		long start = System.currentTimeMillis();
 		
 		Object result = pjp.proceed();
 		
-//		long end = System.nanoTime();
 		long end = System.currentTimeMillis();
 		
-//		log.info(">> runtime = {} ns", (end - start));
 		log.info(">>>> {}.{} >>>> runtime = {} ms", className, methodName,  (end - start));
-//		log.info(":: result = {}", result);
 		
 		return result;
 	}// logging

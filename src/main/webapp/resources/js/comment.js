@@ -1,6 +1,8 @@
 function loadMoreComments() {
 
-	let lastCommentId = $('.comments:last #commentId').val();
+//	let lastCommentId = $('.comments:last #commentId').val();
+	let lastCommentId =$(".comments:not(.mention)").last().find("#commentId").val();
+	console.log(lastCommentId);
 
 	$.ajax({
 		url: "/comment/load",
@@ -12,6 +14,7 @@ function loadMoreComments() {
 			lastComment: lastCommentId
 		},
 		success: function(data) {
+			console.log('로딩이 왜되냐고');
 			if (data.length != 0) {
 				$(".cmtcontainer").append(data);
 			} else {
@@ -46,8 +49,8 @@ function toggleMentionBtn(buttonElem) {
 		buttonElem.parent().next('.mentionwrite').show('normal').css('display', 'grid');
 		buttonElem.parent().next().next('.mentionList').show().children('.mention').show('fast');
 	} else {
-		$(".mentionbtn").val('Ⅹ닫기');
-		buttonElem.val('↪︎답글');
+		$(".mentionbtn").val('↪︎답글');
+//		buttonElem.val('↪︎답글');
 		$(".mcontents").val('');
 		$('.mentionwrite, .mentionList, .mention').hide('fast');
 	}
@@ -126,7 +129,7 @@ $(() => { /* 답글 관련 */
 				},
 				success: function(data) {
 					mentionList.html(data);
-					mentionList.prevAll().find('#mentionCnt').text(loadCnt);
+					mentionList.prev().prev().find('#mentionCnt').text(loadCnt);
 					toggleMentionBtn(mentionbtn);
 				},
 				error: function() {
@@ -233,10 +236,11 @@ $(() => { /* 수정 관련 */
 				url : "/comment/" + commentId,
 				type : "PATCH",
 				data : 
-				{
+				JSON.stringify({
 					commentId : commentId,
 					contents : $(this).parent().siblings(".update").val()
-				},
+				}),
+				contentType :'application/JSON',
 				success : function(){
 					setMessage("✏️ 댓글이 수정되었습니다.");
 		 			showModal();

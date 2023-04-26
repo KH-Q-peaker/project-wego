@@ -32,6 +32,8 @@ public interface CommentMapper {
 	
 	// 댓글 코드로 댓글 삭제 
 	public abstract Integer deleteById(@Param("commentId")Integer commentId);
+	// 특정글 댓글 삭제 
+	public abstract Integer deleteAllByTarget(@Param("targetGb")String targetGb, @Param("targetCd")Integer targetCd);
 	
 	// 댓글 영구 삭제
 	public abstract Integer deleteDeadComment();
