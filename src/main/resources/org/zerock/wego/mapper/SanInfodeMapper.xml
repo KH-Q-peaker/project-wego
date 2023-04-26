@@ -5,11 +5,11 @@
 <mapper namespace="org.zerock.wego.mapper.SanInfodeMapper">
 
 
-<select id="select" resultType="org.zerock.wego.domain.info.sanInfodeVO">
+<select id="selectById" 
+	resultType="org.zerock.wego.domain.info.SanInfodeVO">
 
       SELECT *
-      FROM
-      san_info_v
+      FROM san_info_v
       WHERE SAN_INFO_ID = #{sanInfoId}
 
 </select>

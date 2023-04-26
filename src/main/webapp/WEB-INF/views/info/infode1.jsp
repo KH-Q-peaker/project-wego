@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
@@ -30,107 +29,111 @@
 	<div class="total-wrap">
 		<%@include file="/WEB-INF/views/common/header.jsp"%>
 		
-		<section>
+	  <section>
 		
 		
-		<div class="container">
-           
-            <div class="profile">
-                <img class="profile-image" src="./img/profile.png" alt=""/>
-                
-            </div>
-            <c:foreach items = "${sanInfoId}" var="sanInfoId" >
-            <div class="moname">
-                <p class="mimoname">산이름: ${sanInfoId.sanName}</p>
-            </div>
-            <div class="weather">
-              <img class="weather-image" src="./svg/sun.svg">
-            </div>
-            <div class="moaddress">
-                <p class="mimoaddress">주소: ${sanInfoId.address}</p>
-            </div>
-            <div class="like">
-                <img class="heart" src="./svg/heart.svg">
-            </div>
-            <div class="num">
-              <p class="likenum">1000++</p>
+        <div class="container">
+          <c:forEach var="item" items="${sanInfodeList}">
+            
+              <div class="profile">
+                  <img class="profile-image" src="./img/profile.png" alt=""/>    
               </div>
-			</c:foreach>
-			
-            <div class="content">
-                <img  class="contentimg" src="">
-                <input type="button"
-                    id="mozip"
-                    onclick="mozip()"
-                    value='등산모집'
-                    >
-
-            </div>
-            <div class="hugi">
-                <img  class="hugiimg" src="">
-
-                <input type="button"
-                    id="hugis"
-                    onclick="hugi()"
-                    value="등산후기"
-                    >
-
-           </div>
-
+              <div class="moname">
+                  <p class="mimoname">산이름: ${item.sanName}</p>
+              </div>
+              <div class="weather">
+                <img class="weather-image" src="./svg/sun.svg">
+              </div>
+              <div class="moaddress">
+                  <p class="mimoaddress">주소: ${item.address}</p>
+              </div>
+              <div class="like">
+                  <img class="heart" src="./svg/heart.svg">
+              </div>
+              <div class="num">
+                <p class="likenum">1000++</p>
+              </div>
         
+        
+              <div class="content">
+                  <img  class="contentimg" src="">
+                  <input type="button"
+                      id="mozip"
+                      onclick="mozip()"
+                      value='등산모집'
+                      >
+
+              </div>
+               <div class="hugi">
+                  <img  class="hugiimg" src="">
+
+                  <input type="button"
+                      id="hugis"
+                      onclick="hugi()"
+                      value="등산후기"
+                      >
+                </div>
+          </c:forEach>
         </div>
 
+          
+        
+
 
       
-  </div>
+  
 
 
 
-  <div id="content-section">
-    <ul class="content-header-menu">
-      <li class="content-header-menu-item" id="item-point">
-        <a href="./fianl1.html">소개</a>
-      </li>
-      <li class="content-header-menu-item">
-        <a href="./final2.html">등산로 정보</a>
-      </li>
-      <li class="content-header-menu-item">
-        <a href="./fianl3.html">날씨</a>
-      </li>
-      <li class="content-header-menu-item active">
-        <a href="./fianl4.html">주변맛집</a>
-      </li>
-    </ul>
-  </div>
+          <div id="content-section">
+            <ul class="content-header-menu">
+            <li class="content-header-menu-item" id="item-point">
+            <a href="./fianl1.html">소개</a>
+            </li>
+            <li class="content-header-menu-item">
+            <a href="./final2.html">등산로 정보</a>
+            </li>
+            <li class="content-header-menu-item">
+            <a href="./fianl3.html">날씨</a>
+            </li>
+            <li class="content-header-menu-item active">
+            <a href="./fianl4.html">주변맛집</a>
+            </li>
+            </ul>
+          </div>
 
-  <!-- 내용물  -->
-  <div class="cotents">
-    <div class="content1">
-      <h2>${sanInfoId.sanName}</h2>
-      
+          <c:forEach var="item" items="${sanInfodeList}">
+            <div class="cotents">
+            <div class="content1">
+            <h2>${item.sanName}</h2>
+            
 
-      <p>${sanInfoId.reason}</p>
-      <p>${sanInfoId.detail}</p>
+            <p>${item.reason}</p>
+            <p>${item.details}</p>
 
-    </div>
+            </div>
+            </div>
 
-    
+          </c:forEach>
 
-</div>
 
 
 
 		
 		
 		
-			<a href="#" class="scrollToTop">
-			<img src="/resources/svg/top.svg" />
-			</a> 
-			<a href="#" class="chat"> <img src="/resources/svg/chat.svg" />
-			</a>
-		</section>
-	</div>
+            <a href="#" class="scrollToTop">
+            <img src="/resources/svg/top.svg" />
+            </a> 
+            <a href="#" class="chat"> <img src="/resources/svg/chat.svg" />
+            </a>
+             
+	  </section>
+
+
+	 
 	<%@include file="/WEB-INF/views/common/footer.jsp"%>
+	</div>
 	
 	<script>
 	

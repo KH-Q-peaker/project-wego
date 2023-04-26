@@ -1,5 +1,7 @@
 package org.zerock.wego.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.zerock.wego.domain.info.SanInfodeVO;
 import org.zerock.wego.domain.party.PartyViewVO;
+import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.service.info.SanInfodeService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,14 +26,25 @@ public class SanInfodeController {
    private final SanInfodeService sanInfodeService;
    
    @GetMapping("/{sanInfoId}")
-   ModelAndView showDetail(@PathVariable("sanInfoId")Integer sanInfoId) {
+   public String showDetail(@PathVariable("sanInfoId")Integer sanInfoId, Model model) throws ControllerException {
       log.info("showDetail.......... ");
-     
-    	  ModelAndView mv1 = new ModelAndView();
-          mv1.setViewName("/info/infode1"); // 뷰의 이름
-          mv1.addObject("sanInfoId", sanInfoId); // 뷰로 보낼 데이터 값
+      
+    try {
+      	List<SanInfodeVO> sanInfodeList = this.sanInfodeService.getById(sanInfoId);
+//    	ModelAndView mv1 = new ModelAndView("info/infode1");
+      	model.addAttribute("sanInfodeList", sanInfodeList);
+      	
+      	return "/info/infode1";
+    }catch (Exception e) {
+		throw new ControllerException(e);
+	} // try-catch
+      	  
+      
+      //ModelAndView mv1 = new ModelAndView("info/infode1");
+//    	  
+//          mv1.addObject("sanInfodeList", sanInfodeList); // 뷰로 보낼 데이터 값
           
-          return mv1;
+//          return mv1;
    }
     	 
    
