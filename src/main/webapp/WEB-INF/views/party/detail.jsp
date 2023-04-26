@@ -45,7 +45,6 @@
 
 	<script> 
 		var target = JSON.parse('${target}');
-		var commentCount = ${commentCount};
 	</script>
 </head>
 <body>
@@ -67,7 +66,6 @@
 					<div class="likeCnt">
 						<input class="like ${isLike ? 'fill' : '' }" type="button" value="" /><label>${party.likeCnt }</label>
 					</div>
-<%-- 					<img src="data:image/png;base64, ${partyImg }" alt="" class="partyImg" /> --%>
 					<img src="${party.partyPic}" alt="" class="partyImg" />
 					<div class="partyInfo">
 						<div class="info">
@@ -106,7 +104,7 @@
 					<% 
 						Date now = new Date();
 						PartyViewVO party = (PartyViewVO)request.getAttribute("party");
-						boolean after = now.before(party.getPartyDt());
+						boolean after = now.after(party.getPartyDt());
 						request.setAttribute("after", after);
 					%>
 						<c:choose>

@@ -23,11 +23,11 @@ $(".modify").off('click').on('click', function(){
 $(() => {
 	
 	let idx = 0;
-	console.log('여기는 옴 ');
-	$('#contents').children().each(function(idx, item){
-		console.log('each');
+		console.log('시작!');
+	$('#content').children().each(function(index, item){
+			console.log('선택****!');
 		if($(item).is("img")){
-			console.log('img');
+				console.log('IMG찾음!');
 			
 			$(item).attr({
 				src : fileList[idx],
@@ -37,3 +37,4 @@ $(() => {
 		}
 	});
 });
+

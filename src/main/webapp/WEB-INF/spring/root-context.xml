@@ -47,7 +47,7 @@
 	
 	<!-- Transaction Manager -->
 	<bean 
-		id = "transactionManger"
+		id = "transactionManager"
 		class = "org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name = "dataSource" ref = "hikariDataSource"/>
 	</bean>

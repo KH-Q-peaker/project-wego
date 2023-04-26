@@ -41,10 +41,10 @@ $(() => { /* 삭제 관련 */
 			$.ajax({
 				url : "/comment/" + commentId,
 				type : "DELETE",
-				success : function(data){
+				success : function(){
 					setMessage("🗑️ 댓글이 삭제되었습니다.");
 		 			showModal();
-		 			setTimeout(hideModal, 500);
+		 			setTimeout(hideModal, 700);
 		 			hideDeleteModal();
 					
 					if(targetComment.children('#mentionId').length > 0){
@@ -58,6 +58,7 @@ $(() => { /* 삭제 관련 */
 						success: function(data) {
 							mentionList.html(data);
 							mentionList.prevAll().find('#mentionCnt').text(loadCnt);
+							$('#cmtcnt').html(commentCnt);
 						},
 						error: () => {
 							console.log('댓글로딩오류 ');/* 바꿔야됨  */
@@ -76,6 +77,7 @@ $(() => { /* 삭제 관련 */
 						},
 						success: function(data) {
 								$('#cmtwrite').nextAll().remove().end().after(data);
+								$('#cmtcnt').html(commentCnt);
 								$(window).off('scroll').on('scroll', scrollCommentLoading);
 						},
 						error: () => {
@@ -83,7 +85,6 @@ $(() => { /* 삭제 관련 */
 						}
 					});
 					}
-					$('#cmtcnt').html(data);
 				},
 				error : function(){
 		 			hideDeleteModal();
@@ -112,10 +113,10 @@ $(() => { /* 삭제 관련 */
 				url : url + target.targetCd,
 				type : "DELETE",
 				success : function(data){
+					window.location.replace('http://localhost:8080' + url);		 			
 					hideDeleteModal();
 					setMessage(data);
 					showModal();
-					setTimeout(function(){ window.location.replace('http://localhost:8080' + url) }, 700);		 			
 				},
 				error : function(){
 		 			hideDeleteModal();

@@ -36,7 +36,6 @@ import org.zerock.wego.exception.OperationFailException;
 import org.zerock.wego.service.common.CommentService;
 import org.zerock.wego.service.common.FavoriteService;
 import org.zerock.wego.service.common.FileService;
-import org.zerock.wego.service.common.ReportService;
 import org.zerock.wego.service.info.SanInfoService;
 import org.zerock.wego.service.party.JoinService;
 import org.zerock.wego.service.party.PartyService;
@@ -60,7 +59,6 @@ public class PartyController {
 	private final SanInfoService sanInfoService;
 	private final FileService fileService;
 	private final FavoriteService favoriteService;
-	private final ReportService reportService;
 	private final PartyValidator partyValidator;
   
 	
@@ -231,7 +229,7 @@ public class PartyController {
 	public ResponseEntity<Map<String, String>> register(
 			@SessionAttribute("__AUTH__")UserVO auth, String sanName, 
 			@RequestParam(value = "imgFile", required = false)List<MultipartFile> imageFiles,
-			PartyDTO partyDTO, BindingResult bindingResult, FileDTO fileDTO
+			PartyDTO partyDTO, BindingResult bindingResult, FileDTO fileDTO, JoinDTO joinDTO
 			) throws ControllerException {
 		log.trace("PostMapping - register() invoked.");
 
@@ -262,6 +260,10 @@ public class PartyController {
 						partyDTO.getSanPartyId(), fileDTO);
 				log.info("isImageUploadSuccess: {}", isImageUploadSuccess);
 			} // if
+			
+			joinDTO.setSanPartyId(partyDTO.getSanPartyId());
+			joinDTO.setUserId(auth.getUserId());
+			this.joinService.create(joinDTO);
 
 			state.put("state", "successed");
 			state.put("redirectUrl", "/party/" + partyDTO.getSanPartyId());

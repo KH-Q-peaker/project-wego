@@ -9,6 +9,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,6 +34,7 @@ import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.service.common.CommentService;
 import org.zerock.wego.service.common.FavoriteService;
 import org.zerock.wego.service.common.FileService;
+import org.zerock.wego.service.common.ReportService;
 import org.zerock.wego.service.info.SanInfoService;
 import org.zerock.wego.service.review.ReviewService;
 import org.zerock.wego.verification.ReviewValidator;
@@ -55,6 +57,7 @@ public class ReviewController {
 	private final FileService fileService;
 	private final FavoriteService favoriteService;
 	private final ReviewValidator reviewValidator;
+	private final ReportService reportService;
 	
 
 	@GetMapping("")
@@ -126,8 +129,9 @@ public class ReviewController {
 
 		try {
 			this.reviewService.removeById(reviewId);
-			this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId); 
-			
+//			this.reportService.removeAllByTarget("SAN_REVIEW", reviewId);
+//			this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId);
+//			this.favoriteService.removeAllByTarget("SAN_REVIEW", reviewId);
 			return ResponseEntity.ok("후기글이 삭제되었습니다.️");
 
 		} catch (Exception e) {
