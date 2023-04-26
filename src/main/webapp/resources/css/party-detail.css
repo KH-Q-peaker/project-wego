@@ -115,7 +115,6 @@
 	align-items: center;
 	justify-content: center;
 	padding: 0 10px;
-/* 	margin-left: 20px; */
 	font-size: 14px;
 }
 
@@ -202,8 +201,8 @@
 .to {
 	position: fixed;
 	right: 30px;
-	width: 30px;
-	height: 30px;
+	width: 40px;
+	height: 40px;
 	background-repeat: no-repeat;
 	background-size: contain;
 	color: rgba(0, 0, 0, 0);
@@ -216,7 +215,7 @@
 }
 .top {
 	display: none;
-	bottom: 80px;
+	bottom: 90px;
 	background: url(../svg/top.svg);
 }
 /* 서치바 숨기기 */

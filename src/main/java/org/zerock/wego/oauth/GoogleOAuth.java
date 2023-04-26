@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.zerock.wego.domain.oauth.google.GoogleOAuthTokenDTO;
+import org.zerock.wego.domain.oauth.google.GoogleUserInfoDTO;
 import org.zerock.wego.domain.oauth.kakao.KakaoOAuthTokenDTO;
 import org.zerock.wego.domain.oauth.kakao.KakaoUserInfoDTO;
 import org.zerock.wego.domain.oauth.naver.NaverOAuthTokenDTO;
@@ -27,19 +29,20 @@ import lombok.extern.log4j.Log4j2;
 @NoArgsConstructor
 
 @Component
-public class NaverOAuth {	// https://developers.naver.com/docs/login/api/api.md 참조
+public class GoogleOAuth {	// https://developers.google.com/identity/openid-connect/openid-connect?hl=ko#obtaininguserprofileinformation 참조
  
-	@Value("${naver.client.id}")
+	@Value("${google.client.id}")
 	private String clientId;	// Client ID : 애플리케이션 등록 시 발급받은 Client ID 값
-	@Value("${naver.client.secret}")
-	private String clientSecret;	// Client Secret : 애플리케이션 등록 시 발급받은 Client Secret 값
+	@Value("${google.client.secret}")
+	private String clientSecret;	// Client secret : 애플리케이션 등록 시 발급받은 Client secret 값
 
-	private final String AUTHORIZE_REQUEST_URL = "https://nid.naver.com/oauth2.0/authorize?";	// 네이버 로그인 인증 요청
-	private final String REDIRECT_URI = "http://localhost:8080/login/naver/oauth";	// 애플리케이션을 등록 시 입력한 Callback URL 값 >>>>>>>>>>>>>> 도메인 수정필요 naver에서도 수정필요
-	private final String RESPONSE_TYPE = "code";	// 인증 과정에 대한 내부 구분값으로 'code'로 전송해야 함
+	private final String AUTHORIZE_REQUEST_URL = "https://accounts.google.com/o/oauth2/v2/auth?";	// 로그인 인증 요청
+	private final String REDIRECT_URI = "http://localhost:8080/login/google/oauth";	// Google에서 응답을 수신하는 서버의 HTTP 엔드포인트여야 합니다.  >>>>>>>>>>>>>> 도메인 수정필요 naver에서도 수정필요
+	private final String RESPONSE_TYPE = "code";	// 기본 승인 코드 흐름 요청에서 code이어야 합니다
+	private final String SCOPE = "openid email";	// 기본 요청에서 openid email이어야 합니다
 	private final String[] GRANT_TYPE = {"authorization_code", "refresh_token", "delete"}; // 인증 과정에 대한 구분값 {발급, 갱신, 삭제}
-	private final String TOKEN_REQUEST_URL = "https://nid.naver.com/oauth2.0/token";	// 인가 코드를 전달받을 서비스 서버의 URL
-	private final String USER_INFO_REQUEST_URL = "https://openapi.naver.com/v1/nid/me";	// 사용자 정보 요청 URL
+	private final String TOKEN_REQUEST_URL = "https://oauth2.googleapis.com/token";	// 액세스 토큰 요청 URL
+	private final String USER_INFO_REQUEST_URL = "https://oauth2.googleapis.com/tokeninfo";	// 사용자 정보 요청 URL
 
 
 	public String getLoginURLToGetAuthorizationCode(String state) {
@@ -49,31 +52,31 @@ public class NaverOAuth {	// https://developers.naver.com/docs/login/api/api.md 
 
 		LoginURL	// 파라미터 설정
 			.append("response_type=").append(RESPONSE_TYPE)
+			.append("&").append("scope=").append(SCOPE)	
 			.append("&").append("client_id=").append(clientId)	
 			.append("&").append("redirect_uri=").append(REDIRECT_URI)
-			.append("&").append("state=").append(state); // 사이트 간 요청 위조(cross-site request forgery) 공격을 방지하기 위해 애플리케이션에서 생성한 상태 토큰값
+			.append("&").append("state=").append(state);
 
 		return LoginURL.toString();
 	} // getLoginURLToGetAuthorizationCode
 	
 
 	// 인가 코드로 Access Token 요청
-	public ResponseEntity<String> requestAccessToken(String authorizationCode, String state) {
+	public ResponseEntity<String> requestAccessToken(String authorizationCode) {
 		log.trace("requestAccessToken(authorizationCode) invoked.");
 
 		HttpHeaders headers = new HttpHeaders();
 		RestTemplate restTemplate = new RestTemplate();
 
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);	// 해더 설정
-																		// kakao 문서에는 utf-8로 설정까지 있는데 그건 web.xml설정으로 대체
 
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>(); // 바디에 파라미터 설정
 
-		params.add("grant_type", GRANT_TYPE[0]);
+		params.add("code", authorizationCode);
 		params.add("client_id", clientId);
 		params.add("client_secret", clientSecret);
-		params.add("code", authorizationCode);
-		params.add("state", state);
+		params.add("redirect_uri", REDIRECT_URI);
+		params.add("grant_type", GRANT_TYPE[0]);
 
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
 
@@ -87,24 +90,25 @@ public class NaverOAuth {	// https://developers.naver.com/docs/login/api/api.md 
 
 	
 	// 요청을 DTO로 변환
-	public NaverOAuthTokenDTO parseOAuthTokenDTO(String accessToken) throws JsonProcessingException {
+	public GoogleOAuthTokenDTO parseOAuthTokenDTO(String accessToken) throws JsonProcessingException {
 		log.trace("parseOAuthTokenDTO({}) invoked.", accessToken);
 
 		ObjectMapper objectMapper = new ObjectMapper();
 
-		NaverOAuthTokenDTO naverOAuthTokenDTO = objectMapper.readValue(accessToken, NaverOAuthTokenDTO.class);
+		GoogleOAuthTokenDTO googleOAuthTokenDTO = objectMapper.readValue(accessToken, GoogleOAuthTokenDTO.class);
 
-		return naverOAuthTokenDTO;
+		return googleOAuthTokenDTO;
 	} // parseOAuthTokenDTO
 	
 
 	// Access Token으로 유저 정보 요청
-	public ResponseEntity<String> requestUserInfo(NaverOAuthTokenDTO oAuthTokenDTO) {
-		log.trace("requestUserInfo({}) invoked.", oAuthTokenDTO);
+	public ResponseEntity<String> requestUserInfo(GoogleOAuthTokenDTO oAuthTokenDTO) {
+		log.trace("requestUserInfo(GoogleOAuthTokenDTO) invoked.");
 
 		HttpHeaders headers = new HttpHeaders();
 		RestTemplate restTemplate = new RestTemplate();
 		
+		headers.add("Authorization", "Bearer " + oAuthTokenDTO.getAccess_token());
 		headers.add("Authorization", "Bearer " + oAuthTokenDTO.getAccess_token());
 
 		HttpEntity<MultiValueMap<String, String>> userInfoRequest = new HttpEntity<>(headers);
@@ -120,14 +124,14 @@ public class NaverOAuth {	// https://developers.naver.com/docs/login/api/api.md 
 
 	
 	// 요청을 DTO로 변환
-	public NaverUserInfoDTO parseUserInfoDTO(String userInfo) throws JsonProcessingException {
+	public GoogleUserInfoDTO parseUserInfoDTO(String userInfo) throws JsonProcessingException {
 		log.trace("parseUserInfoDTO({}) invoked.", userInfo);
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		
-		NaverUserInfoDTO naverUserInfoDTO = objectMapper.readValue(userInfo, NaverUserInfoDTO.class);
+		GoogleUserInfoDTO googleUserInfoDTO = objectMapper.readValue(userInfo, GoogleUserInfoDTO.class);
 
-		return naverUserInfoDTO;		
+		return googleUserInfoDTO;		
 	} // getUserInfo
 
 } // end class

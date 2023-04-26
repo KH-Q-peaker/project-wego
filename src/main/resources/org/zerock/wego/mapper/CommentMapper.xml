@@ -7,13 +7,18 @@
   <mapper namespace = "org.zerock.wego.mapper.CommentMapper">
 
   	<!-- *********** 존재여부 ************ -->
-	<select id="isExist">
+	<select id="isExist" 
+			resultType = "java.lang.Boolean">
 		SELECT
-			COUNT(comment_id)
-		FROM
-			comment_tb
-		WHERE
-			comment_id = #{commentId}
+        	CASE WHEN 
+        	EXISTS (
+            	SELECT 1 
+            	FROM comment_tb
+            	WHERE comment_id = #{commentId}
+            	AND status = 'N'
+        		) 
+        		THEN 1 ELSE 0 END AS exist
+    	FROM dual
 	</select>
 
   	<!-- *********** 타겟 댓글 총합 ************ -->
@@ -23,19 +28,28 @@
     	resultType="Integer">
     	
     	SELECT 
-  			NVL(COUNT(comment_id), 0)
+  			comment_cnt
   		FROM 
-  			comment_tb
+  			<choose>
+  				<when test="targetGb == 'SAN_REVIEW'">
+  					san_review_tb
+  				</when>
+  				<when test="targetGb == 'SAN_PARTY'">
+  					san_party_tb
+  				</when>
+  			</choose>
          <where>
-         status = 'N'
-         AND
-         target_gb = #{targetGb}
-         AND 
-         target_cd = #{targetCd}
+         <choose>
+  				<when test="targetGb == 'SAN_REVIEW'">
+  					san_review_id = #{targetCd}
+  				</when>
+  				<when test="targetGb == 'SAN_PARTY'">
+  					san_party_id = #{targetCd}
+  				</when>
+  			</choose>
          </where>
     </select> 
   	
-    
     <!-- ***********타겟으로 댓글만 오프셋 조회************ -->
     <select
     	id="selectCommentOffsetByTarget" 
@@ -48,14 +62,14 @@
          	
      <where>
        	<if test="lastCommentId > 0">
-       	comment_id &lt; #{lastCommentId}
+       		comment_id &lt; #{lastCommentId}
        	AND
        	</if>
-       	target_cd = #{target.targetCd}
+       		target_cd = #{target.targetCd}
        	AND 
 	       target_gb = #{target.targetGb}
-        AND 
-    	   status IN ('N', 'P')
+	    AND
+	    	status IN ('N', 'Y')
 	    AND
 	       comment_gb = 'COMMENT'
       </where>
@@ -78,8 +92,6 @@
   			comment_v
         <where>
         	mention_id = #{commentId}
-        	AND
-        	status IN ('N', 'P')
         </where>
         ORDER BY
          	COMMENT_ID ASC
@@ -96,7 +108,7 @@
   		FROM 
   			comment_v
         WHERE
-         comment_id = #{commentId}
+        	comment_id = #{commentId}
     </select> 
     
     
@@ -115,22 +127,6 @@
   			)
     </select> 
     
-  	<!-- ***********유저 코드로 댓글 조회************ -->
-    <select
-    	id="selectCommentByUser" 
-    	resultType="org.zerock.wego.domain.common.CommentViewVO">
-    	
-    	SELECT 
-  				*
-  		FROM 
-  			comment_v
-         	
-         <where>
-         user_id = #{userId}
-         </where>
-    </select>
-    
-    
     <!-- ***************** 댓글 삭제 ******************** -->
     <delete
     	id="deleteById">
@@ -141,6 +137,22 @@
     	
     	<where>
     	comment_id = #{commentId}
+    	</where>
+    
+    </delete>
+    
+    <!-- ***************** 특정글 댓글 삭제 ******************** -->
+    <delete
+    	id="deleteAllByTarget">
+    	
+    	DELETE
+    	FROM 
+    		comment_tb
+    	
+    	<where>
+    	target_gb = #{targetGb}
+    	and
+    	target_cd = #{targetCd}
     	</where>
     
     </delete>
@@ -196,8 +208,6 @@
 	    </selectKey>
     </insert>
     
-    
-    
     <!-- ***************** 댓글 수정 ******************** -->
     <update
     	id="updateComment">
@@ -215,19 +225,38 @@
     		comment_id = #{commentId}
     </update>
     
-<!--         ***************** 댓글 상태값 수정 ******************** -->
-<!--     <update -->
-<!--     	id="updateCommentStatus"> -->
+    <!-- **************** 소속글 댓글수 증가/감소 ******************** -->
+    <update
+    	id="updateTargetCommentCnt">
     	
-<!--     	UPDATE  -->
-<!--     		comment_tb -->
-<!--     	SET -->
-<!--     		contents = #{contents}, -->
-<!--     		status = #{status} -->
-    		
-<!--     	WHERE -->
-<!--     		comment_id = #{commentId} -->
-<!--     </update> -->
+    	UPDATE
+    		<choose>
+	    		<when test="comment.targetGb == 'SAN_REVIEW'">
+    			san_review_tb
+    			</when>
+    			<when test="comment.targetGb == 'SAN_PARTY'">
+    			san_party_tb
+    			</when>
+    		</choose> 
+    	SET
+    		<choose>
+    			<when test="act == 'INSERT'">
+	    		comment_cnt = comment_cnt + 1
+    			</when>
+    			<when test="act == 'DELETE'">
+    			comment_cnt = comment_cnt - 1
+    			</when>
+    		</choose>
+    	WHERE
+    		<choose>
+	    		<when test="comment.targetGb == 'SAN_REVIEW'">
+    			san_review_id = #{comment.targetCd}
+    			</when>
+    			<when test="comment.targetGb == 'SAN_PARTY'">
+    			san_party_id = #{comment.targetCd}
+    			</when>
+    		</choose> 
+    </update>
     
      <!-- ***************** 댓글 영구삭제  ******************** -->
     
@@ -239,6 +268,7 @@
     			status = 'Y'
     		</where>		
     	</delete>
+    	
   </mapper>
   
   

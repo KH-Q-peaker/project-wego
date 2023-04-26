@@ -47,7 +47,7 @@
 	
 	<!-- Transaction Manager -->
 	<bean 
-		id = "transactionManger"
+		id = "transactionManager"
 		class = "org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name = "dataSource" ref = "hikariDataSource"/>
 	</bean>
@@ -63,5 +63,6 @@
 	<context:component-scan base-package="org.zerock.wego.service"/>
 	<context:component-scan base-package="org.zerock.wego.config"/>
 	<context:component-scan base-package="org.zerock.wego.oauth"/>
+	<context:component-scan base-package="org.zerock.wego.verification"/>
 		
 </beans>

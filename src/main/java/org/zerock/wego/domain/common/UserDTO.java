@@ -1,5 +1,9 @@
 package org.zerock.wego.domain.common;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import org.zerock.wego.domain.oauth.google.GoogleUserInfoDTO;
 import org.zerock.wego.domain.oauth.kakao.KakaoUserInfoDTO;
 import org.zerock.wego.domain.oauth.naver.NaverUserInfoDTO;
 
@@ -30,10 +34,28 @@ public class UserDTO {
 	} // constructer
 	
 	
-	public static UserDTO createByKakao(KakaoUserInfoDTO kakaoInfo) {
+	public static UserDTO createByGoogle(GoogleUserInfoDTO googleInfo) {
+		
+		String nickname = getNowLocalDateTime() + "G";
+		String socialId = googleInfo.getEmail();
+		
 		UserDTO userDTO = UserDTO.builder()
-									.nickname(kakaoInfo.getId() + "K")
-									.socialId(kakaoInfo.getKakao_account().getEmail())
+									.nickname(nickname)
+									.socialId(socialId)
+									.build();
+		
+		return userDTO;
+	} // createByKakao
+	
+	
+	public static UserDTO createByKakao(KakaoUserInfoDTO kakaoInfo) {
+		
+		String nickname = getNowLocalDateTime() + "K";
+		String socialId = kakaoInfo.getKakao_account().getEmail();
+		
+		UserDTO userDTO = UserDTO.builder()
+									.nickname(nickname)
+									.socialId(socialId)
 									.build();
 		
 		return userDTO;
@@ -41,14 +63,23 @@ public class UserDTO {
 	
 	
 	public static UserDTO createByNaver(NaverUserInfoDTO naverInfo) {
+		
+		String nickname = getNowLocalDateTime() + "N";
+		String socialId = naverInfo.getResponse().getEmail();
+		
 		UserDTO userDTO = UserDTO.builder()
-									.nickname(naverInfo.getResponse().getId() + "N")
-									.socialId(naverInfo.getResponse().getEmail())
+									.nickname(nickname)
+									.socialId(socialId)
 									.build();
 		
 		return userDTO;
 	} // createByKakao
 	
 	
+	public static String getNowLocalDateTime() {
+		LocalDateTime now = LocalDateTime.now();
+
+		return now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
+	} // getNowLocalDateTime
 	
 }// end class

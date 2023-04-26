@@ -19,8 +19,8 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @NoArgsConstructor
 
-@Component("naverLoginInterceptor")
-public class NaverLoginInterceptor 
+@Component("loginInterceptor")
+public class LoginInterceptor 
 implements HandlerInterceptor{
 
 
@@ -39,7 +39,7 @@ implements HandlerInterceptor{
 		SecureRandom random = new SecureRandom();
 		String state = new BigInteger(130, random).toString();
 
-		session.setAttribute(SessionConfig.NAVER_STATE_NAME, state);
+		session.setAttribute(SessionConfig.SIGN_IN_STATE_NAME, state);
 
 		return true;
 	} // preHandle

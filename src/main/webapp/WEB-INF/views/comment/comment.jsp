@@ -5,20 +5,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<c:set var="path" value="${pageContext.request.contextPath}"/>
-
-<script type="text/javascript" src="${path}/resources/js/comment.js" defer ></script>
-<script type="text/javascript" src="${path}/resources/js/delete.js" defer ></script>
-<script type="text/javascript" src="${path}/resources/js/report.js" defer ></script>
 
 <script>
-var target = JSON.parser('${target}');
+var commentCnt = ${totalCnt};
 </script>
+<script type="text/javascript" src="/resources/js/comment.js" defer ></script>
+<script type="text/javascript" src="/resources/js/delete.js" defer ></script>
+<script type="text/javascript" src="/resources/js/report.js" defer ></script>
+
 
 
 	<!-- 댓글 전체 컨테이너  -->
 	<div class="cmtcontainer">
-	
 		<!-- 새로운 댓글 작성 폼  -->
 		<div class="cmtwrite" id="cmtwrite">
 			<textarea id="contents" name="contents" placeholder="댓글을 작성해주세요." maxlength="1000" required></textarea>
@@ -27,7 +25,6 @@ var target = JSON.parser('${target}');
 		</div>
 		
 			<c:forEach items="${comments}" var="c">
-				<c:if test="${c.status != 'Y' }">
 				<div class="comments ${c.mentionId == null ? '' : 'mention'}">
 				
 				<input type="hidden" id="commentId" value="${c.commentId }"/>
@@ -60,9 +57,7 @@ var target = JSON.parser('${target}');
 <%-- 					<c:if test="${c.mentionId == null && c.status == 'N'}"> --%>
 					<c:if test="${c.mentionId == null}">
 					<input type="button" class="mentionbtn" name="mentionbtn" value="↪답글" />
-						<c:if test="${c.mentionCnt != 0 }">
 						<span class="mentionCnt">답글 <span id="mentionCnt">${c.mentionCnt }</span>개</span>
-						</c:if>
 					</c:if>
 				</c:otherwise>
 				</c:choose>
@@ -84,7 +79,6 @@ var target = JSON.parser('${target}');
 				</div>
 				<div class="mentionList"> </div>
 			</c:if>
-		</c:if>
 		</c:forEach>
 	
 		</div>

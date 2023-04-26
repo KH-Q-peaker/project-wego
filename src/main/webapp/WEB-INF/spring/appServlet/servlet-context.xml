@@ -54,16 +54,22 @@
 		</interceptor>
 		
 		<interceptor> 	
+			<mapping path="/login/google" />
 			<mapping path="/login/naver" />
 			
-			<beans:ref bean="naverLoginInterceptor"/> 
+			<beans:ref bean="loginInterceptor"/> 
 		</interceptor>
 		
-		<!-- <interceptor> 
-
-			<mapping path="/report/create" />
-			<beans:ref bean="reportInterceptor"/> 
-		</interceptor>  -->
+		<interceptor> 
+			<mapping path="/party/register" />
+			<mapping path="/party/**/join" />
+			<mapping path="/review/register"/>
+			<mapping path="/comment/register" />
+			<mapping path="/comment/reply" />
+			
+			<beans:ref bean="postInterceptor"/> 
+		</interceptor>
+		
 	</interceptors>
 
 	<!-- 파일 업로드를 위한 빈 설정 -->

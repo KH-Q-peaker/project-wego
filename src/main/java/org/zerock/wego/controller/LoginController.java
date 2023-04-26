@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.zerock.wego.config.SessionConfig;
 import org.zerock.wego.domain.common.UserVO;
 import org.zerock.wego.exception.ControllerException;
+import org.zerock.wego.oauth.GoogleOAuth;
 import org.zerock.wego.oauth.KakaoOAuth;
 import org.zerock.wego.oauth.NaverOAuth;
 import org.zerock.wego.service.oauth.OAuthService;
@@ -27,6 +28,7 @@ public class LoginController {
 
 	private final KakaoOAuth kakaoOAuth;
 	private final NaverOAuth naverOAuth;
+	private final GoogleOAuth googleOAuth;
 	private final OAuthService oAuthService;
 
 
@@ -47,10 +49,42 @@ public class LoginController {
 		
 		return mav;
 	}// logout
+	
+	
+	@GetMapping("/google")
+	public ModelAndView showGoogleLogin(@SessionAttribute(SessionConfig.SIGN_IN_STATE_NAME)String sessionState) throws ControllerException{
+		log.trace("googleLogin(ModelAndView) invoked.");
+		
+		ModelAndView mav = new ModelAndView();
+		
+		mav.setViewName("redirect:" + this.googleOAuth.getLoginURLToGetAuthorizationCode(sessionState));
+
+		return mav;
+	}// googleLogin
+
+
+	@GetMapping("/google/oauth")
+	public ModelAndView googleLoginSuccess(@RequestParam("code") String authorizationCode, @RequestParam("state")String callBackState, @SessionAttribute(SessionConfig.SIGN_IN_STATE_NAME)String sessionState, String scope) throws JsonProcessingException {
+		log.trace("googleLoginSuccess({}, {}, {}, {}) invoked.", authorizationCode, callBackState, sessionState, scope);
+		
+		if(!callBackState.equals(sessionState)) {
+			throw new RuntimeException("구글 로그인 실패 : state 불일치");
+		}
+
+		UserVO naverVO = this.oAuthService.googleLogin(authorizationCode, callBackState);
+		
+		ModelAndView mav = new ModelAndView();
+		
+		mav.setViewName("redirect:/");
+
+		mav.addObject(SessionConfig.AUTH_KEY_NAME, naverVO);
+
+		return mav;
+	}// googleLoginSuccess
 
 
 	@GetMapping("/kakao")
-	public ModelAndView kakaoLogin(ModelAndView mav) throws ControllerException{
+	public ModelAndView showKakaoLogin(ModelAndView mav) throws ControllerException{
 		log.trace("kakaoLogin(ModelAndView) invoked.");
 		
 		mav.setViewName("redirect:" + this.kakaoOAuth.getLoginURLToGetAuthorizationCode());
@@ -74,22 +108,22 @@ public class LoginController {
 
 	
 	@GetMapping("/naver")
-	public ModelAndView naverLogin(@SessionAttribute(SessionConfig.NAVER_STATE_NAME)String naverSessionState) throws ControllerException{
+	public ModelAndView showNaverLogin(@SessionAttribute(SessionConfig.SIGN_IN_STATE_NAME)String sessionState) throws ControllerException{
 		log.trace("naverLogin(ModelAndView) invoked.");
 		
 		ModelAndView mav = new ModelAndView();
 		
-		mav.setViewName("redirect:" + this.naverOAuth.getLoginURLToGetAuthorizationCode(naverSessionState));
+		mav.setViewName("redirect:" + this.naverOAuth.getLoginURLToGetAuthorizationCode(sessionState));
 
 		return mav;
-	}// kakaoLogin
+	}// naverLogin
 
 
 	@GetMapping("/naver/oauth")
-	public ModelAndView naverLoginSuccess(@RequestParam("code") String authorizationCode, @RequestParam("state")String callBackState, @SessionAttribute(SessionConfig.NAVER_STATE_NAME)String naverSessionState, String error, String error_description) throws JsonProcessingException {
-		log.trace("naverLoginSuccess(authorizationCode, {}, {}, {}, {}) invoked.", callBackState, naverSessionState, error, error_description);
+	public ModelAndView naverLoginSuccess(@RequestParam("code") String authorizationCode, @RequestParam("state")String callBackState, @SessionAttribute(SessionConfig.SIGN_IN_STATE_NAME)String sessionState, String error, String error_description) throws JsonProcessingException {
+		log.trace("naverLoginSuccess(authorizationCode, {}, {}, {}, {}) invoked.", callBackState, sessionState, error, error_description);
 		
-		if(!callBackState.equals(naverSessionState)) {
+		if(!callBackState.equals(sessionState)) {
 			throw new RuntimeException("네이버 로그인 실패 : state 불일치");
 		}
 		if(error != null) {
@@ -106,6 +140,7 @@ public class LoginController {
 
 		return mav;
 	}// naverLoginSuccess
-
+	
+	
 }// end class
 

@@ -8,38 +8,8 @@ function scrollCommentLoading() {
  
 $(window).off('scroll').on('scroll', scrollCommentLoading);
 
-let page = target.currPage;
 
-function loadMoreComments() {
 
-	let lastCommentId = $('.comments:last #commentId').val();
-	let lastMentionId = $('.mention:last #mentionId').val();
-
-	let lastComment = (lastMentionId == null ? lastCommentId : lastMentionId);
-
-	$.ajax({
-		url: "/comment/load",
-		type: "GET",
-		data: {
-			targetGb: target.targetGb,
-			targetCd: target.targetCd,
-			currPage: page,
-			amount: target.amount,
-			lastComment: lastComment
-		},
-
-		success: function(data) {
-			if (data.length != 0) {
-				$(".cmtcontainer").append(data);
-			} else {
-				$(window).off('scroll');
-			}
-		},
-		error: () => {
-			console.log('댓글로딩오류 ');/* 바꿔야됨  */
-		}
-	});
-}
 
 $(".modify").off('click').on('click', function(){
 	
@@ -49,4 +19,22 @@ $(".modify").off('click').on('click', function(){
 	window.location.replace(new URL(newURL));
 });
 
+
+$(() => {
+	
+	let idx = 0;
+		console.log('시작!');
+	$('#content').children().each(function(index, item){
+			console.log('선택****!');
+		if($(item).is("img")){
+				console.log('IMG찾음!');
+			
+			$(item).attr({
+				src : fileList[idx],
+				alt : fileAltList[idx]
+			});
+			idx++;
+		}
+	});
+});
 
