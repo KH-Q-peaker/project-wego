@@ -26,19 +26,13 @@ public class SanInfoController {
 	@GetMapping("")
 	public String showSanInfo(BoardDTO dto, Model model) throws ControllerException {
 		log.trace("showSanInfo({}) invoked.", model);
+		log.info("DTO: {}", dto);
 
 		try {
-			if(dto.getOrderBy().equals("abc")) {
-				List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSortAbcList(dto);
-				model.addAttribute("sanInfoSortList", sanInfoSortList);				
-				log.info(model);
-				return "info/info";				
-			} else {
-				List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSortLikeList(dto);
-				model.addAttribute("sanInfoSortList", sanInfoSortList);				
-				log.info(model);
-				return "info/info";				
-			} 
+			List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSortAbcList(dto);
+			model.addAttribute("sanInfoSortList", sanInfoSortList);				
+			log.info(model);
+			return "info/info";				
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
@@ -47,26 +41,26 @@ public class SanInfoController {
 	
 	@PostMapping("")
 	public String addSanInfo(BoardDTO dto, Model model) throws ControllerException {
-		log.trace("showSanInfo({}) invoked.", model);
+		log.trace("addSanInfo({}) invoked.", model);
 
 		try {
-			if(dto.getOrderBy().equals("abc")) {
-				List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSortAbcList(dto);
-				model.addAttribute("sanInfoSortList", sanInfoSortList);				
-
-				return "info/infoItem";			
-			} else {
+			if(dto.getOrderBy().equals("like")) {
 				List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSortLikeList(dto);
 				model.addAttribute("sanInfoSortList", sanInfoSortList);				
-
+				
 				return "info/infoItem";					
+			} else {
+				List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSortAbcList(dto);
+				model.addAttribute("sanInfoSortList", sanInfoSortList);				
+				
+				return "info/infoItem";			
 			} 
 			
 			
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
-	} // showSanInfo
+	} // addSanInfo
 	
 //	@GetMapping("")
 //	public String showSanInfo(	        

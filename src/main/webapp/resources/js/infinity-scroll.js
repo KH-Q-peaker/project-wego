@@ -36,14 +36,49 @@ $(window).scroll(function () {
         // 생성된 jsp 코드를 추가
         $('#data-container').append(data);
 
-    
+
         // 마지막 아이템 ID 업데이트
         lastItemId = $('#data-container').children().last().attr('sortNum');
       }
-      
+
     })
   }
 })
 
+$('#sort-abc').data('orderBy', 'abc');
+$('#sort-likes').data('orderBy', 'like');
 
 
+// 정렬 버튼 클릭 이벤트 핸들러 등록
+$('#sort-abc, #sort-likes').on('click', function () {
+  // 클릭한 버튼의 orderBy 값을 가져옵니다.
+  orderBy = $(this).data('orderBy');
+
+  console.log(orderBy);
+
+  // 서버로 GET 요청 보내기
+  $.ajax({
+    type: "POST",
+    url: "/info",
+    data: { page: page, lastItemId: lastItemId, orderBy: orderBy },
+    success: function (data) {
+
+      // 부모 요소 가져오기
+      const parent = document.getElementById('data-container');
+
+      // 부모 요소에서 자식 요소를 모두 제거
+      while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+      }
+      // 생성된 jsp 코드를 추가
+      $('#data-container').append(data);
+
+
+      // 마지막 아이템 ID 업데이트
+      lastItemId = $('#data-container').children().last().attr('sortNum');
+    }
+  });
+
+
+
+})
