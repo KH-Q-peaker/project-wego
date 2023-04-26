@@ -4,7 +4,6 @@ img {
     /* 드래그 방지 */
     -webkit-user-drag: none;
 }
-
 /* div한번더사용 */
 .container {
     width: 100%;
@@ -23,8 +22,6 @@ img {
     place-items: center;
     justify-content: center;
 }
-
-
 .review-board {
     grid-area: reviewBoard;
   
@@ -37,8 +34,6 @@ img {
   
     text-align: center;
 }
-
-
 .data-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

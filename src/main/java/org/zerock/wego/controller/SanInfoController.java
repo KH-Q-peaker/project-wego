@@ -1,16 +1,15 @@
 package org.zerock.wego.controller;
 
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.zerock.wego.domain.common.Criteria;
-import org.zerock.wego.domain.common.PageDTO;
-import org.zerock.wego.domain.info.SanInfoViewVO;
+import org.zerock.wego.domain.common.BoardDTO;
+import org.zerock.wego.domain.info.SanInfoViewSortVO;
 import org.zerock.wego.exception.ControllerException;
-import org.zerock.wego.service.common.SearchService;
 import org.zerock.wego.service.info.SanInfoService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,35 +22,101 @@ import lombok.extern.log4j.Log4j2;
 @Controller
 public class SanInfoController {
 	private final SanInfoService sanInfoService;
-	private SearchService searchService;
-
+	
 	@GetMapping("")
-	public String openSanInfo(Criteria cri,Model model) throws ControllerException {
-		log.trace("openSanInfo({}) invoked.", model);
+	public String showSanInfo(BoardDTO dto, Model model) throws ControllerException {
+		log.trace("showSanInfo({}) invoked.", model);
 
 		try {
-//			Set<SanInfoViewVO> sanInfoList = this.sanInfoService.getList();
-//			model.addAttribute("sanInfoList", sanInfoList);
-//
-//			return "info/info";
-			
-			// Step1. 페이징처리된 현재 currPage에 해당하는 게시글목록 받아옴
-			Set<SanInfoViewVO> sanInfoList = this.sanInfoService.getList(cri);			
-			model.addAttribute("sanInfoList", sanInfoList);
-			
-			// Step2. Pagination 위한 각종 변수값을 계산
-			int totalAmount = this.sanInfoService.getTotalAmount();
-			PageDTO pageDTO = new PageDTO(cri, totalAmount);
-			log.info("\t+ pageDTO : {}", pageDTO);
-			
-			model.addAttribute("pageMaker", pageDTO);
-			
-			return "info/info";
+			if(dto.getOrderBy().equals("abc")) {
+				List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSortAbcList(dto);
+				model.addAttribute("sanInfoSortList", sanInfoSortList);				
+				log.info(model);
+				return "info/info";				
+			} else {
+				List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSortLikeList(dto);
+				model.addAttribute("sanInfoSortList", sanInfoSortList);				
+				log.info(model);
+				return "info/info";				
+			} 
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
-	} // openSanInfo
+	} // showSanInfo
+	
+	
+	@PostMapping("")
+	public String addSanInfo(BoardDTO dto, Model model) throws ControllerException {
+		log.trace("showSanInfo({}) invoked.", model);
 
+		try {
+			if(dto.getOrderBy().equals("abc")) {
+				List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSortAbcList(dto);
+				model.addAttribute("sanInfoSortList", sanInfoSortList);				
+
+				return "info/infoItem";			
+			} else {
+				List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSortLikeList(dto);
+				model.addAttribute("sanInfoSortList", sanInfoSortList);				
+
+				return "info/infoItem";					
+			} 
+			
+			
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	} // showSanInfo
+	
+//	@GetMapping("")
+//	public String showSanInfo(	        
+//			@RequestParam("page") int page,
+//	        @RequestParam("lastItemId") long lastItemId,
+//	        @RequestParam("orderBy") String orderBy, Model model) throws ControllerException {
+//		log.trace("openSanInfo({}) invoked.", model);
+//
+//		try {
+//				if (orderBy.equals("abc")) {
+//				    // abc에 대한 로직
+//					Set<SanInfoViewVO> sanInfoList = this.sanInfoService.getList();
+//					model.addAttribute("sanInfoList", sanInfoList);				
+//
+//					return "info/info";
+//				} else if (orderBy.equals("likes")) {
+//				    // likes에 대한 로직
+//					Set<SanInfoViewVO> sanInfoList = this.sanInfoService.getList();
+//					model.addAttribute("sanInfoList", sanInfoList);				
+//
+//					return "info/info";
+//				} else {
+//				    // orderBy 값이 abc 또는 likes가 아닌 경우에 대한 예외 처리
+//				    throw new ControllerException("Invalid orderBy value");
+//				} // if-else
+//
+//		} catch (Exception e) {
+//			throw new ControllerException(e);
+//		} // try-catch
+//	} // openSanInfo
+//	
+//	@GetMapping("/search")
+//	public String resultSanInfo(
+//			@RequestParam("page") int page,
+//	        @RequestParam("lastItemId") long lastItemId,
+//	        @RequestParam("orderBy") String orderBy, 
+//	        @RequestParam("query") String query, Model model) throws ControllerException {
+//		log.trace("openSanInfo({}) invoked.", model);
+//
+//		try {
+//			Set<SanInfoViewVO> sanInfoList = this.sanInfoService.getList();
+//			model.addAttribute("sanInfoList", sanInfoList);
+//
+//			return "info/infoSearch";
+//		} catch (Exception e) {
+//			throw new ControllerException(e);
+//		} // try-catch
+//	} // openSanInfo
+	
+	
 //	@GetMapping("")
 //	public String showSanInfo(@RequestParam(value = "query", required = false) String query, Model model) {
 //		if (query != null && query.contains("query")) {

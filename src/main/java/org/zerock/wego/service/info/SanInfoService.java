@@ -1,9 +1,11 @@
 package org.zerock.wego.service.info;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
-import org.zerock.wego.domain.common.Criteria;
+import org.zerock.wego.domain.common.BoardDTO;
+import org.zerock.wego.domain.info.SanInfoViewSortVO;
 import org.zerock.wego.domain.info.SanInfoViewVO;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.SanInfoMapper;
@@ -19,27 +21,38 @@ import lombok.extern.log4j.Log4j2;
 public class SanInfoService {
 
 	private final SanInfoMapper mapper;
-
-
-	public Integer getTotalAmount() throws ServiceException {
-		log.trace("getTotalAmount() invoked.");
-		
-		try {
-			return this.mapper.selectTotalCount();
-		} catch(Exception e) {
-			throw new ServiceException(e);
-		} // try-catch
-	} // getTotalAmount
 	
-	public Set<SanInfoViewVO> getList(Criteria cri) throws ServiceException {
+	public Set<SanInfoViewVO> getList() throws ServiceException {
 		log.trace("getList() invoked.");
 		
 		try {
-			return this.mapper.selectAll(cri);
+			return this.mapper.selectAll();
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
 	} // getList
+	
+	
+	public List<SanInfoViewSortVO> getSortAbcList(BoardDTO dto) throws ServiceException {
+		log.trace("getSortList({}) invoked.");
+		
+		try {
+			return this.mapper.selectAllByAbc(dto);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	} // getSortList
+	
+	public List<SanInfoViewSortVO> getSortLikeList(BoardDTO dto) throws ServiceException {
+		log.trace("getSortList({}) invoked.");
+		
+		try {
+			return this.mapper.selectAllByLike(dto);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	} // getSortList
+	
 	
 	public Set<SanInfoViewVO> getRandom10List() throws ServiceException {
 		log.trace("getRandom10List() invoked.");

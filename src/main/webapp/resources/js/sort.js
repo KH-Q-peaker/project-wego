@@ -29,12 +29,3 @@ window.addEventListener('click', (event) => {
     sortBy.parentNode.classList.remove('active');
   }
 });
-
-
-// get
-document.getElementById('sort-abc').addEventListener('click', function () {
-  window.location.href = window.location.href + '?sort=abc';
-});
-document.getElementById('sort-likes').addEventListener('click', function () {
-  window.location.href = window.location.href + '?sort=likes';
-});
