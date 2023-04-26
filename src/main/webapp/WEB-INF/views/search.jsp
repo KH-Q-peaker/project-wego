@@ -32,7 +32,7 @@
 				<div class="mountain-info">
 					<div class="info-title">
 						<h2>❤️ 산 ❤️</h2>
-						<a href="/info" class="more">더보기</a>
+						<a href="/info/search?query=${query}" class="more">더보기</a>
 					</div>
 					<div class="wrap">
 						<c:forEach var="item" items="${sanInfoList}">
@@ -55,7 +55,7 @@
 				<div class="recruit">
 					<div class="info-title">
 						<h2>❤️ 모집 글 ❤️</h2>
-						<a href="#" class="more">더보기</a>
+						<a href="/party/search?query=${query}" class="more">더보기</a>
 					</div>
 					<div class="wrap-recruit">
 						<c:forEach var="item" items="${partyList}">
@@ -104,7 +104,7 @@
 				<div class="review">
 					<div class="info-title">
 						<h2>❤️ 후기 글 ❤️</h2>
-						<a href="#" class="more">더보기</a>
+						<a href="/review/search?query=${query}" class="more">더보기</a>
 					</div>
 					<div class="wrap">
 						<c:forEach var="item" items="${reviewList}">
