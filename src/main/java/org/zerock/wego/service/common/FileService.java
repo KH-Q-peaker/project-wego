@@ -3,7 +3,9 @@ package org.zerock.wego.service.common;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -25,7 +27,7 @@ public class FileService {
 
 	private final FileMapper fileMapper;
 
-	@Transactional
+	
 	public boolean isImageRegister(List<MultipartFile> imgFiles, String targetGb, Integer targetCd, FileDTO fileDTO)
 			throws ServiceException {
 		log.trace("isImageRegister() invoked.");
@@ -69,11 +71,11 @@ public class FileService {
 		} // try-catch
 	} // isImageRegister
 
-	@Transactional
 	public boolean isChangeImage(List<MultipartFile> newFiles, List<String> oldFiles, List<String> order,
 			String targetGb, Integer targetCd, FileDTO fileDTO) throws ServiceException {
 		log.trace("isChangeImage() invoked.");
-		try {
+		
+		try {			
 			// 기존 이미지 정보 불러오기
 			List<FileVO> fileVO = this.getList(targetGb, targetCd);
 
@@ -87,29 +89,18 @@ public class FileService {
 			log.info("removeSuccess: {}", removeSuccess);
 
 			// 기존 이미지 중 oldFiles에 없는 이미지를 파일시스템에서 제거
-			// 메소드로 빼면 파라미터는 List<FileVO> fileVO
 			if(!fileVO.isEmpty()) {
-				fileVO.forEach(item -> {
-					if (!oldFiles.contains(item.getFileName())) {
-						File file = new File(item.getPath());
-
-						if (file.exists()) {
-							file.delete();
-						} // if
-					} // if
-				});
+				this.removeNotMatchOldFileByFileVOAndOldFileList(fileVO, oldFiles);
 			} // if
 			
-			// 이미지 순서대로 DB에 이미지 정보 저장
+			// 기존 이미지 정보 중 DB에 저장할 이미지 정보 추출
 			if (oldFiles != null) {
-				// 1. 기존 이미지
 				oldFiles.forEach(file -> {
 					int fileOrder = order.indexOf(file);
+					
 					if (fileOrder != -1) {
-						// VO에서 일치하는 파일명의 정보를 가져온다.
 						fileVO.forEach(imgInfo -> {
 							if(file.equals(imgInfo.getFileName())) {
-								// 기존 파일 시스템에 존재하므로 DB에만 저장
 								FileDTO dto = FileDTO.builder()
 										.targetGb(targetGb)
 										.targetCd(targetCd)
@@ -128,14 +119,11 @@ public class FileService {
 			
 			if(newFiles != null ) {
 				// 이미지를 저장할 경로 지정(이전 경로 중 하나에서 날짜 추출)
-				String prevPath = fileVO.get(0).getPath();
-				int start = fileVO.get(0).getPath().lastIndexOf("/") - 8;
-				String date = prevPath.substring(start, start + 8);
-				String basePath = "C:/upload/" + date;
+				String basePath = this.getOldBasePath(fileVO.get(0).getPath());
 				
-				// 2. 신규 이미지
 				newFiles.forEach(file -> {
 					int fileOrder = order.indexOf(file.getOriginalFilename());
+					
 					if (fileOrder != -1) {
 						String uuid = UUID.randomUUID().toString();
 						String imgPath = basePath + "/" + uuid;
@@ -147,7 +135,7 @@ public class FileService {
 							e.printStackTrace();
 						} // try-catch
 						
-						// DB에 저장
+						// DB에 저장할 이미지 정보
 						FileDTO dto = FileDTO.builder()
 								.targetGb(targetGb)
 								.targetCd(targetCd)
@@ -168,7 +156,35 @@ public class FileService {
 		} // try-catch
 	} // isChangeImage
 	
+	// 기존 이미지 중 재업로드 된 이미지와 일치하지 않는 이미지를 
+	// 파일 시스템에서 제거하는 메소드
+	public void removeNotMatchOldFileByFileVOAndOldFileList(
+			List<FileVO> fileVO, List<String> oldFiles) throws ServiceException {
+		log.trace("removeNotMatchOldFileByFileVOAndOldFileList() invoked.");
+		
+		try {
+			fileVO.forEach(item -> {
+				if (!oldFiles.contains(item.getFileName())) {
+					File file = new File(item.getPath());
 
+					if (file.exists()) {
+						file.delete();
+					} // if
+				} // if
+			});
+		} catch(Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	} // removeNotMatchOldFileByFileVOAndOldFileList
+	
+	// 이미지를 저장할 경로 지정(경로에서 날짜 추출)
+	// ex) C:/upload/date/uuid => date
+	public String getOldBasePath(String path) {
+		int start = path.lastIndexOf("/") - 8;
+		String date = path.substring(start, start + 8);
+		return "C:/upload/" + date;
+	} // getOldBasePath
+	
 	public List<FileVO> getList(String targetGb, Integer targetCd) throws ServiceException {
 		log.trace("getList() invoked.");
 
