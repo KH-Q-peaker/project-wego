@@ -91,8 +91,8 @@
 #rankers .item .rankerMedal #svg{
     display: block;
 
-    width: 55px;
-    height: 55px;
+    width: 60px;
+    height: 60px;
 }
 .item#gold #svg{
     background : url(../svg/rankingGold.svg);
@@ -115,7 +115,7 @@
     background-size: contain;
 
 }
-#rankers .item .rankerPic{
+#rankers .item .rankerPic, #rankers .item .rankerPic img{
     display: inline-block;
 
     margin: 0 0 12px;
@@ -126,7 +126,6 @@
     
     background-color: #fff;
 }
-
 #rankers .item .rankerName {
 	display: flex;
 	
@@ -197,8 +196,6 @@
 
     padding: 6px 0 6px;
     border-bottom : 0.5px solid rgba(0, 0, 0, 0.1);
-
-    /* padding: 12px 0 6px; */
 }
 .rankingList .item div{
     display: flex;
