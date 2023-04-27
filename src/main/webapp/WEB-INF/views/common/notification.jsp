@@ -152,14 +152,19 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     <img src="${userService.getById(notificationList.createdByUserId).userPic}" alt="User Pic">
                     <!-- <h4>${userService.getById(notificationList.createdByUserId).nickname}님이 단 댓글 보러가기 : </h4>   무엇으로 할지 선택해줘요-->
                     <h4>${userService.getById(notificationList.createdByUserId).nickname}님 : </h4> 
-                    <c:if test="${fn:contains(notificationList.contents, '모집')}">
-                      <p><a href="/party/${notificationList.targetCd}"  id="notification-link">${notificationList.title}</a></p></c:if>
-                    <c:if test="${fn:contains(notificationList.contents, '후기')}">
-                      <p><a href="/review/${notificationList.targetCd}"  id="notification-link">${notificationList.title}</a></p></c:if>
+                    <c:choose>
+	                    <c:when test="${notificationList.commentStatus eq 'Y' }" >
+	         	     	  <p><h3>삭제된 댓글입니다.</h3></p></c:when>
+	         	     	<c:otherwise>
+	                    <c:if test="${fn:contains(notificationList.contents, '모집')}">
+	                      <p><a href="/party/${notificationList.targetCd}"  id="notification-link">${notificationList.title}</a></p></c:if>
+	                    <c:if test="${fn:contains(notificationList.contents, '후기')}">
+	                      <p><a href="/review/${notificationList.targetCd}"  id="notification-link">${notificationList.title}</a></p></c:if></c:otherwise>
+					</c:choose>
                   </div>
                 </div>
               </c:if>
-              <c:if test="${fn:contains(notificationList.contents, '좋아요')}">
+              <c:if test="${notificationList.targetGb eq '좋아요')">
                 <div class="alarm profile">
                   <h3>${notificationList.contents}</h3>
                   <time class="timeago" datetime="${notificationList.createdDt}"
@@ -167,9 +172,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   >
                   <div class="message profile">
                     <img src="${userService.getById(notificationList.createdByUserId).userPic}" alt="User Pic">
-                    <c:if test="${notificationList.targetGb eq 'SAN_PARTY'}">
+                    <c:if test="${fn:contains(notificationList.contents, '모집')}">
                       <p><a href="/party/${notificationList.targetCd}"  id="notification-link">${notificationList.title}&#128149;</a></p></c:if>
-                    <c:if test="${notificationList.targetGb eq 'SAN_REVIEW'}">
+                    <c:if test="${fn:contains(notificationList.contents, '후기')}">
                       <p><a href="/review/${notificationList.targetCd}"  id="notification-link">${notificationList.title}&#128149;</a></p></c:if>
                   </div>
                 </div>
