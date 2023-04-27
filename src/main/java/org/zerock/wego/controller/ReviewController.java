@@ -39,6 +39,7 @@ import org.zerock.wego.service.info.SanInfoService;
 import org.zerock.wego.service.review.ReviewService;
 import org.zerock.wego.verification.ReviewValidator;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -77,7 +78,7 @@ public class ReviewController {
 	@GetMapping(path="/{reviewId}")
 	public String showDetailById(@PathVariable("reviewId")Integer reviewId,
 									@SessionAttribute("__AUTH__")UserVO user,
-									PageInfo target, Model model) throws Exception{
+									PageInfo target, Model model) throws RuntimeException, JsonProcessingException{
 		log.trace("showDetail({}, {}) invoked.", reviewId, target);
 
 			target.setTargetGb("SAN_REVIEW");

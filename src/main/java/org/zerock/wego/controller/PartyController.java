@@ -41,6 +41,7 @@ import org.zerock.wego.service.party.JoinService;
 import org.zerock.wego.service.party.PartyService;
 import org.zerock.wego.verification.PartyValidator;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -82,7 +83,7 @@ public class PartyController {
 	@GetMapping("/{partyId}") 
 	public String showDetailById(@PathVariable("partyId")Integer partyId, 
 								@SessionAttribute("__AUTH__")UserVO user,
-								PageInfo pageInfo, Model model) throws Exception{
+								PageInfo pageInfo, Model model) throws RuntimeException, JsonProcessingException{
 	log.trace("showDetailById() invoked.");
 		
 			pageInfo.setTargetGb("SAN_PARTY");
