@@ -24,6 +24,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <link rel="stylesheet" type="text/css" href="/resources/css/delete.css"  />
     
     <script src="/resources/js/header.js" defer></script>
+   	<script src="/resources/js/footer.js" defer></script>
     <script src="/resources/js/top.js" defer></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
