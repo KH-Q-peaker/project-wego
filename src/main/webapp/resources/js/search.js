@@ -52,5 +52,3 @@ const recruitTitle = document.querySelectorAll(".recruit-title");
 recruitTitle.forEach(item => {
     item.innerHTML = item.innerText.replace(searchWord, `<strong>${searchWord}</strong>`)
 });
-
-

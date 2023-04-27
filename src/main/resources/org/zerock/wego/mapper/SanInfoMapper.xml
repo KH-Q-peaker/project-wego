@@ -11,6 +11,39 @@
 		SELECT * 
 		FROM san_info_v
 	</select>
+	
+	<select id="selectAllByAbc"
+		resultType="org.zerock.wego.domain.info.SanInfoViewSortVO">
+		SELECT * 
+		FROM san_info_v_abc
+		<if test="lastItemId != null">
+        	WHERE sort_num &gt; #{lastItemId}
+		</if>
+   		OFFSET ( #{page} - 1 ) * #{amount} ROWS
+      	FETCH NEXT #{amount} ROWS ONLY
+	</select>
+	
+	<select id="selectAllByLike"
+		resultType="org.zerock.wego.domain.info.SanInfoViewSortVO">
+		SELECT * 
+		FROM san_info_v_like
+		<if test="lastItemId != null">
+        	WHERE sort_num &gt; #{lastItemId}
+		</if>
+   		OFFSET ( #{page} - 1 ) * #{amount} ROWS
+      	FETCH NEXT #{amount} ROWS ONLY
+	</select>
+	
+	<select id="selectSearchSanInfoByQuery"
+		resultType="org.zerock.wego.domain.info.SanInfoViewVO">
+		SELECT *
+		FROM san_info_v
+		WHERE
+			(
+			san_name LIKE '%'||#{search}||'%'
+			OR details LIKE '%'||#{search}||'%'
+			)
+	</select>
 
 	<select id="selectRandom10"
 		resultType="org.zerock.wego.domain.info.SanInfoViewVO">
