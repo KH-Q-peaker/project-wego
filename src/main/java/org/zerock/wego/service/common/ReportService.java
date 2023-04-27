@@ -27,12 +27,11 @@ public class ReportService {
 			= this.reportMapper.selectCountByTarget(dto.getTargetGb(), dto.getTargetCd());
 		
 		return totalCount;
-		
 	}// getTotalCount
 	
 	
 	// 신고 생성  
-	public void create(ReportDTO dto) throws Exception {
+	public void create(ReportDTO dto) throws RuntimeException {
 //		log.trace("create({}) invoked.", dto);
 		
 		
@@ -50,7 +49,7 @@ public class ReportService {
 
 	
 	// 신고 삭제 
-	public void removeAllByTarget(String targetGb, Integer targetCd) throws Exception{
+	public void removeAllByTarget(String targetGb, Integer targetCd) throws RuntimeException{
 //		log.trace("removeAllByTarget({}, {})", targetGb, targetCd);
 		
 		this.reportMapper.deleteAllByTarget(targetGb, targetCd);

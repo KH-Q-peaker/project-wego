@@ -61,7 +61,7 @@
 					<img src="${userPic}" alt="" class="userpic" />
 					<a class="username" href="http://localhost:8080/profile/${review.userId}">${review.nickName}</a>
 					<div class="likeCnt">
-						<input class="like ${isLike ? 'fill' : '' }" type="button" value="" />︎<label> ${review.likeCnt }</label>
+						<input class="like ${isFavorite ? 'fill' : '' }" type="button" value="" />︎<label> ${review.likeCnt }</label>
 					</div>
 					<div class="content" id="content">${review.contents}</div>
 					<div class="btns">

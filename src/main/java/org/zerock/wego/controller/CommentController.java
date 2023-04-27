@@ -5,6 +5,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.servlet.ModelAndView;
 import org.zerock.wego.domain.common.CommentDTO;
 import org.zerock.wego.domain.common.CommentViewVO;
 import org.zerock.wego.domain.common.PageInfo;
@@ -38,21 +38,21 @@ public class CommentController {
 	
 	// 댓글 offset 로딩 
 	@GetMapping(path="/load")
-	ModelAndView loadCommentOffset(PageInfo target, Integer lastComment, ModelAndView mav) throws Exception{
-		log.trace("loadCommentOffset({}, {}) invoked.", target, lastComment);
+	String loadCommentOffset(PageInfo target, Integer lastComment, Model model) throws Exception{
+		log.trace("loadCommentOffset(target, {}) invoked.", lastComment);
 		
 		
 		LinkedBlockingDeque<CommentViewVO> comments = 
 					this.commentService.getCommentOffsetByTarget(target, lastComment);
 
-		mav.addObject("comments", comments);
+		model.addAttribute("comments", comments);
 
-		return mav;
+		return "comment/load";
 	}// loadCommentOffset
 
 	// 댓글 멘션 로딩 
 	@GetMapping(path="/mention")
-	ModelAndView loadMentionsByCommentId(Integer commentId, ModelAndView mav) throws Exception{
+	String loadMentionsByCommentId(Integer commentId, Model model) throws Exception{
 		log.trace("loadMentionsByCommentId({}) invoked", commentId);
 		
 		LinkedBlockingDeque<CommentViewVO> mentions = 
@@ -62,24 +62,20 @@ public class CommentController {
 		
 		int totalCnt = this.commentService.getTotalCountByTarget(vo.getTargetGb(), vo.getTargetCd());
 		
-		mav.addObject("comments", mentions);
-		mav.addObject("totalCnt", totalCnt);
-		mav.setViewName("comment/load");
-
-		return mav;
+		model.addAttribute("comments", mentions);
+		model.addAttribute("totalCnt", totalCnt);
+		
+		return "comment/load";
 	}// loadCommentOffset
 	
 
 	// 댓글 작성 
 	@PostMapping(path="/register")
-	ModelAndView registerComment(CommentDTO dto, PageInfo target,
-								@SessionAttribute("__AUTH__") UserVO user,
-								ModelAndView mav) throws ControllerException{
-		log.trace("registerComment() invoked.");
-		
-		target.setTargetGb(dto.getTargetGb());
-		target.setTargetCd(dto.getTargetCd());
-		
+	String registerComment(CommentDTO dto, PageInfo target,
+						@SessionAttribute("__AUTH__") UserVO user,
+						Model model) throws ControllerException{
+		log.trace("registerComment(dto, target, user, model) invoked.");
+
 		Integer userId = user.getUserId();
 		dto.setUserId(userId);
 		
@@ -92,13 +88,10 @@ public class CommentController {
 			
 			int totalCnt = this.commentService.getTotalCountByTarget(dto.getTargetGb(), dto.getTargetCd());
 			
-			mav.addObject("comments", comments);
-			mav.addObject("totalCnt", totalCnt);
+			model.addAttribute("comments", comments);
+			model.addAttribute("totalCnt", totalCnt);
 			
-			mav.setViewName("comment/comment");
-		
-			return mav;
-
+			return "comment/comment";
 		} catch (OperationFailException | NotFoundPageException e) {
 			throw e;
 			
