@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="/resources/css/header.css" />
 <link rel="stylesheet" href="/resources/css/footer.css" />
 <link rel="stylesheet" href="/resources/css/sanInfoItem.css?after" />
-<link rel="stylesheet" href="/resources/css/sanInfoFrame.css?after" />
+<link rel="stylesheet" href="/resources/css/sanInfoSearch.css?after" />
 <link rel="stylesheet" href="/resources/css/remote.css?after" />
 <link rel="stylesheet" href="/resources/css/sort.css?after" />
 
@@ -30,7 +30,6 @@
 <script src="/resources/js/top.js" defer></script>
 <script src="/resources/js/favorite.js" defer></script>
 <script src="/resources/js/board-type.js" defer></script>
-<script src="/resources/js/infinity-scroll.js" defer></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
@@ -50,9 +49,13 @@
 
 			<div class="container">
 
-				<div class="mountain-info">
+				<div class="search-results">
 
-					<div class="info-board">
+					<div class="result-line">
+						<div class="hr-sect">검색결과</div>
+					</div>
+
+					<div class="info-search-board">
 						<h2>❤️ 산 ❤️</h2>
 					</div>
 
@@ -64,14 +67,14 @@
 							<li class="sortByItem"><button id="sort-likes" type="button">좋아요순</button></li>
 						</ul>
 					</div>
-
 				</div>
 
-				<div class="data-container" id="data-container">
+
+				<div class="data-container">
 					<!-- Item -->
-					<c:forEach var="item" items="${sanInfoSortList}">
+					<c:forEach var="item" items="${sanInfoList}">
 						<a href="/info/${item.sanInfoId}">
-							<div class="mountain-item" id="${item.sortNum}">
+							<div class="mountain-item">
 								<img class="mountain-img" src="/img/${fn:substring(item.img, 10, 55)}" alt="img" />
 								<h3 class="mountain-name" id="mountainName">${item.sanName}</h3>
 								<p class="mountain-contents" id="text">${item.details}</p>
@@ -91,9 +94,9 @@
 							</div>
 						</a>
 					</c:forEach>
-  				</div>
-  				
-  				
+				</div>
+
+
 			</div>
 		</section>
 		<!-- main end -->
@@ -104,7 +107,6 @@
 	<a href="#" class="scrollToTop"> <img src="/resources/svg/top.svg"></a>
 
 	<%@include file="/WEB-INF/views/common/footer.jsp"%>
-
 </body>
 
 </html>
