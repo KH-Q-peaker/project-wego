@@ -1,6 +1,8 @@
 function loadMoreComments() {
 
-	let lastCommentId = $('.comments:last #commentId').val();
+//	let lastCommentId = $('.comments:last #commentId').val();
+	let lastCommentId =$(".comments:not(.mention)").last().find("#commentId").val();
+	console.log(lastCommentId);
 
 	$.ajax({
 		url: "/comment/load",
@@ -11,8 +13,8 @@ function loadMoreComments() {
 			amount: target.amount,
 			lastComment: lastCommentId
 		},
-
 		success: function(data) {
+			console.log('로딩이 왜되냐고');
 			if (data.length != 0) {
 				$(".cmtcontainer").append(data);
 			} else {
@@ -42,11 +44,13 @@ function toggleMentionBtn(buttonElem) {
 	
 	if (buttonElem.parent().next().css('display') == 'none') {
 		$('.mentionwrite, .mentionList, .mention').hide();
+		$(".mentionbtn").val('↪︎답글');
 		buttonElem.val('Ⅹ닫기');
 		buttonElem.parent().next('.mentionwrite').show('normal').css('display', 'grid');
 		buttonElem.parent().next().next('.mentionList').show().children('.mention').show('fast');
 	} else {
-		buttonElem.val('↪︎답글');
+		$(".mentionbtn").val('↪︎답글');
+//		buttonElem.val('↪︎답글');
 		$(".mcontents").val('');
 		$('.mentionwrite, .mentionList, .mention').hide('fast');
 	}
@@ -61,7 +65,6 @@ $(() => { /* 새 댓글 post 전송  */
   
 	/* 입력내용에 따라 등록버튼 활성/비활성  */
 	$("#contents").off('input').on('input', function(){
-		
 		toggleBtn($(this), $(this).next());
 	});
 	
@@ -93,20 +96,19 @@ $(() => { /* 새 댓글 post 전송  */
 				$("#contents").val('');
 				$(".cmtcontainer").replaceWith(data);
 				$('#cmtcnt').text(commentCnt);
-		},
-		error : function(data) {
-			if(data.status == 403){
-				setMessage(data.responseText);
-				showModal();
-				setTimeout(hideModal, 5000);
+			},
+			error: function(data) {
+				if (data.status == 403) {
+					setMessage(data.responseText);
+					showModal();
+					setTimeout(hideModal, 5000);
+				}
 			}
-		}
 		});
 	});
 });
 
 $(() => { /* 답글 관련 */
-	
   /* 답글 버튼 클릭시 멘션 작성 창 on */
   	$(".mentionbtn").off('click').on('click', function () {
 		
@@ -118,7 +120,6 @@ $(() => { /* 답글 관련 */
 		let mentionList = $(this).parent().next().next('.mentionList');
 		let mentionbtn = $(this);
 		
-//		function loadMention(){
 			$.ajax({
 				url: "/comment/mention",
 				type: "GET",
@@ -128,37 +129,18 @@ $(() => { /* 답글 관련 */
 				},
 				success: function(data) {
 					mentionList.html(data);
+					mentionList.prev().prev().find('#mentionCnt').text(loadCnt);
 					toggleMentionBtn(mentionbtn);
 				},
 				error: function() {
 					console.log('멘션로딩 실패');
 				}
 			});
-//		}
-//		loadMention();
 			/* 등록버튼 클릭 시 멘션 등록 post전송   */
 			$(".men").off('click').on('click', function() {
 				$(".men").prop('disabled', true);
 				var mentionCnt = $(this).parent().prev().find('#mentionCnt');
-				
-				$.ajax({
-				url: "/comment/mention",
-				type: "GET",
-				data:
-				{
-					commentId: mentionId
-				},
-				success: function(data) {
-					mentionList.html(data);
-					if(data == null){
-						loadCnt = 0;
-					}
-					mentionCnt.text(loadCnt + 1);
-				},
-				error: function() {
-					console.log('멘션로딩 실패');
-				}
-			});
+			
 				$.ajax({
 					url: "/comment/reply",
 					type: "POST",
@@ -169,19 +151,34 @@ $(() => { /* 답글 관련 */
 						mentionId: mentionId,
 						contents: $(this).prev().val()
 					},
-					success: function(data) {
+					success: function() {
 						setMessage("️💬 답글이 등록되었습니다.");
 						showModal();
 						setTimeout(hideModal, 700);
 						$('.mcontents').val('');
-						mentionList.append(data);
-						$('#cmtcnt').text(commentCnt);
+						
+						$.ajax({
+							url: "/comment/mention",
+							type: "GET",
+							data: {
+								commentId : mentionId
+							},
+							success: function(data){
+								mentionList.html(data);
+								mentionCnt.text(loadCnt);
+								$('#cmtcnt').text(commentCnt);
+							}
+						});
 					},
 					error: function(data) {
 						if (data.status == 403) {
 							setMessage(data.responseText);
 							showModal();
 							setTimeout(hideModal, 5000);
+						} else{
+							setMessage('뭔데 '); /**** */
+							showModal();
+							setTimeout(hideModal, 700);
 						}
 					}
 				});
@@ -189,17 +186,14 @@ $(() => { /* 답글 관련 */
   	});
   	/* 취소 클릭 시 멘션 작성 창 off  */
   	$(".mentionwrite").children(".cancle").off('click').on('click', function(){
-		
 		$(".mcontents").val('').height('80px');
 	});
 	
 	/* 입력내용에 따라 등록버튼 활성/비활성  */
 	$(".mcontents").off('input').on('input', function(){
-		
 		toggleBtn($(this), $(this).next());
 	});
 });
-
 
 $(() => { /* 수정 관련 */
 	
@@ -225,7 +219,6 @@ $(() => { /* 수정 관련 */
   		modifying.val(contents);
   		target.replaceWith(modifying);
 
-  		
 		/* 댓글 수정 폼 off  */
 		$("input[name='updatecls']").off('click').on('click', function() {
 
@@ -252,9 +245,9 @@ $(() => { /* 수정 관련 */
 					setMessage("✏️ 댓글이 수정되었습니다.");
 		 			showModal();
 		 			setTimeout(hideModal, 700);
+		 			
 					modifying.replaceWith(target.text(modifying.val()));
 					target.siblings().not('.cmtuser, .cmtuserPic').toggle('fast');
-					
 					$(".modifycmt").prop('disabled', false);
 				},
 				error : function(){

@@ -20,3 +20,21 @@ $(".modify").off('click').on('click', function(){
 });
 
 
+$(() => {
+	
+	let idx = 0;
+		console.log('시작!');
+	$('#content').children().each(function(index, item){
+			console.log('선택****!');
+		if($(item).is("img")){
+				console.log('IMG찾음!');
+			
+			$(item).attr({
+				src : fileList[idx],
+				alt : fileAltList[idx]
+			});
+			idx++;
+		}
+	});
+});
+

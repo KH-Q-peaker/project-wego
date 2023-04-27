@@ -6,7 +6,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<c:set var="path" value="${pageContext.request.contextPath}"/>
 
 <jsp:include page="../common/report.jsp"></jsp:include><%-- 신고 --%>
 <jsp:include page="../common/delete.jsp"></jsp:include><%-- 삭제 --%>
@@ -23,30 +22,29 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="description" content="등산멤버 모집 커뮤니티" />
 
-	<link rel="shortcut icon" href="${path}/resources/ico/favicon.ico" type="image/x-icon" />
-	<link rel="icon" href="${path}/resources/ico/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
+	<link rel="icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
 	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 	
-	<link rel="stylesheet" type="text/css"  href="${path}/resources/css/default.css"/>
-	<link rel="stylesheet" type="text/css" href="${path}/resources/css/header.css"/>
-	<link rel="stylesheet" type="text/css" href="${path}/resources/css/footer.css"/>
-	<link rel="stylesheet" type="text/css" href="${path}/resources/css/like.css"/>
-	<link rel="stylesheet" type="text/css" href="${path}/resources/css/comment.css"/>
-	<link rel="stylesheet" type="text/css" href="${path}/resources/css/party-detail.css"/>
+	<link rel="stylesheet" type="text/css"  href="/resources/css/default.css"/>
+	<link rel="stylesheet" type="text/css" href="/resources/css/header.css"/>
+	<link rel="stylesheet" type="text/css" href="/resources/css/footer.css"/>
+	<link rel="stylesheet" type="text/css" href="/resources/css/like.css"/>
+	<link rel="stylesheet" type="text/css" href="/resources/css/comment.css"/>
+	<link rel="stylesheet" type="text/css" href="/resources/css/party-detail.css"/>
 	
-	<script type="text/javascript" src="${path}/resources/js/header.js"  defer></script>
-	<script type="text/javascript" src="${path}/resources/js/footer.js"  defer></script>
-	<script type="text/javascript" src="${path}/resources/js/default.js"  defer></script>
-	<script type="text/javascript" src="${path}/resources/js/like.js"  defer></script>
-	<script type="text/javascript" src="${path}/resources/js/scroll.js"  defer></script>
-	<script type="text/javascript" src="${path}/resources/js/comment.js"  defer></script>
-	<script type="text/javascript" src="${path}/resources/js/party-detail.js"  defer></script>
+	<script type="text/javascript" src="/resources/js/header.js"  defer></script>
+	<script type="text/javascript" src="/resources/js/footer.js"  defer></script>
+	<script type="text/javascript" src="/resources/js/default.js"  defer></script>
+	<script type="text/javascript" src="/resources/js/like.js"  defer></script>
+	<script type="text/javascript" src="/resources/js/scroll.js"  defer></script>
+	<script type="text/javascript" src="/resources/js/comment.js"  defer></script>
+	<script type="text/javascript" src="/resources/js/party-detail.js"  defer></script>
 
 	<script> 
 		var target = JSON.parse('${target}');
-// 		var commentCount = ${commentCount};
 	</script>
 </head>
 <body>
@@ -68,7 +66,6 @@
 					<div class="likeCnt">
 						<input class="like ${isLike ? 'fill' : '' }" type="button" value="" /><label>${party.likeCnt }</label>
 					</div>
-<%-- 					<img src="data:image/png;base64, ${partyImg }" alt="" class="partyImg" /> --%>
 					<img src="${party.partyPic}" alt="" class="partyImg" />
 					<div class="partyInfo">
 						<div class="info">
@@ -107,10 +104,13 @@
 					<% 
 						Date now = new Date();
 						PartyViewVO party = (PartyViewVO)request.getAttribute("party");
-						boolean after = now.before(party.getPartyDt());
+						boolean after = now.after(party.getPartyDt());
 						request.setAttribute("after", after);
 					%>
 						<c:choose>
+							<c:when test="${after }">
+								<input type="button" class="join" style="background-color: #727272" disabled value="모집종료" />
+							</c:when>
 							<c:when test="${isJoin == false }">
 								<input type="button" class="join" id="join" name="join" value="참여하기" />
 							</c:when>
@@ -120,14 +120,9 @@
 							<c:when test="${party.userCnt >= party.partyMax }">
 								<input type="button" class="join" style="background-color: rgb(252, 170, 64)" disabled value="모집완료" />
 							</c:when>
-<%-- 							<c:otherwise> --%>
-							<c:when test="${after }">
-								<input type="button" class="join" style="background-color: #727272" disabled value="모집종료" />
-							</c:when>
-<%-- 							</c:otherwise> --%>
 						</c:choose>
 				</div>
-				<div class="cnt">댓글 (${commentCount})</div>
+				<div class="cnt">댓글 (<span id="cmtcnt">${party.commentCnt }</span>)</div>
 				<c:set var="comments" value="${comments}" />
 				<%@ include file="../comment/comment.jsp"%>
 				<div class="to top">top</div>

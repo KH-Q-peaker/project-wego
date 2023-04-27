@@ -44,11 +44,7 @@ public class CommentController {
 		
 		LinkedBlockingDeque<CommentViewVO> comments = 
 					this.commentService.getCommentOffsetByTarget(target, lastComment);
-		
-		if(comments == null) {
-			
-			return null;
-		}
+
 		mav.addObject("comments", comments);
 
 		return mav;
@@ -62,11 +58,12 @@ public class CommentController {
 		LinkedBlockingDeque<CommentViewVO> mentions = 
 					this.commentService.getMentionsByCommentId(commentId);
 		
-		if(mentions == null) {
-			
-			return null;
-		}
+		CommentViewVO vo = this.commentService.getById(commentId);
+		
+		int totalCnt = this.commentService.getTotalCountByTarget(vo.getTargetGb(), vo.getTargetCd());
+		
 		mav.addObject("comments", mentions);
+		mav.addObject("totalCnt", totalCnt);
 		mav.setViewName("comment/load");
 
 		return mav;
@@ -86,7 +83,6 @@ public class CommentController {
 		Integer userId = user.getUserId();
 		dto.setUserId(userId);
 		
-		
 		try {
 			this.commentService.registerCommentOrMention(dto);
 
@@ -94,13 +90,13 @@ public class CommentController {
 						= this.commentService.getCommentOffsetByTarget(target, 0);
 			
 			
-			int commentCnt = this.commentService.getTotalCountByTarget(dto);
+			int totalCnt = this.commentService.getTotalCountByTarget(dto.getTargetGb(), dto.getTargetCd());
 			
 			mav.addObject("comments", comments);
-			mav.addObject("commentCnt", commentCnt);
+			mav.addObject("totalCnt", totalCnt);
 			
 			mav.setViewName("comment/comment");
-
+		
 			return mav;
 
 		} catch (OperationFailException | NotFoundPageException e) {
@@ -111,36 +107,27 @@ public class CommentController {
 		}// try-catch
 	}// registerComment
 	
-	
-	// 멘션 작성 
-	@PostMapping(path="/reply")
-	ModelAndView registerMention(CommentDTO dto, 
-								@SessionAttribute("__AUTH__") UserVO user,
-								ModelAndView mav) throws ControllerException{
+
+	// 멘션 작성
+	@PostMapping(path = "/reply")
+	ResponseEntity<String> registerMention(CommentDTO dto, @SessionAttribute("__AUTH__") UserVO user) throws ControllerException {
 		log.trace("registerMention() invoked.");
-		
+
 		Integer userId = user.getUserId();
 		dto.setUserId(userId);
 
 		try {
 			this.commentService.registerCommentOrMention(dto);
-			
-			CommentViewVO comment = this.commentService.getById(dto.getCommentId());
-			int commentCnt = this.commentService.getTotalCountByTarget(dto);
-			
-			mav.addObject("comment", comment);
-			mav.addObject("commentCnt", commentCnt);
-			
-			return mav;
-			
+
+			return ResponseEntity.ok().build(); 
+
 		} catch (OperationFailException | NotFoundPageException e) {
-			throw e;
-			
+			throw e; // 응답 보낼까 예외로 넘길까 ....
+
 		} catch (Exception e) {
 			throw new ControllerException(e);
-		}// try-catch
+		} // try-catch
 	}// registerComment
-	
 	
 	// 댓글 삭제 
 	@DeleteMapping(path="/{commentId}")
@@ -148,15 +135,9 @@ public class CommentController {
 		log.trace("removeComment({}) invoked.", commentId);
 		
 		try {
-			CommentViewVO vo = this.commentService.getById(commentId);
-			
 			this.commentService.removeCommentOrMention(commentId);
 			
-			int totalCount = 
-				this.commentService.getTotalCountByTarget(vo.getTargetGb(), vo.getTargetCd());
-			
-		
-			return ResponseEntity.ok(totalCount);
+			return ResponseEntity.ok().build();
 			
 		} catch(Exception e) {
 			return ResponseEntity.notFound().build();
@@ -166,13 +147,9 @@ public class CommentController {
 	
 	
 	// 댓글 수정 
-//	@PostMapping("/modify")
-//	@PatchMapping("/{commentId}")
-//	ResponseEntity<String> modifyComment(@PathVariable("commentId")Integer commentId, 
-//										 @RequestBody String contents) throws Exception{
 	@PatchMapping(path="/{commentId}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<String> modifyComment(@RequestBody CommentDTO dto) throws Exception{
-//		log.trace("modifyComment({}) invoked.", dto);
+		log.trace("modifyComment(dto) invoked.");
 		
 		try {
 			this.commentService.modify(dto);

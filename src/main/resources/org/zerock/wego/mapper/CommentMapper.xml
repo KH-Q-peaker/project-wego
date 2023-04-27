@@ -8,15 +8,17 @@
 
   	<!-- *********** 존재여부 ************ -->
 	<select id="isExist" 
-			resultType = "Boolean">
+			resultType = "java.lang.Boolean">
 		SELECT
-			1
-		FROM
-			dual
-		WHERE EXISTS
-			(SELECT 1
-			 FROM comment_tb
-			 WHERE comment_id = #{commentId})
+        	CASE WHEN 
+        	EXISTS (
+            	SELECT 1 
+            	FROM comment_tb
+            	WHERE comment_id = #{commentId}
+            	AND status = 'N'
+        		) 
+        		THEN 1 ELSE 0 END AS exist
+    	FROM dual
 	</select>
 
   	<!-- *********** 타겟 댓글 총합 ************ -->
@@ -60,14 +62,14 @@
          	
      <where>
        	<if test="lastCommentId > 0">
-       	comment_id &lt; #{lastCommentId}
+       		comment_id &lt; #{lastCommentId}
        	AND
        	</if>
-       	target_cd = #{target.targetCd}
+       		target_cd = #{target.targetCd}
        	AND 
 	       target_gb = #{target.targetGb}
-        AND 
-    	   status IN ('N', 'P')
+	    AND
+	    	status IN ('N', 'Y')
 	    AND
 	       comment_gb = 'COMMENT'
       </where>
@@ -90,8 +92,6 @@
   			comment_v
         <where>
         	mention_id = #{commentId}
-        	AND
-        	status IN ('N', 'P')
         </where>
         ORDER BY
          	COMMENT_ID ASC
@@ -108,7 +108,7 @@
   		FROM 
   			comment_v
         WHERE
-         comment_id = #{commentId}
+        	comment_id = #{commentId}
     </select> 
     
     
@@ -127,22 +127,6 @@
   			)
     </select> 
     
-  	<!-- ***********유저 코드로 댓글 조회************ -->
-    <select
-    	id="selectCommentByUser" 
-    	resultType="org.zerock.wego.domain.common.CommentViewVO">
-    	
-    	SELECT 
-  				*
-  		FROM 
-  			comment_v
-         	
-         <where>
-         user_id = #{userId}
-         </where>
-    </select>
-    
-    
     <!-- ***************** 댓글 삭제 ******************** -->
     <delete
     	id="deleteById">
@@ -153,6 +137,22 @@
     	
     	<where>
     	comment_id = #{commentId}
+    	</where>
+    
+    </delete>
+    
+    <!-- ***************** 특정글 댓글 삭제 ******************** -->
+    <delete
+    	id="deleteAllByTarget">
+    	
+    	DELETE
+    	FROM 
+    		comment_tb
+    	
+    	<where>
+    	target_gb = #{targetGb}
+    	and
+    	target_cd = #{targetCd}
     	</where>
     
     </delete>
@@ -208,8 +208,6 @@
 	    </selectKey>
     </insert>
     
-    
-    
     <!-- ***************** 댓글 수정 ******************** -->
     <update
     	id="updateComment">
@@ -259,32 +257,6 @@
     			</when>
     		</choose> 
     </update>
-    
-<!--      **************** 소속글 댓글수 감소 ******************** -->
-<!--     <update -->
-<!--     	id="updateTargetCommentCntDown"> -->
-    	
-<!--     	UPDATE -->
-<!--     		<choose> -->
-<!-- 	    		<when test="targetGb == 'SAN_REVIEW'"> -->
-<!--     			san_review_tb -->
-<!--     			</when> -->
-<!--     			<when test="targetGb == 'SAN_PARTY'"> -->
-<!--     			san_party_tb -->
-<!--     			</when> -->
-<!--     		</choose>  -->
-<!--     	SET -->
-<!--     		comment_cnt = comment_cnt - 1 -->
-<!--     	WHERE -->
-<!--     		<choose> -->
-<!-- 	    		<when test="targetGb == 'SAN_REVIEW'"> -->
-<!--     			san_review_id = san_review_id + 1 -->
-<!--     			</when> -->
-<!--     			<when test="targetGb == 'SAN_PARTY'"> -->
-<!--     			san_party_id = san_party_id + 1 -->
-<!--     			</when> -->
-<!--     		</choose>  -->
-<!--     </update> -->
     
      <!-- ***************** 댓글 영구삭제  ******************** -->
     

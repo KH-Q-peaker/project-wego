@@ -33,6 +33,7 @@ $(() => { /* 삭제 관련 */
 		showDeleteModal();
 	
 		let targetComment = $(this).parent().parent();
+		let mentionList = targetComment.parent();
 		let commentId = $(this).siblings("#commentId").val();
 		/* 댓글 삭제 post 전송 */
 		$(".del").off('click').on('click', function(){
@@ -40,10 +41,10 @@ $(() => { /* 삭제 관련 */
 			$.ajax({
 				url : "/comment/" + commentId,
 				type : "DELETE",
-				success : function(data){
+				success : function(){
 					setMessage("🗑️ 댓글이 삭제되었습니다.");
 		 			showModal();
-		 			setTimeout(hideModal, 500);
+		 			setTimeout(hideModal, 700);
 		 			hideDeleteModal();
 					
 					if(targetComment.children('#mentionId').length > 0){
@@ -55,7 +56,9 @@ $(() => { /* 삭제 관련 */
 							commentId : targetComment.children('#mentionId').val()
 						},
 						success: function(data) {
-							targetComment.parent().html(data);
+							mentionList.html(data);
+							mentionList.prevAll().find('#mentionCnt').text(loadCnt);
+							$('#cmtcnt').html(commentCnt);
 						},
 						error: () => {
 							console.log('댓글로딩오류 ');/* 바꿔야됨  */
@@ -74,6 +77,7 @@ $(() => { /* 삭제 관련 */
 						},
 						success: function(data) {
 								$('#cmtwrite').nextAll().remove().end().after(data);
+								$('#cmtcnt').html(commentCnt);
 								$(window).off('scroll').on('scroll', scrollCommentLoading);
 						},
 						error: () => {
@@ -81,14 +85,6 @@ $(() => { /* 삭제 관련 */
 						}
 					});
 					}
-					$('#cmtcnt').html(data);
-					
-//		 			if(targetComment.find('#mentionCnt').html() > 0 ){
-//						targetComment.children().not('.comment, .mentionbtn, #commentId, .mentionCnt').remove();
-//						targetComment.children('.comment').html('삭제된 댓글입니다.');
-//					}else{
-//		 				targetComment.remove();
-//					}
 				},
 				error : function(){
 		 			hideDeleteModal();
@@ -117,10 +113,10 @@ $(() => { /* 삭제 관련 */
 				url : url + target.targetCd,
 				type : "DELETE",
 				success : function(data){
+					window.location.replace('http://localhost:8080' + url);		 			
 					hideDeleteModal();
 					setMessage(data);
 					showModal();
-					setTimeout(function(){ window.location.replace('http://localhost:8080' + url) }, 700);		 			
 				},
 				error : function(){
 		 			hideDeleteModal();

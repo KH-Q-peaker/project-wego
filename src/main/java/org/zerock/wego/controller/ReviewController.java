@@ -1,12 +1,17 @@
 package org.zerock.wego.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.LinkedBlockingDeque;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,8 +34,10 @@ import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.service.common.CommentService;
 import org.zerock.wego.service.common.FavoriteService;
 import org.zerock.wego.service.common.FileService;
+import org.zerock.wego.service.common.ReportService;
 import org.zerock.wego.service.info.SanInfoService;
 import org.zerock.wego.service.review.ReviewService;
+import org.zerock.wego.verification.ReviewValidator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -49,6 +56,9 @@ public class ReviewController {
 	private final CommentService commentService;
 	private final FileService fileService;
 	private final FavoriteService favoriteService;
+	private final ReviewValidator reviewValidator;
+	private final ReportService reportService;
+	
 
 	@GetMapping("")
 	public String openReview(Model model) throws ControllerException {
@@ -81,6 +91,8 @@ public class ReviewController {
 				throw new AccessBlindException();
 			}// if
 			
+			List<FileVO> fileList = this.fileService.getList("SAN_REVIEW", reviewId);
+			
 			// TO_DO : 좋아요 바뀌면 바꿔야됨 
 			FavoriteDTO favorite = new FavoriteDTO();
 			favorite.setTargetGb("SAN_REVIEW");
@@ -89,15 +101,13 @@ public class ReviewController {
 			
 			boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
 
-//			int commentCount = this.commentService.getTotalCountByTarget(target);
-			
 			LinkedBlockingDeque<CommentViewVO> comments 
 							= this.commentService.getCommentOffsetByTarget(target, 0);
 
 			/*후기글 사진 넣는거 필요함 */
 			mav.addObject("review", review);
 			mav.addObject("isFavorite", isFavorite);
-//			mav.addObject("commentCount", commentCount);
+			mav.addObject("fileList", fileList);
 			
 			if(comments != null) {
 				
@@ -119,7 +129,9 @@ public class ReviewController {
 
 		try {
 			this.reviewService.removeById(reviewId);
-//			this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId); 
+//			this.reportService.removeAllByTarget("SAN_REVIEW", reviewId);
+//			this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId);
+//			this.favoriteService.removeAllByTarget("SAN_REVIEW", reviewId);
 			return ResponseEntity.ok("후기글이 삭제되었습니다.️");
 
 		} catch (Exception e) {
@@ -152,10 +164,13 @@ public class ReviewController {
 	} // modify
 
 	@PostMapping("/modify")
-	public String modify(@SessionAttribute("__AUTH__") UserVO auth, Integer sanReviewId, String sanName,
+	public ResponseEntity<Map<String, String>> modify(
+			@SessionAttribute("__AUTH__") UserVO auth, Integer sanReviewId, String sanName,
 			@RequestParam(value = "imgFiles", required = false) List<MultipartFile> newImageFiles,
 			@RequestParam(value = "oldImgFiles", required = false) String oldImageFiles,
-			@RequestParam(value = "imgOrder", required = false) String imageOrder, ReviewDTO reviewDTO, FileDTO fileDTO)
+			@RequestParam(value = "imgOrder", required = false) String imageOrder, 
+			ReviewDTO reviewDTO, BindingResult bindingResult,
+			FileDTO fileDTO)
 			throws ControllerException {
 		log.trace("modify(auth, sanReviewId, sanName, newImageFiles, oldImageFiles, reviewDTO, fileDTO) invoked.");
 
@@ -163,6 +178,19 @@ public class ReviewController {
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 
 			reviewDTO.setSanInfoId(sanId);
+			
+	        reviewValidator.validate(reviewDTO, bindingResult);
+        
+	        Map<String, String> state = new HashMap<>();
+
+	        if (bindingResult.hasFieldErrors()) { 
+	        	log.info("***** FieldErrors *****: {}", bindingResult.getAllErrors());
+	        	
+	        	state.put("state", "failed");
+	            state.put("errorField", bindingResult.getFieldError().getField());
+	            
+	            return new ResponseEntity<>(state, HttpStatus.BAD_REQUEST);
+	        } // if
 
 			this.reviewService.modify(reviewDTO);
 			
@@ -170,8 +198,11 @@ public class ReviewController {
 			List<String> order = Arrays.asList(imageOrder.split(","));
 			
 			this.fileService.isChangeImage(newImageFiles, oldFiles, order, "SAN_REVIEW", sanReviewId, fileDTO);
-
-			return "redirect:/review/" + reviewDTO.getSanReviewId();
+	
+			state.put("state", "successed");
+			state.put("redirectUrl", "/review/" + reviewDTO.getSanReviewId());
+			
+			return new ResponseEntity<>(state, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
@@ -185,8 +216,10 @@ public class ReviewController {
 	} // register
 
 	@PostMapping("/register")
-	public String register(@SessionAttribute("__AUTH__") UserVO auth, String sanName,
-			@RequestParam(value = "imgFiles", required = false) List<MultipartFile> imageFiles, ReviewDTO reviewDTO,
+	public ResponseEntity<Map<String, String>> register(
+			@SessionAttribute("__AUTH__") UserVO auth, String sanName,
+			@RequestParam(value = "imgFiles", required = false) List<MultipartFile> imageFiles, 
+			ReviewDTO reviewDTO, BindingResult bindingResult,
 			FileDTO fileDTO) throws ControllerException {
 		log.trace("register(auth, sanName, imageFiles, reviewDTO, fileDTO, posted, response) invoked.");
 
@@ -194,8 +227,19 @@ public class ReviewController {
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 
 			reviewDTO.setSanInfoId(sanId);
-
 			reviewDTO.setUserId(auth.getUserId());
+			
+			reviewValidator.validate(reviewDTO, bindingResult);
+	        
+	        Map<String, String> state = new HashMap<>();
+
+	        if (bindingResult.hasFieldErrors()) { 
+	        	log.info("***** FieldErrors *****: {}", bindingResult.getAllErrors());
+	        	state.put("state", "failed");
+	            state.put("errorField", bindingResult.getFieldError().getField());
+	            
+	            return new ResponseEntity<>(state, HttpStatus.BAD_REQUEST);
+	        } // if
 
 			this.reviewService.register(reviewDTO);
 
@@ -205,7 +249,10 @@ public class ReviewController {
 				log.info("isImageUploadSuccess: {}", isImageUploadSuccess);
 			} // if
 
-			return "redirect:/review/" + reviewDTO.getSanReviewId();
+			state.put("state", "successed");
+			state.put("redirectUrl", "/review/" + reviewDTO.getSanReviewId());
+			
+			return new ResponseEntity<>(state, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
