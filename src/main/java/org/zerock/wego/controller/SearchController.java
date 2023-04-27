@@ -37,6 +37,8 @@ public class SearchController {
 
 			Set<ReviewViewVO> reviewList = this.service.selectSearchReview3(query);
 			model.addAttribute("reviewList", reviewList);
+			
+			model.addAttribute("query", query);
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch

@@ -7,9 +7,9 @@ import lombok.Data;
 @Data
 public class FavoriteDTO {
 	
-	private long userId;
+	private Integer userId;
 	private String targetGb;
-	private long targetCd;
+	private Integer targetCd;
 	private Timestamp modifiedDt;
 	private Character status;
 
