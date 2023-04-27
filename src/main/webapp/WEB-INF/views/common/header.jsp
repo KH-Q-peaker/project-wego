@@ -50,7 +50,7 @@
 			<div class="menubar">
 				<ul>
 					<li><a href="../profile/${sessionScope.__AUTH__.userId}">마이페이지</a></li>
-					<li><a href="#">알림</a></li>
+					<li><a href="../notification/${sessionScope.__AUTH__.userId}">알림</a></li>
 					<li><a href="#">문의하기</a></li>
 					<li id="logout"><a href="/login/logout">로그아웃</a></li>
 				</ul>

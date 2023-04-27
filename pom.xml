@@ -109,7 +109,13 @@
 			<artifactId>spring-tx</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
+		<!-- =============== 5. 알림과 채팅을위해 추가 =============== -->
 
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-websocket</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
 
 		<!-- =============== 5. JDBC =============== -->
 
