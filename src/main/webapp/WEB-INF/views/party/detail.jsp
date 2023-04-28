@@ -36,7 +36,6 @@
 	
 	<script type="text/javascript" src="/resources/js/header.js"  defer></script>
 	<script type="text/javascript" src="/resources/js/footer.js"  defer></script>
-	<script type="text/javascript" src="/resources/js/default.js"  defer></script>
 	<script type="text/javascript" src="/resources/js/like.js"  defer></script>
 	<script type="text/javascript" src="/resources/js/scroll.js"  defer></script>
 	<script type="text/javascript" src="/resources/js/comment.js"  defer></script>
@@ -124,6 +123,7 @@
 				<div class="cnt">댓글 (<span id="cmtcnt">${party.commentCnt }</span>)</div>
 				<c:set var="comments" value="${comments}" />
 				<%@ include file="../comment/comment.jsp"%>
+				<div id="chat"> </div>
 				<div class="to top">top</div>
 				<div class="to cmt">cmt</div>
 			</section>
