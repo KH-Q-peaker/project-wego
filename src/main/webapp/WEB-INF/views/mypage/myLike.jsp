@@ -14,7 +14,7 @@
 		}
     </style> 
     
-    <div class="my-like cotents">
+    <div>
     	<div class="mountain-info">
 				<h2>❤️ 산 ❤️</h2>
 				<div class="wrap">

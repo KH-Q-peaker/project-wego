@@ -136,8 +136,8 @@ h2 {
   border-radius: 15px;
   position: relative;
   display: grid;
-  box-shadow: 0 4px 4px rgb(0 0 0 / 25%), 0 4px 4px rgb(0 0 0 / 22%);
-  grid-template-columns: auto auto auto auto;
+  box-shadow: 0 4px 4px rgb(185 185 185 / 10%), 0 4px 4px rgb(185 185 185 / 10%);
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 .content-header-menu-item {
   display: inline-block;
@@ -146,7 +146,7 @@ h2 {
 }
 
 .content-header-menu li:hover {
-  background-color: #7ccf144a;
+  /*background-color: #7ccf144a;*/
   border-radius: 15px;
   /* padding: 0px 10px; */
   z-index: 1;
@@ -158,19 +158,21 @@ h2 {
   border-radius: 15px;
   /* padding: 0px 10px; */
 }
-.content-header-menu #item-point {
-  font-weight: bold;
+.content-header-menu .item-point {
   background-color: rgba(78, 197, 61, 0.75);
   border-radius: 15px;
+  color: #fff !important ;
+  font-weight: bold !important ;
 }
-.content-header-menu a:active {
+/*.content-header-menu a:active {
   color: #fff;
   font-weight: bold;
 }
-.content-header-menu #item-point a {
+.content-header-menu .item-point a {
   color: #fff;
   font-weight: bold;
-}
+  color: white;
+}*/
 
 /* 사진추가 */
 .add-profile-image {
@@ -380,7 +382,7 @@ body.dragged:after {
   width: 400px;
   height: 300px;
   left: 50%;
-  top: 50%;
+  top: 40%;
   padding: 40px;
   transform: translate(-50%, -50%);
   background: #ffffff;
@@ -401,10 +403,13 @@ body.dragged:after {
 }
 .nickname-box .bottom {
   height: 30px;
-  line-height: 30px;
-  margin: 0px 0px 30px 5px;
+  line-height: 20px;
+  margin: 5px 0px 0px 5px;
   font-size: 12px;
   font-weight: 500;
+}
+input#nickname:focus {
+    outline: none;
 }
 .nickname-input {
   height: 50px;
@@ -421,14 +426,35 @@ body.dragged:after {
   border-radius: 10px;
 }
 .nickname-input .ion {
-  position: relative;
+  /*position: relative;
   align-items: center;
   display: flex;
   left: 250px;
   bottom: 40px;
   width: 60px;
   justify-content: space-between;
-  font-size: 30px;
+  font-size: 30px;*/
+  /* padding-left: 30px; */
+  /* padding-bottom: 30px; */
+  position: relative;
+  display: inline;
+  align-items: center;
+  display: flex;
+  left: 270px;
+  bottom: 45px;
+  /* justify-content: space-between; */
+  font-size: 40px;
+}
+span.ion {
+  width: 40px;
+}
+ion-icon#ok-sign {
+  display: none;
+  color: block;
+}
+ion-icon#no-sign {
+  display: none;
+  color: block;
 }
 .nickname-send {
   position: absolute;
@@ -456,7 +482,7 @@ body.dragged:after {
   padding: 15px;
   background-color: rgba(78, 197, 61, 0.75);
   border-radius: 10px;
-  box-shadow: 0 14px 28px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 22%);
+  box-shadow: 0px 5px 10px rgb(185 185 185 / 15%), 0px 5px 10px rgb(185 185 185 / 15%);
   height: auto;
   gap: 5px;
   display: grid;
@@ -630,6 +656,20 @@ body.dragged:after {
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 1);
   }
+  .nickname-box {
+    width: 360px;
+    height: 270px;
+    padding: 25px 40px;
+  }
+  .nickname-send {
+    bottom: 25px;
+  }
+  .nickname-input input{
+    width: 280px;
+  }
+  .nickname-input .ion {
+    left: 230px;
+  }
 }
 @media screen and (max-width: 425px) {
   .nickname-input {
@@ -638,5 +678,19 @@ body.dragged:after {
 
   .nickname-input input {
     width: 65%;
+  }
+   .nickname-box {
+    width: 300px;
+    height: 240px;
+    padding: 25px 35px;
+  }
+  .nickname-box > .nick-header{
+  	margin: 20px 0px 0px 5px;
+  }
+  .nickname-send {
+    bottom: 20px;
+  }
+  .nickname-input .ion {
+    display: none;
   }
 }

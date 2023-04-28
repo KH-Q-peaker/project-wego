@@ -44,8 +44,8 @@
                   
                     <%-- 페이지번호목록  --%>
                       <c:forEach var="pageNum" begin="${pastPage.startPage}" end="${pastPage.endPage}"> 
-                              <li class="${param.currPage eq pageNum? 'currPage' : ''} pastPartyPage${pageNum}">
-                              <span class="pastPageNum" id="pastPageNum" data-temp = " ${pastPage.cri.setCurrPage(pageNum)}" onclick="selectClickPastCurrPage()">${pageNum}</span>
+                              <li class="${param.currPage eq pageNum? 'currPage' : ''} pastPartyPage${pageNum}" onclick="selectClickPastCurrPage()">
+                              <span class="pastPageNum" id="pastPageNum" data-temp = " ${pastPage.cri.setCurrPage(pageNum)}">${pageNum}</span>
                               </li>
                               <input type="hidden" id="pastCurrPage" value="">
                       </c:forEach>
@@ -73,18 +73,15 @@
  	       	$('.pastPartyPage1').addClass("currPage");
  	      }
 			
-          var userId = document.querySelector("#userId").value;
-          var amount = 10;
-        
           function selectClickPastCurrPage() {
         	  console.log("********",event.target.innerText);
               var currPage = event.target.innerText;
               $.ajax({
                   type: 'get',
                   url: '/profile/pastPartyList',
-                  data:{"pcri.currPage":currPage,"pcri.amount":amount,"userId":userId},
+                  data:{"pcri.currPage":currPage},
                   success: function(data){
-                      $("#content2").load("/profile/pastPartyList?currPage="+currPage + "&amount="+amount+"&userId="+ userId);
+                      $("#content2").load("/profile/pastPartyList?currPage="+currPage);
                   }
            	 });//ajax
           }
@@ -94,9 +91,9 @@
 			      $.ajax({
 	                  type: 'get',
 	                  url: '/profile/pastPartyList',
-	                  data:{"pcri.currPage":currPage,"pcri.amount":amount,"userId":userId},
+	                  data:{"pcri.currPage":currPage},
 	                  success: function(data){
-	                      $("#content2").load("/profile/pastPartyList?currPage="+currPage + "&amount="+amount+"&userId="+ userId);
+	                      $("#content2").load("/profile/pastPartyList?currPage="+currPage);
 	                  }
 	           	 });//ajax
     	 }
@@ -106,9 +103,9 @@
 	          $.ajax({
                   type: 'get',
                   url: '/profile/pastPartyList',
-                  data:{"pcri.currPage":currPage,"pcri.amount":amount,"userId":userId},
+                  data:{"pcri.currPage":currPage},
                   success: function(data){
-                      $("#content2").load("/profile/pastPartyList?currPage="+currPage + "&amount="+amount+"&userId="+ userId);
+                      $("#content2").load("/profile/pastPartyList?currPage="+currPage);
                   }
            	 });//ajax
  		 }

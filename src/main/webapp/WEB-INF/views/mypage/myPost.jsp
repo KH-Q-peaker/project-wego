@@ -70,8 +70,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 		          end="${pageMaker.endPage}"
 		        >
 		          <!-- 조건문으로 지금 현재 페이지확인 : 전송파라미터중 현페이지번호가같다면 비운다. -->
-		          <li class="${param.currPage eq pageNum ? 'currPage' : ''}  myPostPage${pageNum}">
-		            <span id="currPageNum" onclick="selectClickCurrPage()">${pageNum}</span
+		          <li class="${param.currPage eq pageNum ? 'currPage' : ''}  myPostPage${pageNum}" onclick="selectClickCurrPage()">
+		            <span data-temp="${pageMaker.cri.setCurrPage(pageNum)}" id="currPageNum">${pageNum}</span
 		            >
 		          </li>
 		          <!-- 숫자만 표시됨. -->
@@ -102,10 +102,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
               var currPage = event.target.innerText;
               $.ajax({
                     type: 'get',
-                    url: '/profile/mypost?userId='+ userId,
-                    data:{"cri.currPage":currPage,userId:"${userId}"},
+                    url: '/profile/mypost',
                     success: function(data){
-                        $(".content1").load("/profile/mypost?userId="+userId+"&currPage="+currPage);
+                        $(".content1").load("/profile/mypost?currPage="+currPage);
                     }//success
              	 });//ajax
           }//selectClickCurrPage
@@ -114,10 +113,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 				 var currPage = $( '#currPagePrev' ).val();
 				 $.ajax({
 	                    type: 'get',
-	                    url: '/profile/mypost?userId='+ userId,
-	                    //data:{"currPage":currPage,"amount":10,userId:"${userId}"},
+	                    url: '/profile/mypost',
 	                    success: function(data){
-	                        $(".content1").load("/profile/mypost?userId="+userId+"&currPage="+currPage);
+	                        $(".content1").load("/profile/mypost?currPage="+currPage);
 	                    }//success
 	             	 });//ajax
 				} //selectClickCurrPagePrev
@@ -126,10 +124,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 		         var currPage = $( '#currPageNext' ).val();
 		         $.ajax({
 	                    type: 'get',
-	                    url: '/profile/mypost?userId='+ userId,
-	                    //data:{"currPage":currPage,"amount":10,userId:"${userId}"},
+	                    url: '/profile/mypost',
 	                    success: function(data){
-	                        $(".content1").load("/profile/mypost?userId="+userId+"&currPage="+currPage);
+	                        $(".content1").load("/profile/mypost?currPage="+currPage);
 	                    }//success
 	             	 });//ajax
 		} //selectClickCurrPageNext
