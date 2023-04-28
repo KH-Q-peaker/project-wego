@@ -13,7 +13,6 @@
         <input type="hidden" name="address" id="address" value="${__VO__.address}" /> 
         <form action="/profile/infoset" method="post" id="setform">
           <!-- 내용물 시작  -->
-		<input type="hidden" name="userId" id="userId" value="${__VO__.userId}" /> 
           <div class="cotents">
             <div class="my-location">
               <h2>
@@ -29,10 +28,8 @@
                 </span>
                 <span id="my-">
                   <select name="sido1" id="sido1" class="sido">
-                  <!-- onchange="sidoFirst(this.value)" -->
                   </select>
                   <select name="gugun1" id="gugun1" class="gugun">
-                  <!--onchange="gugunSecond(this.value)" -->
                   </select></span>
               </p>
             </div>
@@ -135,7 +132,7 @@
             <div class="myinfo-update">
               <div class="myinfo-upload">
                 <p>내 정보를 수정하시겠습니까?</p>
-                <input type="reset" id="restart" value="아니오" />
+                <input type="button" id="restart" value="아니오" />
                 <input type="button" id="setButton" value="예" />
               </div>
             </div>
@@ -145,7 +142,6 @@
   <script>
   
   // 사용자 info정보 나타내기
-  	var userId = document.querySelector("#userId").value;
 	var sanRange1 = "${__VO__.sanRange}";
 	var sanTaste1= "${__VO__.sanTaste}";
 	
@@ -161,6 +157,7 @@
 	
 	$(":radio[name='preferences']").radioSelect(sanRange1);
 	$(":radio[name='user-taste-pick']").radioSelect(sanTaste1);
+	
 	
   	console.log(sanRange1, sanTaste1);
   	
@@ -203,6 +200,8 @@
       form.submit();
     });
     
+    
+  
   </script>
   
   

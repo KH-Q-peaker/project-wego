@@ -27,15 +27,15 @@ import lombok.extern.log4j.Log4j2;
 @Service("profileService")
 public class ProfileService {	// POJO
 
-	private final ProfileMapper mapper;
+	private final ProfileMapper profileMapper;
 		
 	// 1. 클릭한 유저 정보가져오기 
 	public UserVO getUserById(Integer userId) throws ServiceException {
 		log.debug("getUserById({}) invoked.", userId);
 		try {
-	        Objects.requireNonNull(this.mapper);
+	        Objects.requireNonNull(this.profileMapper);
 
-			return this.mapper.selectUserId(userId);
+			return this.profileMapper.selectUserId(userId);
 		} catch(Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -49,9 +49,9 @@ public class ProfileService {	// POJO
 	        int currPage = cri.getCurrPage() == null || cri.getCurrPage() < 1 ? 1 : cri.getCurrPage();
 	        cri.setCurrPage(currPage);
 	        
-	        Objects.requireNonNull(this.mapper);
+	        Objects.requireNonNull(this.profileMapper);
 
-			return this.mapper.selectAll(userId, cri);
+			return this.profileMapper.selectAll(userId, cri);
 		} catch(Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -61,8 +61,8 @@ public class ProfileService {	// POJO
 	public Integer getTotalAmountByUserId(Integer userId) throws ServiceException {
 		log.debug("getTotalAmountByUserId({}) invoked.", userId);
 		try {
-			Objects.requireNonNull(this.mapper);
-			return this.mapper.selectTotalCount(userId);
+			Objects.requireNonNull(this.profileMapper);
+			return this.profileMapper.selectTotalCount(userId);
 		} catch(Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -76,9 +76,9 @@ public class ProfileService {	// POJO
 	        // Step 1. Get the current page number and set it to 1 if it is null or less than 1
 	        int currPage = cri2.getCurrPage() == null || cri2.getCurrPage() < 1 ? 1 : cri2.getCurrPage();
 	        cri2.setCurrPage(currPage);
-	        Objects.requireNonNull(this.mapper);
+	        Objects.requireNonNull(this.profileMapper);
 
-			return this.mapper.selectAllComment(userId,cri2);
+			return this.profileMapper.selectAllComment(userId,cri2);
 		} catch(Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -89,9 +89,9 @@ public class ProfileService {	// POJO
 		log.trace("getTotalAmountComment() invoked.");
 		
 		try {
-	        Objects.requireNonNull(this.mapper);
+	        Objects.requireNonNull(this.profileMapper);
 
-			return this.mapper.selectTotalCountComment(userId);
+			return this.profileMapper.selectTotalCountComment(userId);
 		} catch(Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -102,8 +102,8 @@ public class ProfileService {	// POJO
 	public Integer saveUserPictureInFileTbByFileDTO(FileDTO dto) throws ServiceException {
 		log.trace("saveUserPicByFileDTO({}) invoked", dto);
 		try {
-	        Objects.requireNonNull(this.mapper);
-	        return mapper.insertProfilePictureInFileDTO(dto);
+	        Objects.requireNonNull(this.profileMapper);
+	        return profileMapper.insertProfilePictureInFileDTO(dto);
 		} catch(Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -113,19 +113,30 @@ public class ProfileService {	// POJO
 	public Integer updateUserPicByUserDTO(UserDTO dto) throws ServiceException {
 		log.trace("updateUserPicByUserDTO({}) invoked",dto);
 		try {
-	        Objects.requireNonNull(this.mapper);
-	        return mapper.updateProfile(dto);
+	        Objects.requireNonNull(this.profileMapper);
+	        return profileMapper.updateProfile(dto);
 		} catch(Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
 	}//updateUserPicByUserDTO		
 	
+	// 8. user_tb테이블의 user_pic 패쓰 경로를 통해 프로필 사진을 보여주기.
+	public String showUserPicbyUserId(@Param("userId")Integer userId) throws ServiceException {
+		log.trace("showUserPicbyUserId({}) invoked", userId);
+		try {
+	        Objects.requireNonNull(this.profileMapper);
+	        return this.profileMapper.selectProfilePicturePath(userId);
+		} catch(Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	}//showUserPicbyUserId	
+	
 	//9. 닉네임 변경하기
 	public Integer modifyNickByUserDTO(UserDTO dto) throws ServiceException {
 		log.trace("modifyNickByUserDTO({}) invoked",dto);
 		try {
-			Objects.requireNonNull(this.mapper);
-			return mapper.updateNick(dto);
+			Objects.requireNonNull(this.profileMapper);
+			return profileMapper.updateNick(dto);
 		}catch(Exception e) {
 			throw new ServiceException(e);
 		}
@@ -135,8 +146,8 @@ public class ProfileService {	// POJO
 	public List<MyPartyVO> showAvailablePartyByUserIdAndAcri(Integer userId, Criteria cri) throws ServiceException {
 		log.trace("showAvailablePartyByUserIdAndAcri({}) invoked",userId);
 		try {
-			Objects.requireNonNull(this.mapper);
-			return this.mapper.selectAvailableParty(userId,cri.getCurrPage(),cri.getAmount());
+			Objects.requireNonNull(this.profileMapper);
+			return this.profileMapper.selectAvailableParty(userId,cri.getCurrPage(),cri.getAmount());
 		} catch(Exception e) {
 			throw new ServiceException(e);
 		}
@@ -146,8 +157,8 @@ public class ProfileService {	// POJO
 	public List<MyPartyVO> showPastPartyByUserIdAndPcri(Integer userId,Criteria cri) throws ServiceException {
 		log.trace("showPastPartyByUserIdAndPcri({}) invoked",userId);
 		try {
-			Objects.requireNonNull(this.mapper);
-			return this.mapper.selectPastParty(userId,cri.getCurrPage(),cri.getAmount());
+			Objects.requireNonNull(this.profileMapper);
+			return this.profileMapper.selectPastParty(userId,cri.getCurrPage(),cri.getAmount());
 		} catch(Exception e) {
 			throw new ServiceException(e);
 		}
@@ -157,8 +168,8 @@ public class ProfileService {	// POJO
 	public Integer getTotalAmountAvailablePartyByUserId(Integer userId) throws ServiceException {
 		log.trace("getTotalAmountAvailablePartyByUserId({}) invoked.",userId);
 		try {
-			Objects.requireNonNull(this.mapper);
-			return this.mapper.selectTotalCountAvailableParty(userId);
+			Objects.requireNonNull(this.profileMapper);
+			return this.profileMapper.selectTotalCountAvailableParty(userId);
 		} catch(Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -168,8 +179,8 @@ public class ProfileService {	// POJO
 	public Integer getTotalAmountPastPartyByUserId(Integer userId) throws ServiceException {
 		log.trace("getTotalAmountPastPartyByUserId({}) invoked.",userId);
 		try {
-			Objects.requireNonNull(this.mapper);
-			return this.mapper.selectTotalCountPastParty(userId);
+			Objects.requireNonNull(this.profileMapper);
+			return this.profileMapper.selectTotalCountPastParty(userId);
 		} catch(Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
@@ -179,19 +190,30 @@ public class ProfileService {	// POJO
 	public Integer setMyInfoByUserDTO(UserDTO dto) {
 		log.trace("setMyInfoByUserDTO({}) invoked.",dto);
 		try {
-			Objects.requireNonNull(this.mapper);
-			return this.mapper.updateMyInfo(dto);
+			Objects.requireNonNull(this.profileMapper);
+			return this.profileMapper.updateMyInfo(dto);
 		} catch(Exception e) {
 			throw new ServiceException(e);
 		} // try-catch
 	}//setMyInfoByUserDTO
+	
+	// 15. 동일한 닉네임이 있는지 확인하기
+	public Integer countEqualNicknameByNickname(String nickname) {
+		log.trace("countEqualNicknameByNickname({}) invoked.",nickname);
+		try {
+			Objects.requireNonNull(this.profileMapper);
+			return this.profileMapper.countEqualNickname(nickname);
+		} catch(Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	}//countEqualNicknameByNickname
 
 	
 //	public Integer withDrawMyAccount(Integer userId) {
 //		log.trace("withDrawMyAccount({}) invoked.",userId);
 //		try {
-//			Objects.requireNonNull(this.mapper);
-//		return this.mapper.deleteMyAccount(userId) ;
+//			Objects.requireNonNull(this.profileMapper);
+//		return this.profileMapper.deleteMyAccount(userId) ;
 //		} catch(Exception e) {
 //			throw new ServiceException(e);
 //		} // try-catch

@@ -37,9 +37,7 @@
               
               <div id="pagination">
                 <form action="paginationForm" id="paginationForm">
-                
-                <input type="hidden" id="userId" value="${userId}" />
-                
+              
                   <ul class="paginUl">
                     <%-- PREV 표시 c:if --%>
                       <c:if test="${availPage.prev}" >
@@ -52,8 +50,8 @@
                   
                     <%-- 페이지번호목록  --%>
                       <c:forEach var="pageNum" begin="${availPage.startPage}" end="${availPage.endPage}">   <%--  begin end는 마치 between연산자와 비슷 --%>
-                              <li class="${param.currPage eq pageNum? 'currPage' : ''} availablePartyPage${pageNum}">
-                              <span class="availPageNum" id="availPageNum" data-temp = " ${availPage.cri.setCurrPage(pageNum)}" onclick="selectClickAvailableCurrPage()">${pageNum}</span>
+                              <li class="${param.currPage eq pageNum? 'currPage' : ''} availablePartyPage${pageNum}" onclick="selectClickAvailableCurrPage()">
+                              <span class="availPageNum" id="availPageNum" data-temp = " ${availPage.cri.setCurrPage(pageNum)}">${pageNum}</span>
                               <input type="hidden" id="availcurrPageNum" value="">
                               </li>
                       </c:forEach>
@@ -79,8 +77,8 @@
 	       	$('.availablePartyPage1').addClass("currPage");
 	      }
 
-          var userId = document.querySelector("#userId").value;
-          var amount = 10;
+          //var userId = document.querySelector("#userId").value;
+          //var amount = 10;
           
           function selectClickAvailableCurrPage() {
         	  console.log("********",event.target.innerText);
@@ -88,9 +86,9 @@
               $.ajax({
                     type: 'get',
                     url: '/profile/partyList',
-                    data:{"acri.currPage":currPage,"acri.amount":amount,"userId":userId},
+                    data:{"acri.currPage":currPage},
                     success: function(data){
-                        $("#content1").load("/profile/partyList?currPage="+currPage + "&amount="+amount+"&userId="+ userId);
+                        $("#content1").load("/profile/partyList?currPage="+currPage);
                     }
              	 });//ajax
           }//selectClickAvailableCurrPage
@@ -100,9 +98,9 @@
             $.ajax({
                 type: 'get',
                 url: '/profile/partyList',
-                data:{"acri.currPage":currPage,"acri.amount":amount,"userId":userId},
+                data:{"acri.currPage":currPage},
                 success: function(data){
-                    $("#content1").load("/profile/partyList?currPage="+currPage + "&amount="+amount+"&userId="+ userId);
+                    $("#content1").load("/profile/partyList?currPage="+currPage);
                 }
          	 });//ajax
           }
@@ -112,9 +110,9 @@
 	              $.ajax({
 	                  type: 'get',
 	                  url: '/profile/partyList',
-	                  data:{"acri.currPage":currPage,"acri.amount":amount,"userId":userId},
+	                  data:{"acri.currPage":currPage},
 	                  success: function(data){
-	                      $("#content1").load("/profile/partyList?currPage="+currPage + "&amount="+amount+"&userId="+ userId);
+	                      $("#content1").load("/profile/partyList?currPage="+currPage);
 	                  }
 	           	 });//ajax
          	}
