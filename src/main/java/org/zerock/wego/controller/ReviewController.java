@@ -39,6 +39,7 @@ import org.zerock.wego.service.info.SanInfoService;
 import org.zerock.wego.service.review.ReviewService;
 import org.zerock.wego.verification.ReviewValidator;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -57,7 +58,6 @@ public class ReviewController {
 	private final FileService fileService;
 	private final FavoriteService favoriteService;
 	private final ReviewValidator reviewValidator;
-	private final ReportService reportService;
 	
 
 	@GetMapping("")
@@ -70,15 +70,15 @@ public class ReviewController {
 			model.addAttribute("reviewList", reviewList);
 
 			return "review/review";
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			throw new ControllerException(e);
 		} // try-catch
 	} // openReview
 
 	@GetMapping(path="/{reviewId}")
-	public ModelAndView showDetailById(@PathVariable("reviewId")Integer reviewId,
+	public String showDetailById(@PathVariable("reviewId")Integer reviewId,
 									@SessionAttribute("__AUTH__")UserVO user,
-									PageInfo target, ModelAndView mav) throws Exception{
+									PageInfo target, Model model) throws RuntimeException, JsonProcessingException{
 		log.trace("showDetail({}, {}) invoked.", reviewId, target);
 
 			target.setTargetGb("SAN_REVIEW");
@@ -104,23 +104,18 @@ public class ReviewController {
 			LinkedBlockingDeque<CommentViewVO> comments 
 							= this.commentService.getCommentOffsetByTarget(target, 0);
 
-			/*후기글 사진 넣는거 필요함 */
-			mav.addObject("review", review);
-			mav.addObject("isFavorite", isFavorite);
-			mav.addObject("fileList", fileList);
+			model.addAttribute("review", review);
+			model.addAttribute("isFavorite", isFavorite);
+			model.addAttribute("fileList", fileList);
+			model.addAttribute("comments", comments);
 			
-			if(comments != null) {
 				
-				mav.addObject("comments", comments);
-			}// if
-			
 			ObjectMapper objectMapper = new ObjectMapper();
 			String targetJson = objectMapper.writeValueAsString(target);
-			mav.addObject("target", targetJson);
-
-			mav.setViewName("/review/detail");
 			
-			return mav;
+			model.addAttribute("target", targetJson);
+
+			return "/review/detail";
 	}// showDetailById
 
 	@DeleteMapping(path= "/{reviewId}", produces= "text/plain; charset=UTF-8")
@@ -129,12 +124,10 @@ public class ReviewController {
 
 		try {
 			this.reviewService.removeById(reviewId);
-//			this.reportService.removeAllByTarget("SAN_REVIEW", reviewId);
-//			this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId);
-//			this.favoriteService.removeAllByTarget("SAN_REVIEW", reviewId);
+
 			return ResponseEntity.ok("후기글이 삭제되었습니다.️");
 
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			return ResponseEntity.badRequest().build();
 		}// try-catch
 	}// removeReview
