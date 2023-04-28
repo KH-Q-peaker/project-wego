@@ -1,5 +1,8 @@
 package org.zerock.wego.service.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.zerock.wego.domain.common.UserVO;
 import org.zerock.wego.exception.NotFoundUserException;
@@ -39,5 +42,16 @@ public class UserService {
 		return userMapper.selectByUserId(userId) != null;
 	}// isExistById
 
+
+	// 알림을 울린 유저목록이필요해서 만듦.
+    public List<UserVO> getByIds(List<Integer> userIds) {
+        log.trace("getByIds({}) invoked.", userIds);
+        List<UserVO> users = new ArrayList<>();
+        for (Integer userId : userIds) {
+            UserVO user = getById(userId);
+            users.add(user);
+        }
+        return users;
+    }// getByIds 
 
 }// end class

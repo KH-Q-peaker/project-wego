@@ -7,11 +7,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.zerock.wego.domain.common.CommentDTO;
 import org.zerock.wego.domain.common.CommentViewVO;
+import org.zerock.wego.domain.common.NotificationDTO;
 import org.zerock.wego.domain.common.PageInfo;
 import org.zerock.wego.exception.NotFoundPageException;
 import org.zerock.wego.exception.OperationFailException;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.CommentMapper;
+import org.zerock.wego.mapper.NotificationMapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -25,6 +27,7 @@ import lombok.extern.log4j.Log4j2;
 public class CommentService {
 
 	private final CommentMapper commentMapper;
+	private final NotificationMapper notificationMapper;
 
 	
 	// 댓글 총합
@@ -118,6 +121,16 @@ public class CommentService {
 			}// if
 			
 			this.commentMapper.updateTargetCommentCnt(dto, "INSERT");
+			
+			// 댓글 등록 시 알림 추가
+			NotificationDTO notification = new NotificationDTO();
+			
+			if (!dto.getUserId().equals(notification.getUserId())) {  // 게시물 작성자와 댓글 작성자가 다를 때만 알림 추가
+			    log.debug(">>>>>>>>>>> {} 가 게시글에 댓글을 달아서 알림이 갈 것이다.", dto.getUserId());
+			    Integer commentId = dto.getCommentId();
+			    Integer userId = dto.getUserId();
+			    this.notificationMapper.insertCommentByCommentIdAndUserId(commentId,userId);
+			}
 			
 		} catch(OperationFailException e) {
 			throw e;

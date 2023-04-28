@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.wego.mapper.NotificationMapper">
+
+	<!-- *****************  유저 코드로 알림목록 조회 ******************** -->
+
+	<select id="selectAllByUserId"
+		resultType="org.zerock.wego.domain.common.NotificationVO">
+		SELECT
+		  *	  
+		FROM
+		  NOTIFICATION_V
+		WHERE
+		  NOTIFICATION_V.USER_ID = #{userId}
+		  AND NOTIFICATION_V.STATUS != 'Y'
+	</select>
+	
+	<!-- *****************  알림 코드로 알림 조회 ******************** -->
+	
+	<select id="selectByAlarmId"
+		resultType="org.zerock.wego.domain.common.NotificationVO">
+		SELECT
+		  *	  
+		FROM
+		  NOTIFICATION_V
+		WHERE
+		  NOTIFICATION_V.ALARM_ID = #{alarmId}
+		  AND NOTIFICATION_V.STATUS != 'Y'
+	</select>
+	
+ 	<!-- ***************** 좋아요 생성으로 생기는 알람 삽입 (중복방지)******************** -->
+				
+	<insert id="insertFavoriteByTargetCdAndUserId" parameterType="java.lang.Integer">
+	INSERT INTO ADMIN.ALARM_TB (TARGET_GB, TARGET_CD, USER_ID, CONTENTS,CREATED_BY_USER_ID)
+	SELECT '좋아요', T.TARGET_CD, T.USER_ID, 
+		   '회원님의' ||  T.TARGET_GB ||'글에'|| '" ' ||T.CREATED_BY_USER_ID || ' "' ||'님이 좋아요를 눌렀습니다.' AS contents, #{userId}
+	FROM (
+			SELECT '모집' AS TARGET_GB, SAN_PARTY_TB.SAN_PARTY_ID AS TARGET_CD, SAN_PARTY_TB.USER_ID AS USER_ID
+			FROM ADMIN.SAN_PARTY_TB
+			WHERE SAN_PARTY_TB.SAN_PARTY_ID = #{targetCd} AND SAN_PARTY_TB.USER_ID != #{userId}
+				AND NOT EXISTS (
+				SELECT 1
+				FROM ADMIN.LIKE_TB
+				WHERE USER_ID = #{userId} AND TARGET_GB = 'SAN_PARTY' AND TARGET_CD = SAN_PARTY_TB.PARTY_ID
+				)
+			UNION ALL
+			SELECT '후기' AS TARGET_GB, SAN_REVIEW_V.SAN_REVIEW_ID AS TARGET_CD, SAN_REVIEW_TB.USER_ID AS USER_ID
+			FROM ADMIN.SAN_REVIEW_TB
+			WHERE SAN_REVIEW_TB.SAN_REVIEW_ID = #{targetCd} AND SAN_REVIEW_TB.USER_ID != #{userId}
+				AND NOT EXISTS (
+				SELECT 1
+				FROM ADMIN.LIKE_TB
+				WHERE USER_ID = #{userId} AND TARGET_GB = 'SAN_REVIEW' AND TARGET_CD = SAN_REVIEW_V.SAN_REVIEW_ID
+				)
+	) AS T;
+	</insert>
+	
+	 <!-- ***************** 댓글 생성으로 생기는 알람 삽입 (중복방지)******************** -->
+				
+	<insert id="insertCommentByCommentIdAndUserId" parameterType="java.lang.Integer">
+	  INSERT INTO ALARM_TB (TARGET_GB, TARGET_CD, USER_ID, CONTENTS,CREATED_BY_USER_ID)
+	  SELECT '댓글', C.TARGET_CD, T.USER_ID, '회원님의 ' || T.TARGET_GB || '글에 새로운 댓글이 등록되었습니다.' AS contents, #{userId}
+	  FROM COMMENT_V C,
+	  (
+		    SELECT SAN_PARTY_ID AS "TARGET_CD", USER_ID , '모집' AS TARGET_GB  
+		    FROM SAN_PARTY_V
+		    WHERE SAN_PARTY_ID = (SELECT TARGET_CD FROM COMMENT_V WHERE COMMENT_ID = #{commentId})
+		    UNION
+		    SELECT SAN_REVIEW_ID AS "TARGET_CD", USER_ID , '후기' AS TARGET_GB 
+		    FROM SAN_REVIEW_V
+		    WHERE SAN_REVIEW_ID = (SELECT TARGET_CD FROM COMMENT_V WHERE COMMENT_ID = #{commentId})
+		) T
+	  WHERE C.COMMENT_ID = #{commentId}	 		
+	  AND #{userId} != T.USER_ID
+	</insert>
+	
+  	<!-- ************ 알림 읽음 ************ -->
+
+	<update id="updateStatusByAlarmIdAndUserId">
+		UPDATE ALARM_TB 
+		SET READ_DT = CURRENT_TIMESTAMP, 
+			STATUS = 'Y' 
+		WHERE USER_ID = #{userId} AND ALARM_ID = #{alarmId}
+	</update>
+	
+  	<!-- ************ 알림 삭제 ************ -->
+  	<delete id="deleteByAlarmId">
+  		DELETE
+  		FROM
+  			ALARM_TB
+  		WHERE
+	  		ALARM_ID = #{alarmId}
+  	</delete>
+  	
+	<!-- *********** 모집글 존재여부  ************ -->
+  	<select id="isExistByUserId" 
+  			resultType = "java.lang.Boolean">
+  		
+  		SELECT
+        CASE WHEN 
+        	EXISTS (
+            	SELECT 1 
+            	FROM ALARM_TB
+            	WHERE ALARM_ID = #{alarmId}
+        		) 
+        		THEN 1 ELSE 0 END AS exist
+    	FROM dual
+  	</select>
+  	
+</mapper>
