@@ -53,10 +53,8 @@
 					<div class="head">
 						<div class="title boxStyle">
 							<span id="svg"></span>
-							<!-- <span>한우물왕</span> -->
-							<!-- <span>제일높왕</span> -->
-							<!-- <span>참대왕</span> -->
-							<span>${rankingName}</span> <span id="svg"></span>
+							<span>${rankingName}</span>
+							<span id="svg"></span>
 						</div>
 					</div>  
 

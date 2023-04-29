@@ -73,4 +73,19 @@
     	</foreach>
 	</update>
 	
+	<!-- 존재하는지? -->
+	<select id="isExistByUserIdAndBadgeId" 
+  			resultType = "java.lang.Boolean">
+  		
+  		SELECT
+  			CASE WHEN EXISTS 
+  				(
+            		SELECT 1 
+	            	FROM badge_get_tb
+	            	WHERE user_id = #{userId} AND badge_id = #{badgeId}
+        		) 
+        		THEN 1 ELSE 0 END AS "is_exist"
+        FROM dual
+  	</select>
+	
 </mapper>

@@ -41,7 +41,7 @@ public class FileService {
 			} // if
 
 			for (int order = 0; order < imgFiles.size(); order++) {
-				if (!"".equals(imgFiles.get(order).getOriginalFilename())) {
+				if (!imgFiles.get(order).getOriginalFilename().equals("")) {
 					String originalName = imgFiles.get(order).getOriginalFilename();
 					String uuid = UUID.randomUUID().toString();
 

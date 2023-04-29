@@ -11,6 +11,7 @@ import org.zerock.wego.domain.oauth.kakao.KakaoOAuthTokenDTO;
 import org.zerock.wego.domain.oauth.kakao.KakaoUserInfoDTO;
 import org.zerock.wego.domain.oauth.naver.NaverOAuthTokenDTO;
 import org.zerock.wego.domain.oauth.naver.NaverUserInfoDTO;
+import org.zerock.wego.exception.LoginException;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.oauth.GoogleOAuth;
 import org.zerock.wego.oauth.KakaoOAuth;
@@ -32,68 +33,65 @@ public class OAuthService {
 	private final KakaoOAuth kakaoOAuth;
 	private final NaverOAuth naverOAuth;
 	private final GoogleOAuth googleOAuth;
-	
-	
+
+
 	public UserVO googleLogin(String authorizationCode, String state) throws JsonProcessingException {
 		log.trace("googleLogin(authorizationCode, {}) invoked.", state);
 
 		GoogleOAuthTokenDTO googleOAuthTokenDTO = this.getGoogleAccessToken(authorizationCode);
 		GoogleUserInfoDTO googleUserInfoDTO = this.getGoogleUserInfo(googleOAuthTokenDTO);
-		
+
 		String targetSocialId = googleUserInfoDTO.getEmail();
-		
+
 		boolean isAlreadySignUp = loginService.isSignUp(targetSocialId);
-		
+
 		if(!isAlreadySignUp) {
 			UserDTO userDTO = UserDTO.createByGoogle(googleUserInfoDTO);
-			
+
 			this.loginService.signUp(userDTO);
 		} // if
-		
+
 		return this.loginService.socialLogin(targetSocialId);
-		
+
 	} // googleLogin
 
-	
+
 	public GoogleOAuthTokenDTO getGoogleAccessToken(String authorizationCode) throws JsonProcessingException {
 		log.trace("getGoogleAccessToken(authorizationCode) invoked.");
 
-			ResponseEntity<String> responseEntity = this.googleOAuth.requestAccessToken(authorizationCode);
+		ResponseEntity<String> responseEntity = this.googleOAuth.requestAccessToken(authorizationCode);
 
-			HttpStatus responseStateCode = responseEntity.getStatusCode();
+		HttpStatus responseStateCode = responseEntity.getStatusCode();
 
-			if(responseStateCode == HttpStatus.OK) {
+		if(responseStateCode == HttpStatus.OK) {
 
-				GoogleOAuthTokenDTO naverOAuthTokenDTO = this.googleOAuth.parseOAuthTokenDTO(responseEntity.getBody());
+			GoogleOAuthTokenDTO naverOAuthTokenDTO = this.googleOAuth.parseOAuthTokenDTO(responseEntity.getBody());
 
-				return naverOAuthTokenDTO;
-			} else {
-				throw new ServiceException("naver getAccessToken");
-			} // if-else
+			return naverOAuthTokenDTO;
+		} else {
+
+			throw new LoginException("Google login error");
+		} // if-else
 
 	}// getGoogleAccessToken
 
 
-	public GoogleUserInfoDTO getGoogleUserInfo(GoogleOAuthTokenDTO OAuthToken) throws ServiceException{
+	public GoogleUserInfoDTO getGoogleUserInfo(GoogleOAuthTokenDTO OAuthToken) throws JsonProcessingException{
 		log.trace("getGoogleUserInfo(OAuthToken) invoked.");
 
-		try {
-			ResponseEntity<String> responseEntity = this.googleOAuth.requestUserInfo(OAuthToken);
+		ResponseEntity<String> responseEntity = this.googleOAuth.requestUserInfo(OAuthToken);
 
-			HttpStatus responseStateCode = responseEntity.getStatusCode();
+		HttpStatus responseStateCode = responseEntity.getStatusCode();
 
-			if(responseStateCode == HttpStatus.OK) {
+		if(responseStateCode == HttpStatus.OK) {
 
-				GoogleUserInfoDTO googleUserInfoDTO = this.googleOAuth.parseUserInfoDTO(responseEntity.getBody());
+			GoogleUserInfoDTO googleUserInfoDTO = this.googleOAuth.parseUserInfoDTO(responseEntity.getBody());
 
-				return googleUserInfoDTO;
-			} else {
-				throw new ServiceException("naver getAccessToken");
-			} // if-else
-		}
-		catch(Exception e) {
-			throw new ServiceException(e);
-		}// try-catch
+			return googleUserInfoDTO;
+		} else {
+
+			throw new LoginException("Google login error");
+		} // if-else
 
 	}// getGoogleUserInfo
 
@@ -103,125 +101,119 @@ public class OAuthService {
 
 		KakaoOAuthTokenDTO kakaoOAuthTokenDTO = this.getKakaoAccessToken(authorizationCode);
 		KakaoUserInfoDTO kakaoUserInfoDTO = this.getKakaoUserInfo(kakaoOAuthTokenDTO);
-		
+
 		String targetSocialId = kakaoUserInfoDTO.getKakao_account().getEmail();
-		
+
 		boolean isAlreadySignUp = loginService.isSignUp(targetSocialId);
-		
+
 		if(!isAlreadySignUp) {
 			UserDTO userDTO = UserDTO.createByKakao(kakaoUserInfoDTO);
-			
+
 			this.loginService.signUp(userDTO);
 		} // if
-		
+
 		return this.loginService.socialLogin(targetSocialId);
-		
+
 	} // kakaoLogin
 
-	
+
 	public KakaoOAuthTokenDTO getKakaoAccessToken(String authorizationCode) throws JsonProcessingException {
 		log.trace("getKakaoAccessToken(authorizationCode) invoked.");
 
-			ResponseEntity<String> responseEntity = this.kakaoOAuth.requestAccessToken(authorizationCode);
+		ResponseEntity<String> responseEntity = this.kakaoOAuth.requestAccessToken(authorizationCode);
 
-			HttpStatus responseStateCode = responseEntity.getStatusCode();
+		HttpStatus responseStateCode = responseEntity.getStatusCode();
 
-			if(responseStateCode == HttpStatus.OK) {
+		if(responseStateCode == HttpStatus.OK) {
 
-				KakaoOAuthTokenDTO kakaoOAuthTokenDTO = this.kakaoOAuth.parseOAuthTokenDTO(responseEntity.getBody());
+			KakaoOAuthTokenDTO kakaoOAuthTokenDTO = this.kakaoOAuth.parseOAuthTokenDTO(responseEntity.getBody());
 
-				return kakaoOAuthTokenDTO;
-			} else {
-				throw new ServiceException("kakao getAccessToken");
-			} // if-else
+			return kakaoOAuthTokenDTO;
+		} else {
+
+			throw new LoginException("Kakao login error");
+		} // if-else
 
 	}// KakaoOAuthTokenDTO
 
 
-	public KakaoUserInfoDTO getKakaoUserInfo(KakaoOAuthTokenDTO OAuthToken) throws ServiceException{
+	public KakaoUserInfoDTO getKakaoUserInfo(KakaoOAuthTokenDTO OAuthToken) throws JsonProcessingException{
 		log.trace("getKakaoUserInfo(OAuthToken) invoked.");
 
-		try {
-			ResponseEntity<String> responseEntity = this.kakaoOAuth.requestUserInfo(OAuthToken);
+		ResponseEntity<String> responseEntity = this.kakaoOAuth.requestUserInfo(OAuthToken);
 
-			HttpStatus responseStateCode = responseEntity.getStatusCode();
+		HttpStatus responseStateCode = responseEntity.getStatusCode();
 
-			if(responseStateCode == HttpStatus.OK) {
+		if(responseStateCode == HttpStatus.OK) {
 
-				KakaoUserInfoDTO kakaoUserInfoDTO = this.kakaoOAuth.parseUserInfoDTO(responseEntity.getBody());
+			KakaoUserInfoDTO kakaoUserInfoDTO = this.kakaoOAuth.parseUserInfoDTO(responseEntity.getBody());
 
-				return kakaoUserInfoDTO;
-			} else {
-				throw new ServiceException("kakao getAccessToken");
-			} // if-else
-		}
-		catch(Exception e) {
-			throw new ServiceException(e);
-		}// try-catch
+			return kakaoUserInfoDTO;
+		} else {
+
+			throw new LoginException("Kakao login error");
+		} // if-else
 
 	}// KakaoUserInfoDTO
-	
-	
+
+
 	public UserVO naverLogin(String authorizationCode, String state) throws JsonProcessingException {
 		log.trace("naverLogin(authorizationCode) invoked.");
 
 		NaverOAuthTokenDTO naverOAuthTokenDTO = this.getNaverAccessToken(authorizationCode, state);
 		NaverUserInfoDTO naverUserInfoDTO = this.getNaverUserInfo(naverOAuthTokenDTO);
-		
+
 		String targetSocialId = naverUserInfoDTO.getResponse().getEmail();
-		
+
 		boolean isAlreadySignUp = loginService.isSignUp(targetSocialId);
-		
+
 		if(!isAlreadySignUp) {
 			UserDTO userDTO = UserDTO.createByNaver(naverUserInfoDTO);
-			
+
 			this.loginService.signUp(userDTO);
 		} // if
-		
+
 		return this.loginService.socialLogin(targetSocialId);
-		
+
 	} // naverLogin
 
-	
+
 	public NaverOAuthTokenDTO getNaverAccessToken(String authorizationCode, String state) throws JsonProcessingException {
 		log.trace("getNaverAccessToken(authorizationCode) invoked.");
 
-			ResponseEntity<String> responseEntity = this.naverOAuth.requestAccessToken(authorizationCode, state);
+		ResponseEntity<String> responseEntity = this.naverOAuth.requestAccessToken(authorizationCode, state);
 
-			HttpStatus responseStateCode = responseEntity.getStatusCode();
+		HttpStatus responseStateCode = responseEntity.getStatusCode();
 
-			if(responseStateCode == HttpStatus.OK) {
+		if(responseStateCode == HttpStatus.OK) {
 
-				NaverOAuthTokenDTO naverOAuthTokenDTO = this.naverOAuth.parseOAuthTokenDTO(responseEntity.getBody());
+			NaverOAuthTokenDTO naverOAuthTokenDTO = this.naverOAuth.parseOAuthTokenDTO(responseEntity.getBody());
 
-				return naverOAuthTokenDTO;
-			} else {
-				throw new ServiceException("naver getAccessToken");
-			} // if-else
+			return naverOAuthTokenDTO;
+		} else {
+
+			throw new LoginException("Naver login error");
+		} // if-else
 
 	}// getNaverAccessToken
 
 
-	public NaverUserInfoDTO getNaverUserInfo(NaverOAuthTokenDTO OAuthToken) throws ServiceException{
+	public NaverUserInfoDTO getNaverUserInfo(NaverOAuthTokenDTO OAuthToken) throws JsonProcessingException{
 		log.trace("getNaverUserInfo(OAuthToken) invoked.");
 
-		try {
-			ResponseEntity<String> responseEntity = this.naverOAuth.requestUserInfo(OAuthToken);
+		ResponseEntity<String> responseEntity = this.naverOAuth.requestUserInfo(OAuthToken);
 
-			HttpStatus responseStateCode = responseEntity.getStatusCode();
+		HttpStatus responseStateCode = responseEntity.getStatusCode();
 
-			if(responseStateCode == HttpStatus.OK) {
+		if(responseStateCode == HttpStatus.OK) {
 
-				NaverUserInfoDTO naverUserInfoDTO = this.naverOAuth.parseUserInfoDTO(responseEntity.getBody());
+			NaverUserInfoDTO naverUserInfoDTO = this.naverOAuth.parseUserInfoDTO(responseEntity.getBody());
 
-				return naverUserInfoDTO;
-			} else {
-				throw new ServiceException("naver getAccessToken");
-			} // if-else
-		}
-		catch(Exception e) {
-			throw new ServiceException(e);
-		}// try-catch
+			return naverUserInfoDTO;
+		} else {
+
+			throw new LoginException("Naver login error");
+		} // if-else
 
 	}// getNaverUserInfo
 

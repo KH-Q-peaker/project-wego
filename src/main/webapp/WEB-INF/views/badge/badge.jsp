@@ -6,8 +6,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<c:set var="path" value="${pageContext.request.contextPath}" />
-
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -18,26 +16,25 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="description" content="등산멤버 모집 커뮤니티" />
 
-	<link rel="shortcut icon" href="${path}/resources/ico/favicon.ico" type="image/x-icon" />
-	<link rel="icon" href="${path}/resources/ico/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
+	<link rel="icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
 	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
 	  
- 	<link rel="stylesheet" href="${path}/resources/css/badge.css">
-
-	<link rel="stylesheet" href="${path}/resources/css/header.css" />
- 	<link rel="stylesheet" href="${path}/resources/css/footer.css" />
+ 	<link rel="stylesheet" href="/resources/css/badge.css">
+	<link rel="stylesheet" href="/resources/css/header.css" />
+ 	<link rel="stylesheet" href="/resources/css/footer.css" />
  	
- 	<script src="${path}/resources/js/header.js" defer></script>
-	<script src="${path}/resources/js/footer.js" defer></script>
+ 	<script src="/resources/js/header.js" defer></script>
+	<script src="/resources/js/footer.js" defer></script>
   
 	<script>
 		var targetUserId = ${targetUserId};
 		var authUserId = ${sessionScope.__AUTH__.userId};
 	</script>
 	
-	<script src="${path}/resources/js/badge.js" defer></script>
+	<script src="/resources/js/badge.js" defer></script>
 	
 </head>
 
@@ -117,6 +114,11 @@
           </div>
         </div>
       </div>
+      
+      <a href="#" class="scrollToTop"> <img src="/resources/svg/top.svg" /> </a>
+		<a href="#" class="chat"> <img src="/resources/svg/chat.svg" /> </a>
+      
+      
     </section>
     <!-- main end -->
 

@@ -29,5 +29,8 @@ public interface BadgeGetMapper {
 	// 선택한 뱃지의 리스트를 넘겨주고 리스트 이외의 모든 뱃지 획득 내역의 상태를 'N'으로 초기화
 	public abstract Integer updateNotPickBadgeStautToN(@Param("userId")Integer userId, @Param("pickList")List<Integer> pickList);
 	
+	// 유저가 뱃지를 갖고있는지 확인합니다.
+	public abstract boolean isExistByUserIdAndBadgeId(@Param("userId")Integer userId, @Param("badgeId")Integer badgeId);
+	
 	
 } // end interface
