@@ -63,10 +63,12 @@
 }
 
 .btns> input{
-	width: 30px;
+/* 	width: 30px; */
+	width: 33px;
 	height: 20px;
 	border-radius: 10px;
-	font-size: 10px; 
+	font-size: 10px;
+	margin: 0 1px;
 }
 
 .comment {
@@ -84,14 +86,14 @@
 	display: none;
 	grid-column: 4;
 	grid-row: 3;
-	width: 70px;
+	width: 75px;
 	justify-self: end;
 }
 
 .updatebtn>input {
 	background-color: rgba(78, 197, 61, 0.9);
 	border-radius: 10px;
-	width: 30px;
+	width: 33px;
 	height: 20px;
 	font-size: 10px;
 	color: white;
@@ -128,11 +130,11 @@
 .mentionCnt{
 	grid-row: 3;
     grid-column: 2;
-    justify-self: end;
     width: auto;
     font-size: 12px;
     color: #727272;
     align-self: center;
+    margin-left: 16px;
 }
 .mentionList{
 	display: none;
@@ -182,7 +184,7 @@
 	grid-row: 2;
 	align-self: center;
 	border-radius: 10px;
-	width: 30px;
+	width: 33px;
 	height: 20px;
 	font-size: 11px;
 }

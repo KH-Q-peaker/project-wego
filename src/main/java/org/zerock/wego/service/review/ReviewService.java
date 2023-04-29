@@ -100,12 +100,6 @@ public class ReviewService {
 			this.commentService.removeAllByTarget("SAN_REVIEW", reviewId);
 			// TO_DO : 좋아요 내역 삭제도 추기돼야 함,
 			
-			isExist = this.reviewMapper.isExist(reviewId);
-			
-			if(isExist) {
-				throw new OperationFailException();
-			}// if
-			
 		} catch(NotFoundPageException | OperationFailException e) {
 			throw e;
 			

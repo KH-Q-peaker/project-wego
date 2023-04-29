@@ -9,7 +9,6 @@ import java.util.concurrent.LinkedBlockingDeque;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
+import org.zerock.wego.domain.chat.ChatRoomDTO;
 import org.zerock.wego.domain.common.CommentViewVO;
 import org.zerock.wego.domain.common.FavoriteDTO;
 import org.zerock.wego.domain.common.FileDTO;
@@ -33,6 +32,7 @@ import org.zerock.wego.exception.AccessBlindException;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.exception.NotFoundPageException;
 import org.zerock.wego.exception.OperationFailException;
+import org.zerock.wego.service.common.ChatService;
 import org.zerock.wego.service.common.CommentService;
 import org.zerock.wego.service.common.FavoriteService;
 import org.zerock.wego.service.common.FileService;
@@ -61,6 +61,7 @@ public class PartyController {
 	private final FileService fileService;
 	private final FavoriteService favoriteService;
 	private final PartyValidator partyValidator;
+	private final ChatService chatService;
   
 	
 	@GetMapping("")
@@ -83,7 +84,8 @@ public class PartyController {
 	@GetMapping("/{partyId}") 
 	public String showDetailById(@PathVariable("partyId")Integer partyId, 
 								@SessionAttribute("__AUTH__")UserVO user,
-								PageInfo pageInfo, Model model) throws RuntimeException, JsonProcessingException{
+								PageInfo pageInfo, Model model, 
+								JoinDTO join, FavoriteDTO favorite) throws RuntimeException, JsonProcessingException{
 	log.trace("showDetailById() invoked.");
 		
 			pageInfo.setTargetGb("SAN_PARTY");
@@ -96,14 +98,12 @@ public class PartyController {
 				throw new AccessBlindException();
 			} // if
 			
-			JoinDTO join = new JoinDTO();
 			join.setSanPartyId(partyId);
 			join.setUserId(userId);
 			
 			boolean isJoin = this.joinService.isJoin(join);
 			
 			// TO_DO : 좋아요구현되면 바꾸기 
-			FavoriteDTO favorite = new FavoriteDTO();
 			favorite.setTargetGb("SAN_PARTY");
 			favorite.setTargetCd(partyId);
 			favorite.setUserId(userId);
@@ -121,14 +121,14 @@ public class PartyController {
 			ObjectMapper objectMapper = new ObjectMapper();
 			String pageInfoJson = objectMapper.writeValueAsString(pageInfo);
 
-			model.addAttribute("pageInfoJson", pageInfoJson);
+			model.addAttribute("target", pageInfoJson);
 
 			return "/party/detail";
 	}// showDetailById
 	
 	// 모집글 삭제
 	@DeleteMapping(path = "/{partyId}", produces = "text/plain; charset=UTF-8")
-	public ResponseEntity<String> removeById(@PathVariable("partyId") Integer partyId) throws Exception {
+	public ResponseEntity<String> removeById(@PathVariable("partyId") Integer partyId) throws RuntimeException {
 		log.trace("removeById({}) invoked.", partyId);
 
 		try {
@@ -221,8 +221,8 @@ public class PartyController {
 	public ResponseEntity<Map<String, String>> register(
 			@SessionAttribute("__AUTH__")UserVO auth, String sanName, 
 			@RequestParam(value = "imgFile", required = false)List<MultipartFile> imageFiles,
-			PartyDTO partyDTO, BindingResult bindingResult, FileDTO fileDTO, JoinDTO joinDTO
-			) throws ControllerException {
+			PartyDTO partyDTO, BindingResult bindingResult, FileDTO fileDTO, JoinDTO joinDTO,
+			ChatRoomDTO roomDTO) throws ControllerException {
 		log.trace("PostMapping - register() invoked.");
 
 		try {			
@@ -256,7 +256,12 @@ public class PartyController {
 			joinDTO.setSanPartyId(partyDTO.getSanPartyId());
 			joinDTO.setUserId(auth.getUserId());
 			this.joinService.create(joinDTO);
-
+			
+			roomDTO.setChatRoomId(partyDTO.getSanPartyId());
+			roomDTO.setTitle(partyDTO.getTitle());
+			roomDTO.setUserId(auth.getUserId());
+			this.chatService.createChatRoom(roomDTO);
+			
 			state.put("state", "successed");
 			state.put("redirectUrl", "/party/" + partyDTO.getSanPartyId());
 			

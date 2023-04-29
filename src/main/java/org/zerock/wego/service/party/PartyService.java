@@ -74,7 +74,7 @@ public class PartyService {
 				 throw new NotFoundPageException();
 			}// if
 			 
-			this.partyMapper.visitCountUp(partyId); //조회수증가.
+			this.partyMapper.visitCountUp(partyId); 
 			
 			return party;
 			
@@ -102,12 +102,6 @@ public class PartyService {
 			this.fileService.isRemoveByTarget("SAN_PARTY", partyId);
 			this.favoriteService.removeAllByTarget("SAN_PARTY", partyId);
 			this.commentService.removeAllByTarget("SAN_PARTY", partyId);
-			
-			isExist = this.partyMapper.isExist(partyId);
-			
-			if(isExist) {
-				throw new OperationFailException();
-			}// if
 			
 		} catch (NotFoundPageException | OperationFailException e) {
 			throw e;

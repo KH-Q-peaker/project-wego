@@ -56,11 +56,11 @@ public class JoinService {
 			int currentJoin = this.joinMapper.selectTotalCount(dto);
 			int maxJoin = party.getPartyMax();
 
-			if (currentJoin >= maxJoin) {
+			String status = this.joinMapper.selectById(dto);
+			
+			if ((currentJoin >= maxJoin) && (!status.equals("Y")) ) {
 				throw new OperationFailException();
 			} // if
-
-			String status = this.joinMapper.selectById(dto);
 
 			if (status == null) {
 

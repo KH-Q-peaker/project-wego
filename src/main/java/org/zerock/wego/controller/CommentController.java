@@ -44,9 +44,12 @@ public class CommentController {
 		
 		LinkedBlockingDeque<CommentViewVO> comments = 
 					this.commentService.getCommentOffsetByTarget(target, lastComment);
-
+		
+		int totalCnt = this.commentService.getTotalCountByTarget(target.getTargetGb(), target.getTargetCd());
+		
 		model.addAttribute("comments", comments);
-
+		model.addAttribute("totalCnt", totalCnt);
+		
 		return "comment/load";
 	}// loadCommentOffset
 

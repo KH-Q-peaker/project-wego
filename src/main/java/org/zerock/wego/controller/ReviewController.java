@@ -78,11 +78,11 @@ public class ReviewController {
 	@GetMapping(path="/{reviewId}")
 	public String showDetailById(@PathVariable("reviewId")Integer reviewId,
 									@SessionAttribute("__AUTH__")UserVO user,
-									PageInfo target, Model model) throws RuntimeException, JsonProcessingException{
-		log.trace("showDetail({}, {}) invoked.", reviewId, target);
+									PageInfo pageInfo, Model model, FavoriteDTO favorite) throws RuntimeException, JsonProcessingException{
+		log.trace("showDetail({}, {}) invoked.", reviewId, pageInfo);
 
-			target.setTargetGb("SAN_REVIEW");
-			target.setTargetCd(reviewId);
+			pageInfo.setTargetGb("SAN_REVIEW");
+			pageInfo.setTargetCd(reviewId);
 			
 			ReviewViewVO review = this.reviewService.getById(reviewId);
 			Integer userId = user.getUserId();
@@ -94,7 +94,6 @@ public class ReviewController {
 			List<FileVO> fileList = this.fileService.getList("SAN_REVIEW", reviewId);
 			
 			// TO_DO : 좋아요 바뀌면 바꿔야됨 
-			FavoriteDTO favorite = new FavoriteDTO();
 			favorite.setTargetGb("SAN_REVIEW");
 			favorite.setTargetCd(reviewId);
 			favorite.setUserId(userId);
@@ -102,7 +101,7 @@ public class ReviewController {
 			boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
 
 			LinkedBlockingDeque<CommentViewVO> comments 
-							= this.commentService.getCommentOffsetByTarget(target, 0);
+							= this.commentService.getCommentOffsetByTarget(pageInfo, 0);
 
 			model.addAttribute("review", review);
 			model.addAttribute("isFavorite", isFavorite);
@@ -111,9 +110,9 @@ public class ReviewController {
 			
 				
 			ObjectMapper objectMapper = new ObjectMapper();
-			String targetJson = objectMapper.writeValueAsString(target);
+			String pageInfoJson = objectMapper.writeValueAsString(pageInfo);
 			
-			model.addAttribute("target", targetJson);
+			model.addAttribute("target", pageInfoJson);
 
 			return "/review/detail";
 	}// showDetailById
