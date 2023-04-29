@@ -47,7 +47,7 @@ public class FileService {
 
 			// DB에 저장하기 위한 이미지 정보 처리
 			for (int order = 0; order < imgFiles.size(); order++) {
-				if (!"".equals(imgFiles.get(order).getOriginalFilename())) {
+				if (!imgFiles.get(order).getOriginalFilename().equals("")) {
 					String originalName = imgFiles.get(order).getOriginalFilename();
 					String uuid = UUID.randomUUID().toString();
 					String imgPath = basePath + "/" + uuid;

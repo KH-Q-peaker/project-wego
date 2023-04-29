@@ -3,19 +3,22 @@ package org.zerock.wego.controller;
 import java.util.Deque;
 import java.util.List;
 
-import javax.management.RuntimeErrorException;
-
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.zerock.wego.config.BadgeConfig;
+import org.zerock.wego.config.SessionConfig;
 import org.zerock.wego.domain.badge.BadgeGetVO;
+import org.zerock.wego.domain.common.UserVO;
 import org.zerock.wego.exception.NotFoundUserException;
-import org.zerock.wego.exception.ServiceException;
+import org.zerock.wego.exception.OperationFailException;
 import org.zerock.wego.service.badge.BadgeGetService;
 import org.zerock.wego.service.common.UserService;
 
@@ -27,53 +30,56 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 
 @RequestMapping("badge")
-@RestController
+@Controller
 public class BadgeController {
 	private final UserService userService;
 	private final BadgeConfig badgeConfig;
 	private final BadgeGetService badgeGetService;
 
-
+	
 	@GetMapping(path = "/{targetUserId}")
-	public ModelAndView showCollection(@PathVariable("targetUserId") Integer targetUserId) 
+	public String showCollection(@PathVariable("targetUserId") Integer targetUserId, Model model) 
 		throws RuntimeException{
 		log.trace("showCollection({}) invoked.", targetUserId);
 
 		try {
 			String targetUserNickname = userService.getById(targetUserId).getNickname();
 
-			ModelAndView mav = new ModelAndView();
+			model.addAttribute("targetUserNickname", targetUserNickname);
+			model.addAttribute("badgeConfig", badgeConfig);
+			model.addAttribute("targetUserId", targetUserId);
 			
-			mav.setViewName("/badge/badge");
-
-			mav.addObject("targetUserNickname", targetUserNickname);
-			mav.addObject("badgeConfig", badgeConfig);
-			mav.addObject("targetUserId", targetUserId);
-
-			return mav;
+			return "/badge/badge";
 		} catch (NotFoundUserException e) {
 
 			throw new RuntimeException(e);
 		} // try-catch
 	} // showCollection
 
-
-	@PostMapping(path = "/{targetUserId}")
-	public Deque<BadgeGetVO> updatePickBadge(
+	@PostMapping(path = "/modify/{targetUserId}")
+	public ResponseEntity<String> modifyPickBadge(
 			@PathVariable("targetUserId")Integer targetUserId,
 			@RequestParam(value = "pickList[]") List<Integer> pickList
-			) throws ServiceException {
+			) {
 		log.trace("updatePickBadge({}, {}) invoked.", targetUserId, pickList);
+		
+		try {
+			badgeGetService.modifyPickBadgeByUserIdAndPickList(targetUserId, pickList);
+			
+		} catch (NotFoundUserException e) {
 
-		badgeGetService.updatePickBadgeByUserIdAndPickList(targetUserId, pickList);
-
-		Deque<BadgeGetVO> newBadgeGetList = badgeGetService.getAllByUserId(targetUserId);
-
-		return newBadgeGetList;
+			throw new RuntimeException(e);
+		} catch (OperationFailException e) {
+			
+			throw new RuntimeException(e);
+		} // try-catch
+		
+		return ResponseEntity.ok().build();
 	} // updatePickBadge
 
 
 	@GetMapping(path = "/get-list/json/{targetUserId}")
+	@ResponseBody
 	public Deque<BadgeGetVO> getBadgeGetListJson(@PathVariable("targetUserId")Integer targetUserId) {
 		log.trace("getBadgeGetListJson({}) invoked.", targetUserId);
 
@@ -84,6 +90,7 @@ public class BadgeController {
 
 
 	@GetMapping(path = "/pick-list/json/{targetUserId}")
+	@ResponseBody
 	public Deque<BadgeGetVO> getPickBadgeListJson(@PathVariable("targetUserId")Integer targetUserId) {
 		log.trace("getPickBadgeListJson({}) invoked.", targetUserId);
 

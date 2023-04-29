@@ -52,7 +52,7 @@
 		<property name = "dataSource" ref = "hikariDataSource"/>
 	</bean>
 
-	<tx:annotation-driven />
+	<tx:annotation-driven /> 
 	
 	<!-- AOP -->
 	<context:annotation-config/>

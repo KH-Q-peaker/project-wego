@@ -15,6 +15,9 @@ public interface UserMapper {
 	public abstract UserVO selectByNickname(String nickname);
 
 	// 카카오 가입 등록 
-	public abstract Integer insertUser(UserDTO dto);
+	public abstract Integer insert(UserDTO dto);
+	
+	// 존재하는 유저인가?
+	public abstract Integer isExist(Integer userId);
 
 }// end interface
