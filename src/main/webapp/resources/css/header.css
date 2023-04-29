@@ -245,10 +245,9 @@ header {
 }
 
 .user-profile-img {
-	/* display: none; */
-	width: 40px;
-	height: 40px;
-	border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
 }
 
 .login-btn {
@@ -305,6 +304,7 @@ header {
 }
 
 .search-bar .cancel {
+
 	display: none;
 	width: 25px;
 	height: 25px;

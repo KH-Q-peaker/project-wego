@@ -22,12 +22,12 @@
               </div>
 
               <div class="nickname-input">
-                <input id="nickname" type="text" name="nickname" placeholder="등산쟁이" value="${vo.nickname}" />
-                <span class="ion"><ion-icon name="checkmark-circle-outline"></ion-icon>
-                  <ion-icon name="close-circle-outline"></ion-icon></span>
+                <input id="nickname" type="text" name="nickname" placeholder="등산쟁이" value="${vo.nickname}" oninput="testtest()">
+                <span class="ion"><ion-icon name="checkmark-circle-outline" id="ok-sign"></ion-icon>
+                  <ion-icon name="close-circle-outline" id="no-sign"></ion-icon></span>
               </div>
               <div class="bottom">
-                <span>사용 가능한 닉네임입니다.</span>
+                <span id="isRightText"></span>
               </div>
               <button type="button" class="nickname-send">변경</button>
               <div>
@@ -39,8 +39,7 @@
 
             <!--</form> -->
             <!--  프로필 메인  -->
-            <form action="/profile/image" method="post" enctype="multipart/form-data">
-            <!-- <input type=hidden name="userId" id="user_id" value="${param.user_id}"> -->
+            <form action="/profile/image" id="imageForm" method="post" enctype="multipart/form-data">
               <div class="profile">
                 <div class="profile-image">
                   <img id="profileImage" src="/img${UserPicName}" alt="">
@@ -108,3 +107,126 @@
               </div>
             </div>
           </div>
+          
+          
+          <script>
+          
+          var nicknameSend = document.querySelector('.nickname-send');
+          var nicknameInput = document.querySelector('#nickname');
+          var original_nickname = document.getElementById('nickname').value;
+      	  var isRightText = document.querySelector("#isRightText");
+      	  var isRightNickname = false;
+          
+          function testtest() {
+        	  console.log("test");
+        	  var nickname = document.getElementById('nickname').value;
+        	  $.ajax({
+			        url: '/profile/nicknameCheck',
+			        data:{"nickname":nickname},
+			        success: function(data){
+			        	console.log("success function({}) invoked", data);
+			        	nicknameCheck(nickname);
+			        	if(isRightNickname &&(nickname==original_nickname)) {
+			        		isRightText.innerText = "같은 닉네임입니다.";
+			        		noSignByRed();
+			        		isRightNickname = false;
+			        	} else if(isRightNickname && (data > 0)){
+			        		isRightText.innerText = "같은 닉네임이 있습니다.";
+			        		noSignByRed();
+			        		isRightNickname = false;
+			        	} else if(isRightNickname){
+			        		isRightText.innerText = "사용 가능한 닉네임입니다.";
+			        		okSignByGreen();
+			        		isRightNickname = true;
+			        	}//if-else
+			        }//success
+			    });//ajax
+          }
+          
+          function nicknameCheck(nickname) {	    
+        	  console.log("nicknameCheck({}) invoked",nickname);
+        	  var nickname = document.getElementById('nickname').value;
+              var nickLength = 0;
+              
+              var engCheck = /[a-z]/;
+              var numCheck = /[0-9]/;
+              var isIsValidateName =/^[a-zA-Zㄱ-힣0-9*_]{2,20}$/;
+              
+              for(var i=0; i<nickname.length; i++){ //한글은 2, 영문은 1로 치환
+                  nick = nickname.charAt(i);
+                  if(escape(nick).length >4){
+                     nickLength += 3;
+                  } else {
+                     nickLength += 1;
+                  }//if-else
+               }//for
+               
+             //닉네임 필수 입력
+               if (nickname == null || nickname == "") {
+            	   isRightText.innerText = "닉네임 입력은 필수입니다.";
+            	   noSignByRed();
+            	   isRightNickname = false;
+               //닉네임 빈칸 포함 안됨
+               } else if (nickname.search(/\s/) != -1) {
+            	   isRightText.innerText = "닉네임은 빈 칸을 포함 할 수 없습니다.";
+            	   noSignByRed();
+            	   isRightNickname = false;
+               //닉네임 한글 1~10자, 영문 및 숫자 2~20자   
+               } else if (nickLength<2 || nickLength>20) {
+            	   isRightText.innerText = "닉네임은 한글 1~6자, 영문 및 숫자 2~20자 입니다.";
+            	   noSignByRed();
+            	   isRightNickname = false;
+               //닉네임 특수문자 포함 안됨   
+               } else if (!(isIsValidateName.test(nickname))) {
+            	   isRightText.innerText = "닉네임은 _ * 이외의 특수문자를 포함 할 수 없습니다.";
+            	   noSignByRed();
+            	   isRightNickname = false;
+               } else {
+            	   isRightText.innerText = "사용 가능한 닉네임입니다.";
+            	   isRightNickname = true;
+            	   okSignByGreen();
+               }
+            	   
+          }//nicknameCheck
+			    
+
+          nicknameSend.addEventListener('click', function () {
+        	  if(isRightNickname) {
+        		var nickname = document.getElementById('nickname').value;
+	        	$.ajax({
+			        url: '/profile/changeNickname',
+			        data:{"nickname":nickname},
+			        success: function(data){
+			        	console.log("내가 바꾼 닉네임은?"+ data);
+			        	
+			        	if(data != "") {
+			        	var nicknameText = document.querySelector(".nickname");
+			        	nicknameText.innerText = data;
+			        	var nickbox = document.querySelector(".nickname-box");
+				        nickbox.className = "nickname-box";
+				        
+				        original_nickname = nickname;
+			        	}//if
+			        }//success
+			    });//ajax
+          	   }
+             });
+          
+          function okSignByGreen () {
+        	  document.querySelector("input#nickname:focus").style.border = "3px solid #4ebc7a";
+        	  document.querySelector("#isRightText").style.color = "#4ebc7a";
+        	  document.querySelector("#ok-sign").style.display = "inline";
+        	  document.querySelector("#ok-sign").style.color = "#4ebc7a";
+        	  document.querySelector("#no-sign").style.display = "none";
+        	  
+          }
+          function noSignByRed () {
+        	  document.querySelector("input#nickname:focus").style.border = "3px solid #f14141";
+        	  document.querySelector("#isRightText").style.color = "#f14141";
+        	  document.querySelector("#no-sign").style.display = "inline";
+        	  document.querySelector("#no-sign").style.color = "#f14141";
+        	  document.querySelector("#ok-sign").style.display = "none";
+          }
+
+          
+          </script>

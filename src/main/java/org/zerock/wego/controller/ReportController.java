@@ -26,24 +26,13 @@ public class ReportController {
 
 	// 신고 접수
 	@PostMapping(path="/create", produces="text/plain; charset=UTF-8")
-	ResponseEntity<String> createReport(PageInfo target,
+	ResponseEntity<String> createReport(ReportDTO report,
 										@SessionAttribute("__AUTH__")UserVO user, 
 										String reportGb) throws Exception{
 		log.trace("createReport() invoked.");
 		
 		try {
-//		ReportDTO report = new ReportDTO();
-//		report.setUserId(userId);
-//		report.setTargetGb(target.getTargetGb());
-//		report.setTargetCd(target.getTargetCd());
-//		report.setReportGb(reportGb);
-		
-			ReportDTO report = ReportDTO.builder()
-								.userId(user.getUserId())
-								.targetGb(target.getTargetGb())
-								.targetCd(target.getTargetCd())
-								.reportGb(reportGb)
-								.build();
+			report.setUserId(user.getUserId());
 		
 			this.reportService.create(report);
 		

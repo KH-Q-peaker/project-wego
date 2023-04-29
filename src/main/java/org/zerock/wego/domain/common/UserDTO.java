@@ -33,6 +33,23 @@ public class UserDTO {
 		this.userPic = userPic;
 	} // constructer
 	
+	@Builder
+	public static UserDTO updateUserPicByUserIdAndUserPic(Integer userId, String userPic) {
+		UserDTO userDTO = UserDTO.builder()
+				.userId(userId)
+				.userPic(userPic)
+				.build();
+		return userDTO;
+	} // constructor
+	
+	@Builder
+	public static UserDTO changeNickByUserIdAndNickName(Integer userId, String nickname) {
+		UserDTO userDTO = UserDTO.builder()
+				.userId(userId)
+				.nickname(nickname)
+				.build();
+		return userDTO;
+	} // constructor
 	
 	public static UserDTO createByGoogle(GoogleUserInfoDTO googleInfo) {
 		

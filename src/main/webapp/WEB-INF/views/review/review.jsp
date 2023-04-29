@@ -20,6 +20,7 @@
 <link rel="stylesheet" href="/resources/css/header.css" />
 <link rel="stylesheet" href="/resources/css/footer.css" />
 <link rel="stylesheet" href="/resources/css/reviewItem.css?after" />
+<link rel="stylesheet" href="/resources/css/reviewFrame.css?after" />
 <link rel="stylesheet" href="/resources/css/remote.css?after" />
 <link rel="stylesheet" href="/resources/css/sort.css?after" />
 
@@ -28,6 +29,7 @@
 <script src="/resources/js/sort.js" defer></script>
 <script src="/resources/js/top.js" defer></script>
 <script src="/resources/js/favorite.js" defer></script>
+<script src="/resources/js/infinity-scroll.js" defer></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
@@ -60,7 +62,10 @@
 							<li class="sortByItem"><button type="button">좋아요순</button></li>
 						</ul>
 					</div>
+					
+				</div>
 
+				<div class="data-container">
 					<!-- Item -->
 					<c:forEach var="item" items="${reviewList}">
 						<a href="/review/${item.sanReviewId}">
@@ -87,12 +92,11 @@
 								<p class="review-date" id="date">
 									<fmt:formatDate value="${item.createdDt}" pattern="yyyy-MM-dd" />
 								</p>
-							</div> <!-- review-item -->
+							</div>
 						</a>
 					</c:forEach>
-
-
 				</div>
+
 
 			</div>
 		</section>

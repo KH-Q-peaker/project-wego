@@ -20,6 +20,7 @@
 <link rel="stylesheet" href="/resources/css/header.css" />
 <link rel="stylesheet" href="/resources/css/footer.css" />
 <link rel="stylesheet" href="/resources/css/partyItem.css?after" />
+<link rel="stylesheet" href="/resources/css/partyFrame.css?after" />
 <link rel="stylesheet" href="/resources/css/remote.css?after" />
 <link rel="stylesheet" href="/resources/css/sort.css?after" />
 
@@ -62,7 +63,10 @@
 							<li class="sortByItem"><button type="button">좋아요순</button></li>
 						</ul>
 					</div>
+				</div>
 
+
+				<div class="data-container">
 					<!-- Item -->
 					<c:forEach var="item" items="${partyList}">
 						<a href="/party/${item.sanPartyId}">
@@ -102,8 +106,7 @@
 							</div>
 						</a>
 					</c:forEach>
-
-				</div>
+  				</div>
 
 			</div>
 		</section>

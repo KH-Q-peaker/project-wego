@@ -92,6 +92,8 @@
   			comment_v
         <where>
         	mention_id = #{commentId}
+        	AND
+        	status = 'N'
         </where>
         ORDER BY
          	COMMENT_ID ASC

@@ -1,0 +1,141 @@
+@charset "UTF-8";
+
+img {
+	/* 드래그 방지 */
+	-webkit-user-drag: none;
+}
+/* div한번더사용 */
+.container {
+	width: 100%;
+	position: relative;
+}
+
+
+/* 검색결과 프레임 */
+.search-results {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-gap: 20px;
+	gap: 20px;
+	place-items: center;
+	justify-content: center;
+}
+
+
+/* 검색결과 부분 */
+.result-line {
+	grid-column-start: 1;
+	grid-column-end: 5;
+	width: 100%;
+	text-align: center;
+	justify-self: center;
+}
+.guide {
+	grid-column-start: 1;
+	grid-column-end: 5;
+	width: 100%;
+	text-align: center;
+	justify-self: center;
+}
+.hr-sect {
+	align-items: center;
+	display: flex;
+	flex-basis: 100%;
+	font-size: 20px;
+	font-weight: bold;
+	color: black;
+}
+.hr-sect::before, .hr-sect::after {
+	content: "";
+	flex-grow: 1;
+	height: 2px;
+	line-height: 0px;
+	margin: 0px 0.5%;
+	font-size: 0px;
+	background: black;
+}
+
+
+/* 추천 프레임 */
+.suggestion {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	margin-bottom: 20px;
+	place-items: center;
+	justify-content: center;
+}
+/* 추천 부분 */
+.suggestion-line {
+	grid-column-start: 1;
+	grid-column-end: 5;
+	width: 100%;
+	text-align: center;
+	justify-self: center;
+}
+/* 추천 아이템 프레임 */
+.suggestion-item {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-gap: 20px;
+	gap: 20px;
+	place-items: center;
+	justify-content: center;
+}
+
+
+
+@media screen and (max-width: 768px) {
+	.search-results {
+		grid-template-columns: repeat(3, 1fr);
+	}
+	div.select-sort {
+		grid-column-start: 1;
+		grid-column-end: 4;
+	}
+	.result-line {
+		grid-column-start: 1;
+		grid-column-end: 4;
+	}
+	.guide {
+		grid-column-start: 1;
+		grid-column-end: 4;
+	}
+	.suggestion {
+		grid-template-columns: repeat(3, 1fr);
+	}
+	.suggestion-line {
+		grid-column-start: 1;
+		grid-column-end: 4;
+	}
+	.suggestion-item {
+		grid-template-columns: repeat(2, 235px);
+	}
+}
+
+@media screen and (max-width: 426px) {
+	.search-results {
+		grid-template-columns: repeat(1, 300px);
+	}
+	div.select-sort {
+		grid-column-start: 1;
+		grid-column-end: 2;
+	}
+	.result-line {
+		grid-column-start: 1;
+		grid-column-end: 2;
+	}
+	.guide {
+		grid-column-start: 1;
+		grid-column-end: 2;
+	}
+	.suggestion {
+		grid-template-columns: repeat(1, 300px);
+	}
+	.suggestion-line {
+		grid-column-start: 1;
+		grid-column-end: 2;
+	}
+	.suggestion-item {
+		grid-template-columns: repeat(1, 300px);
+	}
+}

@@ -37,9 +37,27 @@ public class SearchController {
 
 			Set<ReviewViewVO> reviewList = this.service.selectSearchReview3(query);
 			model.addAttribute("reviewList", reviewList);
+			
+			model.addAttribute("query", query);
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
 
 	} // searchResult
+	
+	@GetMapping("/info/search")
+	public String infoSearchResult(String query, Model model) throws ControllerException {
+		log.trace("searchResult({}) invoked.", query);
+
+		try {
+			Set<SanInfoViewVO> sanInfoList = this.service.selectSearchSanInfo(query);
+			model.addAttribute("sanInfoList", sanInfoList);
+
+			return "info/infoSearch";
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+
+	} // searchResult
+	
 } // end class

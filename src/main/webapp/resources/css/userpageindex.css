@@ -66,7 +66,7 @@ h2 {
   padding: 15px;
   background-color: rgba(78, 197, 61, 0.75);
   border-radius: 10px;
-  box-shadow: 0 14px 28px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 22%);
+  box-shadow: 0px 5px 10px rgb(185 185 185 / 15%), 0px 5px 10px rgb(185 185 185 / 15%);
 }
 .badge-header {
   font-size: larger;
@@ -98,8 +98,8 @@ h2 {
   border-radius: 15px;
   position: relative;
   display: grid;
-  box-shadow: 0 4px 4px rgb(0 0 0 / 25%), 0 4px 4px rgb(0 0 0 / 22%);
-  grid-template-columns: auto auto;
+  box-shadow: 0 4px 4px rgb(185 185 185 / 10%), 0 4px 4px rgb(185 185 185 / 10%);
+  grid-template-columns: 1fr 1fr;
 }
 .content-header-menu-item {
   display: flex;
@@ -139,7 +139,7 @@ h2 {
   padding: 15px;
   background-color: rgba(78, 197, 61, 0.75);
   border-radius: 10px;
-  box-shadow: 0 14px 28px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 22%);
+  box-shadow: 0px 5px 10px rgb(185 185 185 / 15%), 0px 5px 10px rgb(185 185 185 / 15%);
   height: auto;
   gap: 5px;
   display: grid;
@@ -191,7 +191,7 @@ a.badge-setting {
   font-weight: bold;
   top: 5px;
   bottom: 0;
-  left: 75%;
+  left: 85%;
 }
 .report {
   font-weight: bold;
@@ -322,7 +322,7 @@ input.profileMenu {
     background-color: rgba(255, 255, 255, 1);
   }
   .sirenbar {
-    left: 100%;
+    left: 120%;
     font-size: 15px;
     top: 12%;
   }

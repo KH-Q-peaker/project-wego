@@ -36,12 +36,12 @@ import org.zerock.wego.exception.OperationFailException;
 import org.zerock.wego.service.common.CommentService;
 import org.zerock.wego.service.common.FavoriteService;
 import org.zerock.wego.service.common.FileService;
-import org.zerock.wego.service.common.ReportService;
 import org.zerock.wego.service.info.SanInfoService;
 import org.zerock.wego.service.party.JoinService;
 import org.zerock.wego.service.party.PartyService;
 import org.zerock.wego.verification.PartyValidator;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -81,15 +81,13 @@ public class PartyController {
 	
 	// 모집글 상세 조회 
 	@GetMapping("/{partyId}") 
-	public ModelAndView showDetailById(@PathVariable("partyId")Integer partyId, 
-										@SessionAttribute("__AUTH__")UserVO user,
-										PageInfo pageInfo) throws Exception{
+	public String showDetailById(@PathVariable("partyId")Integer partyId, 
+								@SessionAttribute("__AUTH__")UserVO user,
+								PageInfo pageInfo, Model model) throws RuntimeException, JsonProcessingException{
 	log.trace("showDetailById() invoked.");
 		
 			pageInfo.setTargetGb("SAN_PARTY");
 			pageInfo.setTargetCd(partyId);
-			
-			ModelAndView mav = new ModelAndView();
 			
 			PartyViewVO party = this.partyService.getById(partyId);
 			Integer userId = user.getUserId();
@@ -115,27 +113,20 @@ public class PartyController {
 			LinkedBlockingDeque<CommentViewVO> comments 
 						= commentService.getCommentOffsetByTarget(pageInfo, 0);
 
-			
-			mav.addObject("party", party);
-			mav.addObject("isJoin", isJoin);
-			mav.addObject("isFavorite", isFavorite);
-			
-			if(comments != null) {
-				mav.addObject("comments", comments);
-			}// if
+			model.addAttribute("party", party);
+			model.addAttribute("isJoin", isJoin);
+			model.addAttribute("isFavorite", isFavorite);
+			model.addAttribute("comments", comments);
 			
 			ObjectMapper objectMapper = new ObjectMapper();
 			String pageInfoJson = objectMapper.writeValueAsString(pageInfo);
-			mav.addObject("target", pageInfoJson);
 
-			mav.setViewName("/party/detail");
+			model.addAttribute("pageInfoJson", pageInfoJson);
 
-			return mav;
-
+			return "/party/detail";
 	}// showDetailById
 	
 	// 모집글 삭제
-	@Transactional
 	@DeleteMapping(path = "/{partyId}", produces = "text/plain; charset=UTF-8")
 	public ResponseEntity<String> removeById(@PathVariable("partyId") Integer partyId) throws Exception {
 		log.trace("removeById({}) invoked.", partyId);
@@ -145,7 +136,7 @@ public class PartyController {
 
 			return ResponseEntity.ok("모집글이 삭제되었습니다.️");
 
-		} catch (NotFoundPageException | OperationFailException e) { // 그냥 모든 예외 상관없이 다잡아도 되는건가?
+		} catch (NotFoundPageException | OperationFailException e) {
 			return ResponseEntity.badRequest().build();
 		} // try-catch
 	}// removeById
@@ -230,7 +221,7 @@ public class PartyController {
 	public ResponseEntity<Map<String, String>> register(
 			@SessionAttribute("__AUTH__")UserVO auth, String sanName, 
 			@RequestParam(value = "imgFile", required = false)List<MultipartFile> imageFiles,
-			PartyDTO partyDTO, BindingResult bindingResult, FileDTO fileDTO
+			PartyDTO partyDTO, BindingResult bindingResult, FileDTO fileDTO, JoinDTO joinDTO
 			) throws ControllerException {
 		log.trace("PostMapping - register() invoked.");
 
@@ -261,6 +252,10 @@ public class PartyController {
 						partyDTO.getSanPartyId(), fileDTO);
 				log.info("isImageUploadSuccess: {}", isImageUploadSuccess);
 			} // if
+			
+			joinDTO.setSanPartyId(partyDTO.getSanPartyId());
+			joinDTO.setUserId(auth.getUserId());
+			this.joinService.create(joinDTO);
 
 			state.put("state", "successed");
 			state.put("redirectUrl", "/party/" + partyDTO.getSanPartyId());
@@ -273,9 +268,9 @@ public class PartyController {
 	
 	// 참여 신청/취소 토글
 	@PostMapping(path = "/{partyId}/join", produces = "text/plain; charset=UTF-8")
-	ResponseEntity<String> joinOrCancleByPartyId(@PathVariable Integer partyId,
+	ResponseEntity<String> toggleJoinOrCancleById(@PathVariable Integer partyId,
 											@SessionAttribute("__AUTH__") UserVO user) throws Exception {
-		log.trace("joinOrCancleByPartyId() invoked.");
+		log.trace("toggleJoinOrCancleById() invoked.");
 
 		try {
 			Integer userId = user.getUserId();

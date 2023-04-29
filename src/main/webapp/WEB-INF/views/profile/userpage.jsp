@@ -76,7 +76,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     <span>Badge Collection</span></a>
                     <span>
                       <a class="badge-setting" href="/badge/${getUserInfoList.userId}"
-                        ><img src="/resources/img/badgeset.png" alt=""
+                        ><img src="/resources/svg/badgeset.png" alt=""
                       /></a>
                     </span>
                   </div>

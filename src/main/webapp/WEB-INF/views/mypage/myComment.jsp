@@ -78,8 +78,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 			          end="${pageMaker.endPage}"
 			        >
 			          <!-- 조건문으로 지금 현재 페이지확인 : 전송파라미터중 현페이지번호가같니?그럼비워 -->
-			          <li class="${param.currPage eq pageNum ? 'currPage' : ''} myCommentPage${pageNum}">
-			            <span data-temp="${pageMaker.cri.setCurrPage(pageNum)}" id="currPageNum" onclick="selectClickCurrPage1()">${pageNum}</span
+			          <li class="${param.currPage eq pageNum ? 'currPage' : ''} myCommentPage${pageNum}" onclick="selectClickCurrPage1()">
+			            <span data-temp="${pageMaker.cri.setCurrPage(pageNum)}" id="currPageNum">${pageNum}</span
 			            >
 			          </li>
 			          <!-- 숫자만 표시됨. -->
@@ -110,10 +110,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
               
               $.ajax({
                     type: 'get',
-                    url: '/profile/mycomment?userId='+ userId,
-                    data:{"cri2.currPage":currPage,userId:"${userId}"},
+                    url: '/profile/mycomment',
                     success: function(data){
-                        $(".content2").load("/profile/mycomment?userId="+userId+"&currPage="+currPage);
+                        $(".content2").load("/profile/mycomment?currPage="+currPage);
                     }//success
              	 });//ajax
           }//selectClickCurrPage
@@ -122,10 +121,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 				 var currPage = $( '#currPagePrev' ).val();
 				 $.ajax({
 	                    type: 'get',
-	                    url: '/profile/mycomment?userId='+ userId,
-	                    //data:{"currPage":currPage,"amount":10,userId:"${userId}"},
+	                    url: '/profile/mycomment',
 	                    success: function(data){
-	                        $(".content2").load("/profile/mycomment?userId="+userId+"&currPage="+currPage);
+	                        $(".content2").load("/profile/mycomment?currPage="+currPage);
 	                    }//success
 	             	 });//ajax
 				} //selectClickCurrPagePrev
@@ -134,10 +132,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 		         var currPage = $( '#currPageNext' ).val();
 		         $.ajax({
 	                    type: 'get',
-	                    url: '/profile/mycomment?userId='+ userId,
-	                    //data:{"currPage":currPage,"amount":10,userId:"${userId}"},
+	                    url: '/profile/mycomment',
 	                    success: function(data){
-	                        $(".content2").load("/profile/mycomment?userId="+userId+"&currPage="+currPage);
+	                        $(".content2").load("/profile/mycomment?currPage="+currPage);
 	                    }//success
 	             	 });//ajax
 		} //selectClickCurrPageNext
