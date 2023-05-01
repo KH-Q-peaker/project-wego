@@ -14,11 +14,12 @@ public class NotificationVO {
 	private String alarmGb;					// 알림 등급 ( 일반 , 긴급, 공지)
 	private Timestamp createdDt;			// 알림 발생일
 	private Timestamp readDt;				// 알림 확인일 
-	private String contents;				// 알림 내용 
+	private String contents;				// 알림 내용
 	private String status;					// 알림상태값
 	private String nickname;				// 유저 닉네임 
 	private String userPic;					// 알림을 대상 사진 
 	private String title;					// 알림 게시물의 제목 
 	private String commentStatus;			// 댓글상태값
+	private String content;				// 알림 대상의 내용 
 
 } // end class
