@@ -11,10 +11,10 @@
 		SELECT
 		  *	  
 		FROM
-		  NOTIFICATION_V
+  		  notification_v
 		WHERE
-		  NOTIFICATION_V.USER_ID = #{userId}
-		  AND NOTIFICATION_V.STATUS != 'Y'
+ 		  notification_v.user_id = #{userId}
+		  AND notification_v.status != 'Y'
 	</select>
 	
 	<!-- *****************  알림 코드로 알림 조회 ******************** -->
@@ -24,74 +24,115 @@
 		SELECT
 		  *	  
 		FROM
-		  NOTIFICATION_V
+		  notification_v
 		WHERE
-		  NOTIFICATION_V.ALARM_ID = #{alarmId}
-		  AND NOTIFICATION_V.STATUS != 'Y'
+		  notification_v.alarm_id = #{alarmId}
+		  AND notification_v.status != 'Y'
 	</select>
 	
  	<!-- ***************** 좋아요 생성으로 생기는 알람 삽입 (중복방지)******************** -->
 				
 	<insert id="insertFavoriteByTargetCdAndUserId" parameterType="java.lang.Integer">
-	INSERT INTO ADMIN.ALARM_TB (TARGET_GB, TARGET_CD, USER_ID, CONTENTS,CREATED_BY_USER_ID)
-	SELECT '좋아요', T.TARGET_CD, T.USER_ID, 
-		   '회원님의' ||  T.TARGET_GB ||'글에'|| '" ' ||T.CREATED_BY_USER_ID || ' "' ||'님이 좋아요를 눌렀습니다.' AS contents, #{userId}
+	INSERT INTO admin.alarm_tb (target_gb, target_cd, user_id, contents,created_by_user_id)
+	SELECT '좋아요', T.target_cd, T.user_id, 
+		   '회원님의' ||  T.target_gb ||'글에'|| '" ' ||T.created_by_user_id || ' "' ||'님이 좋아요를 눌렀습니다.' AS contents, #{userId}
 	FROM (
-			SELECT '모집' AS TARGET_GB, SAN_PARTY_TB.SAN_PARTY_ID AS TARGET_CD, SAN_PARTY_TB.USER_ID AS USER_ID
-			FROM ADMIN.SAN_PARTY_TB
-			WHERE SAN_PARTY_TB.SAN_PARTY_ID = #{targetCd} AND SAN_PARTY_TB.USER_ID != #{userId}
+			SELECT '모집' AS target_gb, san_party_tb.san_party_id AS target_cd, san_party_tb.user_id AS user_id
+			FROM admin.san_party_tb
+			WHERE san_party_tb.san_party_id = #{targetCd} AND san_party_tb.user_id != #{userId}
 				AND NOT EXISTS (
 				SELECT 1
-				FROM ADMIN.LIKE_TB
-				WHERE USER_ID = #{userId} AND TARGET_GB = 'SAN_PARTY' AND TARGET_CD = SAN_PARTY_TB.PARTY_ID
+				FROM admin.like_tb
+				WHERE user_id = #{userId} AND target_gb = 'SAN_PARTY' AND target_cd = san_party_tb.party_id
 				)
 			UNION ALL
-			SELECT '후기' AS TARGET_GB, SAN_REVIEW_V.SAN_REVIEW_ID AS TARGET_CD, SAN_REVIEW_TB.USER_ID AS USER_ID
-			FROM ADMIN.SAN_REVIEW_TB
-			WHERE SAN_REVIEW_TB.SAN_REVIEW_ID = #{targetCd} AND SAN_REVIEW_TB.USER_ID != #{userId}
+			SELECT '후기' AS target_gb, san_review_v.san_review_id AS target_cd, san_review_tb.user_id AS user_id
+			FROM admin.san_review_tb
+			WHERE san_review_tb.san_review_id = #{targetCd} AND san_review_tb.user_id != #{userId}
 				AND NOT EXISTS (
 				SELECT 1
-				FROM ADMIN.LIKE_TB
-				WHERE USER_ID = #{userId} AND TARGET_GB = 'SAN_REVIEW' AND TARGET_CD = SAN_REVIEW_V.SAN_REVIEW_ID
+				FROM  admin.like_tb
+				WHERE user_id = #{userId} AND target_gb = 'SAN_REVIEW' AND target_cd = san_review_v.san_review_id
 				)
 	) AS T;
 	</insert>
 	
-	 <!-- ***************** 댓글 생성으로 생기는 알람 삽입 (중복방지)******************** -->
+
+		 <!-- ***************** 댓글 생성으로 생기는 알람 삽입 (중복방지)******************** -->
 				
 	<insert id="insertCommentByCommentIdAndUserId" parameterType="java.lang.Integer">
-	  INSERT INTO ALARM_TB (TARGET_GB, TARGET_CD, USER_ID, CONTENTS,CREATED_BY_USER_ID)
-	  SELECT '댓글', C.TARGET_CD, T.USER_ID, '회원님의 ' || T.TARGET_GB || '글에 새로운 댓글이 등록되었습니다.' AS contents, #{userId}
-	  FROM COMMENT_V C,
+	  INSERT INTO alarm_tb (target_gb, target_cd, user_id, contents, created_by_user_id)
+	  SELECT '댓글', C.target_cd, T.user_id, '회원님의 ' || T.target_gb || '글에 새로운 댓글이 등록되었습니다.' AS contents, #{userId}
+	  FROM comment_v C,
 	  (
-		    SELECT SAN_PARTY_ID AS "TARGET_CD", USER_ID , '모집' AS TARGET_GB  
-		    FROM SAN_PARTY_V
-		    WHERE SAN_PARTY_ID = (SELECT TARGET_CD FROM COMMENT_V WHERE COMMENT_ID = #{commentId})
+		    SELECT san_party_id AS "target_cd", user_id , '모집' AS target_gb  
+		    FROM san_party_v
+		    WHERE san_party_id = (SELECT target_cd FROM comment_v WHERE comment_id = #{commentId})
 		    UNION
-		    SELECT SAN_REVIEW_ID AS "TARGET_CD", USER_ID , '후기' AS TARGET_GB 
-		    FROM SAN_REVIEW_V
-		    WHERE SAN_REVIEW_ID = (SELECT TARGET_CD FROM COMMENT_V WHERE COMMENT_ID = #{commentId})
+		    SELECT san_review_id AS "target_cd", user_id , '후기' AS target_gb 
+		    FROM san_review_v
+		    WHERE san_review_id = (SELECT target_cd FROM comment_v WHERE comment_id = #{commentId})
 		) T
-	  WHERE C.COMMENT_ID = #{commentId}	 		
-	  AND #{userId} != T.USER_ID
+	  WHERE C.comment_id = #{commentId}	 		
+	  AND #{userId} != T.user_id
 	</insert>
+	
+	 <!-- ***************** 뱃지 생성으로 생기는 알람 삽입 (중복방지)******************** -->
+				
+	<insert id="insertBadgeByBadgeIdAndUserId" parameterType="java.lang.Integer">
+	 INSERT INTO alarm_tb (target_gb, target_cd, user_id, contents,created_by_user_id)
+	  SELECT '뱃지', B.badge_get_id, B.user_id, '축하합니다! 등산 뱃지를 획득하셨습니다!' AS contents, #{badgeId}
+	  FROM badge_get_tb B, alarm_tb A
+	  WHERE B.badge_id = #{badgeId}
+	  		AND NOT EXISTS (
+				  SELECT 1 FROM alarm_tb A
+				  WHERE A.target_cd = B.badge_get_id
+				)
+	</insert>
+	
+	 <!-- ***************** 모임 취소 알림이 있는지 확인******************** -->
+	
+	<select id="isExistsPartyDeletionNotification" parameterType="java.util.Map" resultType="boolean">
+	   SELECT CASE WHEN COUNT(*) > 0 THEN 'true' ELSE 'false' END
+	    FROM alarm_tb
+	    WHERE user_id = #{userId}
+	      AND alarm_gb = '취소'
+	      AND target_cd = #{partyId}
+	      AND status = 'N'
+	</select>
+	
+	 <!-- ***************** 모집글 취소로 생기는 알람 삽입 (중복방지)******************** -->
+				
+	<insert id="insertPartyDeletionByPartyIdAndUserId" parameterType="java.lang.Integer">
+	INSERT INTO alarm_tb (target_gb, target_cd, user_id, alarm_gb, contents, created_by_user_id) 
+	SELECT '취소', #{partyId}, J.user_id, '긴급', 
+		   '회원님이 참여하신 "' || P.title || '" 글이 삭제되어 일정이 취소되었습니다.', #{userId}
+	FROM join_tb J 
+	INNER JOIN san_party_tb P ON J.san_party_id = P.san_party_id 
+	WHERE J.san_party_id = #{partyId} AND J.user_id != #{userId} AND P.user_id = #{userId}
+	AND NOT EXISTS (
+	  SELECT 1 FROM alarm_tb A
+	  WHERE A.user_id = J.user_id AND A.contents = '회원님이 참여하신 "' || P.title || '" 글이 삭제되어 일정이 취소되었습니다.'
+	)
+	</insert>
+	
 	
   	<!-- ************ 알림 읽음 ************ -->
 
 	<update id="updateStatusByAlarmIdAndUserId">
-		UPDATE ALARM_TB 
-		SET READ_DT = CURRENT_TIMESTAMP, 
-			STATUS = 'Y' 
-		WHERE USER_ID = #{userId} AND ALARM_ID = #{alarmId}
+		UPDATE alarm_tb 
+		SET read_dt = current_timestamp, 
+			status = 'Y' 
+		WHERE user_id = #{userId} AND alarm_id = #{alarmId}
 	</update>
 	
   	<!-- ************ 알림 삭제 ************ -->
   	<delete id="deleteByAlarmId">
   		DELETE
   		FROM
-  			ALARM_TB
+  			alarm_tb
   		WHERE
-	  		ALARM_ID = #{alarmId}
+	  		alarm_id = #{alarmId}
   	</delete>
   	
 	<!-- *********** 알림 존재여부  ************ -->
@@ -102,8 +143,8 @@
         CASE WHEN 
         	EXISTS (
             	SELECT 1 
-            	FROM ALARM_TB
-            	WHERE ALARM_ID = #{alarmId}
+            	FROM alarm_tb
+            	WHERE alarm_id = #{alarmId}
         		) 
         		THEN 1 ELSE 0 END AS exist
     	FROM dual

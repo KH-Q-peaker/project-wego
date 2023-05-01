@@ -10,6 +10,8 @@ import org.zerock.wego.domain.party.PartyViewVO;
 import org.zerock.wego.exception.NotFoundPageException;
 import org.zerock.wego.exception.OperationFailException;
 import org.zerock.wego.exception.ServiceException;
+import org.zerock.wego.mapper.JoinMapper;
+import org.zerock.wego.mapper.NotificationMapper;
 import org.zerock.wego.mapper.PartyMapper;
 import org.zerock.wego.service.badge.BadgeGetService;
 import org.zerock.wego.service.common.CommentService;
@@ -32,6 +34,8 @@ public class PartyService {
 	private final FavoriteService favoriteService;
 	private final CommentService commentService;
 	private final BadgeGetService badgeGetService;
+	private final NotificationMapper notificationMapper;
+	private final JoinMapper joinMapper;
 
 
 	public List<PartyViewVO> getList() throws ServiceException {
@@ -96,12 +100,25 @@ public class PartyService {
 			if(!isExist) {
 				throw new NotFoundPageException();
 			}// if
-			
+			//모집글에 참여한 사용자의 ID 가져오기
+	        List<Integer> userIds = joinMapper.selectUserIdsBySanPartyId(partyId);
+
+			 // 해당 모집글에 참여한 사용자에 대한 알림 생성
+			 for (Integer userId : userIds) {
+		            // 사용자에게 삭제 후 알림을 이미 받았는지 확인
+		            if (!notificationMapper.isExistsPartyDeletionNotification(userId,partyId)) {
+		                // 그렇지 않은 경우 새 알림 만들기
+		            	log.trace(">>>>>>>>>> 모집글삭제로 인해 취소알림이 긴급으로 갑니다!");
+		                notificationMapper.insertPartyDeletionByPartyIdAndUserId(partyId, userId);
+		            }
+		        }
+			 // 삭제 전에 알림가야함. 왜냐? 삭제하면 아이디도 삭제되니까?
 			this.partyMapper.deleteById(partyId);
 			this.reportService.removeAllByTarget("SAN_PARTY", partyId);
 			this.fileService.isRemoveByTarget("SAN_PARTY", partyId);
 			this.favoriteService.removeAllByTarget("SAN_PARTY", partyId);
 			this.commentService.removeAllByTarget("SAN_PARTY", partyId);
+			
 			
 		} catch (NotFoundPageException | OperationFailException e) {
 			throw e;

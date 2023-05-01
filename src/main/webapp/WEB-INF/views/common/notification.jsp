@@ -132,7 +132,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
           </dialog>
         </div>
 
-        <div class="alarmbox" id="notifications-list">
+        <div class="alarmbox">
           <c:if test="${empty notificationList}">
             <div class="alarm noAlarm">새로운 알림이 없습니다.</div>
           </c:if>            
@@ -168,7 +168,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
               </c:if>
               <c:if test="${notificationVO.targetGb eq '좋아요'}">
                 <div class="alarm profile">
-                  <h3>${notificationVO.contents}</h3>
+                  <h3>${notificationVO.contents}
+                    <input type="button" class="deletealarm remove" name="deletealarm" value="삭제" data-alarmId="${notificationVO.alarmId}"/> 
+                  </h3>
                   <time class="timeago" datetime="${notificationVO.createdDt}"
                     >${notificationVO.createdDt}</time
                   >
@@ -183,26 +185,30 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
               </c:if>
               <c:if test="${fn:contains(notificationVO.contents, '취소')}">
                 <div class="alarm mozip">
-                  <span class="mozipimg">
-                    <h3>[긴급알림] ${notificationVO.contents}</h3>
-                    <img class="attention" src="./img/Idea.png" alt="">
-                  </span>
+                    <h3>[긴급알림] ${notificationVO.contents}
+                      <input type="button" class="deletealarm remove" name="deletealarm" value="삭제" data-alarmId="${notificationVO.alarmId}"/> 
+                    </h3>                 
                   <time class="timeago" datetime="${notificationVO.createdDt}"
                     >${notificationVO.createdDt}</time
                   >
                   <div class="message mozip">
-                    <p>모집 취소 사유: 주최자의 사정으로 모집이 취소되었어요.</p>
-                  </div>
+					  <div>
+					    <img class="attention" src="resources/img/Idea.png" alt="">
+					    <p>모집 취소 사유: 주최자의 사정으로 모집이 취소되었어요.</p>
+					  </div>
+				  </div>
                 </div>
               </c:if>
               <c:if test="${notificationVO.targetGb eq '뱃지'}">
                 <div class="alarm badge">
-                      <h3>${notificationVO.contents}</h3>
+                      <h3>${notificationVO.contents}
+                        <input type="button" class="deletealarm remove" name="deletealarm" value="삭제" data-alarmId="${notificationVO.alarmId}"/> 
+                      </h3>
                       <time class="timeago" datetime="${notificationVO.createdDt}"
                     >${notificationVO.createdDt}</time
                   >
                       <div class="message badge">
-                          <img src="./img/yellowBadge.png" alt="">
+                          <img src="resources/img/yellowBadge.png" alt="">
                           <p> ${notificationVO.nickname}님~축하해요~ &#128149; 앞으로 더 많은 뱃지를 모아서 프로등산러에 도전해보세요-!!</p>
                       </div>
                 </div>

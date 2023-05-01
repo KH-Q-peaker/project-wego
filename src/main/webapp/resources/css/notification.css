@@ -166,6 +166,13 @@ section {
   align-items: center;
   justify-content: space-between;
 }
+.message.mozip > div {
+  display: flex;
+  align-items: center;
+}
+.message.mozip p {
+  margin-left: 0px;
+}
 .noAlarm {
 	padding-top: 20px;
 	  font-size: 20px;
