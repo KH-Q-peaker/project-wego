@@ -123,7 +123,7 @@
 				<div class="cnt">댓글 (<span id="cmtcnt">${party.commentCnt }</span>)</div>
 				<c:set var="comments" value="${comments}" />
 				<%@ include file="../comment/comment.jsp"%>
-				<div id="chat"> </div>
+				<div id="chat"></div>
 				<div class="to top">top</div>
 				<div class="to cmt">cmt</div>
 			</section>

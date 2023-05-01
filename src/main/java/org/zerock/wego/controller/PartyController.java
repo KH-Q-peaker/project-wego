@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
+import org.zerock.wego.config.SessionConfig;
 import org.zerock.wego.domain.chat.ChatRoomDTO;
 import org.zerock.wego.domain.common.CommentViewVO;
 import org.zerock.wego.domain.common.FavoriteDTO;
@@ -83,7 +84,7 @@ public class PartyController {
 	// 모집글 상세 조회 
 	@GetMapping("/{partyId}") 
 	public String showDetailById(@PathVariable("partyId")Integer partyId, 
-								@SessionAttribute("__AUTH__")UserVO user,
+								@SessionAttribute(SessionConfig.AUTH_KEY_NAME)UserVO user,
 								PageInfo pageInfo, Model model, 
 								JoinDTO join, FavoriteDTO favorite) throws RuntimeException, JsonProcessingException{
 	log.trace("showDetailById() invoked.");
@@ -274,13 +275,13 @@ public class PartyController {
 	// 참여 신청/취소 토글
 	@PostMapping(path = "/{partyId}/join", produces = "text/plain; charset=UTF-8")
 	ResponseEntity<String> toggleJoinOrCancleById(@PathVariable Integer partyId,
-											@SessionAttribute("__AUTH__") UserVO user) throws Exception {
+											@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO user, 
+											JoinDTO join) throws Exception {
 		log.trace("toggleJoinOrCancleById() invoked.");
 
 		try {
 			Integer userId = user.getUserId();
 
-			JoinDTO join = new JoinDTO();
 			join.setSanPartyId(partyId);
 			join.setUserId(userId);
 

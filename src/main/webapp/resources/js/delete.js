@@ -53,12 +53,18 @@ $(() => { /* 삭제 관련 */
 						url: "/comment/mention",
 						type: "GET",
 						data: {
+							targetGb: target.targetGb,
+							targetCd: target.targetCd,
 							commentId : targetComment.children('#mentionId').val()
 						},
 						success: function(data) {
 							mentionList.html(data);
-							mentionList.prevAll().find('#mentionCnt').text(loadCnt);
+							mentionList.prev().prev().find('#mentionCnt').text(loadCnt);
 							$('#cmtcnt').html(commentCnt);
+							
+							if(loadCnt == 0){
+								mentionList.prev().remove();
+							}
 						},
 						error: () => {
 							console.log('댓글로딩오류 ');/* 바꿔야됨  */

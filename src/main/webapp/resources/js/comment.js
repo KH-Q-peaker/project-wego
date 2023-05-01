@@ -56,7 +56,7 @@ function toggleMentionBtn(buttonElem) {
 
 $(() => { /* 새 댓글 post 전송  */
 	
-	$('textarea').off('keydown').on( 'keydown', function (){
+	$('#contents, .mcontents').off('keydown').on( 'keydown', function (){
    		$(this).css('height', 'auto');
     	$(this).height(this.scrollHeight);
   	});
@@ -123,6 +123,8 @@ $(() => { /* 답글 관련 */
 				type: "GET",
 				data:
 				{
+					targetGb: target.targetGb,
+					targetCd: target.targetCd,
 					commentId: mentionId
 				},
 				success: function(data) {
@@ -159,6 +161,8 @@ $(() => { /* 답글 관련 */
 							url: "/comment/mention",
 							type: "GET",
 							data: {
+								targetGb: target.targetGb,
+								targetCd: target.targetCd,
 								commentId : mentionId
 							},
 							success: function(data){
