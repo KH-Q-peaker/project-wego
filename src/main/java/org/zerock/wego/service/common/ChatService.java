@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 public class ChatService {
 
 	private final ChatMapper chatMapper;
-
 	
 	public ChatRoomVO getChatRoomById(int chatRoomId) {
 		
@@ -37,15 +36,13 @@ public class ChatService {
 	}// sendChat
 	
 	
-	public List<ChatVO> enterChatRoom(Integer chatroomId, Integer userId) throws RuntimeException{
-
-        boolean isJoin = chatMapper.isJoin(chatroomId, userId);  
-
-        if(!isJoin) {
-        	
-        	return null; // 아 이거 참여자만 들어가게 어케막지
-        }// if 
-        
-        return  chatMapper.selectAllChatById(chatroomId);
+	public List<ChatVO> enterChatRoom(Integer chatRoomId, Integer userId) throws RuntimeException{
+		
+		boolean isJoin = this.chatMapper.isJoin(chatRoomId, userId);
+		
+		if(!isJoin) {
+			return null;
+		}
+        return  chatMapper.selectAllChatById(chatRoomId);
     }// enterChatRoom
 }// end class

@@ -10,6 +10,7 @@ import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
+import org.zerock.wego.config.SessionConfig;
 import org.zerock.wego.domain.common.UserVO;
 
 import lombok.Cleanup;
@@ -29,15 +30,16 @@ public class ChatRoomInterceptor implements HandshakeInterceptor {
     	HttpSession session = ((ServletServerHttpRequest) request).getServletRequest().getSession();
     	
     	Integer chatRoomId = (Integer) session.getAttribute("chatRoomId");
-    	UserVO user = (UserVO) session.getAttribute("__AUTH__");
+    	UserVO user = (UserVO) session.getAttribute(SessionConfig.AUTH_KEY_NAME);
     	
         if (chatRoomId != null && user != null) {
         	
             attributes.put("chatRoomId", chatRoomId);
             attributes.put("userId", user.getUserId());
+            
+            return true;
         }// if
-        
-        return true;
+        return false;
     }// beforeHandshake
     
     @Override
