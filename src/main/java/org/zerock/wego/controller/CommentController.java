@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.zerock.wego.config.SessionConfig;
 import org.zerock.wego.domain.common.CommentDTO;
 import org.zerock.wego.domain.common.CommentViewVO;
 import org.zerock.wego.domain.common.PageInfo;
@@ -55,15 +56,13 @@ public class CommentController {
 
 	// 댓글 멘션 로딩 
 	@GetMapping(path="/mention")
-	String loadMentionsByCommentId(Integer commentId, Model model) throws Exception{
-		log.trace("loadMentionsByCommentId({}) invoked", commentId);
+	String loadMentionsByCommentId(CommentDTO dto, Model model) throws Exception{
+		log.trace("loadMentionsByCommentId(comment) invoked");
 		
 		LinkedBlockingDeque<CommentViewVO> mentions = 
-					this.commentService.getMentionsByCommentId(commentId);
+						this.commentService.getMentionsByCommentId(dto.getCommentId());
 		
-		CommentViewVO vo = this.commentService.getById(commentId);
-		
-		int totalCnt = this.commentService.getTotalCountByTarget(vo.getTargetGb(), vo.getTargetCd());
+		int totalCnt = this.commentService.getTotalCountByTarget(dto.getTargetGb(), dto.getTargetCd());
 		
 		model.addAttribute("comments", mentions);
 		model.addAttribute("totalCnt", totalCnt);
@@ -106,7 +105,7 @@ public class CommentController {
 
 	// 멘션 작성
 	@PostMapping(path = "/reply")
-	ResponseEntity<String> registerMention(CommentDTO dto, @SessionAttribute("__AUTH__") UserVO user) throws ControllerException {
+	ResponseEntity<String> registerMention(CommentDTO dto, @SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO user) throws ControllerException {
 		log.trace("registerMention() invoked.");
 
 		Integer userId = user.getUserId();

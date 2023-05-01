@@ -28,6 +28,8 @@
 		base-package="org.zerock.wego.exception" />
 	<context:component-scan
 		base-package="org.zerock.wego.interceptor" />
+		<context:component-scan
+		base-package="org.zerock.wego.socket" />
 
 	<interceptors> 
 		<interceptor> 

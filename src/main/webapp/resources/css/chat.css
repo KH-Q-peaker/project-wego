@@ -1,0 +1,97 @@
+@charset "utf-8";
+
+#chat{
+	display: none;
+   	position: fixed;
+    bottom: 60px;
+    right: 80px;
+    width: 370px;
+    height: 600px;
+    border-radius: 10px;
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 5px 5px
+		rgba(0, 0, 0, 0.22);
+	border: 0;
+	z-index: 1;
+}
+.chatting-area {
+	height: 100%;
+	width: 100%;
+}
+
+#exit-area {
+	display: flex;
+	height: 3%;
+	background-color: rgb(138 214 220);
+	border-radius: 10px 10px 0 0;
+	justify-content: space-between;
+	padding: 15px;
+}
+#roomTitle{
+	font-size: 15px;
+	font-weight: bold;
+	color: #727272;
+}
+.display-chatting {
+	height: 72%;
+	border: none;
+	overflow: auto;
+	list-style: none;
+	padding: 20px;
+	margin: 0;
+	background-color: rgb(138 214 220);
+	z-index: 1;
+	position: absoulte;
+}
+.chat {
+	display: inline-block;
+	border-radius: 5px;
+	padding: 7px;
+	margin: 5px;
+	max-width: 100%;
+	background-color: #eee;
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+	font-size :13px;
+}
+.userId{
+	font-size: 13px;
+}
+.input-area {
+	display: flex;
+	width: 100%;
+	height: 14%;
+}
+
+#inputChatting {
+	width: 85%;
+	resize: none;
+	border: 0px solid #727272;
+	border-radius: 0 0 0 10px;
+}
+#send {
+	width: 15%;
+	border: 0px;
+	border-radius: 0 0 10px 0;
+	color: #727272;
+}
+
+.myChat {
+	text-align: right;
+}
+
+.myChat>div {
+	background-color: gold;
+	white-space: pre-wrap;
+}
+
+.chatDate {
+	font-size: 10px;
+	color: #727272;
+}
+
+/* .img { */
+/* 	width: 100%; */
+/* 	height: 100%; */
+/* 	position: relative; */
+/* 	z-index: -100; */
+/* } */
