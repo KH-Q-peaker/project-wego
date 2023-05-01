@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSocket
-public class WebSocketConfig implements WebSocketConfigurer {
+public class ChatWebSocketConfig implements WebSocketConfigurer {
 
 	private final ChatWebSocketHandler chatWebSocketHandler;
 	private final ChatroomInterceptor chatroomInterceptor;
