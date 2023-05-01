@@ -7,7 +7,6 @@ public class ChatRoomDTO {
 
 	private Integer chatRoomId;
 	private String title;
-	private String status;
 	private Integer userId;
 }
 
