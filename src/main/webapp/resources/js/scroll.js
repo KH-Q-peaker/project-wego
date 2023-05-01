@@ -11,23 +11,37 @@ $(() => { /* 탑, 코멘트 버튼 스크롤 이벤트 */
     else{
       $(".top").show('normal');
     }
-    
   });
-
-	$(".cmt").click(function() {
-	
-	 document.getElementById('cmtwrite').scrollIntoView({behavior : 'smooth'});
-//	 	if($("#cmtwrite").css('display') == 'none'){
-//			$("#cmtwrite").show('normal');
-//	 	}else{
-//			$("#cmtwrite").hide('fast');
-//			$("#contents").val('').height('80px');
-//		}
-	});
-	
+  
 	$(".top").click(function() {
 		
 		window.scrollTo({top : 0, behavior: 'smooth'}); 
+	});
+	
+	$(".cmt").click(function() {
+
+		if ($('#chat').html() == "") {
+			$.ajax({
+				url: "/chat/room/" + target.targetCd,
+				type: 'GET',
+				success: function(data) {
+
+					$('#chat').html(data);
+				},
+				error: function(){
+					
+					setMessage('참가자 전용 채팅입니다.');
+					showModal();
+					setTimeout(hideModal, 700);
+				}
+			});
+		}
+		if ($('#chat').css('display') == 'none') {
+			$('#chat').show('fast');
+			scrollChatDisplay();
+		} else {
+			$('#chat').hide('fast');
+		}
 	});
 });
 

@@ -9,7 +9,6 @@ import java.util.concurrent.LinkedBlockingDeque;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
+import org.zerock.wego.config.SessionConfig;
 import org.zerock.wego.domain.common.CommentViewVO;
 import org.zerock.wego.domain.common.FavoriteDTO;
 import org.zerock.wego.domain.common.FileDTO;
@@ -34,7 +33,6 @@ import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.service.common.CommentService;
 import org.zerock.wego.service.common.FavoriteService;
 import org.zerock.wego.service.common.FileService;
-import org.zerock.wego.service.common.ReportService;
 import org.zerock.wego.service.info.SanInfoService;
 import org.zerock.wego.service.review.ReviewService;
 import org.zerock.wego.verification.ReviewValidator;
@@ -77,7 +75,7 @@ public class ReviewController {
 
 	@GetMapping(path="/{reviewId}")
 	public String showDetailById(@PathVariable("reviewId")Integer reviewId,
-									@SessionAttribute("__AUTH__")UserVO user,
+									@SessionAttribute(SessionConfig.AUTH_KEY_NAME)UserVO user,
 									PageInfo pageInfo, Model model, FavoriteDTO favorite) throws RuntimeException, JsonProcessingException{
 		log.trace("showDetail({}, {}) invoked.", reviewId, pageInfo);
 
@@ -249,5 +247,4 @@ public class ReviewController {
 			throw new ControllerException(e);
 		} // try-catch
 	} // register
-	
 }// end class

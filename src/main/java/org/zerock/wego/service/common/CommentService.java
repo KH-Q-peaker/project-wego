@@ -73,8 +73,8 @@ public class CommentService {
 			try {
 				LinkedBlockingDeque<CommentViewVO> mentions 
 							= this.commentMapper.selectMentionsByCommentId(commentId);
-
-					return mentions;
+				
+				return mentions;
 
 			} catch (NullPointerException e) {
 				return null;
@@ -93,8 +93,10 @@ public class CommentService {
 			CommentViewVO comment = this.commentMapper.selectById(commentId);
 			
 			return comment;
-
-		}catch(RuntimeException e) {
+		} catch(NullPointerException e) {
+			return null;
+			
+		} catch(RuntimeException e) {
 			throw new ServiceException(e);
 		}// try-catch
 	}// getCommentsOffsetByTarget
@@ -105,21 +107,11 @@ public class CommentService {
 //		log.trace("isCommentRegister({}) invoked", dto);
 		
 		try {
-			if(dto.getMentionId() == null) {
-				
-				this.commentMapper.insertComment(dto);
-			}else {
-				
-				this.commentMapper.insertMention(dto);
+			if(dto.getMentionId() != null) {
+				dto.setCommentGb("MENTION");
 			}// if-else 
 			
-			boolean isExist 
-				= (this.commentMapper.selectById(dto.getCommentId()) != null);
-			
-			if(!isExist) {
-				throw new OperationFailException();
-			}// if
-			
+			this.commentMapper.insertComment(dto);
 			this.commentMapper.updateTargetCommentCnt(dto, "INSERT");
 			
 			// 댓글 등록 시 알림 추가
@@ -132,12 +124,8 @@ public class CommentService {
 			    this.notificationMapper.insertCommentByCommentIdAndUserId(commentId,userId);
 			}
 			
-		} catch(OperationFailException e) {
-			throw e;
-			
-		}catch(RuntimeException e) {
+		} catch(RuntimeException e) {
 			throw new ServiceException(e);
-			
 		}// try-catch
 	}// registerComment
 	
@@ -161,17 +149,11 @@ public class CommentService {
 				this.removeMention(commentId);
 			} // if-else
 			
-			boolean isExist = this.commentMapper.isExist(commentId);
-			
-			if(isExist) {
-				throw new OperationFailException(); 
-			}// if
-			
 			CommentDTO dto = CommentDTO.convertCommentViewVOToCommentDTO(originComment);
 			
 			this.commentMapper.updateTargetCommentCnt(dto, "DELETE");
 			
-		} catch (NotFoundPageException | OperationFailException e) {
+		} catch (NotFoundPageException e) {
 			throw e;
 
 		} catch (RuntimeException e) {
@@ -216,18 +198,19 @@ public class CommentService {
 
 			this.commentMapper.deleteById(commentId);
 			
+			
 			CommentViewVO parentComment = this.commentMapper.selectById(originComment.getMentionId());
 			
-			boolean isMentionExist = (this.commentMapper.hasMentionById(parentComment.getCommentId()) != null);
-			
-			if (!isMentionExist && parentComment.getStatus().equals("Y")) {
-				CommentDTO comment = CommentDTO.builder()
-												.commentId(parentComment.getCommentId())
-												.contents("삭제된 댓글입니다.")
-												.status("D").build();
+			if(parentComment.getStatus().equals("Y")) {
 				
-				this.commentMapper.updateComment(comment);
-			} // if
+				boolean isMentionExist 
+					= (this.commentMapper.hasMentionById(parentComment.getCommentId()) != null);
+				
+				if(!isMentionExist) {
+					
+					this.commentMapper.deleteById(parentComment.getCommentId());
+				}// if
+			}// if
 		
 		} catch (RuntimeException e) {
 			throw new ServiceException(e);

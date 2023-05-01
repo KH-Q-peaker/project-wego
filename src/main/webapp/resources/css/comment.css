@@ -159,7 +159,7 @@
 
 #cmtwrite {
 	grid-column: 1/-1;
-	margin: 20px 0 80px;
+	margin: 0px 0 50px;
 }
 
 .cmtwrite>textarea {
