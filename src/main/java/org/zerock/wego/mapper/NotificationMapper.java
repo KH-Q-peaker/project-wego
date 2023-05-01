@@ -28,11 +28,11 @@ public interface NotificationMapper {
 		// 알림 읽고 상태 바꿔주기
 		public abstract Integer updateStatusByAlarmIdAndUserId(@Param("alarmId")Integer alarmId,@Param("userId")Integer userId);
 		
-//		// 알림 삭제
-//		public abstract Integer deleteByAlarmId(@Param("alarmId")Integer alarmId);
-//		
-//		// 알림 존재유무
-//		public abstract boolean isExistByUserId(@Param("alarmId")Integer alarmId);
+		// 알림 삭제
+		public abstract Integer deleteByAlarmId(@Param("alarmId")Integer alarmId);
+		
+		// 알림 존재유무
+		public abstract boolean isExistByUserId(@Param("alarmId")Integer alarmId);
 
 		
 } // end interface

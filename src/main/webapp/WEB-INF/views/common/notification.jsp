@@ -10,6 +10,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <meta charset="UTF-8" />
     <title>WeGo-notification</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       rel="shortcut icon"
@@ -131,77 +132,78 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
           </dialog>
         </div>
 
-        <div class="alarmbox">
+        <div class="alarmbox" id="notifications-list">
           <c:if test="${empty notificationList}">
             <div class="alarm noAlarm">새로운 알림이 없습니다.</div>
           </c:if>            
           <!-- 알림 메세지 종류별 상태값 출력 (상태 수정시 닫기버튼)  -->
 
-          <c:forEach items="${notificationList}" var="notificationList">
-            <c:if test="${notificationList.status == 'N' }">
+          <c:forEach items="${notificationList}" var="notificationVO">
+            <c:if test="${notificationVO.status == 'N' }">
 
-              <c:if test="${notificationList.targetGb eq '댓글'}">
+              <c:if test="${notificationVO.targetGb eq '댓글'}">
                 <div class="alarm comment">
-                  <h3>[댓글알림] ${notificationList.contents}
-                    <input type="button" class="deletealarm remove" name="deletealarm" value="삭제" /> 
+                  <h3>[댓글알림] ${notificationVO.contents}
+                    <input type="button" class="deletealarm remove" name="deletealarm" value="삭제" data-alarmId="${notificationVO.alarmId}"/> 
                   </h3>
-                  <time class="timeago" datetime="${notificationList.createdDt}"
-                    >${notificationList.createdDt}</time
+                  <time class="timeago" datetime="${notificationVO.createdDt}"
+                    >${notificationVO.createdDt}</time
                   >
                   <div class="message comment">
-                    <img src="${userService.getById(notificationList.createdByUserId).userPic}" alt="User Pic">
-                    <!-- <h4>${userService.getById(notificationList.createdByUserId).nickname}님이 단 댓글 보러가기 : </h4>   무엇으로 할지 선택해줘요-->
-                    <h4>${userService.getById(notificationList.createdByUserId).nickname}님 : </h4> 
+                    <img src="${createdAlarmUsers[notificationVO.createdByUserId].userPic}" alt="User Pic">
+                    <!-- <h4>${createdAlarmUsers[notificationVO.createdByUserId].nickname}님이 단 댓글 보러가기 : </h4>   무엇으로 할지 선택해줘요-->
+                    <h4>${createdAlarmUsers[notificationVO.createdByUserId].nickname}님 : </h4> 
                     <c:choose>
-	                    <c:when test="${notificationList.commentStatus eq 'Y' }" >
-	         	     	  <p><h3>삭제된 댓글입니다.</h3></p></c:when>
-	         	     	<c:otherwise>
-	                    <c:if test="${fn:contains(notificationList.contents, '모집')}">
-	                      <p><a href="/party/${notificationList.targetCd}"  id="notification-link">${notificationList.title}</a></p></c:if>
-	                    <c:if test="${fn:contains(notificationList.contents, '후기')}">
-	                      <p><a href="/review/${notificationList.targetCd}"  id="notification-link">${notificationList.title}</a></p></c:if></c:otherwise>
-					</c:choose>
+	                    <c:when test="${notificationVO.commentStatus eq 'Y' }" >
+                        <p><h3>삭제된 댓글입니다.</h3></p></c:when>
+                      <c:otherwise>
+                          <c:if test="${fn:contains(notificationVO.contents, '모집')}">
+                            <p><a href="/party/${notificationVO.targetCd}"  id="notification-link" onclick="markNotificationAsRead(${notificationVO.alarmId})">${notificationVO.content}</a></p></c:if>
+                          <c:if test="${fn:contains(notificationVO.contents, '후기')}">
+                            <p><a href="/review/${notificationVO.targetCd}"  id="notification-link" onclick="markNotificationAsRead(${notificationVO.alarmId})">${notificationVO.content}</a></p></c:if>
+                      </c:otherwise>
+					          </c:choose>
                   </div>
                 </div>
               </c:if>
-              <c:if test="${notificationList.targetGb eq '좋아요')">
+              <c:if test="${notificationVO.targetGb eq '좋아요'}">
                 <div class="alarm profile">
-                  <h3>${notificationList.contents}</h3>
-                  <time class="timeago" datetime="${notificationList.createdDt}"
-                    >${notificationList.createdDt}</time
+                  <h3>${notificationVO.contents}</h3>
+                  <time class="timeago" datetime="${notificationVO.createdDt}"
+                    >${notificationVO.createdDt}</time
                   >
                   <div class="message profile">
-                    <img src="${userService.getById(notificationList.createdByUserId).userPic}" alt="User Pic">
-                    <c:if test="${fn:contains(notificationList.contents, '모집')}">
-                      <p><a href="/party/${notificationList.targetCd}"  id="notification-link">${notificationList.title}&#128149;</a></p></c:if>
-                    <c:if test="${fn:contains(notificationList.contents, '후기')}">
-                      <p><a href="/review/${notificationList.targetCd}"  id="notification-link">${notificationList.title}&#128149;</a></p></c:if>
+                    <img src="${createdAlarmUsers[notificationVO.createdByUserId].userPic}" alt="User Pic">
+                    <c:if test="${fn:contains(notificationVO.contents, '모집')}">
+                      <p><a href="/party/${notificationVO.targetCd}"  id="notification-link" onclick="markNotificationAsRead(${notificationVO.alarmId})">${notificationVO.title}&#128149;</a></p></c:if>
+                    <c:if test="${fn:contains(notificationVO.contents, '후기')}">
+                      <p><a href="/review/${notificationVO.targetCd}"  id="notification-link" onclick="markNotificationAsRead(${notificationVO.alarmId})">${notificationVO.title}&#128149;</a></p></c:if>
                   </div>
                 </div>
               </c:if>
-              <c:if test="${fn:contains(notificationList.contents, '취소')}">
+              <c:if test="${fn:contains(notificationVO.contents, '취소')}">
                 <div class="alarm mozip">
                   <span class="mozipimg">
-                    <h3>[긴급알림] ${notificationList.contents}</h3>
+                    <h3>[긴급알림] ${notificationVO.contents}</h3>
                     <img class="attention" src="./img/Idea.png" alt="">
                   </span>
-                  <time class="timeago" datetime="${notificationList.createdDt}"
-                    >${notificationList.createdDt}</time
+                  <time class="timeago" datetime="${notificationVO.createdDt}"
+                    >${notificationVO.createdDt}</time
                   >
                   <div class="message mozip">
                     <p>모집 취소 사유: 주최자의 사정으로 모집이 취소되었어요.</p>
                   </div>
                 </div>
               </c:if>
-              <c:if test="${notificationList.targetGb eq '뱃지'}">
+              <c:if test="${notificationVO.targetGb eq '뱃지'}">
                 <div class="alarm badge">
-                      <h3>${notificationList.contents}</h3>
-                      <time class="timeago" datetime="${notificationList.createdDt}"
-                    >${notificationList.createdDt}</time
+                      <h3>${notificationVO.contents}</h3>
+                      <time class="timeago" datetime="${notificationVO.createdDt}"
+                    >${notificationVO.createdDt}</time
                   >
                       <div class="message badge">
                           <img src="./img/yellowBadge.png" alt="">
-                          <p> ${notificationList.nickname}님~축하해요~ &#128149; 앞으로 더 많은 뱃지를 모아서 프로등산러에 도전해보세요-!!</p>
+                          <p> ${notificationVO.nickname}님~축하해요~ &#128149; 앞으로 더 많은 뱃지를 모아서 프로등산러에 도전해보세요-!!</p>
                       </div>
                 </div>
               </c:if>

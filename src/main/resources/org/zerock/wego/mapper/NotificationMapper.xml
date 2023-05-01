@@ -94,7 +94,7 @@
 	  		ALARM_ID = #{alarmId}
   	</delete>
   	
-	<!-- *********** 모집글 존재여부  ************ -->
+	<!-- *********** 알림 존재여부  ************ -->
   	<select id="isExistByUserId" 
   			resultType = "java.lang.Boolean">
   		
