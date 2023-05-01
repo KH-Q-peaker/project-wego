@@ -25,7 +25,7 @@
     	resultType="String">
     	
     	SELECT 
-    		status
+    		1
     	FROM 
     		join_tb
     	WHERE 

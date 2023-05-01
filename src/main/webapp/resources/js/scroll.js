@@ -20,7 +20,7 @@ $(() => { /* 탑, 코멘트 버튼 스크롤 이벤트 */
 	
 	$(".cmt").click(function() {
 
-		if ($('#chat').html() == "") {
+		if ($('#chat').html() == "") { // 다른 방법 없을꽈..
 			$.ajax({
 				url: "/chat/room/" + target.targetCd,
 				type: 'GET',

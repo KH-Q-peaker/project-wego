@@ -14,8 +14,6 @@
 			*
 		FROM
 			chat_room_tb
-		WHERE
-			status = 'Y'
 		ORDER BY 
 			chat_room_id DESC
 	</select>
@@ -29,8 +27,6 @@
 			chat_room_tb
 		WHERE
 			chat_room_id = #{chatRoomId}
-			AND
-			status = 'Y'
 	</select>
 	
 
@@ -70,7 +66,6 @@
 			FROM join_tb
 			WHERE san_party_id = #{chatRoomId}
 			AND user_id = #{userId}
-			AND status = 'Y'
 	) THEN 1 ELSE 0 END AS exist
 	FROM dual
 	</select>

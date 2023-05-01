@@ -23,7 +23,7 @@ public class ChatWebSocketConfig implements WebSocketConfigurer {
 		
 		registry.addHandler(chatWebSocketHandler, "/chat/room")
 				.addInterceptors(chatRoomInterceptor)
-				.setAllowedOrigins("*");
+				.setAllowedOrigins("localhost:8080"); // ??
 		
 	}// registerWebSocketHandlers
 } // end class
