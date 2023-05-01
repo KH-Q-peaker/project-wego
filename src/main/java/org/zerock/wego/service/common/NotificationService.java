@@ -10,14 +10,12 @@ import javax.management.Notification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-import org.zerock.wego.domain.common.CommentViewVO;
 import org.zerock.wego.domain.common.NotificationVO;
 import org.zerock.wego.exception.NotFoundPageException;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.NotificationMapper;
 
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
 
@@ -54,8 +52,14 @@ public class NotificationService {	// POJO
 		} //getAlarmId
 				
 		// 알림 읽음
-		public void modifyStatusByAlarmId(Integer alarmId) throws ServiceException {
-			
+		public void modifyStatusByAlarmId(Integer alarmId,Integer userId) throws ServiceException {
+		    try {
+		    	Objects.requireNonNull(this.notificationMapper);
+		        notificationMapper.updateStatusByAlarmIdAndUserId(alarmId, userId);
+		      } catch (Exception e) {
+		    	 log.info("알림 업데이트에서 에러가 났습니다.");
+		        throw new ServiceException(e);
+		      }
 		} //updateAlarm
 		
 		// 알림 삭제 

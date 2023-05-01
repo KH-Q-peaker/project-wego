@@ -12,8 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.zerock.wego.domain.common.NotificationVO;
 import org.zerock.wego.domain.common.UserVO;
@@ -70,11 +72,26 @@ public class NotificationController { // 알림 컨트롤러
         
     } // showPage      
     
-	
+	// 알림 읽음 ( 세션에 있는 userId를 받아오세여)
+	@PatchMapping(path="{alarmId}/read")
+	ResponseEntity<Integer> updateAlarm(@PathVariable("alarmId")Integer alarmId,@SessionAttribute("__AUTH__")UserVO user) throws Exception{
+		log.trace("updateAlarm({}) invoked.", alarmId, user);
+    	Integer userId = user.getUserId();
+    	log.info("userId:{}",userId);
+		try {
+			this.notificationService.modifyStatusByAlarmId(alarmId,userId);
+			return ResponseEntity.ok().build();
+			
+		} catch(Exception e) {
+			return ResponseEntity.notFound().build();
+			
+		}// try-catch
+	}// updateAlarm
+		
 	// 알림 삭제 
 	@DeleteMapping(path="{alarmId}")
-	ResponseEntity<Integer> removeAlarm(@PathVariable("alarmId")Integer alarmId) throws Exception{
-		log.trace("removeAlarm({}) invoked.", alarmId);
+	ResponseEntity<Integer> deleteAlarm(@PathVariable("alarmId")Integer alarmId) throws Exception{
+		log.trace("deleteAlarm({}) invoked.", alarmId);
 		
 		try {
 			this.notificationService.removeAlarm(alarmId);
@@ -85,5 +102,5 @@ public class NotificationController { // 알림 컨트롤러
 			return ResponseEntity.notFound().build();
 			
 		}// try-catch
-	}// removeAlarm
+	}// deleteAlarm
 } // end class 

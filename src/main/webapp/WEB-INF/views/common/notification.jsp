@@ -10,6 +10,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <meta charset="UTF-8" />
     <title>WeGo-notification</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       rel="shortcut icon"
@@ -131,7 +132,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
           </dialog>
         </div>
 
-        <div class="alarmbox">
+        <div class="alarmbox" id="notifications-list">
           <c:if test="${empty notificationList}">
             <div class="alarm noAlarm">새로운 알림이 없습니다.</div>
           </c:if>            
@@ -157,9 +158,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                         <p><h3>삭제된 댓글입니다.</h3></p></c:when>
                       <c:otherwise>
                           <c:if test="${fn:contains(notificationVO.contents, '모집')}">
-                            <p><a href="/party/${notificationVO.targetCd}"  id="notification-link">${notificationVO.content}</a></p></c:if>
+                            <p><a href="/party/${notificationVO.targetCd}"  id="notification-link" onclick="markNotificationAsRead(${notificationVO.alarmId})">${notificationVO.content}</a></p></c:if>
                           <c:if test="${fn:contains(notificationVO.contents, '후기')}">
-                            <p><a href="/review/${notificationVO.targetCd}"  id="notification-link">${notificationVO.content}</a></p></c:if>
+                            <p><a href="/review/${notificationVO.targetCd}"  id="notification-link" onclick="markNotificationAsRead(${notificationVO.alarmId})">${notificationVO.content}</a></p></c:if>
                       </c:otherwise>
 					          </c:choose>
                   </div>
@@ -174,9 +175,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   <div class="message profile">
                     <img src="${createdAlarmUsers[notificationVO.createdByUserId].userPic}" alt="User Pic">
                     <c:if test="${fn:contains(notificationVO.contents, '모집')}">
-                      <p><a href="/party/${notificationVO.targetCd}"  id="notification-link">${notificationVO.title}&#128149;</a></p></c:if>
+                      <p><a href="/party/${notificationVO.targetCd}"  id="notification-link" onclick="markNotificationAsRead(${notificationVO.alarmId})">${notificationVO.title}&#128149;</a></p></c:if>
                     <c:if test="${fn:contains(notificationVO.contents, '후기')}">
-                      <p><a href="/review/${notificationVO.targetCd}"  id="notification-link">${notificationVO.title}&#128149;</a></p></c:if>
+                      <p><a href="/review/${notificationVO.targetCd}"  id="notification-link" onclick="markNotificationAsRead(${notificationVO.alarmId})">${notificationVO.title}&#128149;</a></p></c:if>
                   </div>
                 </div>
               </c:if>

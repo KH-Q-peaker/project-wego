@@ -106,3 +106,19 @@ $(document).ready(function () {
       });
   });
 });
+
+// 알림읽음
+function markNotificationAsRead(alarmId) {
+  $.ajax({
+    type: "PATCH",
+    url: "/notification/" + alarmId + "/read",
+    success: function () {
+      setTimeout(function () {
+        window.location.replace("http://localhost:8080/notification");
+      }, 700);
+    },
+    error: function () {
+      alert("err");
+    },
+  });
+}
