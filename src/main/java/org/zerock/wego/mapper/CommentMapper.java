@@ -12,7 +12,6 @@ public interface CommentMapper {
 	
 	// 존재 여부 
 	public abstract boolean isExist(@Param("commentId")Integer commentId);
-	
 	// 특정 글 댓글 총 개수 
 	public abstract Integer selectTotalCountByTarget(@Param("targetGb")String targetGb, @Param("targetCd")Integer targetCd);
 	
@@ -35,16 +34,12 @@ public interface CommentMapper {
 	// 특정글 댓글 삭제 
 	public abstract Integer deleteAllByTarget(@Param("targetGb")String targetGb, @Param("targetCd")Integer targetCd);
 	
-	// 댓글 영구 삭제
-	public abstract Integer deleteDeadComment();
+//	// 댓글 영구 삭제
+//	public abstract Integer deleteDeadComment();
 		
 
 	// 댓글 작성 
 	public abstract Integer insertComment(CommentDTO comment);
-	
-	// 멘션 작성 
-	public abstract Integer insertMention(CommentDTO comment);
-	
 	
 	// 댓글 수정 
 	public abstract Integer updateComment(CommentDTO comment);
@@ -52,8 +47,5 @@ public interface CommentMapper {
 	
 	// 타겟글 댓글수 증가  
 	public abstract Integer updateTargetCommentCnt(@Param("comment")CommentDTO comment, @Param("act")String act);
-	
-	// 타겟글 댓글수 감소  
-	public abstract Integer updateTargetCommentCntDown(CommentDTO comment);
 	
 }// end class

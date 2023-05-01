@@ -9,5 +9,6 @@ public class ChatRoomVO {
 	private Integer userId;
 	private String title;
 	private String status;
-}
+	
+}// end class
 

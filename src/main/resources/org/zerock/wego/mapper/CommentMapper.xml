@@ -143,7 +143,7 @@
     
     </delete>
     
-    <!-- ***************** 특정글 댓글 삭제 ******************** -->
+    <!-- ***************** 특정글 댓글 전체 삭제 ******************** -->
     <delete
     	id="deleteAllByTarget">
     	
@@ -166,40 +166,20 @@
     	INSERT INTO comment_tb(
     		target_gb,
     		target_cd,
-    		user_id, 
-    		contents)
-    	VALUES(
-    		#{targetGb},
-    		#{targetCd},
-    		#{userId},
-    		#{contents}	
-	    	)
-	    <selectKey keyProperty="commentId" resultType ="Integer" order ="AFTER">
-	    	SELECT
-	    		MAX(comment_id)
-	    	FROM
-	    		comment_tb
-	    </selectKey>
-    </insert>
-    
-    <!-- ***************** 멘션 작성 ******************** -->
-    <insert
-    	id="insertMention"
-		parameterType="org.zerock.wego.domain.common.CommentViewVO">
-    	
-    	INSERT INTO comment_tb(
-    		target_gb,
-    		target_cd,
     		user_id,
+    		<if test="mentionId != null">
     		mention_id,
-    		comment_gb, 
+    		comment_gb,
+    		</if> 
     		contents)
     	VALUES(
     		#{targetGb},
     		#{targetCd},
     		#{userId},
+    		<if test="mentionId != null">
     		#{mentionId},
-    		'MENTION',
+    		#{commentGb},
+    		</if>
     		#{contents}	
 	    	)
 	    <selectKey keyProperty="commentId" resultType ="Integer" order ="AFTER">
@@ -262,14 +242,14 @@
     
      <!-- ***************** 댓글 영구삭제  ******************** -->
     
-    	<delete id="deleteDeadComment">
-    		DELETE
-    		FROM
-    			comment_tb
-    		<where>
-    			status = 'Y'
-    		</where>		
-    	</delete>
+<!--     	<delete id="deleteDeadComment"> -->
+<!--     		DELETE -->
+<!--     		FROM -->
+<!--     			comment_tb -->
+<!--     		<where> -->
+<!--     			status = 'Y' -->
+<!--     		</where>		 -->
+<!--     	</delete> -->
     	
   </mapper>
   
