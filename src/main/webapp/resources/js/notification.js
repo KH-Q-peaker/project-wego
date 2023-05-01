@@ -7,7 +7,6 @@ $(document).ready(function () {
 
 setFooterPosition();
 
-
 // 가져와죠
 var userId = document.getElementById("user-info").dataset.userId;
 console.log(userId); // outputs the user ID
@@ -48,16 +47,11 @@ socket.onclose = (event) => {
 socket.onerror = (error) => {
   console.error("WebSocket error:", error);
 };
-
-
 // 알림 삭제 존 소진님꺼 활용하기
 var hideDeleteModal = function () {
   $("body").removeClass("active");
   $(".deleteModal").hide("fast");
 };
-
-var alarmDel = document.querySelector(".deletealarm");
-var alarmBut = document.querySelector(".remove");
 
 var showDeleteModal = function () {
   $(".deleteModal").show("fast").css("display", "grid");
@@ -85,32 +79,30 @@ var showDeleteModal = function () {
       /* 취소 클릭 시 닫기  */ hideDeleteModal();
     });
 };
+
 $(document).ready(function () {
   $(".deletealarm").click(function () {
+    var alarmId = $(this).data("alarmid");
     $("body").addClass("active");
     showDeleteModal();
-
+    let url = "/notification/" + alarmId;
     $(".del")
       .off("click")
       .on("click", function () {
-        // $.ajax({
-        //   url: url + userId,
-        //   type: "DELETE",
-        //   success: function (data) {
-        //     hideDeleteModal();
-        //     setMessage(data);
-        //     showModal();
-        //     setTimeout(function () {
-        //       window.location.replace("http://localhost:8090" + url);
-        //     }, 700);
-        //   },
-        //   error: function () {
-        //     hideDeleteModal();
-        //     setMessage("⚠️ 삭제실패.");
-        //     showModal();
-        //     setTimeout(hideModal, 700);
-        //   },
-        // });
+        $.ajax({
+          url: url,
+          type: "DELETE",
+          success: function (data) {
+            hideDeleteModal();
+            setTimeout(function () {
+              window.location.replace("http://localhost:8080/notification");
+            }, 700);
+          },
+          error: function () {
+            hideDeleteModal();
+            setTimeout(hideModal, 700);
+          },
+        });
       });
   });
 });

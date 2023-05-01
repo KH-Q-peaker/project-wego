@@ -7,9 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.zerock.wego.domain.common.NotificationVO;
@@ -67,4 +70,20 @@ public class NotificationController { // 알림 컨트롤러
         
     } // showPage      
     
+	
+	// 알림 삭제 
+	@DeleteMapping(path="{alarmId}")
+	ResponseEntity<Integer> removeAlarm(@PathVariable("alarmId")Integer alarmId) throws Exception{
+		log.trace("removeAlarm({}) invoked.", alarmId);
+		
+		try {
+			this.notificationService.removeAlarm(alarmId);
+			
+			return ResponseEntity.ok().build();
+			
+		} catch(Exception e) {
+			return ResponseEntity.notFound().build();
+			
+		}// try-catch
+	}// removeAlarm
 } // end class 

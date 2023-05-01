@@ -143,7 +143,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
               <c:if test="${notificationVO.targetGb eq '댓글'}">
                 <div class="alarm comment">
                   <h3>[댓글알림] ${notificationVO.contents}
-                    <input type="button" class="deletealarm remove" name="deletealarm" value="삭제" /> 
+                    <input type="button" class="deletealarm remove" name="deletealarm" value="삭제" data-alarmId="${notificationVO.alarmId}"/> 
                   </h3>
                   <time class="timeago" datetime="${notificationVO.createdDt}"
                     >${notificationVO.createdDt}</time

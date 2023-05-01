@@ -27,14 +27,14 @@ import lombok.extern.log4j.Log4j2;
 @Service("notificationService")
 public class NotificationService {	// POJO
 	
-	private final NotificationMapper mapper;
+	private final NotificationMapper notificationMapper;
 	
 		// 유저코드 알림목록 조회
 		public List<NotificationVO> getAllByUserId(Integer userId) throws ServiceException {
 			log.debug("getAllByUserId({}) invoked.", userId);
 			try {
-		        Objects.requireNonNull(this.mapper);
-		        return this.mapper.selectAllByUserId(userId); // mapper 변수명 변경 예정 
+		        Objects.requireNonNull(this.notificationMapper);
+		        return this.notificationMapper.selectAllByUserId(userId); // mapper 변수명 변경 예정 
 			
 			} catch(Exception e) {
 				throw new ServiceException(e);
@@ -45,45 +45,45 @@ public class NotificationService {	// POJO
 		public NotificationVO getByAlarmId(Integer alarmId) throws ServiceException{
 			log.debug("getAlarmId({}) invoked.", alarmId);
 			try {
-				NotificationVO alarm = this.mapper.selectByAlarmId(alarmId);
+				NotificationVO alarm = this.notificationMapper.selectByAlarmId(alarmId);
 				
 				return alarm;
 			}catch (Exception e) {
 				throw new ServiceException(e);
 			}// try-catch
 		} //getAlarmId
-
-		
+				
 		// 알림 읽음
 		public void modifyStatusByAlarmId(Integer alarmId) throws ServiceException {
 			
 		} //updateAlarm
 		
-//		// 알림 삭제 
-//		public void removeAlarm(Integer alarmId) throws ServiceException {
-//			try {
-//				
-//				boolean isExist = this.mapper.isExistByUserId(alarmId);	
-//				
-//				if(!isExist) {
-//					throw new NotFoundPageException();
-//				}// if
-//				
-//				this.mapper.deleteByAlarmId(alarmId);
-//				
-//				isExist = this.mapper.isExistByUserId(alarmId);	
-//				if (isExist) {
-//					log.info("알림이 삭제되지않았습니다.");
-//				}				
-//				log.info("알림이 삭제되었습니다.");
-//
-//			}  catch (NotFoundPageException e) {
-//				throw e;
-//				
-//			} catch (Exception e) {
-//				throw new ServiceException(e);
-//			}// try-catch
-//		} // removeAlarm
+		// 알림 삭제 
+		public void removeAlarm(Integer alarmId) throws ServiceException {
+			log.trace("removeAlarm({}) invoked.", alarmId);
+			try {
+				
+				boolean isExist = this.notificationMapper.isExistByUserId(alarmId);	
+				
+				if(!isExist) {
+					throw new NotFoundPageException();
+				}// if
+				
+				this.notificationMapper.deleteByAlarmId(alarmId);
+				
+				isExist = this.notificationMapper.isExistByUserId(alarmId);	
+				if (isExist) {
+					log.info("알림이 삭제되지않았습니다.");
+				}				
+				log.info("알림이 삭제되었습니다.");
+
+			}  catch (NotFoundPageException e) {
+				throw e;
+				
+			} catch (Exception e) {
+				throw new ServiceException(e);
+			}// try-catch
+		} // removeAlarm
 		
 		
 	// 웹소캣을 위한 로직입니다.
