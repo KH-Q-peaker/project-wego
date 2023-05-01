@@ -3,7 +3,9 @@ package org.zerock.wego.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.zerock.wego.domain.common.FavoriteDTO;
+import org.zerock.wego.domain.common.UserVO;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.service.common.FavoriteService;
 
@@ -20,10 +22,15 @@ public class FavoriteController {
 	private FavoriteService service;
 	
 	@PostMapping("/favorite")
-	public void favorite(FavoriteDTO dto) throws ControllerException {
+	public void favorite(
+			@SessionAttribute("__AUTH__")UserVO user,
+			FavoriteDTO dto
+			) throws ControllerException {
 		log.trace("favorite({}) invoked.", dto);
 
 		try {
+			dto.setUserId(user.getUserId());
+			
 			boolean isFavoriteInfo = this.service.isFavoriteInfo(dto);
 			log.info("isFavoriteInfo: {}", isFavoriteInfo);
 			

@@ -28,7 +28,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 	
-	<link rel="stylesheet" type="text/css"  href="/resources/css/default.css"/>
 	<link rel="stylesheet" type="text/css" href="/resources/css/header.css"/>
 	<link rel="stylesheet" type="text/css" href="/resources/css/footer.css"/>
 	<link rel="stylesheet" type="text/css" href="/resources/css/like.css"/>
@@ -37,7 +36,6 @@
 	
 	<script type="text/javascript" src="/resources/js/header.js"  defer></script>
 	<script type="text/javascript" src="/resources/js/footer.js"  defer></script>
-	<script type="text/javascript" src="/resources/js/default.js"  defer></script>
 	<script type="text/javascript" src="/resources/js/like.js"  defer></script>
 	<script type="text/javascript" src="/resources/js/scroll.js"  defer></script>
 	<script type="text/javascript" src="/resources/js/comment.js"  defer></script>
@@ -111,20 +109,21 @@
 							<c:when test="${after }">
 								<input type="button" class="join" style="background-color: #727272" disabled value="모집종료" />
 							</c:when>
-							<c:when test="${isJoin == false }">
-								<input type="button" class="join" id="join" name="join" value="참여하기" />
-							</c:when>
-							<c:when test="${isJoin == true }">
+							<c:when test="${isJoin == true && sessionScope.__AUTH__.userId != party.userId }">
 								<input type="button" class="join" id="clsjoin" name="join" value="취소하기" />
 							</c:when>
 							<c:when test="${party.userCnt >= party.partyMax }">
 								<input type="button" class="join" style="background-color: rgb(252, 170, 64)" disabled value="모집완료" />
+							</c:when>
+							<c:when test="${isJoin == false && sessionScope.__AUTH__.userId != party.userId}">
+								<input type="button" class="join" id="join" name="join" value="참여하기" />
 							</c:when>
 						</c:choose>
 				</div>
 				<div class="cnt">댓글 (<span id="cmtcnt">${party.commentCnt }</span>)</div>
 				<c:set var="comments" value="${comments}" />
 				<%@ include file="../comment/comment.jsp"%>
+				<div id="chat"> </div>
 				<div class="to top">top</div>
 				<div class="to cmt">cmt</div>
 			</section>

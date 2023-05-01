@@ -56,11 +56,11 @@ public class JoinService {
 			int currentJoin = this.joinMapper.selectTotalCount(dto);
 			int maxJoin = party.getPartyMax();
 
-			if (currentJoin >= maxJoin) {
+			String status = this.joinMapper.selectById(dto);
+			
+			if ((currentJoin >= maxJoin) && (!status.equals("Y")) ) {
 				throw new OperationFailException();
 			} // if
-
-			String status = this.joinMapper.selectById(dto);
 
 			if (status == null) {
 
@@ -109,18 +109,4 @@ public class JoinService {
 		}// if-else
 	}// joinOrCancle
 	
-	
-	// 모집 참여 삭제 *** 얘도 댓글처럼 스케줄링 해야할듯 *** 
-	public boolean isJoinRemove(JoinDTO dto) throws ServiceException {
-//		log.trace("isJoinRemoved({}) invoked.", dto);
-		
-		try {
-			
-			return (this.joinMapper.delete(dto) == 1);
-			
-		}catch(Exception e) {
-			throw new ServiceException(e);
-		}// try-catch
-	}
-
 }// end class

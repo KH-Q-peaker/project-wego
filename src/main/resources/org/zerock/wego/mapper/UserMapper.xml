@@ -37,7 +37,7 @@
 	</select>
 	
 	
-	<insert id="insertUser">
+	<insert id="insert">
 		
 		INSERT INTO user_tb(
 			nickname, social_id)
@@ -45,4 +45,20 @@
 			#{nickname}, #{socialId})
 		
 	</insert>
+	
+	<!-- 존재하는지? -->
+	<select id="isExist" 
+  			resultType = "java.lang.Boolean">
+  		
+  		SELECT
+  			CASE WHEN EXISTS 
+  				(
+            		SELECT 1 
+	            	FROM user_tb
+	            	WHERE user_id = #{userId}
+        		) 
+        		THEN 1 ELSE 0 END AS "is_exist"
+        FROM dual
+  	</select>
+  	
 </mapper>

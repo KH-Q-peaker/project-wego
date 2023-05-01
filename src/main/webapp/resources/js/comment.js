@@ -15,9 +15,8 @@ function loadMoreComments() {
 		},
 		success: function(data) {
 			console.log('로딩이 왜되냐고');
-			if (data.length != 0) {
-				$(".cmtcontainer").append(data);
-			} else {
+			$(".cmtcontainer").append(data);
+			if(loadCnt < 5){
 				$(window).off('scroll');
 			}
 		},
@@ -50,7 +49,6 @@ function toggleMentionBtn(buttonElem) {
 		buttonElem.parent().next().next('.mentionList').show().children('.mention').show('fast');
 	} else {
 		$(".mentionbtn").val('↪︎답글');
-//		buttonElem.val('↪︎답글');
 		$(".mcontents").val('');
 		$('.mentionwrite, .mentionList, .mention').hide('fast');
 	}

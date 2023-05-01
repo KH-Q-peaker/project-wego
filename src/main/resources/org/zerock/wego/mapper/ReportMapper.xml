@@ -11,23 +11,23 @@
   	<!-- ***************** 신고 존재여부 ******************** -->
     <select id="isExist" 
     		resultType="java.lang.Boolean">
-   			 
-   	SELECT
-        CASE WHEN 
-        	EXISTS (
-            	SELECT 1 
-            	FROM report_tb
-            	<where>
-                target_gb = #{targetGb}
-                AND 
-                target_cd = #{targetCd}
-                <if test="userId != null">
-                AND 
-                user_id = #{userId}
-                </if>
-            	</where>
-        		) THEN 1 ELSE 0 END AS exist
-    FROM dual
+
+	SELECT
+		CASE WHEN
+		EXISTS (
+			SELECT 1
+			FROM report_tb
+			<where>
+				target_gb = #{targetGb}
+				AND
+				target_cd = #{targetCd}
+				<if test="userId != null">
+				AND
+				user_id = #{userId}
+				</if>
+			</where>
+			) THEN 1 ELSE 0 END AS exist
+	FROM dual
 	</select>
     
     <!-- ***************** 신고 총합 조회 ******************** -->

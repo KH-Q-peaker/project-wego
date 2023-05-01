@@ -39,7 +39,7 @@ public class LoginService {
 			throw new RuntimeException("이미 가입된 회원입니다.");
 		} // if
 
-		userMapper.insertUser(userDTO);
+		userMapper.insert(userDTO);
 	} // signUp
 	
 

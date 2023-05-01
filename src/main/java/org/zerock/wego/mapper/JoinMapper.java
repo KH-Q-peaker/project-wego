@@ -8,16 +8,13 @@ public interface JoinMapper {
 	// 참여 인원 수 
 	public abstract int selectTotalCount(JoinDTO dto);
 	
-	// 모집 참여 여부 조회 
+	// 모집 참여 여부
 	public abstract String selectById(JoinDTO dto);
 	
 	// 모집 참여 생성
 	public abstract Integer insert(JoinDTO dto);
 	
-	// 모집 참여 토글 
+	// 모집 참여 토글 (신청/취소) 
 	public abstract Integer update(@Param("dto")JoinDTO dto, @Param("status")String status);
 	
-	// 모집 참여 삭제 
-	public abstract Integer delete(JoinDTO dto);
-
 }// end interface

@@ -304,7 +304,13 @@ $("document").ready(function () {
 console.log("---------------- 1 ---------------------");
 let modal1 = document.querySelector(".myinfo-update");
 let upload = document.querySelector("#upload");
+let restart = document.querySelector("#restart");
 
+
+
+restart.addEventListener("click", () => {
+  modal1.style.display = "none";
+});
 
 upload.addEventListener("click", () => {
   modal1.style.display = "block";

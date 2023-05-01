@@ -47,7 +47,7 @@ public class CommentService {
 	
 	// 댓글 offset 로딩
 	public LinkedBlockingDeque<CommentViewVO> getCommentOffsetByTarget(PageInfo target, Integer lastCommentId)
-			throws ServiceException {
+			throws RuntimeException {
 //		log.trace("getCommentsOffsetByTarget({}, {}) invoked.", target, lastCommentId);
 
 		try {
@@ -62,13 +62,13 @@ public class CommentService {
 				return comments;
 			} // if-else
 
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			throw new ServiceException(e);
 		} // try-catch
 	}// getCommentsOffsetByTarget
 		
 	// 댓글의 멘션 전체 조회
-	public LinkedBlockingDeque<CommentViewVO> getMentionsByCommentId(Integer commentId) throws Exception {
+	public LinkedBlockingDeque<CommentViewVO> getMentionsByCommentId(Integer commentId) throws RuntimeException {
 
 			try {
 				LinkedBlockingDeque<CommentViewVO> mentions 
@@ -79,14 +79,14 @@ public class CommentService {
 			} catch (NullPointerException e) {
 				return null;
 				
-			} catch (Exception e) {
+			} catch (RuntimeException e) {
 				throw new ServiceException(e);
 			} // try-catch
 		}// getCommentsOffsetByTarget
 
 	
 	// 댓글 코드로 조회 
-	public CommentViewVO getById(Integer commentId) throws ServiceException{
+	public CommentViewVO getById(Integer commentId) throws RuntimeException{
 //		log.trace("getCommentByCommentId({}}) invoked.", commentId);
 		
 		try {
@@ -94,14 +94,14 @@ public class CommentService {
 			
 			return comment;
 
-		}catch(Exception e) {
+		}catch(RuntimeException e) {
 			throw new ServiceException(e);
 		}// try-catch
 	}// getCommentsOffsetByTarget
 	
 	
 	// 댓글/멘션 작성 
-	public void registerCommentOrMention(CommentDTO dto) throws Exception{
+	public void registerCommentOrMention(CommentDTO dto) throws RuntimeException{
 //		log.trace("isCommentRegister({}) invoked", dto);
 		
 		try {
@@ -135,7 +135,7 @@ public class CommentService {
 		} catch(OperationFailException e) {
 			throw e;
 			
-		}catch(Exception e) {
+		}catch(RuntimeException e) {
 			throw new ServiceException(e);
 			
 		}// try-catch
@@ -143,7 +143,7 @@ public class CommentService {
 	
 	
 	// 댓글/멘션 삭제
-	public void removeCommentOrMention(Integer commentId) throws ServiceException {
+	public void removeCommentOrMention(Integer commentId) throws RuntimeException {
 //		log.trace("removeCommentOrMention() invoked.");
 		
 		try {
@@ -174,7 +174,7 @@ public class CommentService {
 		} catch (NotFoundPageException | OperationFailException e) {
 			throw e;
 
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			throw new ServiceException(e);
 			
 		}// try-catch
@@ -182,7 +182,7 @@ public class CommentService {
 	
 	
 	// 댓글 삭제
-	public void removeComment(Integer commentId) throws Exception {
+	public void removeComment(Integer commentId) throws RuntimeException {
 //		log.trace("removeComment() invoked.");
 		try {
 			boolean isMentionExist = (this.commentMapper.hasMentionById(commentId) != null);
@@ -200,7 +200,7 @@ public class CommentService {
 				this.commentMapper.deleteById(commentId);
 			}// if-else 
 			
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			throw new ServiceException(e);
 		}// try-catch 
 		
@@ -208,7 +208,7 @@ public class CommentService {
 	
 	
 	// 멘션 삭제
-	public void removeMention(Integer commentId) throws ServiceException {
+	public void removeMention(Integer commentId) throws RuntimeException {
 //		log.trace("removeMention() invoked.");
 
 		try {
@@ -229,14 +229,14 @@ public class CommentService {
 				this.commentMapper.updateComment(comment);
 			} // if
 		
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			throw new ServiceException(e);
 		} // try-catch
 	}// removeComment
 
 	
 	// 댓글 수정 
-	public void modify(CommentDTO dto) throws ServiceException{
+	public void modify(CommentDTO dto) throws RuntimeException{
 //		log.trace("isModified({}) invoked", dto);
 
 		try {
@@ -250,17 +250,17 @@ public class CommentService {
 			
 			this.commentMapper.updateComment(dto); 
 			
-		}catch (Exception e) {
+		}catch (RuntimeException e) {
 			throw new ServiceException(e);
 		}// try-catch
 	}// modifyComment
 	
-	public void removeAllByTarget(String targetGb, Integer targetCd) throws Exception{
+	public void removeAllByTarget(String targetGb, Integer targetCd) throws RuntimeException{
 		
 		try {
 			this.commentMapper.deleteAllByTarget(targetGb, targetCd);
 			
-		} catch(Exception e) {
+		} catch(RuntimeException e) {
 			throw new ServiceException(e);
 		}// try-catch
 	}// removeAllbyTarget

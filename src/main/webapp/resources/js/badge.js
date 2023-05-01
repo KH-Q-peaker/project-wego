@@ -12,7 +12,7 @@ $(() => {
 
     showGetPickStack();
     removeAndAddPickBadge();
-    
+
     // ===========================================================================init
 
     // 모달창 열림
@@ -33,7 +33,7 @@ $(() => {
             // list 가 1개이상일때만 서밋 가능
             if (pickList.length > 0) {
                 if (modalButton === "submit") {
-                    let targetURL = `${targetUserId}`;
+                    let targetURL = `modify/${targetUserId}`;
 
                     $.ajax({
                         type: "POST",
@@ -48,11 +48,10 @@ $(() => {
                             clearPick(pickList);
                         },
 
-                        success: function (newBadgeGetList) {
+                        success: function () {
 
-                            removeAndAddClassPickByGetList(newBadgeGetList);
-                            removeAndAddPickBadge();
                             clearPick(pickList);
+                            removeAndAddPickBadge();
                         }
                     });
                 } else {
@@ -241,8 +240,8 @@ var removeAndAddClassPickByGetList = (pickList) => {
 
 
 
-var removeAndAddPickBadge = () =>{
-	$.ajax({
+var removeAndAddPickBadge = () => {
+    $.ajax({
         type: "GET",
         url: `pick-list/json/${targetUserId}`,
         error: function () {
@@ -253,35 +252,35 @@ var removeAndAddPickBadge = () =>{
             removePickBadge();
 
             addPickBadge(badgePickList);
-            
+
             setFooterPosition(); // footer.js
         } // success
     });
 }
-var removePickBadge = () =>{
-	$(".badgeBox#pick5").children("div.item").fadeOut(1000, function() {
+var removePickBadge = () => {
+    $(".badgeBox#pick5").children("div.item").fadeOut(1000, function () {
 
         $(this).remove();
-      });
+    });
 }
-var addPickBadge = (badgePickList) =>{
+var addPickBadge = (badgePickList) => {
     let preBadgeId = 0;
-    
+
     for (let idx = 0; idx < badgePickList.length; idx++) {
 
         let nowPickBadge = badgePickList[idx];
-        let nowPickBadgeId =  nowPickBadge.badgeId;
-        let nowPickBadgeName =  nowPickBadge.badgeName;
+        let nowPickBadgeId = nowPickBadge.badgeId;
+        let nowPickBadgeName = nowPickBadge.badgeName;
 
         if (preBadgeId != nowPickBadgeId) {
-        
+
             let pcikBadgeHTML = `<div class='item pick' id='${nowPickBadgeId}' style='display : none'><div class='sanBadge'></div><div class='badgeName'>${nowPickBadgeName}</div></div>`;
 
             preBadgeId = nowPickBadgeId;
 
             $(".badgeBox#pick5").append(pcikBadgeHTML);
             $(".badgeBox#pick5").children("div.item").css("display", "block");
-        }   
+        }
 
 
     }

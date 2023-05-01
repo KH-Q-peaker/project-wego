@@ -55,5 +55,15 @@ public class SearchService {
 			throw new ServiceException(e);
 		} // try-catch
 	} // selectSearchReview
+	
+	public Set<SanInfoViewVO> selectSearchSanInfo(String search) throws ServiceException {
+		log.trace("selectSearchSanInfo({}) invoked.", search);
+		
+		try {
+			return this.sanInfoMapper.selectSearchSanInfoByQuery(search);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	} // selectSearchSanInfo
 
 } // end interface

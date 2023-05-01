@@ -58,7 +58,7 @@ public class ReviewService {
 	
 
 	// 특정 후기글 조회 
-	public ReviewViewVO getById(Integer reviewId) throws Exception {
+	public ReviewViewVO getById(Integer reviewId) throws RuntimeException {
 //		log.trace("getById({}) invoked.", reviewId);	
 		
 		try {
@@ -83,7 +83,7 @@ public class ReviewService {
 	
 	// 특정 후기글 삭제
 	@Transactional 
-	public void removeById(Integer reviewId) throws Exception {
+	public void removeById(Integer reviewId) throws RuntimeException {
 //		log.trace("isRemoved({}) invoked.", reviewId);
 		
 		try {
@@ -100,21 +100,15 @@ public class ReviewService {
 			this.commentService.removeAllByTarget("SAN_REVIEW", reviewId);
 			// TO_DO : 좋아요 내역 삭제도 추기돼야 함,
 			
-			isExist = this.reviewMapper.isExist(reviewId);
-			
-			if(isExist) {
-				throw new OperationFailException();
-			}// if
-			
 		} catch(NotFoundPageException | OperationFailException e) {
 			throw e;
 			
-		} catch(Exception e) {
+		} catch(RuntimeException e) {
 			throw new ServiceException(e);
 		} // try-catch
 	} // remove
 	
-	public void register(ReviewDTO dto) throws Exception {
+	public void register(ReviewDTO dto) throws RuntimeException {
 		log.trace("register({}) invoked.");
 		
 		try {
@@ -130,14 +124,14 @@ public class ReviewService {
 		}catch(OperationFailException e) { 
 			throw e;
 			
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			throw new ServiceException(e);
 			
 		} // try-catch
 	} // register
 	
 	
-	public void modify(ReviewDTO dto) throws ServiceException {
+	public void modify(ReviewDTO dto) throws RuntimeException {
 		log.trace("modify({}) invoked.");
 		
 		try {
@@ -153,7 +147,7 @@ public class ReviewService {
 		}catch (NotFoundPageException e) {
 			throw e;
 			
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			throw new ServiceException(e);
 			
 		} // try-catch

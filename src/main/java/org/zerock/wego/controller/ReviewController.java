@@ -39,6 +39,7 @@ import org.zerock.wego.service.info.SanInfoService;
 import org.zerock.wego.service.review.ReviewService;
 import org.zerock.wego.verification.ReviewValidator;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -57,7 +58,6 @@ public class ReviewController {
 	private final FileService fileService;
 	private final FavoriteService favoriteService;
 	private final ReviewValidator reviewValidator;
-	private final ReportService reportService;
 	
 
 	@GetMapping("")
@@ -70,19 +70,19 @@ public class ReviewController {
 			model.addAttribute("reviewList", reviewList);
 
 			return "review/review";
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			throw new ControllerException(e);
 		} // try-catch
 	} // openReview
 
 	@GetMapping(path="/{reviewId}")
-	public ModelAndView showDetailById(@PathVariable("reviewId")Integer reviewId,
+	public String showDetailById(@PathVariable("reviewId")Integer reviewId,
 									@SessionAttribute("__AUTH__")UserVO user,
-									PageInfo target, ModelAndView mav) throws Exception{
-		log.trace("showDetail({}, {}) invoked.", reviewId, target);
+									PageInfo pageInfo, Model model, FavoriteDTO favorite) throws RuntimeException, JsonProcessingException{
+		log.trace("showDetail({}, {}) invoked.", reviewId, pageInfo);
 
-			target.setTargetGb("SAN_REVIEW");
-			target.setTargetCd(reviewId);
+			pageInfo.setTargetGb("SAN_REVIEW");
+			pageInfo.setTargetCd(reviewId);
 			
 			ReviewViewVO review = this.reviewService.getById(reviewId);
 			Integer userId = user.getUserId();
@@ -94,7 +94,6 @@ public class ReviewController {
 			List<FileVO> fileList = this.fileService.getList("SAN_REVIEW", reviewId);
 			
 			// TO_DO : 좋아요 바뀌면 바꿔야됨 
-			FavoriteDTO favorite = new FavoriteDTO();
 			favorite.setTargetGb("SAN_REVIEW");
 			favorite.setTargetCd(reviewId);
 			favorite.setUserId(userId);
@@ -102,25 +101,20 @@ public class ReviewController {
 			boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
 
 			LinkedBlockingDeque<CommentViewVO> comments 
-							= this.commentService.getCommentOffsetByTarget(target, 0);
+							= this.commentService.getCommentOffsetByTarget(pageInfo, 0);
 
-			/*후기글 사진 넣는거 필요함 */
-			mav.addObject("review", review);
-			mav.addObject("isFavorite", isFavorite);
-			mav.addObject("fileList", fileList);
+			model.addAttribute("review", review);
+			model.addAttribute("isFavorite", isFavorite);
+			model.addAttribute("fileList", fileList);
+			model.addAttribute("comments", comments);
 			
-			if(comments != null) {
 				
-				mav.addObject("comments", comments);
-			}// if
-			
 			ObjectMapper objectMapper = new ObjectMapper();
-			String targetJson = objectMapper.writeValueAsString(target);
-			mav.addObject("target", targetJson);
-
-			mav.setViewName("/review/detail");
+			String pageInfoJson = objectMapper.writeValueAsString(pageInfo);
 			
-			return mav;
+			model.addAttribute("target", pageInfoJson);
+
+			return "/review/detail";
 	}// showDetailById
 
 	@DeleteMapping(path= "/{reviewId}", produces= "text/plain; charset=UTF-8")
@@ -129,12 +123,10 @@ public class ReviewController {
 
 		try {
 			this.reviewService.removeById(reviewId);
-//			this.reportService.removeAllByTarget("SAN_REVIEW", reviewId);
-//			this.fileService.isRemoveByTarget("SAN_REVIEW", reviewId);
-//			this.favoriteService.removeAllByTarget("SAN_REVIEW", reviewId);
+
 			return ResponseEntity.ok("후기글이 삭제되었습니다.️");
 
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			return ResponseEntity.badRequest().build();
 		}// try-catch
 	}// removeReview
@@ -257,4 +249,5 @@ public class ReviewController {
 			throw new ControllerException(e);
 		} // try-catch
 	} // register
+	
 }// end class

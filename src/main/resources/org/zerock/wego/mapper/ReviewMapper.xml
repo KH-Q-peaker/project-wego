@@ -20,9 +20,9 @@
 			(
 			SELECT *
 			FROM san_review_v
-			ORDER BY dbms_random.random
+			ORDER BY DBMS_RANDOM.RANDOM
 			)
-		WHERE rownum &lt;= 10
+		WHERE ROWNUM &lt;= 10
 	</select>
 	
 	<select id="selectSearchReview3ByQuery"
@@ -34,7 +34,7 @@
 			title LIKE '%'||#{search}||'%'
 			OR contents LIKE '%'||#{search}||'%'
 			)
-			AND rownum &lt;= 3
+			AND ROWNUM &lt;= 3
 	</select>
 
 	<!--  ************* 존재 여부 *************** -->
@@ -68,25 +68,23 @@
   	</select>
 
 	<!--  ************* 후기글 삭제 *************** -->
-	<delete
-  		id="delete">
-  		
+	<delete id="delete">
   		DELETE 
   		FROM
   			san_review_tb
   		<where>
   			san_review_id = #{reviewId}
   		</where>
-  		
   	</delete>
 
-
-	<insert id="insert" parameterType="org.zerock.wego.domain.review.ReviewDTO">
+	<insert id="insert" 
+		parameterType="org.zerock.wego.domain.review.ReviewDTO">
 		INSERT INTO 
-			san_review_tb(san_info_id, user_id, title, contents)
-			VALUES(#{sanInfoId}, #{userId}, #{title}, #{contents})
+			san_review_tb (san_info_id, user_id, title, contents)
+			VALUES (#{sanInfoId}, #{userId}, #{title}, #{contents})
+			
 		<selectKey keyProperty="sanReviewId" resultType="int" order="AFTER" >
-			SELECT max(san_review_id)
+			SELECT MAX(san_review_id)
 			FROM san_review_tb
 		</selectKey>
 	</insert>

@@ -140,7 +140,7 @@ input{
 
 .top {
 	display: none;
-	bottom: 80px;
+	bottom: 90px;
 	background: url(../svg/top.svg);
 }
 /* 서치바 숨기기 */

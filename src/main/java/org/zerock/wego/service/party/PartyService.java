@@ -65,7 +65,7 @@ public class PartyService {
 	
 	
 	// 모집글 상세 조회 
-	public PartyViewVO getById(Integer partyId) throws Exception{
+	public PartyViewVO getById(Integer partyId) throws RuntimeException{
 //		log.trace("getById({}) invoked.", partyId);
 		try {
 			PartyViewVO party = this.partyMapper.selectById(partyId);
@@ -74,21 +74,21 @@ public class PartyService {
 				 throw new NotFoundPageException();
 			}// if
 			 
-			this.partyMapper.visitCountUp(partyId); //조회수증가.
+			this.partyMapper.visitCountUp(partyId); 
 			
 			return party;
 			
 		} catch (NotFoundPageException e) {
 			throw e;
 			
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			throw new ServiceException(e);
 		}// try-catch
 	}// getById
 	
 	// 모집글 삭제 
 	@Transactional
-	public void removeById(Integer partyId) throws Exception{
+	public void removeById(Integer partyId) throws RuntimeException{
 //		log.trace("isRemovedById({}) invoked.", partyId);
 		try {
 			boolean isExist = this.partyMapper.isExist(partyId);
@@ -103,16 +103,10 @@ public class PartyService {
 			this.favoriteService.removeAllByTarget("SAN_PARTY", partyId);
 			this.commentService.removeAllByTarget("SAN_PARTY", partyId);
 			
-			isExist = this.partyMapper.isExist(partyId);
-			
-			if(isExist) {
-				throw new OperationFailException();
-			}// if
-			
 		} catch (NotFoundPageException | OperationFailException e) {
 			throw e;
 		
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			throw new ServiceException(e);
 		}// try-catch
 	}// removeParty

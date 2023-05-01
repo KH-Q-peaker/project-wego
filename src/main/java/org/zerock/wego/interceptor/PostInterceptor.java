@@ -59,7 +59,6 @@ public class PostInterceptor implements HandlerInterceptor {
 					out.println("alert('" + message + "');");
 					out.println("location.href='" + "/" + requestURI[1] + "';");
 					out.println("</script>");
-//					response.sendRedirect("/" + requestURI[1]); // 일단 목록으로 이동...원래 목록이었는데 목록으로 이동...하...
 				}// if-else
 				
 				return false;

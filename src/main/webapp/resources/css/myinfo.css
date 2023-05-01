@@ -218,7 +218,7 @@ input[type="radio"]:checked + label {
   margin: 10px 10px;
   cursor: pointer;
 }
-.myinfo-update input[type="submit"] {
+.myinfo-update #setButton {
   display: inline-block;
   width: 100px;
   height: 30px;
@@ -231,7 +231,7 @@ input[type="radio"]:checked + label {
   margin: 10px 10px;
   cursor: pointer;
 }
-.myinfo-update input[type="reset"] {
+.myinfo-update #restart {
   display: inline-block;
   width: 100px;
   height: 30px;

@@ -1,3 +1,4 @@
+// const mountains = [];
 
 let imgPath; // 업로드 이미지 임시 저장 변수
 let isReadyUpload = false; // 파일 업로드 가능여부
@@ -11,6 +12,33 @@ nameset.onclick = function () {
 var closebutton2 = document.querySelector(".closebutton2");
 closebutton2.onclick = function () {
   nickbox.className = "nickname-box";
+};
+
+// Get the navigation menu items
+const menuItems = document.querySelectorAll(".content-header-menu-item");
+menuItems.forEach((item, index) => {
+  // index 매개변수 추가
+  item.addEventListener("click", () => {
+    console.log("네비가 클릭됨");
+
+    // Remove the "item-point" id from all menu items
+    menuItems.forEach((item) => item.classList.remove("item-point"));
+
+    // Add the "item-point" id to the clicked menu item
+    item.classList.add("item-point");
+    console.log(item);
+    console.log("item이 변화되었습니다.");
+  });
+});
+
+
+//프로필 변경시 로딩 화면
+var _showPage = function() {
+console.log("_showPage invoked");        
+var loader = $("div.loader");
+var container = $("div.container");
+loader.css("display","block");
+container.css("display","block");
 };
 
 //파일첨부 text 표시 관련
@@ -28,13 +56,16 @@ profileimagebutton.addEventListener('click', function(){
 // 이미지 추가 버튼 클릭 이벤트
 selector(".profile-image-button").addEventListener("click", () => {
   $('#document_file').on('change', function(event){
-	  
+	
+	//imgPath=null;
+	//console.log("parseInt($fileUpload.get(0).files.length): "+ parseInt($fileUpload.get(0).files.length));
+	
 	  if(!(document.getElementById('document_file').files[0])){
 		fileText.innerHTML="여기로 이미지를 드래그하거나 <br> 파일을 업로드 하세요. (최대 20MB)";
-	} else {
+	  } else {
 	
       const selectedFile = document.getElementById('document_file').files[0];
-      console.log("fileName:{}",event.target.files[0].name)
+      console.log("fileName:{}",event.target.files[0].name);
       selectedFile.type = "file";
       selectedFile.accept = ".jpg, .jpeg, .png";
     
@@ -49,42 +80,24 @@ selector(".profile-image-button").addEventListener("click", () => {
 	    // 위 조건을 모두 통과할 경우
 	    isReadyUpload = true;
 	    if( (check && check2)){
-          console.log("check : fileName:{}",event.target.files[0].name);
+          console.log("check : fileName:{}",event.target.files[0].name)
+          processFile(event);
           var fileName = event.target.files[0].name;
 
           if (fileName) {
             fileText.innerHTML=`<p>${fileName}</p>`;
           }
-          
-          var formData = new FormData();
-          imgPath = document.getElementById('document_file').files[0];
-          console.log("imgPath:" +imgPath);
-		  formData.append("part",imgPath);
-		  formData.append("userId",document.getElementById('userId').value);
 		   $('#partButton').on('click', function(event){
-		  $.ajax({
-		    url: '/profile/image',
-		      processData: false,
-		      contentType: false,
-		      data: formData,
-		      type: 'POST',
-		      success: function(result){
-				//로딩 함수
+    			setTimeout(function() {
 				_showPage();
-				//이미지가 로딩될때까지 기다림
-    			
-    			setTimeout(function(){
-    			//전송 성공시, 메인페이지로 이동
-				const userId = document.getElementById('userId').value;
-			     location.href = '/profile/' + userId;
+    			var formData = document.getElementById('imageForm');
+    			formData.submit();
 				}, 1000);
-			     }
 				})
-		    });//ajax
           }//click function
 		 }	//if-else
 		});//change function
-  selector(".add-profile-image").style.display = "block";
+ 	 selector(".add-profile-image").style.display = "block";
 });//addEventListener
 
 
@@ -93,6 +106,10 @@ selector(".add-profile-image .cancel").addEventListener("click", () => {
   selector(".add-profile-image").style.display = "none";
   imgPath=null;
 });
+
+
+const processFile = (event) => {
+};
 
 // 업로드 파일 용량 체크
 const isFileMaxSize = (event) => {
@@ -133,27 +150,23 @@ const isRightFile = (event) => {
 };
 
 
-var userId = document.querySelector("#userId").value;
-
 //메인 페이지 로드
 window.onload = function(){
-	console.log("loadload");
-		
+	
 		$.ajax({
-        type: 'get',
-        url: '/profile/partyList?userId='+userId,
-        success: function(data){
-            $("#content1").load("/profile/partyList?userId="+ userId);
-	            
-        }
+	        type: 'get',
+	        url: '/profile/partyList',
+	        success: function(data){
+	            $("#content1").load("/profile/partyList");
+        	}
 	   });
+	   
 	   $.ajax({
-		        type: 'get',
-		        url: '/profile/pastPartyList?userId='+userId,
-		        success: function(data){
-				console.log("111loadload");
-		            $("#content2").load("/profile/pastPartyList?userId="+ userId);
-		       	 }
+	        type: 'get',
+	        url: '/profile/pastPartyList',
+	        success: function(data){
+	            $("#content2").load("/profile/pastPartyList");
+	       	 }
 	   	});
 	   	document.getElementById("module").style.opacity = "0";
 		$("#module").animate({
@@ -162,28 +175,23 @@ window.onload = function(){
 };
 
 
-
-
 $('#climb').click(function(){
-		currPage = 1;
-		amount = 10;
 		var module1 = document.querySelector("#module");
 		module1.innerHTML = '<div class="cotents"> \
 	    <div class="content1" id="content1"> </div>\
 	    <div class="content2" id="content2"> </div></div>';
 		$.ajax({
         type: 'get',
-        url: '/profile/partyList?userId='+userId,
+        url: '/profile/partyList',
         success: function(data){
-            $("#content1").load("/profile/partyList?userId="+ userId);
+            $("#content1").load("/profile/partyList");
         }
 	   });
 	   $.ajax({
 	        type: 'get',
-	        url: '/profile/pastPartyList?userId='+userId,
+	        url: '/profile/pastPartyList',
 	        success: function(data){
-			console.log("111loadload");
-	            $("#content2").load("/profile/pastPartyList?userId="+ userId);
+	            $("#content2").load("/profile/pastPartyList");
 	       	 	}
 	   	});
 	   	document.getElementById("module").style.opacity = "0";
@@ -201,21 +209,18 @@ $('#info').click(function(){
 		async : true,
         type: 'get',
         url: '/profile/info',
-        data:{"userId":userId},
         success: function(data){
 					document.getElementById("module").style.opacity = "0";
 					$("#module").animate({
 						opacity : 1
 					});
-        	$("#module").load("/profile/info?userId=" + userId);
+        	$("#module").load("/profile/info");
  		}
     });
 });
 
 
 $('#mypost').click(function(){
-		currPage = 1;
-		amount = 10;
 		var module1 = document.querySelector("#module");
 		module1.innerHTML = '<div class="cotents"> \
 	    <div class="content1" id="content1"> </div>\
@@ -227,18 +232,18 @@ $('#mypost').click(function(){
 	    <div class="content2" id="content2"> </div></div>';
 		$.ajax({
         type: 'get',
-        url: '/profile/mypost?userId='+userId,
+        url: '/profile/mypost',
         success: function(data){
 		console.log("mypost loadload");
-            $("#content1").load("/profile/mypost?userId="+ userId);
+            $("#content1").load("/profile/mypost");
         }
 	   });
 	   $.ajax({
 	        type: 'get',
-	        url: '/profile/mycomment?userId='+userId,
+	        url: '/profile/mycomment',
 	        success: function(data){
 			console.log("mycomment loadload");
-	            $("#content2").load("/profile/mycomment?userId="+ userId);
+	            $("#content2").load("/profile/mycomment");
 	       	 	}
 	   	});
 	   	document.getElementById("module").style.opacity = "0";

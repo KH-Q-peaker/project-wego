@@ -5,9 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
-import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +15,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.zerock.wego.domain.common.Criteria;
@@ -53,46 +55,52 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("/profile") // base URI
 @Controller
 public class ProfileController {
-	private ProfileService service;
+	private ProfileService profileService;
+	
+	@GetMapping("")
+	public String getMypage(
+			@SessionAttribute("__AUTH__")UserVO user,
+			Model model) throws ControllerException {
+		
+	    log.trace("getUserInfo({}) invoked.",user);
+
+	    try {
+	    	Integer userId = user.getUserId();
+	    	log.info("userId: {}",userId);
+    		UserVO vo = profileService.getUserById(userId);
+    		String path = vo.getUserPic();
+			
+			if(! ( path == null || path.isEmpty())) {
+				log.info("path: "+ path);
+				if(path.contains("upload")) {
+					String [] pathArray = path.split("upload");
+					log.info("pathArray[1]:"+pathArray[1]);
+					model.addAttribute("UserPicName", pathArray[1]);
+				}
+				log.info("path: {} " , path);
+			}
+			model.addAttribute("vo",vo);
+			return "mypage/mypage";
+	    } catch(Exception e) {
+	        throw new ControllerException(e);
+	    }
+	} // getUserInfo
 	
     // 1. 클릭한 userId에 해당하는 유저 페이지를 보여주는 로직
 	@GetMapping("/{userId}") 
 	public String getUserInfo(
 			@PathVariable("userId") Integer userId,
-			@SessionAttribute("__AUTH__")UserVO user,
 			Model model) throws ControllerException {
 		
 	    log.trace("getUserInfo({}) invoked.", userId);
 
 	    try {
-	    	//세션의 아이디와 쿼리스트링으로 전달된 아이디를 비교해서,
-	    	// 나의 프로필과 유저 프로필을 보여주기.
-	    	Integer sessionUserId = user.getUserId();
-	    	log.info("sessionUserId: {}",sessionUserId);
 	    	log.info("userId:{}",userId);
-	    	log.info("sessionUserId.equals(userId) : {}", sessionUserId.equals(userId));
-	    	if(sessionUserId.equals(userId)) {
-	    		UserVO vo = service.getUserById(userId);
-	    		String path = vo.getUserPic();
-				
-				if(! ( path == null || path.isEmpty())) {
-					log.info("path: "+ path);
-					if(path.contains("upload")) {
-						String [] pathArray = path.split("upload");
-						log.info("pathArray[1]:"+pathArray[1]);
-						model.addAttribute("UserPicName", pathArray[1]);
-					}
-					log.info("path: {} " , path);
-				}
-				model.addAttribute("vo",vo);
-				return "mypage/mypage";
-	    	} else {
-		    	// 유저 정보 먼저 만들어놓기. 
-		    	UserVO getUserInfoList = this.service.getUserById(userId);
-		        model.addAttribute("getUserInfoList", getUserInfoList);
-				model.addAttribute("userId", userId);
-				return "profile/userpage";
-	    	}
+	    	
+	    	UserVO getUserInfoList = this.profileService.getUserById(userId);
+	        model.addAttribute("getUserInfoList", getUserInfoList);
+			model.addAttribute("userId", userId);
+			return "profile/userpage";
 	    } catch(Exception e) {
 	        throw new ControllerException(e);
 	    }
@@ -111,12 +119,12 @@ public class ProfileController {
 	        cri.setAmount(10);
 			
 			// Step 1. 페이징 처리된 현제 currPage에 해당하는 게시글목록을 받아옴 
-			List<ProfileVO> writtenList = this.service.getListByUserId(userId,cri);
+			List<ProfileVO> writtenList = this.profileService.getListByUserId(userId,cri);
 			model.addAttribute("writtenList", writtenList); 
 			model.addAttribute("userId", userId);
 
 			// Step2. Pagination 위한 각종 변수 값을 계산하기
-			int totalAmount = this.service.getTotalAmountByUserId(userId);
+			int totalAmount = this.profileService.getTotalAmountByUserId(userId);
 			PageDTO pageDTO = new PageDTO(cri,totalAmount);
 			log.info("\t+ pageDTO: {}", pageDTO);
 
@@ -140,11 +148,11 @@ public class ProfileController {
 	        cri2.setCurrPage(currPage);
 	        cri2.setAmount(10);
 			
-			List<ProfileCommentVO> commentList = this.service.getListComment(userId,cri2);
+			List<ProfileCommentVO> commentList = this.profileService.getListComment(userId,cri2);
 			model.addAttribute("commentList", commentList); 
 			model.addAttribute("userId", userId);
 			
-			int totalAmount = this.service.getTotalAmountComment(userId);
+			int totalAmount = this.profileService.getTotalAmountComment(userId);
 			PageDTO pageDTO2 = new PageDTO(cri2,totalAmount);
 			log.info("\t+ pageDTO: {}", pageDTO2);
 
@@ -157,30 +165,60 @@ public class ProfileController {
 		} // try-catch
 	} // commentByProfile
 	
-	@GetMapping("/changeNick")
+	@ResponseBody
+	@RequestMapping(value="/changeNickname", produces="application/text;charset=UTF-8")
 	public String changeNick(
-			@RequestParam("userId")Integer userId,
-			@RequestParam("nickname") String nickname,
-			Model model,HttpServletRequest req) throws ServiceException {
-		try {
-			UserDTO dto = new UserDTO(userId,null,nickname,null,null,null,null);
-			model.addAttribute("dto",dto);
-			boolean is = service.modifyNickByUserDTO(dto) == 1;
-			
-			//ajax 닉네임jsp로 모델도 같이 전달
-			return "/mypage/nickname";
-			
+			@SessionAttribute("__AUTH__")UserVO user,
+			//Integer userId,
+			String nickname) throws ServiceException {
+		try { 
+			Integer userId = user.getUserId();
+			if (nickname == null || nickname == "") {
+				return "";
+            } else if (nickname.contains("\\s")) {
+            	return "";
+            } else if ((nickname.length()<2) || (nickname.length()>20)) {
+            	return "";
+            } else if (!(nickname.matches("^[a-zA-Zㄱ-힣0-9*_]{2,20}$"))) {
+            	return "";
+            } else {
+            	UserDTO dto = UserDTO.changeNickByUserIdAndNickName(userId, nickname);
+    			boolean is = profileService.modifyNickByUserDTO(dto) == 1;
+				if(is) {
+					log.info("================= 닉네임 바꾸기 성공!!! ================= ");
+					return dto.getNickname();
+				} else {
+					log.info("=================  닉네임 바꾸기 실패... ================= ");
+					return "";
+				}
+            }
 		}catch(Exception e) {
 			throw new ServiceException(e);
 		}//try-catch
 	}
 	
+	
+	@ResponseBody
+	@RequestMapping(value="/nicknameCheck",produces="application/text;charset=UTF-8")
+	public String equalNicknameCheck(
+			String nickname) throws ServiceException {
+		log.trace("equalNicknameCheck({}) invoked",nickname);
+		try {
+			int equalNicknameCount = profileService.countEqualNicknameByNickname(nickname);
+			return String.valueOf(equalNicknameCount);
+		}catch(Exception e) {
+			throw new ServiceException(e);
+		}//try-catch
+	}//equalNicknameCheck
+	
 	@GetMapping("/info")
 	public String showMyInfo(
-			@RequestParam("userId") Integer userId, Model model) throws ServiceException {
-		log.trace("showMyInfo({},{}) invoked ",userId, model);
+			@SessionAttribute("__AUTH__")UserVO user,
+			Model model) throws ServiceException {
+		log.trace("showMyInfo({},{}) invoked ",user, model);
 		try {
-			UserVO vo = service.getUserById(userId);
+			Integer userId = user.getUserId();
+			UserVO vo = profileService.getUserById(userId);
 			model.addAttribute("__VO__",vo);
 			return "mypage/myinfo";
 		}catch(Exception e) {
@@ -191,12 +229,14 @@ public class ProfileController {
 	
 	@GetMapping("/partyList")
 	public String showMyAvailableParty(Criteria acri,
-			@RequestParam("userId")Integer userId, Model model) throws ControllerException{
+			@SessionAttribute("__AUTH__")UserVO user,
+			Model model) throws ControllerException{
 		try {
+			Integer userId = user.getUserId();
 			List<MyPartyVO> vo = new ArrayList<>();
 			Integer.valueOf(userId);
 			acri.setAmount(10);
-			vo = this.service.showAvailablePartyByUserIdAndAcri(Integer.valueOf(userId), acri);
+			vo = this.profileService.showAvailablePartyByUserIdAndAcri(Integer.valueOf(userId), acri);
 			
 			assert vo != null;
 			
@@ -204,12 +244,11 @@ public class ProfileController {
 			model.addAttribute("availableParty",vo);
 
 			
-			int totalAvailablePartyAmount = this.service.getTotalAmountAvailablePartyByUserId(Integer.valueOf(userId));
+			int totalAvailablePartyAmount = this.profileService.getTotalAmountAvailablePartyByUserId(Integer.valueOf(userId));
 			PageDTO availPageDTO = new PageDTO(acri,totalAvailablePartyAmount);
 			log.info("*************************pageDTO:{}", availPageDTO);
 			model.addAttribute("availPage",availPageDTO);
 			model.addAttribute("__aCurrPage__",acri.getCurrPage());
-			model.addAttribute("userId",userId);
 			
 			return "mypage/availableParty";
 			
@@ -221,22 +260,23 @@ public class ProfileController {
 	
 	@GetMapping("/pastPartyList")
 	public String showMyPastParty(Criteria pcri,
-			@RequestParam("userId")Integer userId, Model model) throws ControllerException{
+			@SessionAttribute("__AUTH__")UserVO user,
+			Model model) throws ControllerException{
 		try {
+			Integer userId = user.getUserId();
 			pcri.setAmount(10);
 			List<MyPartyVO> vo2 = new ArrayList<>();
-			vo2 = this.service.showPastPartyByUserIdAndPcri(Integer.valueOf(userId),pcri);
+			vo2 = this.profileService.showPastPartyByUserIdAndPcri(Integer.valueOf(userId),pcri);
 	
 			assert vo2 != null;
 			log.info("~~~~!!!!! vo2:{}", vo2);
 			model.addAttribute("pastParty",vo2);
 			
-			int totalPastPartyAmount = this.service.getTotalAmountPastPartyByUserId(Integer.valueOf(userId));
+			int totalPastPartyAmount = this.profileService.getTotalAmountPastPartyByUserId(Integer.valueOf(userId));
 			PageDTO pastPageDTO = new PageDTO(pcri,totalPastPartyAmount);
 			log.info("*************************pageDTO:{}", pastPageDTO);
 			model.addAttribute("pastPage",pastPageDTO);
 			model.addAttribute("__pCurrPage__",pcri.getCurrPage());
-			model.addAttribute("userId",userId);
 			
 			return "mypage/pastParty";
 			
@@ -247,89 +287,96 @@ public class ProfileController {
 	
 	
 	@PostMapping("/infoset")
-	public String infoSet(Integer userId, String address, 
+	public String infoSet(
+			@SessionAttribute("__AUTH__")UserVO user,
+			String address, 
 			String sanRange, String sanTaste, Model model) throws ControllerException{
-		log.trace("infoSet({},{},{},{}) invoked",userId,address,sanRange,sanTaste);
+		log.trace("infoSet({},{},{},{}) invoked",user,address,sanRange,sanTaste);
 		try {
+			Integer userId = user.getUserId();
 			UserDTO dto = new UserDTO(userId,null,null,address,sanRange,sanTaste,null);
-			service.setMyInfoByUserDTO(dto);
+			profileService.setMyInfoByUserDTO(dto);
 			log.info("계정의 취향정보가 업데이트 되었습니다");
 			
 		}catch(Exception e) {
 			throw new ControllerException(e);
 		}
-		return "redirect:/profile/" + userId;
+		return "redirect:/profile/";
 	}//infoSet
 
 	@PostMapping("/image")
-	String saveProfileImage(@RequestParam(value="part", required=false) MultipartFile part, @RequestParam("userId") Integer userId, HttpServletRequest req) {
+	String saveProfileImage(
+			@RequestParam(value="part", required=false) MultipartFile part,
+			@SessionAttribute("__AUTH__")UserVO user,
+			HttpServletRequest req)
+			throws ControllerException {
 		
 		log.trace("fileSave({}) invoked.",part);
 		log.info("part.getName():{}",part.getName());
 		
 		//폴더 생성하기
-		Date date = new Date();
-		Timestamp ts=new Timestamp(date.getTime());
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String str = sdf.format(date);
-		str = str.replace("-", "");
-		
-		String ori_filename=part.getOriginalFilename();
-		String uuid = UUID.randomUUID().toString();
-        File uploadPath = new File("C:\\upload", str);
-        File saveFile = new File(uploadPath, uuid);
-        log.info("~~~~~~ saveFile.getPath: {}",saveFile.getPath());
-        String path = "C:\\upload\\" + str + "\\" + uuid;
-        Path directoryPath = Paths.get("C:\\upload\\" + str);
-    	if (!uploadPath.exists()) {
-    		try{
-    			Files.createDirectories(directoryPath);
-    	        } 
-    	     catch(Exception e){
-    		 e.getStackTrace();
-    	     }    
-    	}
-        try {
-          part.transferTo(saveFile);
-        } catch (Exception e) {
-          log.error(e.getMessage());
-        } // end catch
-
-		FileDTO dto = FileDTO.builder()
-				.targetGb("USER_PROFILE")
-				.targetCd(userId)
-				.fileName(ori_filename)
-				.uuid(uuid)
-				.path(path)
-				.build();
-		
-		service.saveUserPictureInFileTbByFileDTO(dto);
-		log.info("**********userId:{}",userId);
-		
-		UserDTO dto2 = new UserDTO(userId,null,null,null,null,null,path);
-		service.updateUserPicByUserDTO(dto2);
-	
-		return "redirect: /profile/" + userId;
+		try {
+			Integer userId = user.getUserId();
+			Date date = new Date();
+			Timestamp ts=new Timestamp(date.getTime());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String str = sdf.format(date);
+			str = str.replace("-", "");
+			String ori_filename=part.getOriginalFilename();
+			String uuid = UUID.randomUUID().toString();
+	        File uploadPath = new File("C:/upload", str);
+	        File saveFile = new File(uploadPath, uuid);
+	        log.info(">>>>>>> saveFile.getPath: {}",saveFile.getPath());
+	        String path = "C:/upload/" + str + "/" + uuid;
+	        Path directoryPath = Paths.get("C:/upload/" + str);
+	    	if (!uploadPath.exists()) {
+	    		Files.createDirectories(directoryPath);
+	    	}//if
+        	String fileType = FilenameUtils.getExtension(ori_filename);
+            List<String> yesFileTypeList = new ArrayList<>(Arrays.asList("jpeg", "png", "jpg"));
+            log.info("파일 확장자명: {}", fileType);
+            log.info("yesFileType.contains(fileType): {}", yesFileTypeList.contains(fileType));
+        	if(yesFileTypeList.contains(fileType)) {
+        		part.transferTo(saveFile);
+        		
+        		FileDTO dto = FileDTO.builder()
+        				.targetGb("USER_PROFILE")
+        				.targetCd(userId)
+        				.fileName(ori_filename)
+        				.uuid(uuid)
+        				.path(path)
+        				.build();
+    			profileService.saveUserPictureInFileTbByFileDTO(dto);
+    			UserDTO dto2 = UserDTO.updateUserPicByUserIdAndUserPic(userId, path);
+    			profileService.updateUserPicByUserDTO(dto2);
+        	}
+			return "redirect: /profile/" ;
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		}
 	}//saveProfileImage
 	
 	@GetMapping("/mypost")
-	public String myPostsByProfile(@RequestParam("userId") Integer userId,Criteria cri, Model model) throws ControllerException {	// 게시판전체목록조회 요청처리 핸들러
-		log.trace("postsByProfile({}, {}, {}) invoked.", userId,cri,model);
+	public String myPostsByProfile(
+			@SessionAttribute("__AUTH__")UserVO user,
+			Criteria cri, Model model) throws ControllerException {	// 게시판전체목록조회 요청처리 핸들러
+		log.trace("postsByProfile({}, {}, {}) invoked.", user,cri,model);
 		
 		try {
-			log.info(">>>>>>>>>>>>>>>>!!!!!!!!!myPostsByProfile이 실행되었습니다.");
+			Integer userId = user.getUserId();
+			log.info("myPostsByProfile이 실행되었습니다.");
 
 	        // Step 1. 현재 페이지 번호를 가져와서 null이거나 1보다 작은 경우 1로 설정
 	        int currPage = cri.getCurrPage() == null || cri.getCurrPage() < 1 ? 1 : cri.getCurrPage();
 	        cri.setCurrPage(currPage);
 	        cri.setAmount(10);
 			// Step 1. 페이징 처리된 현제 currPage에 해당하는 게시글목록을 받아옴 
-			List<ProfileVO> writtenList = this.service.getListByUserId(userId,cri);
+			List<ProfileVO> writtenList = this.profileService.getListByUserId(userId,cri);
 			model.addAttribute("writtenList", writtenList); 
 			model.addAttribute("userId", userId);
 
 			// Step2. Pagination 위한 각종 변수 값을 계산하기
-			int totalAmount = this.service.getTotalAmountByUserId(userId);
+			int totalAmount = this.profileService.getTotalAmountByUserId(userId);
 			PageDTO pageDTO = new PageDTO(cri,totalAmount);
 			log.info("\t+ pageDTO: {}", pageDTO);
 
@@ -343,21 +390,24 @@ public class ProfileController {
 	} // myPostsByProfile
 	
 	@GetMapping("/mycomment")
-	public String myCommentByProfile(@RequestParam("userId") Integer userId,Criteria cri2, Model model) throws ControllerException {	
-		log.trace("comment({}, {}, {}) invoked.", userId,cri2,model);
+	public String myCommentByProfile(
+			@SessionAttribute("__AUTH__")UserVO user,
+			Criteria cri2, Model model) throws ControllerException {	
+		log.trace("comment({}, {}, {}) invoked.", user,cri2,model);
 		
 		try {
-			log.info(">>>>>>>>>>>>>>>>!!!!!!!!!myCommentByProfile이 실행되었습니다.");
+			Integer userId = user.getUserId();
+			log.info("myCommentByProfile이 실행되었습니다.");
 
 	        int currPage = cri2.getCurrPage() == null || cri2.getCurrPage() < 1 ? 1 : cri2.getCurrPage();
 	        cri2.setCurrPage(currPage);
 	        cri2.setAmount(10);
 	        
-			List<ProfileCommentVO> commentList = this.service.getListComment(userId,cri2);
+			List<ProfileCommentVO> commentList = this.profileService.getListComment(userId,cri2);
 			model.addAttribute("commentList", commentList); 
 			model.addAttribute("userId", userId);
 			
-			int totalAmount = this.service.getTotalAmountComment(userId);
+			int totalAmount = this.profileService.getTotalAmountComment(userId);
 			PageDTO pageDTO2 = new PageDTO(cri2,totalAmount);
 			log.info("\t+ pageDTO: {}", pageDTO2);
 
