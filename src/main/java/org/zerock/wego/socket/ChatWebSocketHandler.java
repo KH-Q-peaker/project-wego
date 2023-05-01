@@ -60,15 +60,14 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		if(result > 0) {
 
 			for(WebSocketSession s : sessions) {
+				
 				int chatRoomId = (Integer)s.getAttributes().get("chatRoomId");
-//				int userId = (Integer)s.getAttributes().get("userId");
-//				log.error(">>>>>> {}", chatRoomId);
-//				log.error(">>>>> {}", userId); 
+
 				if(chatMessage.getChatRoomId() == chatRoomId) {
 					
 					s.sendMessage(new TextMessage(objectMapper.writeValueAsBytes(chatMessage)));
-				}
-			}
-		}
-    }
+				}// if
+			}// for
+		}// if
+    }// handleTextMessage
 }// end class
