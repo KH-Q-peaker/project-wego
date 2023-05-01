@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.zerock.wego.config.SessionConfig;
 import org.zerock.wego.domain.chat.ChatVO;
 import org.zerock.wego.domain.common.UserVO;
-import org.zerock.wego.domain.party.JoinDTO;
 import org.zerock.wego.service.common.ChatService;
 import org.zerock.wego.service.party.JoinService;
 
