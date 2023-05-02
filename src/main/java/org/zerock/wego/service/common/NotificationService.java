@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.management.Notification;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -92,7 +90,7 @@ public class NotificationService {	// POJO
 		
 	// 웹소캣을 위한 로직입니다.
     private final List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
-
+    
     public void addSession(WebSocketSession session) {
         sessions.add(session);
     }
@@ -101,12 +99,13 @@ public class NotificationService {	// POJO
         sessions.remove(session);
     }
 
-    public void notifyAllSessions(Notification notification) {
+    public void notifyAllSessions(NotificationVO notification) {
         sessions.forEach(session -> {
             try {
                 session.sendMessage(new TextMessage(notification.toString()));
             } catch (IOException e) {
-                e.printStackTrace();
+//                log.error("{} 에게 메시지를 보내는 동안 오류가 발생 : {}", userId, e.getMessage());
+
             }
         });
     }

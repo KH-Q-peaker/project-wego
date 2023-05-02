@@ -22,7 +22,7 @@ public interface NotificationMapper {
 		// 뱃지 획득(후기게시글작성)과 함께 알림 추가 
 		public abstract Integer insertBadgeByBadgeIdAndUserId(@Param("badgeId")Integer badgeId, @Param("userId")Integer userId);
 		
-		 // 파티 삭제 알림 존재 여부
+		// 파티 삭제 알림 존재 여부
 	    public abstract boolean isExistsPartyDeletionNotification(@Param("userId") Integer userId, @Param("partyId") Integer partyId);
 		
 		// 모집글 삭제(모집취소)와 함께 알림 추가 
