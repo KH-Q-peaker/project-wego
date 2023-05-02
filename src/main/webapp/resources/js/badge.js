@@ -64,7 +64,6 @@ $(() => {
 
     // 대표로 설정할 뱃지의 id를 담을 리스트
     let pickList = Array();
-    // console.log(pickList);
 
     // 모달에서 대표뱃지선택
     $(document).on(
@@ -317,7 +316,6 @@ var addDocumentStackDotAndList = (badgeGetList) => {
         if(nowBadgeGetVO.ranking != null){
             nowCreatedDt += ` (${nowBadgeGetVO.ranking})`;
         } // if
-        console.log(nowBadgeId)
         if (preBadgeId != nowBadgeId) {
             
             preBadgeId = nowBadgeId;
@@ -359,8 +357,6 @@ var getDateToTimeStamp = (timeStamp) => {
 
     let date = new Date(timeStamp);
 
-    console.log(timeStamp);
-    console.log(date);
 
     let yyyy = date.getFullYear();
     let MM = date.getMonth() + 1;
