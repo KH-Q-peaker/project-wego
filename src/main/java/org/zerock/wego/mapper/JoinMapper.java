@@ -1,5 +1,7 @@
 package org.zerock.wego.mapper;
 
+import java.util.List;
+
 import org.zerock.wego.domain.party.JoinDTO;
 
 public interface JoinMapper {
@@ -16,4 +18,6 @@ public interface JoinMapper {
 	// 모집 참여 삭제 
 	public abstract Integer delete(JoinDTO dto);
 	
+	// 모집에 참여한 사용자의 ID 가져오기
+	public abstract List<Integer> selectUserIdsBySanPartyId(Integer partyId);
 }// end interface

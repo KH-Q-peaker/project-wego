@@ -56,6 +56,10 @@
     		user_id = #{userId}	
     </delete>
     
+    <select id="selectUserIdsBySanPartyId" parameterType="java.lang.Integer" >
+   		SELECT user_id FROM join_tb WHERE san_party_id = #{sanPartyId}
+    </select>
+
   </mapper>
   
   

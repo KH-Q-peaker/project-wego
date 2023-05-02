@@ -19,13 +19,16 @@ public interface NotificationMapper {
 		// 댓글 작성과 함께 알림 추가 
 		public abstract Integer insertCommentByCommentIdAndUserId(@Param("commentId")Integer commentId,@Param("userId")Integer userId);
 		
-//		// 뱃지 획득(후기게시글작성)과 함께 알림 추가 
-//		public abstract Integer insertAlarmBadgeByBadgeIdAndUserId(@Param("badgeId")Integer badgeId, @Param("userId")Integer userId);
-//		
-//		// 모집글 삭제(모집취소)와 함께 알림 추가 
-//		public abstract Integer insertPartyByPartyIdAndUserId(@Param("partyId")Integer partyId,@Param("userId")Integer userId);
+		// 뱃지 획득(후기게시글작성)과 함께 알림 추가 
+		public abstract Integer insertBadgeByBadgeIdAndUserId(@Param("badgeId")Integer badgeId, @Param("userId")Integer userId);
 		
-		// 알림 읽고 상태 바꿔주기
+		 // 파티 삭제 알림 존재 여부
+	    public abstract boolean isExistsPartyDeletionNotification(@Param("userId") Integer userId, @Param("partyId") Integer partyId);
+		
+		// 모집글 삭제(모집취소)와 함께 알림 추가 
+	    public abstract Integer insertPartyDeletionByPartyIdAndUserId(@Param("partyId")Integer partyId, @Param("userId")Integer userId);		
+		
+	    // 알림 읽고 상태 바꿔주기
 		public abstract Integer updateStatusByAlarmIdAndUserId(@Param("alarmId")Integer alarmId,@Param("userId")Integer userId);
 		
 		// 알림 삭제
