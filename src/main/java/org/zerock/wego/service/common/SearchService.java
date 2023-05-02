@@ -26,8 +26,8 @@ public class SearchService {
 	private final ReviewMapper reviewMapper;
 
 	
-	public Set<SanInfoViewVO> selectSearchSanInfo3(String search) throws ServiceException {
-		log.trace("selectSearchSanInfo3({}) invoked.", search);
+	public Set<SanInfoViewVO> getSearchSanInfo3(String search) throws ServiceException {
+		log.trace("getSearchSanInfo3(search) invoked.");
 		
 		try {
 			return this.sanInfoMapper.selectSearchSanInfo3ByQuery(search);
@@ -36,8 +36,8 @@ public class SearchService {
 		} // try-catch
 	} // selectSearchMountainInfo
 
-	public Set<PartyViewVO> selectSearchParty3(String search) throws ServiceException {
-		log.trace("selectSearchParty3({}) invoked.", search);
+	public Set<PartyViewVO> getSearchParty3(String search) throws ServiceException {
+		log.trace("getSearchParty3(search) invoked.");
 		
 		try {
 			return this.partyMapper.selectSearchParty3ByQuery(search);
@@ -46,8 +46,8 @@ public class SearchService {
 		} // try-catch
 	} // selectSearchRecruitment
 
-	public Set<ReviewViewVO> selectSearchReview3(String search) throws ServiceException {
-		log.trace("selectSearchReview3({}) invoked.", search);
+	public Set<ReviewViewVO> getSearchReview3(String search) throws ServiceException {
+		log.trace("getSearchReview3(search) invoked.");
 		
 		try {
 			return this.reviewMapper.selectSearchReview3ByQuery(search);
