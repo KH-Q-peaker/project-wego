@@ -26,16 +26,16 @@ public class SearchController {
 
 	@GetMapping("/search")
 	public void searchResult(String query, Model model) throws ControllerException {
-		log.trace("searchResult({}) invoked.", query);
+		log.trace("searchResult(query, model) invoked.");
 
 		try {
-			Set<SanInfoViewVO> sanInfoList = this.service.selectSearchSanInfo3(query);
+			Set<SanInfoViewVO> sanInfoList = this.service.getSearchSanInfo3(query);
 			model.addAttribute("sanInfoList", sanInfoList);
 
-			Set<PartyViewVO> partyList = this.service.selectSearchParty3(query);
+			Set<PartyViewVO> partyList = this.service.getSearchParty3(query);
 			model.addAttribute("partyList", partyList);
 
-			Set<ReviewViewVO> reviewList = this.service.selectSearchReview3(query);
+			Set<ReviewViewVO> reviewList = this.service.getSearchReview3(query);
 			model.addAttribute("reviewList", reviewList);
 			
 			model.addAttribute("query", query);

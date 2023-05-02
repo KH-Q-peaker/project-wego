@@ -79,7 +79,7 @@ label[for="title"] {
   white-space: pre-wrap;
 }
 #contents img {
-  width: 100%;
+  max-width: 100%;
 }
 .buttons {
   display: flex;
