@@ -9,5 +9,6 @@ public class BadgeGetDTO {
 	Integer badgeId;
 	Integer userId;
 	Character status;
+	String ranking;
 	
 } // end class

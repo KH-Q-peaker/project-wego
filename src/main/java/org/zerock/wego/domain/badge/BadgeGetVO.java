@@ -11,7 +11,9 @@ public class BadgeGetVO {
 	Integer userId;
 	Integer badgeId;
 	String badgeName;
+	String img;
 	Timestamp createdDt;
 	Character status;
+	String ranking;
 	
 } // end class

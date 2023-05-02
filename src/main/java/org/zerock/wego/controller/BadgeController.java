@@ -46,7 +46,8 @@ public class BadgeController {
 			String targetUserNickname = userService.getById(targetUserId).getNickname();
 
 			model.addAttribute("targetUserNickname", targetUserNickname);
-			model.addAttribute("badgeConfig", badgeConfig);
+			model.addAttribute("sanBadgeList", badgeConfig.getAllSan());
+			model.addAttribute("rankingBadgeList", badgeConfig.getAllRanking());
 			model.addAttribute("targetUserId", targetUserId);
 			
 			return "/badge/badge";
@@ -56,14 +57,16 @@ public class BadgeController {
 		} // try-catch
 	} // showCollection
 
-	@PostMapping(path = "/modify/{targetUserId}")
+	@PostMapping(path = "/modify")
 	public ResponseEntity<String> modifyPickBadge(
-			@PathVariable("targetUserId")Integer targetUserId,
+			@SessionAttribute(SessionConfig.AUTH_KEY_NAME)UserVO authUserVO,
 			@RequestParam(value = "pickList[]") List<Integer> pickList
 			) {
-		log.trace("updatePickBadge({}, {}) invoked.", targetUserId, pickList);
+		log.trace("updatePickBadge(authUserVO, {}) invoked.", pickList);
 		
 		try {
+			int targetUserId = authUserVO.getUserId();
+			
 			badgeGetService.modifyPickBadgeByUserIdAndPickList(targetUserId, pickList);
 			
 		} catch (NotFoundUserException e) {
@@ -75,7 +78,7 @@ public class BadgeController {
 		} // try-catch
 		
 		return ResponseEntity.ok().build();
-	} // updatePickBadge
+	} // modifyPickBadge
 
 
 	@GetMapping(path = "/get-list/json/{targetUserId}")
