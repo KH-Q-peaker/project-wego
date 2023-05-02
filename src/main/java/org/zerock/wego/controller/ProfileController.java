@@ -56,6 +56,7 @@ import lombok.extern.log4j.Log4j2;
 @Controller
 public class ProfileController {
 	private ProfileService profileService;
+	private FavoriteService favoriteService;
 	
 	@GetMapping("")
 	public String getMypage(
@@ -420,13 +421,6 @@ public class ProfileController {
 		} // try-catch
 	} // myCommentByProfile
 	
-	
-	private SanInfoService sanInfoService;
-	private PartyService partyService;
-	private ReviewService reviewService;
-	private FavoriteService favoriteService;
-	
-	
 	@GetMapping("/mylike")
 	public String main(
 			@SessionAttribute(value = "__AUTH__", required = false)UserVO auth, Model model) 
@@ -434,18 +428,19 @@ public class ProfileController {
 		log.trace("main({}, {}) invoked.", auth, model);
 
 		try {
+			Integer userId = auth.getUserId();
 			if(auth != null) {
 				Set<FavoriteVO> favoriteList = this.favoriteService.getUserFavoriteOnList(auth.getUserId());
 				model.addAttribute("favoriteList", favoriteList);
 			} // if
 
-			Set<SanInfoViewVO> sanInfoList = this.sanInfoService.getRandom10List();
+			Set<SanInfoViewVO> sanInfoList = this.profileService.getLikeSanInfoListByUserIdAndTargetGb(userId, "SAN_INFO");
 			model.addAttribute("sanInfoList", sanInfoList);
 
-			Set<PartyViewVO> partyList = this.partyService.getRandom10List();
+			Set<PartyViewVO> partyList = this.profileService.getLikeSanPartyListByUserIdAndTargetGb(userId, "SAN_PARTY");
 			model.addAttribute("partyList", partyList);
 
-			Set<ReviewViewVO> reviewList = this.reviewService.getRandom10List();
+			Set<ReviewViewVO> reviewList = this.profileService.getLikeSanReviewListByUserIdAndTargetGb(userId, "SAN_REVIEW");;
 			model.addAttribute("reviewList", reviewList);
 
 			return "mypage/myLike";

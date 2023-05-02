@@ -2,6 +2,7 @@ package org.zerock.wego.service.profile;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
@@ -9,9 +10,12 @@ import org.zerock.wego.domain.common.Criteria;
 import org.zerock.wego.domain.common.FileDTO;
 import org.zerock.wego.domain.common.UserDTO;
 import org.zerock.wego.domain.common.UserVO;
+import org.zerock.wego.domain.info.SanInfoViewVO;
+import org.zerock.wego.domain.party.PartyViewVO;
 import org.zerock.wego.domain.profile.MyPartyVO;
 import org.zerock.wego.domain.profile.ProfileCommentVO;
 import org.zerock.wego.domain.profile.ProfileVO;
+import org.zerock.wego.domain.review.ReviewViewVO;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.ProfileMapper;
 
@@ -207,6 +211,39 @@ public class ProfileService {	// POJO
 			throw new ServiceException(e);
 		} // try-catch
 	}//countEqualNicknameByNickname
+	
+	// 16. 내가 '좋아요'한 산info 게시글 목록을 가져오기
+	public Set<SanInfoViewVO> getLikeSanInfoListByUserIdAndTargetGb(Integer userId, String targetGb) {
+		log.trace("getLikeSanInfoListByUserIdAndTargetGb({},{}) invoked.",userId,targetGb);
+		try {
+			Objects.requireNonNull(this.profileMapper);
+			return this.profileMapper.selectLikeSanInfoList(userId,targetGb);
+		} catch(Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	}//getLikeSanInfoListByUserIdAndTargetGb
+	
+	// 17. 내가 '좋아요'한 산모집 게시글 목록을 가져오기
+	public Set<PartyViewVO> getLikeSanPartyListByUserIdAndTargetGb(Integer userId, String targetGb) {
+		log.trace("getLikeSanPartyListByUserIdAndTargetGb({},{}) invoked.",userId,targetGb);
+		try {
+			Objects.requireNonNull(this.profileMapper);
+			return this.profileMapper.selectLikeSanPartyList(userId,targetGb);
+		} catch(Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	}//getLikeSanPartyListByUserIdAndTargetGb
+	
+	// 18. 내가 '좋아요'한 산리뷰 게시글 목록을 가져오기
+	public Set<ReviewViewVO> getLikeSanReviewListByUserIdAndTargetGb(Integer userId, String targetGb) {
+		log.trace("getLikeSanReviewListByUserIdAndTargetGb({},{}) invoked.",userId,targetGb);
+		try {
+			Objects.requireNonNull(this.profileMapper);
+			return this.profileMapper.selectLikeSanReviewList(userId,targetGb);
+		} catch(Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	}//getLikeSanReviewListByUserIdAndTargetGb
 
 	
 //	public Integer withDrawMyAccount(Integer userId) {

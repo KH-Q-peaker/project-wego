@@ -69,21 +69,21 @@
             
             <div class="main-wrap">
               <div class="profile-image-button">
-                <img src="${path}/resources/img/profileset.png" alt="프로필사진변경" />
+                <img src="/resources/svg/setting.svg" alt="프로필사진변경" />
               </div>
 
               <!--  사진 변경 옆라인 -->
               <div class="name-badge-setting">
                 <div class="div-name-setting">
                   <span class="nickname">${vo.nickname}</span>
-                  <a class="name-setting" href="#"><img src="${path}/resources/img/nickname.png" alt="" /></a>
+                  <a class="name-setting" href="#"><img src="/resources/img/nickname.png" alt="" /></a>
                 </div>
                 <!--뱃지모음라인===== -->
                 <div class="badge-collection">
                   <div class="badge-header">
                     <span>Badge Collection</span>
                     <span>
-                      <a class="badge-setting" href=""><img src="${path}/resources/img/badgeset.png" alt="" /></a>
+                      <a class="badge-setting" href=""><img src="/resources/svg/badgeset.png" alt="" /></a>
                     </span>
                   </div>
 
