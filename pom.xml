@@ -252,6 +252,22 @@
 			<version>1.5</version>
 		</dependency>
 
+		<!-- 문의하기 메일전송 -->
+		<dependency>
+		  <groupId>com.sun.mail</groupId>
+		  <artifactId>javax.mail</artifactId>
+		  <version>1.6.2</version>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context-support</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+
+
 	</dependencies>
 
 

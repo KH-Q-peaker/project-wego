@@ -30,7 +30,8 @@
 		base-package="org.zerock.wego.interceptor" />
 		<context:component-scan
 		base-package="org.zerock.wego.socket" />
-
+	<context:component-scan
+			base-package="org.zerock.wego.smtp" />
 	<interceptors> 
 		<interceptor> 
 		<!-- =================================================================================== -->
