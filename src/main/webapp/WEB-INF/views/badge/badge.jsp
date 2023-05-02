@@ -93,9 +93,9 @@
             <div class="boxName">
               <span id="svg"></span>
             </div>
-            <c:forEach items="${badgeConfig.getAllRanking()}" var="badgeVO">
+            <c:forEach items="${rankingBadgeList}" var="badgeVO">
               <div class="item" id = "${badgeVO.badgeId}" style="display: none;">
-                <div class="sanBadge"></div>
+                <div class="sanBadge"  style="background-image: url(${badgeVO.img});"></div>
                 <div class="badgeName">${badgeVO.badgeName}</div>
               </div>
             </c:forEach>
@@ -105,9 +105,9 @@
             <div class="boxName">
               <span id="svg"></span>
             </div>
-            <c:forEach items="${badgeConfig.getAllSan()}" var="badgeVO">
+            <c:forEach items="${sanBadgeList}" var="badgeVO">
               <div class="item" id = "${badgeVO.badgeId}" style="display: none;">
-                <div class="sanBadge"></div>
+                <div class="sanBadge"  style="background-image: url(${badgeVO.img});"></div>
                 <div class="badgeName">${badgeVO.badgeName}</div>
               </div>
             </c:forEach>

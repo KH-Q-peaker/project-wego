@@ -32,7 +32,6 @@ import org.zerock.wego.exception.AccessBlindException;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.exception.NotFoundPageException;
 import org.zerock.wego.exception.OperationFailException;
-import org.zerock.wego.service.common.ChatService;
 import org.zerock.wego.service.common.CommentService;
 import org.zerock.wego.service.common.FavoriteService;
 import org.zerock.wego.service.common.FileService;
@@ -61,7 +60,7 @@ public class PartyController {
 	private final FileService fileService;
 	private final FavoriteService favoriteService;
 	private final PartyValidator partyValidator;
-	private final ChatService chatService;
+//	private final ChatService chatService;
   
 	
 	@GetMapping("")
@@ -260,7 +259,7 @@ public class PartyController {
 			roomDTO.setChatRoomId(partyDTO.getSanPartyId());
 			roomDTO.setTitle(partyDTO.getTitle());
 			roomDTO.setUserId(auth.getUserId());
-			this.chatService.createChatRoom(roomDTO);
+//			this.chatService.createChatRoom(roomDTO);
 			
 			state.put("state", "successed");
 			state.put("redirectUrl", "/party/" + partyDTO.getSanPartyId());
