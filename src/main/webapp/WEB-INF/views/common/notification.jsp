@@ -40,6 +40,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
   </head>
 
   <body class>
+  <c:set var="imgBasePath" value="/img/" />
     <div id="total-wrap">
       <!-- hearder start -->
       <%@include file="/WEB-INF/views/common/header.jsp"%>
@@ -150,7 +151,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     >${notificationVO.createdDt}</time
                   >
                   <div class="message comment">
-                    <img src="${createdAlarmUsers[notificationVO.createdByUserId].userPic}" alt="User Pic">
+                    <img src="${empty createdAlarmUsers[notificationVO.createdByUserId].userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(createdAlarmUsers[notificationVO.createdByUserId].userPic, 12, 57)}" alt="User Pic">
                     <!-- <h4>${createdAlarmUsers[notificationVO.createdByUserId].nickname}님이 단 댓글 보러가기 : </h4>   무엇으로 할지 선택해줘요-->
                     <h4>${createdAlarmUsers[notificationVO.createdByUserId].nickname}님 : </h4> 
                     <c:choose>
@@ -175,7 +176,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     >${notificationVO.createdDt}</time
                   >
                   <div class="message profile">
-                    <img src="${createdAlarmUsers[notificationVO.createdByUserId].userPic}" alt="User Pic">
+                    <img src="${empty createdAlarmUsers[notificationVO.createdByUserId].userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(createdAlarmUsers[notificationVO.createdByUserId].userPic, 12, 57)}" alt="User Pic">
                     <c:if test="${fn:contains(notificationVO.contents, '모집')}">
                       <p><a href="/party/${notificationVO.targetCd}"  id="notification-link" onclick="markNotificationAsRead(${notificationVO.alarmId})">${notificationVO.title}&#128149;</a></p></c:if>
                     <c:if test="${fn:contains(notificationVO.contents, '후기')}">
