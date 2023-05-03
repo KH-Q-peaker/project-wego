@@ -45,7 +45,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 value="${profileVO.createDt}"
               ></fmt:formatDate>
             </td>
-            <td class="t4">100</td>
+            <td class="t4">${profileVO.visitCount}</td>
             <td class="t5">&#128149;${profileVO.likeCnt}</td>
           </tr>
         </c:forEach>

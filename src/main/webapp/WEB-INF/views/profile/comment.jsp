@@ -4,7 +4,6 @@ uri="http://java.sun.com/jsp/jstl/core"%> <%@ taglib prefix="fmt"
 uri="http://java.sun.com/jsp/jstl/fmt"%> <%@ taglib prefix="fn"
 uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<link rel="stylesheet" href="/resources/css/usercomment.css" />
 <div class="cotents">
   <div class="content1">
     <c:forEach items="${getUserInfoList}" var="userProfile">
@@ -17,7 +16,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
           <th class="t1">게시판명</th>
           <th class="t2">내용</th>
           <th class="t3">작성일</th>
-          <th class="t4">조회수</th>
+          <th class="t4">글번호</th>
           <th class="t5">멘션수</th>
         </tr>
       </thead>
@@ -56,7 +55,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 value="${profileCommentVO.createdDt}"
               ></fmt:formatDate>
             </td>
-            <td class="t4">100</td>
+            <td class="t4">${profileCommentVO.targetCb}</td>
             <td class="t5">&#128140;${profileCommentVO.mentionCnt}</td>
           </tr>
         </c:forEach>
