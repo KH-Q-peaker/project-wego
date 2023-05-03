@@ -91,7 +91,7 @@ $(() => { /* 새 댓글 post 전송  */
 				showModal();
 				setTimeout(hideModal, 700);
 				$(window).off('scroll').on('scroll', scrollCommentLoading);
-//				$("#contents").val('');
+				$("#contents").val('');
 //				$(".cmtcontainer").replaceWith(data);
 				$.ajax({
 					url: "/comment/load",
