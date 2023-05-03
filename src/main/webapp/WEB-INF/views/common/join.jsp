@@ -10,7 +10,7 @@
 </head>
 <body>
 	<div class="joinModal">
-<%-- 		<img src="${party.partyPic}"  alt="" class="" /><!-- 바꿔야됨  --> --%>
+		<img src="${party.partyPic == null ? "/resources/img/leaf.png" : party.partyPic}"  alt="" class="" /><!-- 바꿔야됨  -->
 		<div class="sanName">${party.sanName }</div>
 		<ul class="joinInfo">
 			<li>날짜 : <fmt:formatDate pattern="yy-MM-dd" value="${party.partyDt}"></fmt:formatDate></li>

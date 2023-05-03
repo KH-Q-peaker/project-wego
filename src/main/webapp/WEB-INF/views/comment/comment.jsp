@@ -15,14 +15,14 @@ var commentCnt = ${totalCnt};
 
 
 
-	<!-- 댓글 전체 컨테이너  -->
-	<div class="cmtcontainer">
 		<!-- 새로운 댓글 작성 폼  -->
 		<div class="cmtwrite" id="cmtwrite">
 			<textarea id="contents" name="contents" placeholder="댓글을 작성해주세요." maxlength="1000" required></textarea>
 			<input type="button" value="등록" class="insert ncmt" disabled> 
 			<input type="button" value="삭제" class="cancle">
 		</div>
+	<!-- 댓글 전체 컨테이너  -->
+	<div class="cmtcontainer">
 		
 			<c:forEach items="${comments}" var="c">
 				<div class="comments ${c.mentionId == null ? '' : 'mention'}">

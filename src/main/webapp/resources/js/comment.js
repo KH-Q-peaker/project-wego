@@ -87,13 +87,30 @@ $(() => { /* 새 댓글 post 전송  */
 				contents: $(this).prev().val()
 			},
 			success: function(data) {
-				setMessage("💬 댓글이 등록되었습니다.");
+				setMessage(data);
 				showModal();
 				setTimeout(hideModal, 700);
 				$(window).off('scroll').on('scroll', scrollCommentLoading);
-				$("#contents").val('');
-				$(".cmtcontainer").replaceWith(data);
-				$('#cmtcnt').text(commentCnt);
+//				$("#contents").val('');
+//				$(".cmtcontainer").replaceWith(data);
+				$.ajax({
+					url: "/comment/load",
+					type: "GET",
+					data:
+					{
+						targetGb: target.targetGb,
+						targetCd: target.targetCd,
+						amount: target.amount,
+						lastComment: 0
+					},
+					success: function(data) {
+						$(".cmtcontainer").html(data);
+						$('#cmtcnt').text(commentCnt);
+					},
+					error: () => {
+						console.log('댓글로딩오류 ');/* 바꿔야됨  */
+					}
+					});
 			},
 			error: function(data) {
 				if (data.status == 403) {
@@ -102,7 +119,6 @@ $(() => { /* 새 댓글 post 전송  */
 					setTimeout(hideModal, 5000);
 				}
 			}
-		});
 	});
 });
 
@@ -142,7 +158,8 @@ $(() => { /* 답글 관련 */
 				var mentionCnt = $(this).parent().prev().find('#mentionCnt');
 			
 				$.ajax({
-					url: "/comment/reply",
+//					url: "/comment/reply",
+					url: "/comment/register",
 					type: "POST",
 					data:
 					{
@@ -151,8 +168,8 @@ $(() => { /* 답글 관련 */
 						mentionId: mentionId,
 						contents: $(this).prev().val()
 					},
-					success: function() {
-						setMessage("️💬 답글이 등록되었습니다.");
+					success: function(data) {
+						setMessage(data);
 						showModal();
 						setTimeout(hideModal, 700);
 						$('.mcontents').val('');
@@ -184,6 +201,7 @@ $(() => { /* 답글 관련 */
 						}
 					}
 				});
+			});
 			});
   	});
   	/* 취소 클릭 시 멘션 작성 창 off  */
