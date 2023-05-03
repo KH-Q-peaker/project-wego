@@ -34,7 +34,7 @@ public class PostInterceptor implements HandlerInterceptor {
 
 			UserVO user = (UserVO) request.getSession(false).getAttribute(SessionConfig.AUTH_KEY_NAME);
 			
-			boolean isActive = user.getStatus().equals("N");
+			boolean isActive = user.getStatus().equals("Y");
 			
 			if (!isActive) {
 				
