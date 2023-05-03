@@ -55,5 +55,15 @@ public class UserService {
         }
         return users;
     }// getByIds 
-
+    
+    public void modifyStatus(Integer userId, String status) throws RuntimeException {
+    	
+    	boolean isExist = this.isExistById(userId);
+    	
+    	if(!isExist) {
+    		throw new NotFoundUserException(userId + "없는 유저입니다.");
+    	}// if
+    	
+    	this.userMapper.updateStatusById(userId, status);
+    }// modifyStatus
 }// end class
