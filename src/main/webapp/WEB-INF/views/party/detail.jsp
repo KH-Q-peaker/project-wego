@@ -125,8 +125,8 @@
 				<c:set var="comments" value="${comments}" />
 				<%@ include file="../comment/comment.jsp"%>
 				<div id="chat"></div>
-				<div class="to top">top</div>
-				<div class="to cmt">cmt</div>
+				<div class="scrollToTop top"></div>
+				<div class="add-item cmt"></div>
 			</section>
 		</div>
 		<jsp:include page="../common/footer.jsp" />

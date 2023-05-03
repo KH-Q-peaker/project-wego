@@ -332,6 +332,30 @@ header {
 	z-index: 0;
 }
 
+.scrollToTop {
+  width: 50px;
+  height: 50px;
+  z-index: 5;
+
+  position: fixed;
+  right: 30px;
+  bottom: 110px;
+  display: none;
+}
+
+.add-item {
+  width: 50px;
+  height: 50px;
+  z-index: 5;
+
+  position: fixed;
+  right: 30px;
+  bottom: 50px;
+}
+
+
+
+
 @media screen and (max-width: 768px) {
 	header {
 		margin-bottom: 0px;

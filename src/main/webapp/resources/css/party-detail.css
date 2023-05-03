@@ -206,24 +206,11 @@ input{
 	border-radius: 10px;
 }
 /* 탑버튼, 코멘트버튼 */
-.to {
-	position: fixed;
-	right: 30px;
-	width: 40px;
-	height: 40px;
-	background-repeat: no-repeat;
-	background-size: contain;
-	color: rgba(0, 0, 0, 0);
-	opacity: 90%;
-	z-index: 1;
-}
+
 .cmt {
-	bottom: 40px;
 	background: url(../svg/chat.svg);
 }
 .top {
-	display: none;
-	bottom: 80px;
 	background: url(../svg/top.svg);
 }
 /* 서치바 숨기기 */
