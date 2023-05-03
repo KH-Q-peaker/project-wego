@@ -21,8 +21,6 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <link rel="icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="/resources/css/header.css" />
     <link rel="stylesheet" href="/resources/css/footer.css" />
-    <link rel="stylesheet" href="/resources/css/usercomment.css" />
-
     <link rel="stylesheet" href="/resources/css/userpageindex.css" />
     <link rel="stylesheet" href="/resources/css/userposts.css" />
     <link rel="stylesheet" href="/resources/css/top.css" />
@@ -35,6 +33,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
   </head>
   <body>
+  <c:set var="imgBasePath" value="/img/" />
     <div class="total-wrap">
       <!-- hearder start -->
       <%@include file="/WEB-INF/views/common/header.jsp"%>
@@ -45,11 +44,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
         <div class="mypage-container">
           <!--  프로필 메인  -->
           <div class="profile">
-            <%--<c:forEach items="${getUserInfoList}" var="userProfile">-->
-              <!--<div class="profile-image">${userProfile.userPic}</div>--%>
               <img
                 class="profile-image"
-                src="${getUserInfoList.userPic}"
+                src="${empty getUserInfoList.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(getUserInfoList.userPic, 12, 57)}"
                 alt="img"
               />
               <!--  사진  옆라인 -->
@@ -99,7 +96,6 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   </div>
                 </div>
               </div>
-            <%--</c:forEach>--%>
           </div>
           <!-- 프로필 아래  네비  -->
           <div id="content-section">

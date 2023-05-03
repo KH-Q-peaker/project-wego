@@ -202,13 +202,51 @@
 		WHERE nickname=#{nickname}
 	 </select>
 	 
-     <!--<delete id="deleteMyAccount">
-    	DELETE
-    	FROM
-    		user_tb
-    	WHERE
-    		user_id = #{user_id}
-    </delete>  -->
+	 <select id="selectLikeSanInfoList" resultType="org.zerock.wego.domain.info.SanInfoViewVO">
+		SELECT *
+		FROM san_info_v
+		WHERE SAN_INFO_ID in
+		    (SELECT target_cd
+		    FROM like_tb
+		    WHERE
+		    user_id = #{userId}
+		    AND target_gb = #{targetGb}
+		    AND STATUS = 'Y'
+		    )
+	 </select>	
+	 
+	 <select id="selectLikeSanPartyList" resultType="org.zerock.wego.domain.party.PartyViewVO">
+		SELECT *
+		FROM san_party_v
+		WHERE SAN_PARTY_ID in
+		    (SELECT target_cd
+		    FROM like_tb
+		    WHERE
+		    user_id = #{userId}
+		    AND target_gb = #{targetGb}
+		    AND STATUS = 'Y'
+		    )
+    </select>	
+    
+    <select id="selectLikeSanReviewList" resultType="org.zerock.wego.domain.review.ReviewViewVO">
+	    SELECT *
+		FROM san_review_v
+		WHERE SAN_REVIEW_ID in
+		    (SELECT target_cd
+		    FROM like_tb
+		    WHERE
+		    user_id = #{userId}
+		    AND target_gb = #{targetGb}
+		    AND STATUS = 'Y'
+		    )
+    </select>	
+	 
+	 <!-- 회원 탈퇴
+    <update id="deleteMyAccount">
+		 update member set
+		 	  member_status ='Y'
+		 where user_id = #{userId}
+    </update> -->
     
 		
 </mapper>

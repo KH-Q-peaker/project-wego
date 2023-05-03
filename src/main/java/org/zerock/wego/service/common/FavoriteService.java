@@ -49,13 +49,8 @@ public class FavoriteService {
 
 		try {
 			 // 좋아요 등록 시 알림 추가
-            NotificationDTO notification = new NotificationDTO();
-            if (!dto.getUserId().equals(notification.getUserId())) {
-                log.debug(">>>>> 좋아요서비스에서 {}가 게시물을 좋아요 했어요! 알림추가!", dto.getUserId());
-                Integer targetCd = dto.getTargetCd();
-			    Integer userId = dto.getUserId();
-                this.notificationMapper.insertFavoriteByTargetCdAndUserId(targetCd, userId);
-            }
+                this.notificationMapper.insertFavoriteByTargetCdAndUserId(dto.getTargetCd(), dto.getUserId());
+
 			return this.favoriteMapper.insert(dto) == 1;
 		} catch (Exception e) {
 			throw new ServiceException(e);

@@ -37,6 +37,8 @@
 </head>
 
 <body>
+<c:set var="imgBasePath" value="/img/" />
+
 	<!-- total-wrap start -->
 	<div class="total-wrap">
 
@@ -72,7 +74,7 @@
 					<c:forEach var="item" items="${sanInfoSortList}">
 						<a href="/info/${item.sanInfoId}">
 							<div class="mountain-item" id="${item.sortNum}">
-								<img class="mountain-img" src="/img/${fn:substring(item.img, 10, 55)}" alt="img" />
+								<img class="mountain-img" src="${empty item.img ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.img, 12, 57)}" alt="img" />
 								<h3 class="mountain-name" id="mountainName">${item.sanName}</h3>
 								<p class="mountain-contents" id="text">${item.details}</p>
 								<div class="mountain-like">

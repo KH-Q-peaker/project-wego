@@ -39,6 +39,7 @@
 </head>
 
 <body>
+<c:set var="imgBasePath" value="/img/" />
 	<div class="total-wrap">
 		<!-- hearder start -->
 		<jsp:include page="../common/header.jsp" />
@@ -83,7 +84,7 @@
 							<a href="/profile/${rankingVO.userId}">
 								<div class="userProfile">
 									<div class="rankerPic">
-										<img class="user-img" src="${empty rankingVO.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(rankingVO.userPic, 10, 55)}" alt="img" />
+										<img class="user-img" src="${empty rankingVO.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(rankingVO.userPic, 12, 57)}" alt="img" />
 									</div>
 									<div class="rankerName">${rankingVO.nickname}</div>
 								</div>
@@ -118,7 +119,7 @@
                 <a href="/profile/${rankingVO.userId}">
                   <div class="userProfile">
                     <span id="pic"> 
-                      <img class="user-img" src="${empty rankingVO.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(rankingVO.userPic, 10, 55)}" alt="img" />
+                      <img class="user-img" src="${empty rankingVO.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(rankingVO.userPic, 12, 57)}" alt="img" />
                     </span> 
                     <span <c:if test="${rankingVO.userId == sessionScope.__AUTH__.userId}" > class="me" </c:if> id="name"> ${rankingVO.nickname} </span>
                   </div>
@@ -137,7 +138,7 @@
 							<a href="/profile/${rankingVO.userId}">
 								<div class="userProfile">
 									<span id="pic"> 
-										<img class="user-img" src="${empty rankingVO.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(rankingVO.userPic, 10, 55)}" alt="img" />
+										<img class="user-img" src="${empty rankingVO.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(rankingVO.userPic, 12, 57)}" alt="img" />
 									</span> 
 									<span class="me" id="name"> ${myRanking.nickname} </span>
 								</div>

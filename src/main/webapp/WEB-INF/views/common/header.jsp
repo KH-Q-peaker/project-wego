@@ -38,7 +38,7 @@
 				<c:when test="${sessionScope.__AUTH__.userPic != null}">
 				<!-- 로그인 상태 -->
 					<img id="userImg" class="user-profile-img"
-						src="${sessionScope.__AUTH__.userPic}" alt="회원 프로필 이미지" />
+						src="${fn:substring(sessionScope.__AUTH__.userPic, 12, 57)}" alt="회원 프로필 이미지" />
 				</c:when>
 				<c:otherwise>
 				<!-- 로그인 상태 -->
@@ -49,7 +49,7 @@
 			
 			<div class="menubar">
 				<ul>
-					<li><a href="../profile/${sessionScope.__AUTH__.userId}">마이페이지</a></li>
+					<li><a href="../profile">마이페이지</a></li>
 					<li><a href="../notification">알림</a></li>
 					<li><a href="../sendEmail">문의하기</a></li>
 					<li id="logout"><a href="/login/logout">로그아웃</a></li>

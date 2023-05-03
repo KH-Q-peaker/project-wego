@@ -36,6 +36,7 @@
 </head>
 
 <body>
+<c:set var="imgBasePath" value="/img/" />
 	<!-- total-wrap start -->
 	<div class="total-wrap">
 
@@ -70,10 +71,10 @@
 					<c:forEach var="item" items="${reviewList}">
 						<a href="/review/${item.sanReviewId}">
 							<div class="review-item">
-								<img class="user-img" src="/img/${fn:substring(item.userPic, 10, 55)}" alt="img" />
+								<img class="user-img" src="${empty item.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.userPic, 12, 57)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>
-								<img class="review-img" src="/img/defaultImg.png" alt="img" />
+								<img class="review-img" src="${empty item.reviewPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.reviewPic, 12, 57)}" alt="img" />
 								<h3 class="review-title" id="title">${item.title}</h3>
 								<p class="review-contents" id="text">${item.contents}</p>
 								<div class="review-like">

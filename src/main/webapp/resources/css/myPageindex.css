@@ -48,6 +48,9 @@ h2 {
 .profile-image-button img:hover {
   cursor: pointer;
 }
+.profile-image-button > img {
+  width: 50px;
+}
 .profile-image {
   margin-top: 23px;
   width: 200px;

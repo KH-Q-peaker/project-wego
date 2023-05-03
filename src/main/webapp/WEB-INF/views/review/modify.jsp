@@ -6,7 +6,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<title>후기 글 작성</title>
+<title>후기 글 수정</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="shortcut icon" href="/resources/ico/favicon.ico"
@@ -26,7 +26,7 @@
 const fileList = [];
 const fileAltList = [];
 <c:forEach var="item" items="${fileList}">
-	fileList.push("/img/${fn:substring(item.path, 10, 55)}");
+	fileList.push("/img/${fn:substring(item.path, 12, 57)}");
 	fileAltList.push("${item.fileName}");
 </c:forEach>
 </script>

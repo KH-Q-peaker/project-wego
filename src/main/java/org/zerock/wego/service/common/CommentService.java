@@ -110,15 +110,8 @@ public class CommentService {
 			this.commentMapper.insertComment(dto);
 			this.commentMapper.updateTargetCommentCnt(dto, "INSERT");
 			
-			// 댓글 등록 시 알림 추가
-			NotificationDTO notification = new NotificationDTO();
 			
-			if (!dto.getUserId().equals(notification.getUserId())) {  // 게시물 작성자와 댓글 작성자가 다를 때만 알림 추가
-			    log.debug(">>>>>>>>>>> {} 가 게시글에 댓글을 달아서 알림이 갈 것이다.", dto.getUserId());
-			    Integer commentId = dto.getCommentId();
-			    Integer userId = dto.getUserId();
-			    this.notificationMapper.insertCommentByCommentIdAndUserId(commentId,userId);
-			}
+			this.notificationMapper.insertCommentByCommentIdAndUserId(dto.getCommentId(), dto.getUserId());
 			
 		} catch(RuntimeException e) {
 			throw new ServiceException(e);
