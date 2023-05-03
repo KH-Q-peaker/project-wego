@@ -38,7 +38,7 @@ public class FileService {
 			// 이미지 업로드 날짜 폴더 생성
 			String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
-			String basePath = "C:/upload/" + today;
+			String basePath = "/opt/upload/" + today;
 			File Folder = new File(basePath);
 
 			if (!Folder.exists()) {
