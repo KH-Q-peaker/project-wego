@@ -21,7 +21,6 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <link rel="icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="/resources/css/header.css" />
     <link rel="stylesheet" href="/resources/css/footer.css" />
-    <link rel="stylesheet" href="/resources/css/usercomment.css" />
     <link rel="stylesheet" href="/resources/css/userpageindex.css" />
     <link rel="stylesheet" href="/resources/css/userposts.css" />
     <link rel="stylesheet" href="/resources/css/top.css" />
