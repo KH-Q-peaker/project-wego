@@ -3,7 +3,6 @@
 /* 댓글 전체 컨테이너 */
 .cmtcontainer {
 	display: grid;
-	/*   width: 96%; */
 	grid-template-columns: repeat(10, 1fr);
 	grid-template-rows: minmax(20px, auto);
 	margin: 30px 0 50px;
@@ -46,7 +45,6 @@
 }
 
 .cmtdate {
-	/*   margin: 10px 0 0 15px */
 	grid-column: 4;
 	grid-row: 3;
 	font-size: 11px;
@@ -63,7 +61,6 @@
 }
 
 .btns> input{
-/* 	width: 30px; */
 	width: 33px;
 	height: 20px;
 	border-radius: 10px;
@@ -119,7 +116,7 @@
 .mentionbtn {
 	grid-column-start: 1;
 	grid-row: 3;
-	width: 40px;
+	width: 44px;
 	height: 20px;
 	font-size: 10px;
 	border-radius: 10px;
@@ -159,7 +156,7 @@
 
 #cmtwrite {
 	grid-column: 1/-1;
-	margin: 0px 0 50px;
+	margin: 30px 0 40px;
 }
 
 .cmtwrite>textarea {
@@ -176,7 +173,6 @@
 	resize: none;
 	box-sizing: border-box;
 	color: #727272;
-/* 	white-space: pre-line; 뭐하는 놈인지 모르겠음 */
 }
 
 .cmtwrite input {

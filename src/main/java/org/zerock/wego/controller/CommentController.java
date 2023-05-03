@@ -72,11 +72,11 @@ public class CommentController {
 	
 
 	// 댓글 작성 
-	@PostMapping(path="/register")
-	String registerComment(CommentDTO dto, PageInfo target,
-						@SessionAttribute("__AUTH__") UserVO user,
+	@PostMapping(path="/register", produces= "text/plain; charset=UTF-8")
+	ResponseEntity<String> registerComment(CommentDTO dto,
+						@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO user,
 						Model model) throws ControllerException{
-		log.trace("registerComment(dto, target, user, model) invoked.");
+		log.trace("registerComment(dto, user, model) invoked.");
 
 		Integer userId = user.getUserId();
 		dto.setUserId(userId);
@@ -84,19 +84,10 @@ public class CommentController {
 		try {
 			this.commentService.registerCommentOrMention(dto);
 
-			LinkedBlockingDeque<CommentViewVO> comments 
-						= this.commentService.getCommentOffsetByTarget(target, 0);
+			return ResponseEntity.ok("댓글이 등록되었습니다.");
+		} catch (NotFoundPageException e) {
 			
-			
-			int totalCnt = this.commentService.getTotalCountByTarget(dto.getTargetGb(), dto.getTargetCd());
-			
-			model.addAttribute("comments", comments);
-			model.addAttribute("totalCnt", totalCnt);
-			
-			return "comment/comment";
-		} catch (OperationFailException | NotFoundPageException e) {
-			throw e;
-			
+			return ResponseEntity.notFound().build();
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		}// try-catch
@@ -104,25 +95,25 @@ public class CommentController {
 	
 
 	// 멘션 작성
-	@PostMapping(path = "/reply")
-	ResponseEntity<String> registerMention(CommentDTO dto, @SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO user) throws ControllerException {
-		log.trace("registerMention() invoked.");
-
-		Integer userId = user.getUserId();
-		dto.setUserId(userId);
-
-		try {
-			this.commentService.registerCommentOrMention(dto);
-
-			return ResponseEntity.ok().build(); 
-
-		} catch (OperationFailException | NotFoundPageException e) {
-			throw e; // 응답 보낼까 예외로 넘길까 ....
-
-		} catch (Exception e) {
-			throw new ControllerException(e);
-		} // try-catch
-	}// registerComment
+//	@PostMapping(path = "/reply")
+//	ResponseEntity<String> registerMention(CommentDTO dto, @SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO user) throws ControllerException {
+//		log.trace("registerMention() invoked.");
+//
+//		Integer userId = user.getUserId();
+//		dto.setUserId(userId);
+//
+//		try {
+//			this.commentService.registerCommentOrMention(dto);
+//
+//			return ResponseEntity.ok().build(); 
+//
+//		} catch (OperationFailException | NotFoundPageException e) {
+//			throw e; // 응답 보낼까 예외로 넘길까 ....
+//
+//		} catch (Exception e) {
+//			throw new ControllerException(e);
+//		} // try-catch
+//	}// registerComment
 	
 	// 댓글 삭제 
 	@DeleteMapping(path="/{commentId}")

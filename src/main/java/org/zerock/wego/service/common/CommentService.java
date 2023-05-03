@@ -2,20 +2,16 @@ package org.zerock.wego.service.common;
 
 import java.util.concurrent.LinkedBlockingDeque;
 
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.zerock.wego.domain.common.CommentDTO;
 import org.zerock.wego.domain.common.CommentViewVO;
 import org.zerock.wego.domain.common.NotificationDTO;
 import org.zerock.wego.domain.common.PageInfo;
 import org.zerock.wego.exception.NotFoundPageException;
-import org.zerock.wego.exception.OperationFailException;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.CommentMapper;
 import org.zerock.wego.mapper.NotificationMapper;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -128,6 +124,7 @@ public class CommentService {
 //		log.trace("removeCommentOrMention() invoked.");
 		
 		try {
+			
 			CommentViewVO originComment = this.commentMapper.selectById(commentId);
 			
 			if(originComment == null) {
@@ -240,23 +237,5 @@ public class CommentService {
 			throw new ServiceException(e);
 		}// try-catch
 	}// removeAllbyTarget
-	
-	
-	
-	// 댓글 영구 삭제
-//	@Async
-//	@Scheduled(fixedRate = 10000)
-//	public boolean isClear() throws ServiceException{
-//		
-//		try {
-////			boolean isClear = (this.commentMapper.deleteDeadComment() == 1);
-//			/*생각해보니까  이거 아닌데...? 뭐어차피 쿼츠 배우면 바꿀꺼니까 */
-//			
-////			return isClear;
-//			
-//		}catch (Exception e) {
-//			throw new ServiceException(e);
-//		}// try-catch
-//	}// isCleared
 	
 }// end class
