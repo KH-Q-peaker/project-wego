@@ -65,9 +65,9 @@ public class PartyController {
 	private final ChatService chatService;
   
 	
-	@GetMapping("")
+	@GetMapping
 	public String openParty(Model model) throws ControllerException {
-		log.trace("openParty({}) invoked.", model);
+		log.trace("openParty(model) invoked.");
 
 		try {
 			List<PartyViewVO> partyList = this.partyService.getList();
@@ -87,7 +87,7 @@ public class PartyController {
 								@SessionAttribute(SessionConfig.AUTH_KEY_NAME)UserVO user,
 								PageInfo pageInfo, Model model, 
 								JoinDTO join, FavoriteDTO favorite) throws RuntimeException, JsonProcessingException{
-	log.trace("showDetailById() invoked.");
+	log.trace("showDetailById(partyId, user, pageInfo, model, join, favorite) invoked.");
 		
 			pageInfo.setTargetGb("SAN_PARTY");
 			pageInfo.setTargetCd(partyId);
@@ -130,7 +130,7 @@ public class PartyController {
 	// 모집글 삭제
 	@DeleteMapping(path = "/{partyId}", produces = "text/plain; charset=UTF-8")
 	public ResponseEntity<String> removeById(@PathVariable("partyId") Integer partyId) throws RuntimeException {
-		log.trace("removeById({}) invoked.", partyId);
+		log.trace("removeById(partyId) invoked.");
 
 		try {
 			this.partyService.removeById(partyId);
@@ -144,10 +144,10 @@ public class PartyController {
 		
 	@GetMapping(path = "/modify/{partyId}")
 	public String modify(
-			@SessionAttribute("__AUTH__")UserVO auth,
+			@SessionAttribute("SessionConfig.AUTH_KEY_NAME")UserVO auth,
 			@PathVariable("partyId") Integer partyId, Model model) 
 			throws ControllerException { 
-		log.trace("modify({}, {}, {}) invoked.", auth, partyId, model);
+		log.trace("modify(auth, partyId, model) invoked.");
 
 		try {
 			Integer postUserId = this.partyService.getUserIdByPartyId(partyId);
@@ -167,12 +167,12 @@ public class PartyController {
 
 	@PostMapping("/modify")
 	public ResponseEntity<Map<String, String>> modify(
-			@SessionAttribute("__AUTH__")UserVO auth,
+			@SessionAttribute(SessionConfig.AUTH_KEY_NAME)UserVO auth,
 			Integer sanPartyId, String sanName, 
 			@RequestParam(value = "imgFile", required = false)List<MultipartFile> imageFiles, 
 			PartyDTO partyDTO, BindingResult bindingResult, FileDTO fileDTO
 			) throws ControllerException { 
-		log.trace("PostMapping - modify() invoked.");
+		log.trace("modify(auth, sanPartyId, sanName, imageFiles, partyDTO, bindingResult, fileDTO) invoked.");
 
 		try {			
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
@@ -212,19 +212,19 @@ public class PartyController {
 	} // modify
 
 	@GetMapping("/register")
-	public String register(@SessionAttribute("__AUTH__") UserVO auth) {
-		log.trace("register() invoked.");
+	public String register(@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO auth) {
+		log.trace("register(auth) invoked.");
 
 		return "/party/register";
 	} // register
 
 	@PostMapping("/register")
 	public ResponseEntity<Map<String, String>> register(
-			@SessionAttribute("__AUTH__")UserVO auth, String sanName, 
+			@SessionAttribute(SessionConfig.AUTH_KEY_NAME)UserVO auth, String sanName, 
 			@RequestParam(value = "imgFile", required = false)List<MultipartFile> imageFiles,
 			PartyDTO partyDTO, BindingResult bindingResult, FileDTO fileDTO, JoinDTO joinDTO,
 			ChatRoomDTO roomDTO) throws ControllerException {
-		log.trace("PostMapping - register() invoked.");
+		log.trace("register(auth, sanName, imageFiles, partyDTO, bindingResult, fileDTO, joinDTO, roomDTO) invoked.");
 
 		try {			
 			partyDTO.setUserId(auth.getUserId());
@@ -277,7 +277,7 @@ public class PartyController {
 	ResponseEntity<String> toggleJoinOrCancleById(@PathVariable Integer partyId,
 											@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO user, 
 											JoinDTO join) throws Exception {
-		log.trace("toggleJoinOrCancleById() invoked.");
+		log.trace("toggleJoinOrCancleById(partyId, user, join) invoked.");
 
 		try {
 			Integer userId = user.getUserId();
