@@ -2,7 +2,7 @@
 <%@page import="org.zerock.wego.domain.common.CommentViewVO" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%-- <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> --%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <script type="text/javascript" src="/resources/js/comment.js" defer ></script>
 <script type="text/javascript" src="/resources/js/delete.js" defer ></script>
@@ -11,7 +11,8 @@
 var loadCnt = ${comments == null ? 0 : comments.size()};
 var commentCnt = ${totalCnt == null ? 0 : totalCnt};
 </script>
-	<c:set var="imgBasePath" value="/img/" />
+<c:set var="imgBasePath" value="/img/" />
+	
 			<c:forEach items="${comments}" var="c">
 				<div class="comments ${c.mentionId == null ? '' : 'mention'}">
 				
@@ -22,7 +23,7 @@ var commentCnt = ${totalCnt == null ? 0 : totalCnt};
 				
 				<!--  댓글 내부 (유저닉네임, 작성일, 수정/삭제/신고버튼, 내용, 답글버튼, 수정상태 시 수정/취소버튼)  -->
 				<c:if test="${c.status == 'N' }">
-				<img class="cmtuserPic" src="${${empty c.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(c.userPic, 12, 57)}}"/>
+				<img class="cmtuserPic" src="${empty c.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(c.userPic, 12, 57)}"/>
 				<a class="cmtuser" href="http://localhost:8080/profile/${c.userId }">${c.nickname}</a>
 				<div class="cmtdate">
 						<fmt:formatDate pattern="MM-dd HH:mm" value="${c.modifiedDt == null? c.createdDt : c.modifiedDt}"></fmt:formatDate>
