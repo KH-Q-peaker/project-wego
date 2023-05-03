@@ -94,36 +94,15 @@ public class CommentController {
 	}// registerComment
 	
 
-	// 멘션 작성
-//	@PostMapping(path = "/reply")
-//	ResponseEntity<String> registerMention(CommentDTO dto, @SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO user) throws ControllerException {
-//		log.trace("registerMention() invoked.");
-//
-//		Integer userId = user.getUserId();
-//		dto.setUserId(userId);
-//
-//		try {
-//			this.commentService.registerCommentOrMention(dto);
-//
-//			return ResponseEntity.ok().build(); 
-//
-//		} catch (OperationFailException | NotFoundPageException e) {
-//			throw e; // 응답 보낼까 예외로 넘길까 ....
-//
-//		} catch (Exception e) {
-//			throw new ControllerException(e);
-//		} // try-catch
-//	}// registerComment
-	
 	// 댓글 삭제 
-	@DeleteMapping(path="/{commentId}")
-	ResponseEntity<Integer> removeCommentOrMention(@PathVariable("commentId")Integer commentId) throws Exception{
+	@DeleteMapping(path="/{commentId}", produces= "text/plain; charset=UTF-8")
+	ResponseEntity<String> removeCommentOrMention(@PathVariable("commentId")Integer commentId) throws Exception{
 		log.trace("removeComment({}) invoked.", commentId);
 		
 		try {
 			this.commentService.removeCommentOrMention(commentId);
 			
-			return ResponseEntity.ok().build();
+			return ResponseEntity.ok("댓글이 삭제되었습니다.");
 			
 		} catch(Exception e) {
 			return ResponseEntity.notFound().build();
@@ -133,14 +112,14 @@ public class CommentController {
 	
 	
 	// 댓글 수정 
-	@PatchMapping(path="/{commentId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PatchMapping(path="/{commentId}", produces= "text/plain; charset=UTF-8", consumes = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<String> modifyComment(@RequestBody CommentDTO dto) throws Exception{
 		log.trace("modifyComment(dto) invoked.");
 		
 		try {
 			this.commentService.modify(dto);
 
-			return ResponseEntity.ok().build();
+			return ResponseEntity.ok("댓글이 수정되었습니다.");
 
 		} catch (Exception e) {
 			return ResponseEntity.notFound().build();
