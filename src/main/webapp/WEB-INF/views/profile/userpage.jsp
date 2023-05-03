@@ -21,8 +21,6 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <link rel="icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="/resources/css/header.css" />
     <link rel="stylesheet" href="/resources/css/footer.css" />
-    <link rel="stylesheet" href="/resources/css/usercomment.css" />
-
     <link rel="stylesheet" href="/resources/css/userpageindex.css" />
     <link rel="stylesheet" href="/resources/css/userposts.css" />
     <link rel="stylesheet" href="/resources/css/top.css" />
@@ -45,8 +43,6 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
         <div class="mypage-container">
           <!--  프로필 메인  -->
           <div class="profile">
-            <%--<c:forEach items="${getUserInfoList}" var="userProfile">-->
-              <!--<div class="profile-image">${userProfile.userPic}</div>--%>
               <img
                 class="profile-image"
                 src="${getUserInfoList.userPic}"
@@ -99,7 +95,6 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   </div>
                 </div>
               </div>
-            <%--</c:forEach>--%>
           </div>
           <!-- 프로필 아래  네비  -->
           <div id="content-section">

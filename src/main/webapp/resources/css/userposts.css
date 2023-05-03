@@ -49,9 +49,11 @@ tbody > td {
 .middle .t3 {
   width: 70px;
 }
-.middle .t4 ,
-.middle .t5 {
+.middle .t4 {
   width: 40px;
+}
+.middle .t5 {
+  width: 50px;
 }
 #pagination {
   font-size: 16px;
@@ -98,17 +100,16 @@ li.currPage:active {
   color: white;
   background-color: rgba(78, 197, 61, 1)
 }
-
-@media screen and (max-width: 838px) {
-  .cotents {
+@media screen and (max-width: 888px) {
+	  .cotents {
     min-height: max-content;
     font-size: 15px;
   }
-  .middle .t1 {
-    width: 60px;
-  }
+ .middle .t1 {
+	  width: 40px;
+	}
   .middle .t2 {
-    width: 130px;
+    width: 200px;
   }
   .middle .t3 {
     width: 50px;
@@ -118,6 +119,11 @@ li.currPage:active {
   }
   .middle .t5 {
     width: 35px;
+  }
+}
+@media screen and (max-width: 838px) {
+  .middle .t2 {
+    width: 170px;
   }
 }
 /* 모바일일때  */
@@ -153,4 +159,10 @@ li.currPage:active {
   .middle .t4 {
     display: none;
   }
+}
+@media screen and (max-width: 566px) {
+  .middle .t3 {
+    width: 70px;
+  }
+
 }
