@@ -41,7 +41,7 @@
 	const fileList = [];
 	const fileAltList = [];
 	<c:forEach var="item" items="${fileList}">
-		fileList.push("/img/${fn:substring(item.path, 10, 55)}");
+		fileList.push("/img/${fn:substring(item.path, 12, 57)}");
 		fileAltList.push("${item.fileName}");
 	</c:forEach>
 </script>

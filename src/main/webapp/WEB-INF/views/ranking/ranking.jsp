@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-
+<c:set var="imgBasePath" value="/img/" />
 <div class="rank">
 
 	<!-- <div class="head">
@@ -47,7 +47,7 @@
 							</div>
 							<div class="rankerProfile" id="${rankingVO.userId}">
 								<div class="rankerPic">
-									<img class="user-img" src="${empty rankingVO.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(rankingVO.userPic, 10, 55)}" alt="img" />
+									<img class="user-img" src="${empty rankingVO.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(rankingVO.userPic, 12, 57)}" alt="img" />
 								</div>
 								<div class="rankerName">${rankingVO.nickname}</div>
 							</div>
@@ -96,7 +96,7 @@
 							</div>
 							<div class="rankerProfile" id="${rankingVO.userId}">
 								<div class="rankerPic">
-									<img class="user-img" src="${empty rankingVO.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(rankingVO.userPic, 10, 55)}" alt="img" />
+									<img class="user-img" src="${empty rankingVO.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(rankingVO.userPic, 12, 57)}" alt="img" />
 								</div>
 								<div class="rankerName">${rankingVO.nickname}</div>
 							</div>
@@ -147,7 +147,7 @@
 							</div>
 							<div class="rankerProfile" id="${rankingVO.userId}">
 								<div class="rankerPic">
-									<img class="user-img" src="${empty rankingVO.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(rankingVO.userPic, 10, 55)}" alt="img" />
+									<img class="user-img" src="${empty rankingVO.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(rankingVO.userPic, 12, 57)}" alt="img" />
 								</div>
 								<div class="rankerName">${rankingVO.nickname}</div>
 							</div>
@@ -198,7 +198,7 @@
 							</div>
 							<div class="rankerProfile" id="${rankingVO.userId}">
 								<div class="rankerPic">
-									<img class="user-img" src="${empty rankingVO.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(rankingVO.userPic, 10, 55)}" alt="img" />
+									<img class="user-img" src="${empty rankingVO.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(rankingVO.userPic, 12, 57)}" alt="img" />
 								</div>
 								<div class="rankerName">${rankingVO.nickname}</div>
 							</div>

@@ -14,7 +14,7 @@ var commentCnt = ${totalCnt};
 <script type="text/javascript" src="/resources/js/report.js" defer ></script>
 
 
-
+<c:set var="imgBasePath" value="/img/" />
 	<!-- 댓글 전체 컨테이너  -->
 	<div class="cmtcontainer">
 		<!-- 새로운 댓글 작성 폼  -->
@@ -33,7 +33,7 @@ var commentCnt = ${totalCnt};
 				</c:if>
 				<!--  댓글 내부 (유저닉네임, 작성일, 수정/삭제/신고버튼, 내용, 답글버튼, 수정상태 시 수정/취소버튼)  -->
 				<c:if test="${c.status == 'N' }">
-				<img class="cmtuserPic" src="${c.userPic}"/>
+				<img class="cmtuserPic" src="${empty c.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(c.userPic, 12, 57)}"/>
 				<a class="cmtuser" href="http://localhost:8080/profile/${c.userId }">${c.nickname}</a>
 				<div class="cmtdate">
 						<fmt:formatDate pattern="MM-dd HH:mm" value="${c.modifiedDt == null? c.createdDt : c.modifiedDt}"></fmt:formatDate>

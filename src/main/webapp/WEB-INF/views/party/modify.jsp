@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<title>모집 글 작성</title>
+<title>모집 글 수정</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="shortcut icon" href="/resources/ico/favicon.ico"
@@ -24,6 +25,7 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
 </head>
 <body>	
+<c:set var="imgBasePath" value="/img/" />
 	<div class="total-wrap">
 		<%@include file="/WEB-INF/views/common/header.jsp"%>
 		<section>
@@ -51,7 +53,7 @@
 				</div>
 				<div class="detail">
 					<div class="photo">
-						<img src="/img/${fn:substring(party.partyPic, 10, 55)}"></img>
+						<img src="${empty party.partyPic ? " " : imgBasePath += fn:substring(party.partyPic, 12, 57)}"></img>
 					</div>
 					<div class="add-photo">
 						<div class="top">

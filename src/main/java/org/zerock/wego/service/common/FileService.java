@@ -38,7 +38,7 @@ public class FileService {
 			// 이미지 업로드 날짜 폴더 생성
 			String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
-			String basePath = "C:/upload/" + today;
+			String basePath = "/opt/upload/" + today;
 			File Folder = new File(basePath);
 
 			if (!Folder.exists()) {
@@ -127,6 +127,7 @@ public class FileService {
 			if(newFiles != null ) {
 				// 이미지를 저장할 경로 지정(이전 경로 중 하나에서 날짜 추출)
 				String basePath = this.getOldBasePath(fileVO.get(0).getPath());
+				log.info("***** basePath: {}", basePath);
 				
 				newFiles.forEach(file -> {
 					int fileOrder = order.indexOf(file.getOriginalFilename());
@@ -187,11 +188,9 @@ public class FileService {
 	} // removeNotMatchOldFileByFileVOAndOldFileList
 	
 	// 이미지를 저장할 경로 지정(경로에서 날짜 추출)
-	// ex) C:/upload/date/uuid => date
+	// ex) /opt/upload/date/uuid
 	public String getOldBasePath(String path) {
-		int start = path.lastIndexOf("/") - 8;
-		String date = path.substring(start, start + 8);
-		return "C:/upload/" + date;
+		return path.substring(0, path.lastIndexOf("/"));
 	} // getOldBasePath
 	
 	@Transactional

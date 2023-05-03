@@ -46,6 +46,7 @@
 	</script>
 </head>
 <body>
+<c:set var="imgBasePath" value="/img/" />
 	<div class="total-wrap">
 		<jsp:include page="../common/header.jsp" />
 			<section>
@@ -59,12 +60,12 @@
 					</div>
 				</div>
 				<div class="contents">
-					<img src=" ${party.userPic }" alt="" class="userpic" />
+					<img src=" ${empty party.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(party.userPic, 12, 57)}" alt="" class="userpic" />
 					<a class="username" href="http://localhost:8080/profile/${party.userId}">${party.nickName}</a>
 					<div class="likeCnt">
 						<input class="like ${isLike ? 'fill' : '' }" type="button" value="" /><label>${party.likeCnt }</label>
 					</div>
-					<img src="${party.partyPic}" alt="" class="partyImg" />
+					<img src="${empty party.partyPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(party.partyPic, 12, 57) }" alt="" class="partyImg" />
 					<div class="partyInfo">
 						<div class="info">
  							<span class="list">날짜</span> 
