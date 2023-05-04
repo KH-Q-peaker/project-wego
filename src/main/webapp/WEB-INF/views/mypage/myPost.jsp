@@ -5,7 +5,7 @@ uri="http://java.sun.com/jsp/jstl/fmt"%> <%@ taglib prefix="fn"
 uri="http://java.sun.com/jsp/jstl/functions"%>
     
 
-    
+        <script src="/resources/js/mypost.js" defer></script>
             <div class="content1">
               <h2>내가 쓴 글✍</h2>
               <table class="middle">
@@ -70,7 +70,9 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 		          end="${pageMaker.endPage}"
 		        >
 		          <!-- 조건문으로 지금 현재 페이지확인 : 전송파라미터중 현페이지번호가같다면 비운다. -->
-		          <li class="${param.currPage eq pageNum ? 'currPage' : ''}  myPostPage${pageNum}" onclick="selectClickCurrPage()">
+		          <li class="${param.currPage eq pageNum ? 'currPage' : ''}  myPostPage${pageNum}" 
+		          data-mypost-page="${__MyPostCurrPage__}" id="postCurrPageNum"
+		          onclick="selectClickCurrPage()">
 		            <span data-temp="${pageMaker.cri.setCurrPage(pageNum)}" id="currPageNum">${pageNum}</span
 		            >
 		          </li>
@@ -89,46 +91,3 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 		      </ul>
 		    </form>
 		  </div>
-
-          
-          <script>
-          
-          var myPostCurrPage = "${__MyPostCurrPage__}";
-  	      if(myPostCurrPage == 1) {
-  	        $('.myPostPage1').addClass("currPage");
-  	      }
-          
-          function selectClickCurrPage() {
-              var currPage = event.target.innerText;
-              $.ajax({
-                    type: 'get',
-                    url: '/profile/mypost',
-                    success: function(data){
-                        $(".content1").load("/profile/mypost?currPage="+currPage);
-                    }//success
-             	 });//ajax
-          }//selectClickCurrPage
-          
-		function selectClickCurrPagePrev () {
-				 var currPage = $( '#currPagePrev' ).val();
-				 $.ajax({
-	                    type: 'get',
-	                    url: '/profile/mypost',
-	                    success: function(data){
-	                        $(".content1").load("/profile/mypost?currPage="+currPage);
-	                    }//success
-	             	 });//ajax
-				} //selectClickCurrPagePrev
-		
-		 function selectClickCurrPageNext () {
-		         var currPage = $( '#currPageNext' ).val();
-		         $.ajax({
-	                    type: 'get',
-	                    url: '/profile/mypost',
-	                    success: function(data){
-	                        $(".content1").load("/profile/mypost?currPage="+currPage);
-	                    }//success
-	             	 });//ajax
-		} //selectClickCurrPageNext
-	
-</script>
