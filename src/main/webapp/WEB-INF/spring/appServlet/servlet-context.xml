@@ -16,7 +16,7 @@
 	<annotation-driven />
 
 	<resources mapping="/resources/**" location="/resources/" />
-	<resources mapping="/img/**" location="file:///C:/upload/" />
+	<resources mapping="/img/**" location="file:///opt/upload/" />
 
 	<view-resolvers>
 		<jsp prefix="/WEB-INF/views/" suffix=".jsp" />
@@ -90,7 +90,7 @@
 		<beans:property name="maxUploadSizePerFile"
 			value="20971520" />
 		<beans:property name="preserveFilename" value="true" />
-		<beans:property name="uploadTempDir" value="file:/" />
+		<beans:property name="uploadTempDir" value="file:/opt/upload/temp" />
 	</beans:bean>
 		
 	<!-- websocket handler -->
