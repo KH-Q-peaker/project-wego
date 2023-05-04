@@ -296,4 +296,5 @@ $RECYCLE.BIN/
 
 # login 테스트를 위해 막음
 
-**/main/java/org/zerock/wego/oauth/
+
+*/main/java/org/zerock/wego/oauth
