@@ -30,11 +30,11 @@ public class BadgeGetService {
 		log.trace("register({}, {}) invoked", badgeId, userId);
 		
 		this.userService.isExistById(userId);
-
+		this.badgeGetMapper.insertByBadgeIdAndUserID(badgeId, userId);
 		 // 알림 추가
-	    this.notificationMapper.insertBadgeByBadgeIdAndUserId(badgeId, userId);
 	    log.debug(">>>>>>>>>>> {}의 후기글작성으로 등산뱃지를 획득해서 알림이 갑니다.", userId);
-		return this.badgeGetMapper.insertByBadgeIdAndUserID(badgeId, userId) == 1;
+	    this.notificationMapper.insertBadgeByBadgeIdAndUserId(badgeId, userId);
+	    return true;
 	} // register
 
 	// 유저가 뱃지를 갖고 있니?
