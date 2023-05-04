@@ -30,6 +30,7 @@ import org.zerock.wego.domain.review.ReviewDTO;
 import org.zerock.wego.domain.review.ReviewViewVO;
 import org.zerock.wego.exception.AccessBlindException;
 import org.zerock.wego.exception.ControllerException;
+import org.zerock.wego.service.badge.BadgeGetService;
 import org.zerock.wego.exception.NotFoundPageException;
 import org.zerock.wego.service.common.CommentService;
 import org.zerock.wego.service.common.FavoriteService;
@@ -57,11 +58,12 @@ public class ReviewController {
 	private final FileService fileService;
 	private final FavoriteService favoriteService;
 	private final ReviewValidator reviewValidator;
+	private final BadgeGetService badgeGetService;
 	
 
-	@GetMapping("")
+	@GetMapping
 	public String openReview(Model model) throws ControllerException {
-		log.trace("openReview({}) invoked.", model);
+		log.trace("openReview(model) invoked.");
 
 		try {
 			List<ReviewViewVO> reviewList = this.reviewService.getList();
@@ -78,7 +80,7 @@ public class ReviewController {
 	public String showDetailById(@PathVariable("reviewId")Integer reviewId,
 									@SessionAttribute(SessionConfig.AUTH_KEY_NAME)UserVO user,
 									PageInfo pageInfo, Model model, FavoriteDTO favorite) throws RuntimeException, JsonProcessingException{
-		log.trace("showDetail({}, {}) invoked.", reviewId, pageInfo);
+		log.trace("showDetail(reviewId, user, pageInfo, model, favorite) invoked.");
 
 			pageInfo.setTargetGb("SAN_REVIEW");
 			pageInfo.setTargetCd(reviewId);
@@ -118,7 +120,7 @@ public class ReviewController {
 
 	@DeleteMapping(path= "/{reviewId}", produces= "text/plain; charset=UTF-8")
 	public ResponseEntity<String> removeById(@PathVariable("reviewId")Integer reviewId) throws ControllerException{
-		log.trace("removeById({}) invoked.", reviewId);
+		log.trace("removeById(reviewId) invoked.");
 
 		try {
 			this.reviewService.removeById(reviewId);
@@ -134,7 +136,8 @@ public class ReviewController {
 	}// removeReview
 
 	@GetMapping(path = "/modify/{reviewId}")
-	public String modify(@SessionAttribute("__AUTH__") UserVO auth, @PathVariable("reviewId") Integer reviewId,
+	public String modify(@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO auth, 
+			@PathVariable("reviewId") Integer reviewId,
 			Model model) throws Exception {
 		log.trace("modify(auth, reviewId, model) invoked.");
 
@@ -159,14 +162,14 @@ public class ReviewController {
 
 	@PostMapping("/modify")
 	public ResponseEntity<Map<String, String>> modify(
-			@SessionAttribute("__AUTH__") UserVO auth, Integer sanReviewId, String sanName,
+			@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO auth, Integer sanReviewId, String sanName,
 			@RequestParam(value = "imgFiles", required = false) List<MultipartFile> newImageFiles,
 			@RequestParam(value = "oldImgFiles", required = false) String oldImageFiles,
 			@RequestParam(value = "imgOrder", required = false) String imageOrder, 
 			ReviewDTO reviewDTO, BindingResult bindingResult,
 			FileDTO fileDTO)
 			throws ControllerException {
-		log.trace("modify(auth, sanReviewId, sanName, newImageFiles, oldImageFiles, reviewDTO, fileDTO) invoked.");
+		log.trace("modify(auth, sanReviewId, sanName, newImageFiles, oldImageFiles, imageOrder, reviewDTO, bindingResult, fileDTO) invoked.");
 
 		try {
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
@@ -203,29 +206,38 @@ public class ReviewController {
 	} // modify
 
 	@GetMapping("/register")
-	public String register(@SessionAttribute("__AUTH__") UserVO auth) {
-		log.trace("register() invoked.");
+	public String register(@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO auth) {
+		log.trace("register(auth) invoked.");
 
 		return "/review/register";
 	} // register
 
 	@PostMapping("/register")
 	public ResponseEntity<Map<String, String>> register(
-			@SessionAttribute("__AUTH__") UserVO auth, String sanName,
+			@SessionAttribute(name = SessionConfig.AUTH_KEY_NAME, required = false) UserVO auth, String sanName,
 			@RequestParam(value = "imgFiles", required = false) List<MultipartFile> imageFiles, 
 			ReviewDTO reviewDTO, BindingResult bindingResult,
 			FileDTO fileDTO) throws ControllerException {
-		log.trace("register(auth, sanName, imageFiles, reviewDTO, fileDTO, posted, response) invoked.");
+		log.trace("register(auth, sanName, imageFiles, reviewDTO, bindingResult, fileDTO) invoked.");
 
 		try {
+			Map<String, String> state = new HashMap<>();
+			
+			log.info("*****register - auth: {}", auth);
+			
+			if (auth == null) {
+				state.put("state", "logout");
+				state.put("redirectUrl", "/login");
+				
+				return new ResponseEntity<>(state, HttpStatus.OK);
+			} // if
+			
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 
 			reviewDTO.setSanInfoId(sanId);
 			reviewDTO.setUserId(auth.getUserId());
 			
 			reviewValidator.validate(reviewDTO, bindingResult);
-	        
-	        Map<String, String> state = new HashMap<>();
 
 	        if (bindingResult.hasFieldErrors()) { 
 	        	log.info("***** FieldErrors *****: {}", bindingResult.getAllErrors());
@@ -242,6 +254,8 @@ public class ReviewController {
 						reviewDTO.getSanReviewId(), fileDTO);
 				log.info("isImageUploadSuccess: {}", isImageUploadSuccess);
 			} // if
+			
+			badgeGetService.register(sanId, auth.getUserId());
 
 			state.put("state", "successed");
 			state.put("redirectUrl", "/review/" + reviewDTO.getSanReviewId());
