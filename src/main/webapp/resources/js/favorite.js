@@ -56,6 +56,9 @@ function request(formData, target) {
     body: formData,
   })
     .then((res) => {
+      if (res.url.includes("login")) {
+        self.location = res.url;
+      } // if
       return res.json();
     })
     .then((resBody) => {

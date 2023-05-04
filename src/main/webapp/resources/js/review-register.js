@@ -477,6 +477,9 @@ selector(".upload input[type=submit]").onclick = (e) => {
     }
   )
     .then((res) => {
+      if (res.url.includes("login")) {
+        self.location = res.url;
+      } // if
       return res.json();
     })
     .then((resBody) => {
