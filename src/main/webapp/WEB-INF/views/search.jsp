@@ -37,7 +37,7 @@
 					<div class="wrap">
 						<c:forEach var="item" items="${sanInfoList}">
 							<div class="item">
-								<a id="itemPath" href="/info/detail/${item.sanInfoId}">
+								<a id="itemPath" href="/info/${item.sanInfoId}">
 									<div class="item-info">
 										<h3 id="itemTitle">${item.sanName}</h3>
 										<div class="itemDetail">
@@ -59,7 +59,7 @@
 					</div>
 					<div class="wrap-recruit">
 						<c:forEach var="item" items="${partyList}">
-							<a href="/party/detail/${item.sanPartyId}">
+							<a href="/party/${item.sanPartyId}">
 							<div class="recruit-item">
 								<img class="user-img" src="${empty item.userPic ? 
 								"/resources/img/leaf.png" : imgBasePath += fn:substring(item.userPic, 12, 57)}" alt="img" />
@@ -110,7 +110,7 @@
 						<c:forEach var="item" items="${reviewList}">
 							<div class="item">
 								<a id="itemPath"
-									href="/review/detail/${item.sanReviewId}">
+									href="/review/${item.sanReviewId}">
 									<div class="item-info">
 										<h3 id="itemTitle">${item.title}</h3>
 										<div class="itemDetail">
