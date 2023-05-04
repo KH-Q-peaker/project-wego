@@ -137,9 +137,12 @@ public class PartyController {
 
 			return ResponseEntity.ok("모집글이 삭제되었습니다.️");
 
-		} catch (NotFoundPageException | OperationFailException e) {
-			return ResponseEntity.badRequest().build();
-		} // try-catch
+		} catch (NotFoundPageException e) {
+			return ResponseEntity.notFound().build();
+			
+		} catch (RuntimeException e){
+			return ResponseEntity.badRequest().build();// try-catch 
+		}// try-catch
 	}// removeById
 		
 	@GetMapping(path = "/modify/{partyId}")

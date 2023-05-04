@@ -112,15 +112,14 @@ public class PartyService {
 		                notificationMapper.insertPartyDeletionByPartyIdAndUserId(partyId, userId);
 		            }
 		        }
-			 // 삭제 전에 알림가야함. 왜냐? 삭제하면 아이디도 삭제되니까?
+			 
 			this.partyMapper.deleteById(partyId);
 			this.reportService.removeAllByTarget("SAN_PARTY", partyId);
 			this.fileService.isRemoveByTarget("SAN_PARTY", partyId);
 			this.favoriteService.removeAllByTarget("SAN_PARTY", partyId);
 			this.commentService.removeAllByTarget("SAN_PARTY", partyId);
 			
-			
-		} catch (NotFoundPageException | OperationFailException e) {
+		} catch (NotFoundPageException e) {
 			throw e;
 		
 		} catch (RuntimeException e) {

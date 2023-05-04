@@ -124,11 +124,19 @@ $(() => { /* 삭제 관련 */
 					setMessage(data);
 					showModal();
 				},
-				error : function(){
+				error : function(data){
 		 			hideDeleteModal();
-		 			setMessage("⚠️ 삭제실패."); // 이거 고쳐ㅕㅕㅕㅕㅕㅕㅕㅕㅕ
-		 			showModal();
-		 			setTimeout(hideModal, 700);
+		 			if(data.status == 404){
+						setMessage("글을 찾을 수 없습니다.");
+						showModal();
+		 				setTimeout(function() {
+							window.location.href = url }, 700);
+					} else{
+			 			setMessage("⚠️ 삭제실패."); // 이거 고쳐ㅕㅕㅕㅕㅕㅕㅕㅕㅕ
+			 			console.log(data.status);
+			 			showModal();
+			 			setTimeout(hideModal, 700);
+					}
 				}
 			});
 		});
