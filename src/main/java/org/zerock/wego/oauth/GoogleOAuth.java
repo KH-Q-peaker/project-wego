@@ -47,7 +47,7 @@ public class GoogleOAuth {	// https://developers.google.com/identity/openid-conn
 
 	public String getLoginURLToGetAuthorizationCode(String state) {
 		log.trace("getLoginURLToGetAuthorizationCode({}) invoked.", state);
-;
+
 		StringBuffer LoginURL = new StringBuffer(AUTHORIZE_REQUEST_URL);
 
 		LoginURL	// 파라미터 설정

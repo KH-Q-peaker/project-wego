@@ -116,8 +116,6 @@
       </div>
       
       <a href="#" class="scrollToTop"> <img src="/resources/svg/top.svg" /> </a>
-		<a href="#" class="chat"> <img src="/resources/svg/chat.svg" /> </a>
-      
       
     </section>
     <!-- main end -->

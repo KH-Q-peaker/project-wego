@@ -38,7 +38,7 @@
 				<c:when test="${sessionScope.__AUTH__.userPic != null}">
 				<!-- 로그인 상태 -->
 					<img id="userImg" class="user-profile-img"
-						src="${fn:substring(sessionScope.__AUTH__.userPic, 12, 57)}" alt="회원 프로필 이미지" />
+						src="/img/${fn:substring(sessionScope.__AUTH__.userPic, 12, 57)}" alt="회원 프로필 이미지" />
 				</c:when>
 				<c:otherwise>
 				<!-- 로그인 상태 -->
