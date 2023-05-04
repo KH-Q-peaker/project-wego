@@ -33,12 +33,9 @@ public class NaverOAuth {	// https://developers.naver.com/docs/login/api/api.md 
 	private String clientId;	// Client ID : 애플리케이션 등록 시 발급받은 Client ID 값
 	@Value("${naver.client.secret}")
 	private String clientSecret;	// Client Secret : 애플리케이션 등록 시 발급받은 Client Secret 값
-//	@Value("${wego.aws.ip}")
-//	private String wegoIP;	// aws ip
-	private String wegoIP = "3.25.135.222";
 
 	private final String AUTHORIZE_REQUEST_URL = "https://nid.naver.com/oauth2.0/authorize?";	// 네이버 로그인 인증 요청
-	private final String REDIRECT_URI = "http://:" + wegoIP + "/login/naver/oauth";	// 애플리케이션을 등록 시 입력한 Callback URL 값 >>>>>>>>>>>>>> 도메인 수정필요 naver에서도 수정필요
+	private final String REDIRECT_URI = "http://localhost:8080/login/naver/oauth";	// 애플리케이션을 등록 시 입력한 Callback URL 값 >>>>>>>>>>>>>> 도메인 수정필요 naver에서도 수정필요
 	private final String RESPONSE_TYPE = "code";	// 인증 과정에 대한 내부 구분값으로 'code'로 전송해야 함
 	private final String[] GRANT_TYPE = {"authorization_code", "refresh_token", "delete"}; // 인증 과정에 대한 구분값 {발급, 갱신, 삭제}
 	private final String TOKEN_REQUEST_URL = "https://nid.naver.com/oauth2.0/token";	// 인가 코드를 전달받을 서비스 서버의 URL
