@@ -65,7 +65,7 @@ function request(formData, target) {
       if (resBody.state === "successed") {
         const favoriteCount = $(target).next()[0];
 
-        if (target.classList.toggle("on")) {
+        if (target.className === "favorite on") {
           favoriteCount.innerText = Number(favoriteCount.innerText) + 1;
         } else {
           favoriteCount.innerText = Number(favoriteCount.innerText) - 1;
