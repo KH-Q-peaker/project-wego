@@ -35,9 +35,12 @@ public class GoogleOAuth {	// https://developers.google.com/identity/openid-conn
 	private String clientId;	// Client ID : 애플리케이션 등록 시 발급받은 Client ID 값
 	@Value("${google.client.secret}")
 	private String clientSecret;	// Client secret : 애플리케이션 등록 시 발급받은 Client secret 값
+//	@Value("${wego.aws.ip}")
+//	private String wegoIP;	// aws ip 
+	private String wegoIP = "3.25.135.222";
 
 	private final String AUTHORIZE_REQUEST_URL = "https://accounts.google.com/o/oauth2/v2/auth?";	// 로그인 인증 요청
-	private final String REDIRECT_URI = "http://localhost:8080/login/google/oauth";	// Google에서 응답을 수신하는 서버의 HTTP 엔드포인트여야 합니다.  >>>>>>>>>>>>>> 도메인 수정필요 naver에서도 수정필요
+	private final String REDIRECT_URI = "http://" + wegoIP + "/login/google/oauth";	// Google에서 응답을 수신하는 서버의 HTTP 엔드포인트여야 합니다.  >>>>>>>>>>>>>> 도메인 수정필요 naver에서도 수정필요
 	private final String RESPONSE_TYPE = "code";	// 기본 승인 코드 흐름 요청에서 code이어야 합니다
 	private final String SCOPE = "openid email";	// 기본 요청에서 openid email이어야 합니다
 	private final String[] GRANT_TYPE = {"authorization_code", "refresh_token", "delete"}; // 인증 과정에 대한 구분값 {발급, 갱신, 삭제}
