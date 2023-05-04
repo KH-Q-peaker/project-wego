@@ -13,8 +13,10 @@
 <script>
 	let sessionUserId = "${sessionUserId}";
     let chatRoomId = "${chatRoomId}";
+    console.log(window.location);
+	let contextPath = window.location.host;
 
-    let chatSocket = new WebSocket("ws://localhost:8080/chat/room");
+    let chatSocket = new WebSocket("ws:"+ contextPath + "/chat/room");
 </script>
 <script type="text/javascript" src="/resources/js/chat.js?ver=1" ></script>
 </head>
