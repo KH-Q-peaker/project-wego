@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.zerock.wego.config.SessionConfig;
+import org.zerock.wego.config.WegoConfig;
 import org.zerock.wego.domain.common.UserVO;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.oauth.GoogleOAuth;

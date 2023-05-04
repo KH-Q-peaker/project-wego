@@ -27,7 +27,7 @@ public class AuthInterceptor
 		HttpSession session = req.getSession(false);
 
 		//		===================================================== 로그인 확인.
-		if (session == null) {
+		if (session == null && req.getMethod().equals("GET")) {
 			
 			res.sendRedirect("/login");
 			
