@@ -69,5 +69,4 @@ public class PostInterceptor implements HandlerInterceptor {
 			return "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 		}// isAjax
 		
-		
 }// end class

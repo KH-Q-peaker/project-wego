@@ -41,6 +41,10 @@ function getUserPosts() {
         $("#module").html("<h1>작성한 글이 없습니다.<h1>");
         console.log("모듈에 작성 글 데이터 넣기 실패 ");
       } else {
+	  document.querySelector("#module").style.opacity = "0";
+ 	  $("#module").animate({
+		 opacity : 1
+	  });
         $("#module").html(data);
         console.log("모듈에 작성 글 데이터 넣기 성공 ");
       }
@@ -65,6 +69,10 @@ function getUserComments() {
         $("#module").html("<h1>작성한 댓글이 없습니다.<h1>");
         console.log("모듈에 작성 댓글 데이터 넣기 실패 ");
       } else {
+	  document.querySelector("#module").style.opacity = "0";
+ 	  $("#module").animate({
+		 opacity : 1
+	  });
         $("#module").html(data);
         console.log("모듈에 작성 댓글 데이터 넣기 성공 ");
       }

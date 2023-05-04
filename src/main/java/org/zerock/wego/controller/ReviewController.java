@@ -31,6 +31,7 @@ import org.zerock.wego.domain.review.ReviewViewVO;
 import org.zerock.wego.exception.AccessBlindException;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.service.badge.BadgeGetService;
+import org.zerock.wego.exception.NotFoundPageException;
 import org.zerock.wego.service.common.CommentService;
 import org.zerock.wego.service.common.FavoriteService;
 import org.zerock.wego.service.common.FileService;
@@ -126,6 +127,9 @@ public class ReviewController {
 
 			return ResponseEntity.ok("후기글이 삭제되었습니다.️");
 
+		} catch(NotFoundPageException e) {
+			return ResponseEntity.notFound().build();
+			
 		} catch (RuntimeException e) {
 			return ResponseEntity.badRequest().build();
 		}// try-catch

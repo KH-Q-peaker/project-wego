@@ -4,7 +4,7 @@ uri="http://java.sun.com/jsp/jstl/core"%> <%@ taglib prefix="fmt"
 uri="http://java.sun.com/jsp/jstl/fmt"%> <%@ taglib prefix="fn"
 uri="http://java.sun.com/jsp/jstl/functions"%>
     
-    
+    <script src="/resources/js/mycomment.js" defer></script>
             <div class="content2">
               <h2>내가 댓글 단 글📌</h2>
               <table class="middle">
@@ -78,8 +78,11 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 			          end="${pageMaker.endPage}"
 			        >
 			          <!-- 조건문으로 지금 현재 페이지확인 : 전송파라미터중 현페이지번호가같니?그럼비워 -->
-			          <li class="${param.currPage eq pageNum ? 'currPage' : ''} myCommentPage${pageNum}" onclick="selectClickCurrPage1()">
-			            <span data-temp="${pageMaker.cri.setCurrPage(pageNum)}" id="currPageNum">${pageNum}</span
+			          <li class="${param.currPage eq pageNum ? 'currPage' : ''} myCommentPage${pageNum}" 
+			          data-comment-page="${__MyCommentCurrPage__}" id="commentCurrPageNum"
+			          onclick="selectClickCurrPage1()" >
+			            <span data-temp="${pageMaker.cri.setCurrPage(pageNum)}" 
+			            >${pageNum}</span
 			            >
 			          </li>
 			          <!-- 숫자만 표시됨. -->
@@ -97,46 +100,4 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 			      </ul>
 			    </form>
 			  </div>
-          
-          <script>
-          
-          var myCommentCurrPage = "${__MyCommentCurrPage__}";
-	  	  if(myCommentCurrPage == 1) {
-	  	   	$('.myCommentPage1').addClass("currPage");
-	  	  }
-          
-          function selectClickCurrPage1() {
-              var currPage = event.target.innerText;
-              
-              $.ajax({
-                    type: 'get',
-                    url: '/profile/mycomment',
-                    success: function(data){
-                        $(".content2").load("/profile/mycomment?currPage="+currPage);
-                    }//success
-             	 });//ajax
-          }//selectClickCurrPage
-          
-		function selectClickCurrPagePrev1 () {
-				 var currPage = $( '#currPagePrev' ).val();
-				 $.ajax({
-	                    type: 'get',
-	                    url: '/profile/mycomment',
-	                    success: function(data){
-	                        $(".content2").load("/profile/mycomment?currPage="+currPage);
-	                    }//success
-	             	 });//ajax
-				} //selectClickCurrPagePrev
-		
-		 function selectClickCurrPageNext1 () {
-		         var currPage = $( '#currPageNext' ).val();
-		         $.ajax({
-	                    type: 'get',
-	                    url: '/profile/mycomment',
-	                    success: function(data){
-	                        $(".content2").load("/profile/mycomment?currPage="+currPage);
-	                    }//success
-	             	 });//ajax
-		} //selectClickCurrPageNext
-      
-</script>
+     

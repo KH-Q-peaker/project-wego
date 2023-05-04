@@ -100,7 +100,7 @@ public class ReviewService {
 			this.commentService.removeAllByTarget("SAN_REVIEW", reviewId);
 			// TO_DO : 좋아요 내역 삭제도 추기돼야 함,
 			
-		} catch(NotFoundPageException | OperationFailException e) {
+		} catch(NotFoundPageException e) {
 			throw e;
 			
 		} catch(RuntimeException e) {
