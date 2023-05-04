@@ -67,17 +67,10 @@ section {
   transition: all 400ms ease;
 }
 #alarmHeader .alarm-img {
-  /* max-width: 510px;
-  color: white;
-  display: flex;
-  justify-content: right;
-  text-align: right; */
   display: block;
-
   background: url(../svg/setting.svg);
   background-repeat: no-repeat;
   background-size: contain;
-
   width: 44px;
   height: 44px;
 }
@@ -93,10 +86,9 @@ section {
   grid-template-rows: repeat(4);
 }
 .alarm {
-  /* z-index: 100; */
   padding: 5px 20px 20px 20px;
   grid-column: 4/1;
-  background-color: #d9d9d9;
+  background-color: rgba(217, 217, 217, 0.85);
   display: grid;
   grid-template-areas:
     "h3"
@@ -108,7 +100,6 @@ section {
   transition: all 400ms ease;
 }
 .alarm h3 {
-  /* grid-area: 'h5'; */
   font-size: 15px;
   display: flex;
   margin-top: 15px;
@@ -116,14 +107,12 @@ section {
   justify-content: space-between;
 }
 .alarm .timeago {
-  /* grid-area: 'h5'; */
   font-size: 12px;
   display: flex;
   margin-top: 0px;
   margin-bottom: 15px;
 }
 .alarm div {
-  /* grid-area: 'message'; */
   align-items: center;
   display: flex;
   background-color: #fff;
@@ -156,7 +145,6 @@ section {
   height: 32px;
 }
 .alarm .mozipimg {
-  /* grid-area: 'h3'; */
   font-size: 15px;
   margin-bottom: 0px;
   display: flex;
@@ -179,7 +167,6 @@ section {
 	  text-align: center;
 	font-weight: bold;
 }
-/**/
 .remove {
 	display:inline-block;
 	width: 34px;
