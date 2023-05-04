@@ -84,9 +84,9 @@ public class PartyController {
 	// 모집글 상세 조회 
 	@GetMapping("/{partyId}") 
 	public String showDetailById(@PathVariable("partyId")Integer partyId, 
-								@SessionAttribute(SessionConfig.AUTH_KEY_NAME)UserVO user,
-								PageInfo pageInfo, Model model, 
-								JoinDTO join, FavoriteDTO favorite) throws RuntimeException, JsonProcessingException{
+						@SessionAttribute(SessionConfig.AUTH_KEY_NAME)UserVO user,
+						PageInfo pageInfo, Model model, 
+						JoinDTO join, FavoriteDTO favorite) throws RuntimeException, JsonProcessingException{
 	log.trace("showDetailById(partyId, user, pageInfo, model, join, favorite) invoked.");
 		
 			pageInfo.setTargetGb("SAN_PARTY");
@@ -275,8 +275,8 @@ public class PartyController {
 	// 참여 신청/취소 토글
 	@PostMapping(path = "/{partyId}/join", produces = "text/plain; charset=UTF-8")
 	ResponseEntity<String> toggleJoinOrCancleById(@PathVariable Integer partyId,
-											@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO user, 
-											JoinDTO join) throws Exception {
+							@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO user, 
+							JoinDTO join) throws Exception {
 		log.trace("toggleJoinOrCancleById(partyId, user, join) invoked.");
 
 		try {

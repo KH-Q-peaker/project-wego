@@ -61,4 +61,13 @@
         FROM dual
   	</select>
   	
+  	<update
+  			id="updateStatusById">
+  		UPDATE
+  			user_tb
+  		SET
+  			status = #{status}
+  		WHERE
+  			user_id = #{userId}		
+  	</update>
 </mapper>

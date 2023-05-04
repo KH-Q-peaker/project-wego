@@ -1,5 +1,6 @@
 package org.zerock.wego.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.zerock.wego.domain.common.UserDTO;
 import org.zerock.wego.domain.common.UserVO;
 
@@ -19,5 +20,8 @@ public interface UserMapper {
 	
 	// 존재하는 유저인가?
 	public abstract Integer isExist(Integer userId);
+	
+	// 유저 status 수정
+	public abstract Integer updateStatusById(@Param("userId") Integer userId, @Param("status") String status);
 
 }// end interface

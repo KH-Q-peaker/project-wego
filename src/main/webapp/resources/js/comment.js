@@ -14,8 +14,8 @@ function loadMoreComments() {
 			lastComment: lastCommentId
 		},
 		success: function(data) {
-			console.log('로딩이 왜되냐고');
 			$(".cmtcontainer").append(data);
+			
 			if(loadCnt < 5){
 				$(window).off('scroll');
 			}
@@ -92,7 +92,6 @@ $(() => { /* 새 댓글 post 전송  */
 				setTimeout(hideModal, 700);
 				$(window).off('scroll').on('scroll', scrollCommentLoading);
 				$("#contents").val('');
-//				$(".cmtcontainer").replaceWith(data);
 				$.ajax({
 					url: "/comment/load",
 					type: "GET",
@@ -108,15 +107,20 @@ $(() => { /* 새 댓글 post 전송  */
 						$('#cmtcnt').text(commentCnt);
 					},
 					error: () => {
-						console.log('댓글로딩오류 ');/* 바꿔야됨  */
+						console.log('댓글로딩오류 ');
 					}
 					});
 			},
 			error: function(data) {
+				$("#contents").val('');
 				if (data.status == 403) {
 					setMessage(data.responseText);
 					showModal();
 					setTimeout(hideModal, 5000);
+				} else{
+					setMessage('댓글을 등록할 수 없습니다. ');
+					showModal();
+					setTimeout(hideModal, 700);
 				}
 			}
 	});
@@ -158,7 +162,6 @@ $(() => { /* 답글 관련 */
 				var mentionCnt = $(this).parent().prev().find('#mentionCnt');
 			
 				$.ajax({
-//					url: "/comment/reply",
 					url: "/comment/register",
 					type: "POST",
 					data:
@@ -190,12 +193,13 @@ $(() => { /* 답글 관련 */
 						});
 					},
 					error: function(data) {
+						$('.mcontents').val('');
 						if (data.status == 403) {
 							setMessage(data.responseText);
 							showModal();
 							setTimeout(hideModal, 5000);
 						} else{
-							setMessage('뭔데 '); /**** */
+							setMessage('답글을 등록할 수 없습니다. ');
 							showModal();
 							setTimeout(hideModal, 700);
 						}
@@ -242,7 +246,6 @@ $(() => { /* 수정 관련 */
 		/* 댓글 수정 폼 off  */
 		$("input[name='updatecls']").off('click').on('click', function() {
 
-			/* 수정 중 취소 눌렀을 때 다른 수정버튼 재활성화  */
 			$(".modifycmt").prop('disabled', false);
 			
 			modifying.replaceWith(target);
@@ -261,8 +264,8 @@ $(() => { /* 수정 관련 */
 					contents : $(this).parent().siblings(".update").val()
 				}),
 				contentType :'application/JSON',
-				success : function(){
-					setMessage("✏️ 댓글이 수정되었습니다.");
+				success : function(data){
+					setMessage(data);
 		 			showModal();
 		 			setTimeout(hideModal, 700);
 		 			
@@ -271,7 +274,7 @@ $(() => { /* 수정 관련 */
 					$(".modifycmt").prop('disabled', false);
 				},
 				error : function(){
-		 			setMessage("⚠️ 수정 실패."); // 이거 고쳐ㅕㅕㅕㅕㅕㅕㅕㅕㅕ
+		 			setMessage("⚠️ 수정 실패.");
 		 			showModal();
 		 			setTimeout(hideModal, 700);
 				}	

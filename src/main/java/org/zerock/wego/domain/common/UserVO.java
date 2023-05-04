@@ -13,4 +13,5 @@ public class UserVO {
 	private String sanTaste;
 	private String userPic;
 	private String socialId;
+	private String status;
 }

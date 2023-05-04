@@ -41,8 +41,8 @@ $(() => { /* 삭제 관련 */
 			$.ajax({
 				url : "/comment/" + commentId,
 				type : "DELETE",
-				success : function(){
-					setMessage("🗑️ 댓글이 삭제되었습니다.");
+				success : function(data){
+					setMessage(data);
 		 			showModal();
 		 			setTimeout(hideModal, 700);
 		 			hideDeleteModal();

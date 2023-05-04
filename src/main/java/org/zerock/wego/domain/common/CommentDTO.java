@@ -23,7 +23,7 @@ public class CommentDTO {
 
 	public static CommentDTO convertCommentViewVOToCommentDTO(CommentViewVO vo) {
 		
-		return CommentDTO.builder().commentId(vo.getCommentId())	// 왜 
+		return CommentDTO.builder().commentId(vo.getCommentId())
 									  .targetGb(vo.getTargetGb())
 									  .targetCd(vo.getTargetCd())
 									  .commentGb(vo.getCommentGb())
