@@ -293,8 +293,3 @@ $RECYCLE.BIN/
 # API키 보안을 위한 .properties 파일 추가
 
 **/main/resources/config/
-
-# login 테스트를 위해 막음
-
-
-*/main/java/org/zerock/wego/oauth

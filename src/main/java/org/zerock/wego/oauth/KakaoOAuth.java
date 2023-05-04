@@ -28,9 +28,13 @@ public class KakaoOAuth {	// https://developers.kakao.com/docs/latest/ko/kakaolo
  
 	@Value("${kakao.rest.api.key}")
 	private String clientId;	// REST key
+//	@Value("${wego.aws.ip}")
+//	private String wegoIP;	// aws ip 
 
+	private String wegoIP = "3.25.135.222";
+	
 	private final String AUTHORIZE_REQUEST_URL = "https://kauth.kakao.com/oauth/authorize?";	// 인가 코드 요청 URL
-	private final String REDIRECT_URI = "http://localhost:8080/login/kakao/oauth";	// 인가 코드를 전달받을 서비스 서버의 URI >>>>>>>>>>>>>> 도메인 수정필요 kakao에서도 수정필요
+	private final String REDIRECT_URI = "http://" + wegoIP +"/login/kakao/oauth";	// 인가 코드를 전달받을 서비스 서버의 URI >>>>>>>>>>>>>> 도메인 수정필요 kakao에서도 수정필요
 	private final String RESPONSE_TYPE = "code";	// 인가 코드 요청시 param >>> code로 고정
 	private final String GRANT_TYPE = "authorization_code"; // 토큰 요청시 param >>> authorization_code로 고정 
 	private final String TOKEN_REQUEST_URL = "https://kauth.kakao.com/oauth/token";	// 인가 코드를 전달받을 서비스 서버의 URI
