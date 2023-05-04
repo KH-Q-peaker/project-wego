@@ -325,11 +325,11 @@ public class ProfileController {
 			str = str.replace("-", "");
 			String ori_filename=part.getOriginalFilename();
 			String uuid = UUID.randomUUID().toString();
-	        File uploadPath = new File("C:/upload", str);
+	        File uploadPath = new File("/opt/upload", str);
 	        File saveFile = new File(uploadPath, uuid);
 	        log.info(">>>>>>> saveFile.getPath: {}",saveFile.getPath());
-	        String path = "C:/upload/" + str + "/" + uuid;
-	        Path directoryPath = Paths.get("C:/upload/" + str);
+	        String path = "/opt/upload/" + str + "/" + uuid;
+	        Path directoryPath = Paths.get("/opt/upload/" + str);
 	    	if (!uploadPath.exists()) {
 	    		Files.createDirectories(directoryPath);
 	    	}//if
