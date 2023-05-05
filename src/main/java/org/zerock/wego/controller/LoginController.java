@@ -13,6 +13,7 @@ import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.oauth.GoogleOAuth;
 import org.zerock.wego.oauth.KakaoOAuth;
 import org.zerock.wego.oauth.NaverOAuth;
+import org.zerock.wego.service.oauth.LoginService;
 import org.zerock.wego.service.oauth.OAuthService;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,6 +32,8 @@ public class LoginController {
 	private final NaverOAuth naverOAuth;
 	private final GoogleOAuth googleOAuth;
 	private final OAuthService oAuthService;
+	private final LoginService loginService;
+	private final WegoConfig wegoConfig;
 
 
 	@GetMapping
@@ -47,6 +50,20 @@ public class LoginController {
 		return "redirect:/";
 	}// logout
 	
+	@GetMapping("/tester")
+	public String testerLogin(@RequestParam("id")String id, @RequestParam("pw")String pw, Model model) {
+		log.trace("testerLogin({}, {}) invoked.", id, pw);
+		
+		String testerID = wegoConfig.getPropertiesBean().getProperty("test.id");
+		String testerPW = wegoConfig.getPropertiesBean().getProperty("test.pw");
+		
+		if(id.equals("testerID") && pw.equals("testerPW")) {
+		
+			model.addAttribute(SessionConfig.AUTH_KEY_NAME, this.loginService.socialLogin("izp1024@naver.com"));
+		} // if
+		
+		return "redirect:/";
+	}// testerLogin
 	
 	@GetMapping("/google")
 	public String showGoogleLogin(@SessionAttribute(SessionConfig.SIGN_IN_STATE_NAME)String sessionState) throws ControllerException{

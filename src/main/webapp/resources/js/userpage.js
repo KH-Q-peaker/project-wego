@@ -1,6 +1,7 @@
 // 기본 로드
 window.onload = function () {
   userPosts();
+  
 };
 setFooterPosition();
 removeSearch();

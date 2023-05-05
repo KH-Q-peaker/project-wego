@@ -7,26 +7,16 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<title>메인페이지</title>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<link rel="shortcut icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
-<link rel="icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
+	<jsp:include page="./head.jsp" />
+	
+	<link rel="stylesheet" href="/resources/css/main.css" />
+	<link rel="stylesheet" href="/resources/css/ranking.css" />
+	
+	<script src="/resources/js/main.js" defer></script>
+	<script src="/resources/js/ranking.js" defer></script>
+	<script src="/resources/js/favorite.js" defer></script>
 
-<link rel="stylesheet" href="/resources/css/header.css" />
-<link rel="stylesheet" href="/resources/css/footer.css" />
-<link rel="stylesheet" href="/resources/css/main.css" />
-<link rel="stylesheet" href="/resources/css/ranking.css" />
-
-<script src="/resources/js/header.js" defer></script>
-<script src="/resources/js/main.js" defer></script>
-<script src="/resources/js/ranking.js" defer></script>
-<script src="/resources/js/favorite.js" defer></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
 </head>
 <body>
 	<div class="total-wrap">
@@ -42,8 +32,8 @@
 				<div class="wrap">
 					<c:forEach var="item" items="${sanInfoList}">
 						<a href="/info/${item.sanInfoId}">
-							<div class="mountain-item">
-								<img class="mountain-img" src="${empty item.img ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.img, 12, 57)}" alt="img" />
+							<div class="mountain-item">₩
+							  <img class="mountain-img" src="${item.img}" alt="img" />
 								<h3 class="mountain-name" id="mountainName">${item.sanName}</h3>
 								<p class="mountain-contents" id="text">${item.details}</p>
 								<div class="mountain-like">
