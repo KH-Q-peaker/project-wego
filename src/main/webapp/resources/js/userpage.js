@@ -2,7 +2,7 @@
 window.onload = function () {
   userPosts();
 };
-
+setFooterPosition();
 removeSearch();
 
 // Get the navigation menu items

@@ -18,16 +18,15 @@ window.addEventListener("click", (e) => {
   if(e.target.id === "search") {
     selector(".cancel").style.display = "block";
   } // if
-});
+})
 
-// 회원 이미지 클릭 시 메뉴바 표시
 selector("#userImg")?.addEventListener("click", () => {
   if (selector("#userImg").classList.toggle("toggle")) {
     selector(".menubar").style.display = "block";
   } else {
     selector(".menubar").style.display = "none";
   }
-});
+})
 
 // header에서 검색바를 제거하는 함수
 const removeSearch = () => selector(".search-bar").remove();

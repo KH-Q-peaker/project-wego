@@ -164,6 +164,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                             <p><a href="/party/${notificationVO.targetCd}"  id="notification-link" onclick="markNotificationAsRead(${notificationVO.alarmId})">${notificationVO.content}</a></p></c:if>
                           <c:if test="${fn:contains(notificationVO.contents, '후기')}">
                             <p><a href="/review/${notificationVO.targetCd}"  id="notification-link" onclick="markNotificationAsRead(${notificationVO.alarmId})">${notificationVO.content}</a></p></c:if>
+                          <c:if test="${fn:contains(notificationVO.contents, '단 댓글')}">
+                            <p><a href="/review/${notificationVO.targetCd}"  id="notification-link" onclick="markNotificationAsRead(${notificationVO.alarmId})">${notificationVO.content}</a></p></c:if>
                       </c:otherwise>
 					</c:choose>
                   </div>

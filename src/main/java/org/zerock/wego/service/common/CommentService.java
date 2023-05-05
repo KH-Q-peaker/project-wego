@@ -3,15 +3,12 @@ package org.zerock.wego.service.common;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.zerock.wego.domain.common.CommentDTO;
 import org.zerock.wego.domain.common.CommentViewVO;
-import org.zerock.wego.domain.common.NotificationDTO;
 import org.zerock.wego.domain.common.PageInfo;
 import org.zerock.wego.exception.NotFoundPageException;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.CommentMapper;
-import org.zerock.wego.mapper.NotificationMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -23,7 +20,7 @@ import lombok.extern.log4j.Log4j2;
 public class CommentService {
 
 	private final CommentMapper commentMapper;
-	private final NotificationMapper notificationMapper;
+	private final NotificationService notificationService;
 
 	
 	// 댓글 총합
@@ -111,7 +108,7 @@ public class CommentService {
 			this.commentMapper.updateTargetCommentCnt(dto, "INSERT");
 			
 			
-			this.notificationMapper.insertCommentByCommentIdAndUserId(dto.getCommentId(), dto.getUserId());
+			this.notificationService.registerCommentNotification(dto);
 			
 		} catch(RuntimeException e) {
 			throw new ServiceException(e);
