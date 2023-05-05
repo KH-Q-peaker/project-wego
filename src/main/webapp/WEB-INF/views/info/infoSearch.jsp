@@ -30,6 +30,7 @@
 <script src="/resources/js/top.js" defer></script>
 <script src="/resources/js/favorite.js" defer></script>
 <script src="/resources/js/board-type.js" defer></script>
+<script src="/resources/js/infinity-scroll-search.js" defer></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
@@ -48,7 +49,7 @@
 			<!-- Contents -->
 
 
-			<div class="container">
+			<div class="container" id="container">
 
 				<div class="search-results">
 
@@ -71,11 +72,11 @@
 				</div>
 
 
-				<div class="data-container">
+				<div class="data-container" id="data-container">
 					<!-- Item -->
-					<c:forEach var="item" items="${sanInfoList}">
+					<c:forEach var="item" items="${sanInfoSortList}">
 						<a href="/info/${item.sanInfoId}">
-							<div class="mountain-item">
+							<div class="mountain-item" id="${item.sortNum}">
 								<img class="mountain-img" src="${empty item.img ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.img, 12, 57)}" alt="img" />
 								<h3 class="mountain-name" id="mountainName">${item.sanName}</h3>
 								<p class="mountain-contents" id="text">${item.details}</p>

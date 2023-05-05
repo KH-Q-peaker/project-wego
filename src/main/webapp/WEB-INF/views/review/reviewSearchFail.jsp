@@ -77,9 +77,9 @@
 				<div class="suggestion-item">
 					
 					<!-- Item -->
-					<c:forEach var="item" items="${reviewList}">
+					<c:forEach var="item" items="${reviewSortList}">
 						<a href="/review/${item.sanReviewId}">
-							<div class="review-item">
+							<div class="review-item" id="${item.sortNum}">
 								<img class="user-img" src="${empty item.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.userPic, 12, 57)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>

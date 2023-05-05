@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import org.springframework.http.HttpStatus;
@@ -21,13 +22,17 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.zerock.wego.config.SessionConfig;
 import org.zerock.wego.domain.chat.ChatRoomDTO;
+import org.zerock.wego.domain.common.BoardDTO;
+import org.zerock.wego.domain.common.BoardSearchDTO;
 import org.zerock.wego.domain.common.CommentViewVO;
 import org.zerock.wego.domain.common.FavoriteDTO;
+import org.zerock.wego.domain.common.FavoriteVO;
 import org.zerock.wego.domain.common.FileDTO;
 import org.zerock.wego.domain.common.PageInfo;
 import org.zerock.wego.domain.common.UserVO;
 import org.zerock.wego.domain.party.JoinDTO;
 import org.zerock.wego.domain.party.PartyDTO;
+import org.zerock.wego.domain.party.PartyViewSortVO;
 import org.zerock.wego.domain.party.PartyViewVO;
 import org.zerock.wego.exception.AccessBlindException;
 import org.zerock.wego.exception.ControllerException;
@@ -54,7 +59,7 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("/party")
 @Controller
 public class PartyController {
-	
+
 	private final PartyService partyService;
 	private final CommentService commentService;
 	private final JoinService joinService;
@@ -63,70 +68,147 @@ public class PartyController {
 	private final FavoriteService favoriteService;
 	private final PartyValidator partyValidator;
 	private final ChatService chatService;
-  
-	
-	@GetMapping
-	public String openParty(Model model) throws ControllerException {
-		log.trace("openParty(model) invoked.");
+
+	@GetMapping("")
+	public String showParty(@SessionAttribute(value = "__AUTH__", required = false) UserVO auth, BoardDTO dto,
+			Model model) throws ControllerException {
+		log.trace("showParty({}) invoked.", model);
 
 		try {
-			List<PartyViewVO> partyList = this.partyService.getList();
+			if (auth != null) {
+				Set<FavoriteVO> favoriteList = this.favoriteService.getUserFavoriteOnList(auth.getUserId());
+				model.addAttribute("favoriteList", favoriteList);
+			} // if
 
-			model.addAttribute("partyList", partyList);
+			List<PartyViewSortVO> partySortList = this.partyService.getSortNewestList(dto);
+			model.addAttribute("partySortList", partySortList);
 
 			return "party/party";
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
-	} // openParty
+	} // showParty
 
-	
-	// 모집글 상세 조회 
-	@GetMapping("/{partyId}") 
-	public String showDetailById(@PathVariable("partyId")Integer partyId, 
-						@SessionAttribute(SessionConfig.AUTH_KEY_NAME)UserVO user,
-						PageInfo pageInfo, Model model, 
-						JoinDTO join, FavoriteDTO favorite) throws RuntimeException, JsonProcessingException{
-	log.trace("showDetailById(partyId, user, pageInfo, model, join, favorite) invoked.");
-		
-			pageInfo.setTargetGb("SAN_PARTY");
-			pageInfo.setTargetCd(partyId);
-			
-			PartyViewVO party = this.partyService.getById(partyId);
-			Integer userId = user.getUserId();
+	@PostMapping("")
+	public String addParty(@SessionAttribute(value = "__AUTH__", required = false) UserVO auth, BoardDTO dto,
+			Model model) throws ControllerException {
+		log.trace("addParty(dto, model) invoked.", model);
 
-			if((party.getReportCnt() >= 5) && (!userId.equals(party.getUserId()))) {
-				throw new AccessBlindException();
+		try {
+			if (auth != null) {
+				Set<FavoriteVO> favoriteList = this.favoriteService.getUserFavoriteOnList(auth.getUserId());
+				model.addAttribute("favoriteList", favoriteList);
 			} // if
-			
-			join.setSanPartyId(partyId);
-			join.setUserId(userId);
-			
-			boolean isJoin = this.joinService.isJoin(join);
-			
-			// TO_DO : 좋아요구현되면 바꾸기 
-			favorite.setTargetGb("SAN_PARTY");
-			favorite.setTargetCd(partyId);
-			favorite.setUserId(userId);
-			
-			boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
-			
-			LinkedBlockingDeque<CommentViewVO> comments 
-						= commentService.getCommentOffsetByTarget(pageInfo, 0);
 
-			model.addAttribute("party", party);
-			model.addAttribute("isJoin", isJoin);
-			model.addAttribute("isFavorite", isFavorite);
-			model.addAttribute("comments", comments);
+			if (dto.getOrderBy().equals("like")) {
+				List<PartyViewSortVO> partySortList = this.partyService.getSortLikeList(dto);
+				model.addAttribute("partySortList", partySortList);
+
+				return "party/partyItem";
+			} else if (dto.getOrderBy().equals("oldest")) {
+				List<PartyViewSortVO> partySortList = this.partyService.getSortOldestList(dto);
+				model.addAttribute("partySortList", partySortList);
+
+				return "party/partyItem";
+			} else {
+				List<PartyViewSortVO> partySortList = this.partyService.getSortNewestList(dto);
+				model.addAttribute("partySortList", partySortList);
+
+				return "party/partyItem";
+			} // else-if
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	} // addParty
+
+	@GetMapping("/search")
+	public String showPartySearchResult(@SessionAttribute(value = "__AUTH__", required = false)UserVO auth,
+			BoardSearchDTO dto, Model model
+			) throws ControllerException {
+		log.trace("showPartySearchResult(dto, model) invoked.");
+
+		try {
+			if (auth != null) {
+				Set<FavoriteVO> favoriteList = this.favoriteService.getUserFavoriteOnList(auth.getUserId());
+				model.addAttribute("favoriteList", favoriteList);
+			} // if
+
+			List<PartyViewSortVO> partySortList = this.partyService.getSearchSortNewestList(dto);
+			if (partySortList == null || partySortList.isEmpty()) {
+				return "party/partySearchFail";
+			} else {
+				model.addAttribute("partySortList", partySortList);
+				return "party/partySearch";
+			} // if-else
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	} // showPartySearchResult
+
+	@PostMapping("/search")
+	public String addPartySearchResult(@SessionAttribute(value = "__AUTH__", required = false) UserVO auth,
+			BoardSearchDTO dto, Model model) throws ControllerException {
+		log.trace("addPartySearchResult(dto, model) invoked.");
+
+		try {
+			if (auth != null) {
+				Set<FavoriteVO> favoriteList = this.favoriteService.getUserFavoriteOnList(auth.getUserId());
+				model.addAttribute("favoriteList", favoriteList);
+			} // if
+
+			List<PartyViewSortVO> partySortList = this.partyService.getSearchSortNewestList(dto);
+			model.addAttribute("partySortList", partySortList);
 			
-			ObjectMapper objectMapper = new ObjectMapper();
-			String pageInfoJson = objectMapper.writeValueAsString(pageInfo);
+			return "party/partyItem";
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	} // addPartySearchResult
 
-			model.addAttribute("target", pageInfoJson);
+	// 모집글 상세 조회
+	@GetMapping("/{partyId}")
+	public String showDetailById(@PathVariable("partyId") Integer partyId,
+			@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO user, PageInfo pageInfo, Model model, JoinDTO join,
+			FavoriteDTO favorite) throws RuntimeException, JsonProcessingException {
+		log.trace("showDetailById(partyId, user, pageInfo, model, join, favorite) invoked.");
 
-			return "/party/detail";
+		pageInfo.setTargetGb("SAN_PARTY");
+		pageInfo.setTargetCd(partyId);
+
+		PartyViewVO party = this.partyService.getById(partyId);
+		Integer userId = user.getUserId();
+
+		if ((party.getReportCnt() >= 5) && (!userId.equals(party.getUserId()))) {
+			throw new AccessBlindException();
+		} // if
+
+		join.setSanPartyId(partyId);
+		join.setUserId(userId);
+
+		boolean isJoin = this.joinService.isJoin(join);
+
+		// TO_DO : 좋아요구현되면 바꾸기
+		favorite.setTargetGb("SAN_PARTY");
+		favorite.setTargetCd(partyId);
+		favorite.setUserId(userId);
+
+		boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
+
+		LinkedBlockingDeque<CommentViewVO> comments = commentService.getCommentOffsetByTarget(pageInfo, 0);
+
+		model.addAttribute("party", party);
+		model.addAttribute("isJoin", isJoin);
+		model.addAttribute("isFavorite", isFavorite);
+		model.addAttribute("comments", comments);
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		String pageInfoJson = objectMapper.writeValueAsString(pageInfo);
+
+		model.addAttribute("target", pageInfoJson);
+
+		return "/party/detail";
 	}// showDetailById
-	
+
 	// 모집글 삭제
 	@DeleteMapping(path = "/{partyId}", produces = "text/plain; charset=UTF-8")
 	public ResponseEntity<String> removeById(@PathVariable("partyId") Integer partyId) throws RuntimeException {
@@ -139,17 +221,15 @@ public class PartyController {
 
 		} catch (NotFoundPageException e) {
 			return ResponseEntity.notFound().build();
-			
-		} catch (RuntimeException e){
-			return ResponseEntity.badRequest().build();// try-catch 
-		}// try-catch
+
+		} catch (RuntimeException e) {
+			return ResponseEntity.badRequest().build();// try-catch
+		} // try-catch
 	}// removeById
-		
+
 	@GetMapping(path = "/modify/{partyId}")
-	public String modify(
-			@SessionAttribute("SessionConfig.AUTH_KEY_NAME")UserVO auth,
-			@PathVariable("partyId") Integer partyId, Model model) 
-			throws ControllerException { 
+	public String modify(@SessionAttribute("SessionConfig.AUTH_KEY_NAME") UserVO auth,
+			@PathVariable("partyId") Integer partyId, Model model) throws ControllerException {
 		log.trace("modify(auth, partyId, model) invoked.");
 
 		try {
@@ -158,10 +238,10 @@ public class PartyController {
 			if (!auth.getUserId().equals(postUserId)) {
 				throw new ControllerException("잘못된 접근입니다.");
 			} // if
-			
+
 			PartyViewVO vo = this.partyService.getById(partyId);
 			model.addAttribute("party", vo);
-			
+
 			return "/party/modify";
 		} catch (Exception e) {
 			throw new ControllerException(e);
@@ -169,45 +249,44 @@ public class PartyController {
 	} // modify
 
 	@PostMapping("/modify")
-	public ResponseEntity<Map<String, String>> modify(
-			@SessionAttribute(SessionConfig.AUTH_KEY_NAME)UserVO auth,
-			Integer sanPartyId, String sanName, 
-			@RequestParam(value = "imgFile", required = false)List<MultipartFile> imageFiles, 
-			PartyDTO partyDTO, BindingResult bindingResult, FileDTO fileDTO
-			) throws ControllerException { 
+	public ResponseEntity<Map<String, String>> modify(@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO auth,
+			Integer sanPartyId, String sanName,
+			@RequestParam(value = "imgFile", required = false) List<MultipartFile> imageFiles, PartyDTO partyDTO,
+			BindingResult bindingResult, FileDTO fileDTO) throws ControllerException {
 		log.trace("modify(auth, sanPartyId, sanName, imageFiles, partyDTO, bindingResult, fileDTO) invoked.");
 
-		try {			
+		try {
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 			partyDTO.setSanInfoId(sanId);
 
 			partyValidator.validate(partyDTO, bindingResult);
-			
+
 			Map<String, String> state = new HashMap<>();
 
-	        if (bindingResult.hasFieldErrors()) { 
-	        	log.info("***** FieldErrors *****: {}", bindingResult.getAllErrors());
-	        	
-	        	state.put("state", "failed");
-	            state.put("errorField", bindingResult.getFieldError().getField());
-	            
-	            return new ResponseEntity<>(state, HttpStatus.BAD_REQUEST);
-	        } // if
-			
+			if (bindingResult.hasFieldErrors()) {
+				log.info("***** FieldErrors *****: {}", bindingResult.getAllErrors());
+
+				state.put("state", "failed");
+				state.put("errorField", bindingResult.getFieldError().getField());
+
+				return new ResponseEntity<>(state, HttpStatus.BAD_REQUEST);
+			} // if
+
 			boolean isModifySuccess = this.partyService.modify(partyDTO);
 			log.info("isModifySuccess: {}", isModifySuccess);
 
 			if (imageFiles != null) {
-				List<String> oldImageFiles = Arrays.asList(this.fileService.getList("SAN_PARTY", partyDTO.getSanPartyId()).get(0).getFileName());
+				List<String> oldImageFiles = Arrays
+						.asList(this.fileService.getList("SAN_PARTY", partyDTO.getSanPartyId()).get(0).getFileName());
 				List<String> order = Arrays.asList(imageFiles.get(0).getOriginalFilename());
-				boolean isChangeImgeSuccess = this.fileService.isChangeImage(imageFiles, oldImageFiles, order, "SAN_PARTY",
-						partyDTO.getSanPartyId(), fileDTO);
+				boolean isChangeImgeSuccess = this.fileService.isChangeImage(imageFiles, oldImageFiles, order,
+						"SAN_PARTY", partyDTO.getSanPartyId(), fileDTO);
 				log.info("isChangeImgeSuccess: {}", isChangeImgeSuccess);
 			} // if
 
 			state.put("state", "successed");
 			state.put("redirectUrl", "/party/" + partyDTO.getSanPartyId());
-			
+
 			return new ResponseEntity<>(state, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ControllerException(e);
@@ -222,31 +301,30 @@ public class PartyController {
 	} // register
 
 	@PostMapping("/register")
-	public ResponseEntity<Map<String, String>> register(
-			@SessionAttribute(SessionConfig.AUTH_KEY_NAME)UserVO auth, String sanName, 
-			@RequestParam(value = "imgFile", required = false)List<MultipartFile> imageFiles,
-			PartyDTO partyDTO, BindingResult bindingResult, FileDTO fileDTO, JoinDTO joinDTO,
-			ChatRoomDTO roomDTO) throws ControllerException {
+	public ResponseEntity<Map<String, String>> register(@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO auth,
+			String sanName, @RequestParam(value = "imgFile", required = false) List<MultipartFile> imageFiles,
+			PartyDTO partyDTO, BindingResult bindingResult, FileDTO fileDTO, JoinDTO joinDTO, ChatRoomDTO roomDTO)
+			throws ControllerException {
 		log.trace("register(auth, sanName, imageFiles, partyDTO, bindingResult, fileDTO, joinDTO, roomDTO) invoked.");
 
-		try {			
+		try {
 			partyDTO.setUserId(auth.getUserId());
-			
+
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 			partyDTO.setSanInfoId(sanId);
-			
+
 			partyValidator.validate(partyDTO, bindingResult);
-			
+
 			Map<String, String> state = new HashMap<>();
 
-	        if (bindingResult.hasFieldErrors()) { 
-	        	log.info("***** FieldErrors *****: {}", bindingResult.getAllErrors());
-	        	
-	        	state.put("state", "failed");
-	            state.put("errorField", bindingResult.getFieldError().getField());
-	            
-	            return new ResponseEntity<>(state, HttpStatus.BAD_REQUEST);
-	        } // if
+			if (bindingResult.hasFieldErrors()) {
+				log.info("***** FieldErrors *****: {}", bindingResult.getAllErrors());
+
+				state.put("state", "failed");
+				state.put("errorField", bindingResult.getFieldError().getField());
+
+				return new ResponseEntity<>(state, HttpStatus.BAD_REQUEST);
+			} // if
 
 			boolean isSuccess = this.partyService.register(partyDTO);
 			log.info("isSuccess: {}", isSuccess);
@@ -256,30 +334,29 @@ public class PartyController {
 						partyDTO.getSanPartyId(), fileDTO);
 				log.info("isImageUploadSuccess: {}", isImageUploadSuccess);
 			} // if
-			
+
 			joinDTO.setSanPartyId(partyDTO.getSanPartyId());
 			joinDTO.setUserId(auth.getUserId());
 			this.joinService.create(joinDTO);
-			
+
 			roomDTO.setChatRoomId(partyDTO.getSanPartyId());
 			roomDTO.setTitle(partyDTO.getTitle());
 			roomDTO.setUserId(auth.getUserId());
 			this.chatService.createChatRoom(roomDTO);
-			
+
 			state.put("state", "successed");
 			state.put("redirectUrl", "/party/" + partyDTO.getSanPartyId());
-			
+
 			return new ResponseEntity<>(state, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
 	} // register
-	
+
 	// 참여 신청/취소 토글
 	@PostMapping(path = "/{partyId}/join", produces = "text/plain; charset=UTF-8")
 	ResponseEntity<String> toggleJoinOrCancleById(@PathVariable Integer partyId,
-							@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO user, 
-							JoinDTO join) throws Exception {
+			@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO user, JoinDTO join) throws Exception {
 		log.trace("toggleJoinOrCancleById(partyId, user, join) invoked.");
 
 		try {
@@ -292,7 +369,7 @@ public class PartyController {
 			Integer currentCount = this.joinService.getCurrentCount(join);
 
 			return ResponseEntity.ok(currentCount.toString());
-			
+
 		} catch (OperationFailException e) {
 			return ResponseEntity.badRequest().body("모집 인원이 가득 찼습니다.");
 

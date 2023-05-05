@@ -4,13 +4,32 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.zerock.wego.domain.common.BoardDTO;
+import org.zerock.wego.domain.common.BoardSearchDTO;
 import org.zerock.wego.domain.review.ReviewDTO;
+import org.zerock.wego.domain.review.ReviewViewSortVO;
 import org.zerock.wego.domain.review.ReviewViewVO;
 
 
 public interface ReviewMapper {
 
-	public abstract List<ReviewViewVO> selectAll();	// 전체 목록 조회	
+	@Select("SELECT count(san_review_id) FROM san_review_v WHERE san_review_id > 0")
+	public abstract Integer selectTotalCount();
+	
+	public abstract List<ReviewViewVO> selectAll();	
+	
+	public abstract List<ReviewViewSortVO> selectAllOrderByNewest(BoardDTO dto);
+	public abstract List<ReviewViewSortVO> selectAllOrderByOldest(BoardDTO dto);
+	public abstract List<ReviewViewSortVO> selectAllOrderByLike(BoardDTO dto);
+	
+	public abstract List<ReviewViewSortVO> selectSearchReviewByQueryOrderByNewest(BoardSearchDTO dto);
+//	public abstract List<ReviewViewSortVO> selectSearchReviewByQueryOrderByOldest(BoardDTO dto, String query);
+//	public abstract List<ReviewViewSortVO> selectSearchReviewByQueryOrderByLike(BoardDTO dto, String query);
+
+	public abstract List<ReviewViewVO> selectReviewSuggestion();
+	
+	
 	public abstract Set<ReviewViewVO> selectRandom10(); // 10개의 게시글 랜덤 조회
 	public abstract Set<ReviewViewVO> selectSearchReview3ByQuery(String query);
 	

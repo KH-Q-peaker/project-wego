@@ -77,13 +77,13 @@
 				<div class="suggestion-item">
 					
 					<!-- Item -->
-					<c:forEach var="item" items="${partyList}">
+					<c:forEach var="item" items="${partySortList}">
 						<a href="/party/${item.sanPartyId}">
-							<div class="recruit-item">
+							<div class="recruit-item" id="${item.sortNum}">
 								<img class="user-img" src="${empty item.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.userPic, 12, 57)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>
-								<img class="recruit-img" src="${empty item.reviewPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.reviewPic, 12, 57)}" alt="img" />
+								<img class="recruit-img" src="${empty item.partyPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.partyPic, 12, 57)}" alt="img" />
 								<p class="recruit-title" id="title">${item.title}</p>
 								<p class="recruit-schedule-schedule">날짜:</p>
 								<p class="recruit-schedule" id="schedule">
