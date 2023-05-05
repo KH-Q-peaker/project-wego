@@ -12,7 +12,95 @@
 		FROM san_review_v 
 		ORDER BY created_Dt DESC
 	</select>
-
+	
+	<select id="selectAllOrderByNewest"
+		resultType="org.zerock.wego.domain.review.ReviewViewSortVO">
+		SELECT * 
+		FROM san_review_v_newest
+		<if test="sortNum != null">
+        	WHERE sort_num &gt; #{sortNum}
+		</if>
+   		OFFSET ( #{page} - 1 ) * #{amount} ROWS
+      	FETCH NEXT #{amount} ROWS ONLY
+	</select>
+	
+	<select id="selectAllOrderByOldest"
+		resultType="org.zerock.wego.domain.review.ReviewViewSortVO">
+		SELECT * 
+		FROM san_review_v_oldest
+		<if test="sortNum != null">
+        	WHERE sort_num &gt; #{sortNum}
+		</if>
+   		OFFSET ( #{page} - 1 ) * #{amount} ROWS
+      	FETCH NEXT #{amount} ROWS ONLY
+	</select>
+	
+	<select id="selectAllOrderByLike"
+		resultType="org.zerock.wego.domain.review.ReviewViewSortVO">
+		SELECT * 
+		FROM san_review_v_like
+		<if test="sortNum != null">
+        	WHERE sort_num &gt; #{sortNum}
+		</if>
+   		OFFSET ( #{page} - 1 ) * #{amount} ROWS
+      	FETCH NEXT #{amount} ROWS ONLY
+	</select>
+	
+	<select id="selectSearchReviewByQueryOrderByNewest"
+		resultType="org.zerock.wego.domain.review.ReviewViewSortVO">
+		SELECT *
+		FROM san_review_v_newest
+		WHERE
+			(
+			title LIKE '%'||#{query}||'%'
+			OR contents LIKE '%'||#{query}||'%'
+			)
+			<if test="sortNum != null">
+        	AND sort_num &gt; #{sortNum}
+			</if>
+   		OFFSET ( #{page} - 1 ) * #{amount} ROWS
+      	FETCH NEXT #{amount} ROWS ONLY
+	</select>
+	
+	<!-- <select id="selectSearchReviewByQueryOrderByOldest"
+		resultType="org.zerock.wego.domain.review.ReviewViewSortVO">
+		SELECT *
+		FROM san_review_v_oldest
+		WHERE
+			(
+			title LIKE '%'||#{search}||'%'
+			OR contents LIKE '%'||#{search}||'%'
+			)
+			<if test="lastItemId != null">
+        	AND sort_num &gt; #{lastItemId}
+			</if>
+   		OFFSET ( #{page} - 1 ) * #{amount} ROWS
+      	FETCH NEXT #{amount} ROWS ONLY
+	</select> -->
+	
+	<!-- <select id="selectSearchReviewByQueryOrderByLike"
+		resultType="org.zerock.wego.domain.review.ReviewViewSortVO">
+		SELECT *
+		FROM san_review_v_like
+		WHERE
+			(
+			title LIKE '%'||#{search}||'%'
+			OR contents LIKE '%'||#{search}||'%'
+			)
+			<if test="lastItemId != null">
+        	AND sort_num &gt; #{lastItemId}
+			</if>
+   		OFFSET ( #{page} - 1 ) * #{amount} ROWS
+      	FETCH NEXT #{amount} ROWS ONLY
+	</select> -->
+	
+	<select id="selectReviewSuggestion"
+		resultType="org.zerock.wego.domain.review.ReviewViewSortVO">
+		SELECT * 
+		FROM san_review_v 
+		ORDER BY created_Dt DESC
+	</select>
+	
 	<select id="selectRandom10"
 		resultType="org.zerock.wego.domain.review.ReviewViewVO">
 		SELECT *
@@ -67,16 +155,6 @@
   			
   	</select>
 
-	<!--  ************* 후기글 삭제 *************** -->
-	<delete id="delete">
-  		DELETE 
-  		FROM
-  			san_review_tb
-  		<where>
-  			san_review_id = #{reviewId}
-  		</where>
-  	</delete>
-
 	<insert id="insert" 
 		parameterType="org.zerock.wego.domain.review.ReviewDTO">
 		INSERT INTO 
@@ -99,6 +177,16 @@
 		WHERE
 			san_review_id = #{sanReviewId}
 	</update>
+	
+	<!--  ************* 후기글 삭제 *************** -->
+	<delete id="delete">
+  		DELETE 
+  		FROM
+  			san_review_tb
+  		<where>
+  			san_review_id = #{reviewId}
+  		</where>
+  	</delete>
 
 	<update id="visitCountUp">
 		UPDATE san_review_tb

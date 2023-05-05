@@ -50,7 +50,7 @@
 			<!-- Contents -->
 
 
-			<div class="container">
+			<div class="container" id="container">
 
 				<div class="mountain-info">
 

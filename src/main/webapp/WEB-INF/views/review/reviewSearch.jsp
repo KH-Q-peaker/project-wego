@@ -29,6 +29,8 @@
 <script src="/resources/js/sort.js" defer></script>
 <script src="/resources/js/top.js" defer></script>
 <script src="/resources/js/favorite.js" defer></script>
+<script src="/resources/js/board-type.js" defer></script>
+<script src="/resources/js/infinity-scroll-search.js" defer></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
@@ -47,7 +49,7 @@
 			<!-- Contents -->
 
 
-			<div class="container">
+			<div class="container" id="container">
 
 				<div class="search-results">
 
@@ -59,23 +61,14 @@
 						<h2>❤️ 후기 글 ❤️</h2>
 					</div>
 
-					<!-- 정렬 -->
-					<div class="select-sort">
-						<button class="btn-select">정렬 기준</button>
-						<ul class="sortBy">  
-							<li class="sortByItem"><button type="button">최신순</button></li>
-							<li class="sortByItem"><button type="button">오래된순</button></li>
-							<li class="sortByItem"><button type="button">좋아요순</button></li>
-						</ul>
-					</div>
 				</div>
 
 
-				<div class="data-container">
+				<div class="data-container" id="data-container">
 					<!-- Item -->
-					<c:forEach var="item" items="${reviewList}">
+					<c:forEach var="item" items="${reviewSortList}">
 						<a href="/review/${item.sanReviewId}">
-							<div class="review-item">
+							<div class="review-item" id="${item.sortNum}">
 								<img class="user-img" src="${empty item.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.userPic, 12, 57)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>

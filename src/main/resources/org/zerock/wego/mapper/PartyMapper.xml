@@ -14,13 +14,93 @@
 		ORDER BY created_dt DESC
 	</select>
   	
-	<select id="selectUserIdByPartyId"
-		resultType="int">
-		SELECT user_id
-		FROM san_party_v
-		WHERE san_party_id = ${partyId}
+  	<select id="selectAllOrderByNewest"
+		resultType="org.zerock.wego.domain.party.PartyViewSortVO">
+		SELECT * 
+		FROM san_party_v_newest
+		<if test="sortNum != null">
+        	WHERE sort_num &gt; #{sortNum}
+		</if>
+   		OFFSET ( #{page} - 1 ) * #{amount} ROWS
+      	FETCH NEXT #{amount} ROWS ONLY
 	</select>
-  	
+	
+	<select id="selectAllOrderByOldest"
+		resultType="org.zerock.wego.domain.party.PartyViewSortVO">
+		SELECT * 
+		FROM san_party_v_oldest
+		<if test="sortNum != null">
+        	WHERE sort_num &gt; #{sortNum}
+		</if>
+   		OFFSET ( #{page} - 1 ) * #{amount} ROWS
+      	FETCH NEXT #{amount} ROWS ONLY
+	</select>
+	
+	<select id="selectAllOrderByLike"
+		resultType="org.zerock.wego.domain.party.PartyViewSortVO">
+		SELECT * 
+		FROM san_party_v_like
+		<if test="lastItemId != null">
+        	WHERE sort_num &gt; #{lastItemId}
+		</if>
+   		OFFSET ( #{page} - 1 ) * #{amount} ROWS
+      	FETCH NEXT #{amount} ROWS ONLY
+	</select>
+	
+	<select id="selectSearchPartyByQueryOrderByNewest"
+		resultType="org.zerock.wego.domain.party.PartyViewSortVO">
+		SELECT *
+		FROM san_party_v_newest
+		WHERE
+			(
+			title LIKE '%'||#{query}||'%'
+			OR contents LIKE '%'||#{query}||'%'
+			)
+			<if test="sortNum != null">
+        	AND sort_num &gt; #{sortNum}
+			</if>
+   		OFFSET ( #{page} - 1 ) * #{amount} ROWS
+      	FETCH NEXT #{amount} ROWS ONLY
+	</select>
+	
+	<!-- <select id="selectSearchPartyByQueryOrderByOldest"
+		resultType="org.zerock.wego.domain.party.PartyViewSortVO">
+		SELECT *
+		FROM san_party_v_oldest
+		WHERE
+			(
+			title LIKE '%'||#{search}||'%'
+			OR contents LIKE '%'||#{search}||'%'
+			)
+			<if test="lastItemId != null">
+        	AND sort_num &gt; #{lastItemId}
+			</if>
+   		OFFSET ( #{page} - 1 ) * #{amount} ROWS
+      	FETCH NEXT #{amount} ROWS ONLY
+	</select> -->
+	
+	<!-- <select id="selectSearchPartyByQueryOrderByLike"
+		resultType="org.zerock.wego.domain.party.PartyViewSortVO">
+		SELECT *
+		FROM san_party_v_like
+		WHERE
+			(
+			title LIKE '%'||#{search}||'%'
+			OR contents LIKE '%'||#{search}||'%'
+			)
+			<if test="lastItemId != null">
+        	AND sort_num &gt; #{lastItemId}
+			</if>
+   		OFFSET ( #{page} - 1 ) * #{amount} ROWS
+      	FETCH NEXT #{amount} ROWS ONLY
+	</select> -->
+	
+	<select id="selectReviewSuggestion"
+		resultType="org.zerock.wego.domain.party.PartyViewVO">
+		SELECT * 
+		FROM san_party_v 
+		ORDER BY created_Dt DESC
+	</select>  	
 
 	<select id="selectRandom10"
 		resultType="org.zerock.wego.domain.party.PartyViewVO">
@@ -33,7 +113,7 @@
 			)
 		WHERE ROWNUM &lt;= 10
 	</select>
-	
+
 	<select id="selectSearchParty3ByQuery"
 		resultType="org.zerock.wego.domain.party.PartyViewVO">
 		SELECT *
@@ -45,7 +125,7 @@
 			)
 			AND ROWNUM &lt;= 3
 	</select>
-
+	
 	<!-- *********** 식별자로 모집글 존재여부  ************ -->
   	<select id="isExist" 
   		resultType = "java.lang.Boolean">
@@ -73,19 +153,14 @@
   		</where>
   	</select>
   	
-  	<!-- ************ 모집글 삭제 ************ -->
-  	<delete id="deleteById">
-  		DELETE
-  		FROM
-  			san_party_tb
-  			
-  		<where>
-  		san_party_id = #{partyId}
-  		</where>
-  	</delete>
+	<select id="selectUserIdByPartyId"
+		resultType="int">
+		SELECT user_id
+		FROM san_party_v
+		WHERE san_party_id = ${partyId}
+	</select>
   	
-
-	<insert id="insert" 
+  	<insert id="insert" 
 		parameterType="org.zerock.wego.domain.party.PartyViewVO">
 		INSERT INTO
 			san_party_tb(
@@ -102,7 +177,7 @@
 				FROM san_party_tb
 			</selectKey>
 	</insert>
-
+	
 	<update id="update">
 		UPDATE san_party_tb
 		SET
@@ -117,6 +192,17 @@
 		WHERE
 			san_party_id = #{sanPartyId}
 	</update>
+	
+  	<!-- ************ 모집글 삭제 ************ -->
+  	<delete id="deleteById">
+  		DELETE
+  		FROM
+  			san_party_tb
+  			
+  		<where>
+  		san_party_id = #{partyId}
+  		</where>
+  	</delete>
 
 	<update id="visitCountUp">
 		UPDATE san_party_tb
@@ -125,4 +211,5 @@
 		WHERE
 			san_party_id = #{partyId}
 	</update>
+	
 </mapper>
