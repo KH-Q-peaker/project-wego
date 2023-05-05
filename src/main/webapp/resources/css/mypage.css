@@ -1,95 +1,3 @@
-#pagination {
-  font-size: 16px;
-}
-#pagination > form {
-  margin-bottom: 0px;
-}
-#pagination .paginUl {
-  text-align: center;
-  /* margin-top: 0px;
-  margin-bottom: 0px; */
-}
-#pagination li {
-  display: inline-block;
-  width: 40px;
-  height: 30px;
-  list-style: none;
-  text-align: center;
-  line-height: 30px;
-  font-weight: bold;
-  font-family: D2Coding;
-  cursor: pointer;
-  border-radius: 15px;
-  transition: all 0.5s ease-in-out;
-}
-#pagination li:hover {
-  font-size: 20px;
-  color: aliceblue;
-  background-color: rgba(78, 197, 61, 0.75);
-}
-.next,
-.prev {
-  width: 70px !important;
-  background-color: #4ec53d;
-  color: white;
-}
-li.currPage {
-  font-weight: bold;
-  color: white;
-  background-color: rgba(78, 197, 61, 1)
-}
-li.currPage:active {
-  font-weight: bold;
-  color: white;
-  background-color: rgba(78, 197, 61, 1)
-}
-
-
-
-
-table {
-  width: 100%;
-  min-width: 500px;
-  border-top: 1px solid #444444;
-  border-collapse: collapse;
-}
-th,
-td {
-  border-top: 1px solid #444444;
-  border-bottom: 1px solid #444444;
-  border-left: 1px solid #5a595902;
-  padding: 10px;
-}
-th:first-child,
-td:first-child {
-  border-left: none;
-}
-tbody {
-  text-align: center;
-}
-tbody > td {
-  margin: 10px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-.cotents {
-  overflow-x: auto;
-  height: max-content;
-  padding: 20px;
-  background-color: #ffffff;
-  position: relative;
-  border-radius: 15px;
-}
-.contents > h2 {
-  text-align: center;
-  margin-top: 0px;
-}
-.content1 {
-  /* margin-bottom: 32px; */
-}
-.content2 {
-  /* margin-bottom: 32px; */
-}
 
 /* 로딩화면 */
 .loader {
@@ -107,6 +15,17 @@ tbody > td {
     animation: spin 1s ease-in-out infinite;
     -webkit-animation: spin 1s ease-in-out infinite;
 }
+/*
+.content1 {
+  margin-bottom: 15px;
+}
+.content2 {
+  margin-bottom: 15px;
+}
+*/
+table {
+	margin-bottom: 15px;
+}
 @-webkit-keyframes spin {
     0% { -webkit-transform: rotate(0deg); }
     100% { -webkit-transform: rotate(360deg); }
@@ -114,50 +33,4 @@ tbody > td {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-}
-
-@media screen and (max-width: 838px) {
-  .cotents {
-    min-height: max-content;
-    font-size: 15px;
-  }
-  .middle .t1 {
-    width: 60px;
-  }
-  .middle .t3,
-  .middle .t4 {
-    width: 80px;
-  }
-}
-/* 모바일일때  */
-@media screen and (max-width: 756px) {
-  .cotents {
-    margin: 5px;
-    font-size: 12px;
-    min-height: max-content;
-  }
-  /* 모바일일때 글내용 작게해줘~  */
-  table {
-    width: 100%;
-    min-width: fit-content;
-  }
-  th,
-  td {
-    font-size: 13px;
-  }
-  tbody > td {
-    margin: 5px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-  }
-  .middle .t2 {
-    width: 150px;
-  }
-  .middle .t3 {
-    width: 80px;
-  }
-  .middle .t1,
-  .middle .t4 {
-    display: none;
-  }
 }

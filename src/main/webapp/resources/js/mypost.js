@@ -1,9 +1,9 @@
 if (typeof post_data_page == 'undefined') {
 	const post_data_page = document.getElementById('postCurrPageNum');
-	var myPostCurrPage = post_data_page.getAttribute('data-mypost-page');
-	if (myPostCurrPage == 1) {
-		$('.myPostPage1').addClass("currPage");
-	}
+		var myPostCurrPage = post_data_page.getAttribute('data-mypost-page');
+		if (myPostCurrPage == 1) {
+			$('.myPostPage1').addClass("currPage");
+		}
 
 	function selectClickCurrPage() {
 		var currPage = event.target.innerText;
@@ -11,7 +11,7 @@ if (typeof post_data_page == 'undefined') {
 			type: 'get',
 			url: '/profile/mypost',
 			success: function (data) {
-				$(".content1").load("/profile/mypost?currPage=" + currPage);
+				$(".myPostModule").load("/profile/mypost?currPage=" + currPage);
 			}//success
 		});//ajax
 	}//selectClickCurrPage
@@ -22,7 +22,7 @@ if (typeof post_data_page == 'undefined') {
 			type: 'get',
 			url: '/profile/mypost',
 			success: function (data) {
-				$(".content1").load("/profile/mypost?currPage=" + currPage);
+				$(".myPostModule").load("/profile/mypost?currPage=" + currPage);
 			}//success
 		});//ajax
 	} //selectClickCurrPagePrev
@@ -33,7 +33,7 @@ if (typeof post_data_page == 'undefined') {
 			type: 'get',
 			url: '/profile/mypost',
 			success: function (data) {
-				$(".content1").load("/profile/mypost?currPage=" + currPage);
+				$(".myPostModule").load("/profile/mypost?currPage=" + currPage);
 			}//success
 		});//ajax
 	} //selectClickCurrPageNext

@@ -50,93 +50,37 @@ tbody > td {
   width: 70px;
 }
 .middle .t4 {
-  width: 40px;
+  width: 35px;
 }
 .middle .t5 {
-  width: 50px;
+  width: 25px;
 }
-#pagination {
-  font-size: 16px;
-}
-#pagination > form {
-  margin-bottom: 0px;
-}
-#pagination .paginUl {
-  text-align: center;
-  margin-top: 0px;
-  margin-bottom: 0px;
-}
-#pagination li {
-  display: inline-block;
-  width: 40px;
-  height: 30px;
-  list-style: none;
-  text-align: center;
-  line-height: 30px;
-  font-weight: bold;
-  font-family: D2Coding;
-  cursor: pointer;
-  border-radius: 15px;
-  transition: all 0.5s ease-in-out;
-}
-#pagination li:hover {
-  /*font-size: 20px;*/
-  color: aliceblue;
-  background-color: rgba(78, 197, 61, 0.75);
-}
-.next,
-.prev {
-  width: 70px !important;
-  background-color: #4ec53d;
-  color: white;
-}
-li.currPage {
-  font-weight: bold;
-  color: white;
-  background-color: rgba(78, 197, 61, 1)
-}
-li.currPage:active {
-  font-weight: bold;
-  color: white;
-  background-color: rgba(78, 197, 61, 1)
-}
-
-@media screen and (max-width: 888px) {
+@media screen and (max-width: 838px) {
   .cotents {
     min-height: max-content;
     font-size: 15px;
   }
   .middle .t1 {
-    width: 40px;
+    width: 50px;
   }
   .middle .t2 {
-    width: 200px;
+    width: 130px;
   }
   .middle .t3 {
     width: 50px;
-  }
-  .middle .t4 {
-    width: 25px;
   }
   .middle .t5 {
     width: 35px;
   }
 }
-@media screen and (max-width: 838px) {
-  .middle .t2 {
-    width: 170px;
-  }
-}
 /* 모바일일때  */
 @media screen and (max-width: 756px) {
-	th, td {
-	    padding: 10px 5px 10px 5px;
-	}
   .cotents {
     margin: 5px;
     font-size: 12px;
     min-height: max-content;
   }
+  /* 모바일일때 글내용 작게해줘~  */
   table {
     width: 100%;
     min-width: fit-content;
@@ -154,16 +98,10 @@ li.currPage:active {
     width: 150px;
   }
   .middle .t3 {
-    width: 30px;
+    width: 35px;
   }
   .middle .t1,
   .middle .t4 {
     display: none;
   }
-}
-@media screen and (max-width: 566px) {
-  .middle .t3 {
-    width: 70px;
-  }
-
 }
