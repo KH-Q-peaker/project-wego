@@ -4,7 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<link rel="stylesheet" href="/resources/css/usercomment.css" />
 <script src="/resources/js/user-comment.js" defer></script>
 <div class="cotentsbox">
 	<div class="cotents">
@@ -19,7 +18,7 @@
 						<th class="t1">게시판명</th>
 						<th class="t2">내용</th>
 						<th class="t3">작성일</th>
-						<th class="t4">조회수</th>
+						<th class="t4">글번호</th>
 						<th class="t5">멘션수</th>
 					</tr>
 				</thead>
@@ -48,7 +47,7 @@
 							<td class="t3"><fmt:formatDate pattern="yyyy-MM-dd"
 									value="${profileCommentVO.createdDt}"></fmt:formatDate>
 							</td>
-							<td class="t4">100</td>
+							<td class="t4">${profileCommentVO.targetCb}</td>
 							<td class="t5">&#128140;${profileCommentVO.mentionCnt}</td>
 						</tr>
 					</c:forEach>

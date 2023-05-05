@@ -100,14 +100,15 @@ li.currPage:active {
   color: white;
   background-color: rgba(78, 197, 61, 1)
 }
+
 @media screen and (max-width: 888px) {
-	  .cotents {
+  .cotents {
     min-height: max-content;
     font-size: 15px;
   }
- .middle .t1 {
-	  width: 40px;
-	}
+  .middle .t1 {
+    width: 40px;
+  }
   .middle .t2 {
     width: 200px;
   }
