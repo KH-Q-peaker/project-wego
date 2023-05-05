@@ -44,8 +44,6 @@
 			<div class="mypage-container">
 				<!--  프로필 메인  -->
 				<div class="profile">
-					<%--<c:forEach items="${getUserInfoList}" var="userProfile">-->
-              <!--<div class="profile-image">${userProfile.userPic}</div>--%>
 					<img class="profile-image" src="${getUserInfoList.userPic}"
 						alt="img" />
 					<!--  사진  옆라인 -->

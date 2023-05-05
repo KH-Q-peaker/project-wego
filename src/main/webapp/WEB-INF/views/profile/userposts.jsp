@@ -40,7 +40,7 @@
 							<td class="t3"><fmt:formatDate pattern="yyyy-MM-dd"
 									value="${profileVO.createDt}"></fmt:formatDate>
 							</td>
-							<td class="t4">100</td>
+							<td class="t4">${profileVO.visitCount}</td>
 							<td class="t5">&#128149;${profileVO.likeCnt}</td>
 						</tr>
 					</c:forEach>
