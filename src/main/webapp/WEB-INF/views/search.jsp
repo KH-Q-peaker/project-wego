@@ -42,7 +42,7 @@
 										<h3 id="itemTitle">${item.sanName}</h3>
 										<div class="itemDetail">
 											<p id="itemContent">${item.details}</p>
-											<img id="itemImg" src="${empty item.img ? "/resources/img/leaf.png" : "/img/" + fn:substring(item.img, 12, 57)}" alt="img" />
+											<img class="mountain-img" src="${item.img}" alt="img" />
 										</div>
 									</div>
 								</a>
