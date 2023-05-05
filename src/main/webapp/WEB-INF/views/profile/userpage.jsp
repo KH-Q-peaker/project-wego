@@ -26,6 +26,7 @@
 
 <script src="/resources/js/header.js" defer></script>
 <script src="/resources/js/top.js" defer></script>
+<script src="/resources/js/footer.js" defer></script>
 <script src="/resources/js/userpage.js" defer></script>
 
 <script
