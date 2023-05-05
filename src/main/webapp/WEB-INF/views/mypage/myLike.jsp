@@ -4,8 +4,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
     
-    <script src="${path}/resources/js/main.js" defer></script>
-    <link rel="stylesheet" href="${path}/resources/css/main.css" />
+    <script src="/resources/js/favorite.js" defer></script>
+    <script src="/resources/js/main.js" defer></script>
+    <link rel="stylesheet" href="/resources/css/main.css" />
     
    <style>
 	    .my-like.cotents {

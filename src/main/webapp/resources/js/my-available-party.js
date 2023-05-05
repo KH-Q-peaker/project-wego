@@ -1,9 +1,9 @@
 if (typeof data_availPage_page == 'undefined') {
     const data_availPage_page = document.getElementById('availPageNum');
-    var aCurrPage = document.querySelector('#availcurrPage').value;
-    if (aCurrPage == 1) {
-        $('.availablePartyPage1').addClass("currPage");
-    }
+	    var aCurrPage = document.querySelector('#availcurrPage').value;
+	    if (aCurrPage == 1) {
+	        $('.availablePartyPage1').addClass("currPage");
+	    }
 
     function selectClickAvailableCurrPage() {
         console.log("********", event.target.innerText);
@@ -13,7 +13,7 @@ if (typeof data_availPage_page == 'undefined') {
             url: '/profile/partyList',
             data: { "acri.currPage": currPage },
             success: function (data) {
-                $("#content1").load("/profile/partyList?currPage=" + currPage);
+                $("#availablePartyModule").load("/profile/partyList?currPage=" + currPage);
             }
         });//ajax
     }//selectClickAvailableCurrPage
@@ -25,7 +25,7 @@ if (typeof data_availPage_page == 'undefined') {
             url: '/profile/partyList',
             data: { "acri.currPage": currPage },
             success: function (data) {
-                $("#content1").load("/profile/partyList?currPage=" + currPage);
+                $("#availablePartyModule").load("/profile/partyList?currPage=" + currPage);
             }
         });//ajax
     }
@@ -37,7 +37,7 @@ if (typeof data_availPage_page == 'undefined') {
             url: '/profile/partyList',
             data: { "acri.currPage": currPage },
             success: function (data) {
-                $("#content1").load("/profile/partyList?currPage=" + currPage);
+                $("#availablePartyModule").load("/profile/partyList?currPage=" + currPage);
             }
         });//ajax
     }

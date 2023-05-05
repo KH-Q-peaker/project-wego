@@ -1,9 +1,9 @@
 if (typeof data_past_page == 'undefined') {
 	const data_past_page = document.getElementById('pastPageNum');
 	var pCurrPage = document.querySelector('#pastcurrPage').value;
-	if (pCurrPage == 1) {
-		$('.pastPartyPage1').addClass("currPage");
-	}
+		if (pCurrPage == 1) {
+			$('.pastPartyPage1').addClass("currPage");
+		}
 
 	function selectClickPastCurrPage() {
 		console.log("********", event.target.innerText);
@@ -13,7 +13,7 @@ if (typeof data_past_page == 'undefined') {
 			url: '/profile/pastPartyList',
 			data: { "pcri.currPage": currPage },
 			success: function (data) {
-				$("#content2").load("/profile/pastPartyList?currPage=" + currPage);
+				$("#pastPartyModule").load("/profile/pastPartyList?currPage=" + currPage);
 			}
 		});//ajax
 	}
@@ -25,7 +25,7 @@ if (typeof data_past_page == 'undefined') {
 			url: '/profile/pastPartyList',
 			data: { "pcri.currPage": currPage },
 			success: function (data) {
-				$("#content2").load("/profile/pastPartyList?currPage=" + currPage);
+				$("#pastPartyModule").load("/profile/pastPartyList?currPage=" + currPage);
 			}
 		});//ajax
 	}
@@ -37,7 +37,7 @@ if (typeof data_past_page == 'undefined') {
 			url: '/profile/pastPartyList',
 			data: { "pcri.currPage": currPage },
 			success: function (data) {
-				$("#content2").load("/profile/pastPartyList?currPage=" + currPage);
+				$("#pastPartyModule").load("/profile/pastPartyList?currPage=" + currPage);
 			}
 		});//ajax
 	}

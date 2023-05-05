@@ -3,18 +3,17 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c"
 uri="http://java.sun.com/jsp/jstl/core"%> <%@ taglib prefix="fmt"
 uri="http://java.sun.com/jsp/jstl/fmt"%> <%@ taglib prefix="fn"
 uri="http://java.sun.com/jsp/jstl/functions"%>
-    
-
-        <script src="/resources/js/mypost.js" defer></script>
-            <div class="content1">
+   
+<script src="/resources/js/mypost.js" defer></script>
+            <div class="myPostModule">
               <h2>내가 쓴 글✍</h2>
               <table class="middle">
                 <thead>
                   <tr style="align-items: center">
-                    <th class="t1" width="70">게시판명</th>
-                    <th class="t2" width="300">글 제목</th>
-                    <th class="t3" width="120">작성일</th>
-                    <th class="t4" width="70">조회</th>
+                    <th class="t1">게시판명</th>
+                    <th class="t2">글 제목</th>
+                    <th class="t3">작성일</th>
+                    <th class="t4">조회수</th>
                     <th class="t5">좋아요수</th>
                   </tr>
                 </thead>
@@ -30,18 +29,12 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 			                <c:otherwise>
 			                  <c:set var="mappingURI" value="party"></c:set>
 			                </c:otherwise>
-			              </c:choose>
-			              <c:if test="${not empty mappingURI}">
+			              </c:choose> <c:if test="${not empty mappingURI}">
 			                <a href="/${mappingURI}/${profileVO.srtId}">
-			                  ${profileVO.title}
-			                </a>
-			              </c:if>
-			            </td>
-			            <td class="t3">
-			              <fmt:formatDate
-			                pattern="yyyy-MM-dd"
-			                value="${profileVO.createDt}"
-			              ></fmt:formatDate>
+			                  ${profileVO.title}</a>
+			              </c:if></td>
+			            <td class="t3"><fmt:formatDate pattern="yyyy-MM-dd"
+			                value="${profileVO.createDt}"></fmt:formatDate>
 			            </td>
 			            <td class="t4">${profileVO.visitCount}</td>
 			            <td class="t5">&#128149;${profileVO.likeCnt}</td>
@@ -49,7 +42,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 			        </c:forEach>
                 </tbody>
               </table>
-            </div>
+           
             
             <div id="pagination">
 		     <form action="paginationForm">
@@ -91,3 +84,4 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 		      </ul>
 		    </form>
 		  </div>
+ </div>

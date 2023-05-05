@@ -1,28 +1,34 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <script src="/resources/js/my-available-party.js" defer></script>
-<div id="content1">
+<div id="availablePartyModule">
 
 	<h2>신청한 등산 일정 🚩</h2>
 	<table class="middle">
 		<thead>
 			<tr style="align-items: center">
-				<th class="t1" width="70">말머리</th>
-				<th class="t2" width="300">제목</th>
-				<th class="t3" width="120">등반날짜</th>
-				<th class="t4" width="120">참여인원</th>
-				<th class="t5" width="70">채팅방</th>
+				<th class="t1">말머리</th>
+				<th class="t2">제목</th>
+				<th class="t3">등반날짜</th>
+				<th class="t4">참여인원</th>
+				<th class="t5">채팅방</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${availableParty}" var="YesParty">
 				<tr>
 					<td class="t1">${YesParty.sanName}</td>
-					<td class="t2">${YesParty.title}</td>
-					<td class="t3">${YesParty.partyDt}</td>
+					<td class="t2">
+							<a href="/party/${YesParty.sanPartyId}">
+								${YesParty.title}</a>
+					</td>
+					<td class="t3"><fmt:formatDate pattern="yyyy-MM-dd"
+						value="${YesParty.partyDt}"></fmt:formatDate>
+					</td>
 					<td class="t4">${YesParty.partyCount}/${YesParty.partyMax}</td>
 					<td class="t5">
 						<button class="chatting">채팅입장</button>

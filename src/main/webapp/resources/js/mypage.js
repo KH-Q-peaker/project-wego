@@ -1,4 +1,3 @@
-
 let imgPath; // 업로드 이미지 임시 저장 변수
 let isReadyUpload = false; // 파일 업로드 가능여부
 
@@ -56,6 +55,9 @@ profileimagebutton.addEventListener('click', function () {
 selector(".profile-image-button").addEventListener("click", () => {
 	$('#document_file').on('change', function (event) {
 
+		//imgPath=null;
+		//console.log("parseInt($fileUpload.get(0).files.length): "+ parseInt($fileUpload.get(0).files.length));
+
 		if (!(document.getElementById('document_file').files[0])) {
 			fileText.innerHTML = "여기로 이미지를 드래그하거나 <br> 파일을 업로드 하세요. (최대 20MB)";
 		} else {
@@ -101,8 +103,6 @@ selector(".add-profile-image .cancel").addEventListener("click", () => {
 	selector(".add-profile-image").style.display = "none";
 	imgPath = null;
 });
-
-
 
 // 업로드 파일 용량 체크
 const isFileMaxSize = (event) => {

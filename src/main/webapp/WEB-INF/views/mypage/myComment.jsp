@@ -4,8 +4,8 @@ uri="http://java.sun.com/jsp/jstl/core"%> <%@ taglib prefix="fmt"
 uri="http://java.sun.com/jsp/jstl/fmt"%> <%@ taglib prefix="fn"
 uri="http://java.sun.com/jsp/jstl/functions"%>
     
-    <script src="/resources/js/mycomment.js" defer></script>
-            <div class="content2">
+<script src="/resources/js/mycomment.js" defer></script>
+            <div class="mycommentModule">
               <h2>내가 댓글 단 글📌</h2>
               <table class="middle">
                 <thead>
@@ -57,7 +57,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 			        </c:forEach>
                 </tbody>
               </table>
-            </div>
+            
             
             <div id="pagination">
 			    <form action="paginationForm">
@@ -100,4 +100,4 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 			      </ul>
 			    </form>
 			  </div>
-     
+     </div>

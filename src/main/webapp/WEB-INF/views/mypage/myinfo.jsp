@@ -4,7 +4,6 @@
 <c:set var="path" value="${pageContext.request.contextPath}" />
 
 <head>
-<!--<jsp:include page="./head.jsp" />-->
 <link rel="stylesheet" href="/resources/css/myinfo.css" />
 <script src="/resources/js/myinfo.js" defer></script>
 </head>
