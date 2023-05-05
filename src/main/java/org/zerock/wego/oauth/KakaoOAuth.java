@@ -28,8 +28,9 @@ public class KakaoOAuth {	// https://developers.kakao.com/docs/latest/ko/kakaolo
  
 	@Value("${kakao.rest.api.key}")
 	private String clientId;	// REST key
-	@Value("${wego.aws.ip}")
-	private String wegoIP;	// aws ip 
+//	@Value("${wego.aws.ip}")
+//	private String wegoIP;	// aws ip 
+	private String wegoIP = "3.25.135.222";	// aws ip 
 	
 	private final String AUTHORIZE_REQUEST_URL = "https://kauth.kakao.com/oauth/authorize?";	// 인가 코드 요청 URL
 	private final String REDIRECT_URI = "/login/kakao/oauth";	// 인가 코드를 전달받을 서비스 서버의 URI >>>>>>>>>>>>>> 도메인 수정필요 kakao에서도 수정필요
@@ -49,6 +50,8 @@ public class KakaoOAuth {	// https://developers.kakao.com/docs/latest/ko/kakaolo
 			.append("&").append("redirect_uri=").append("http://" + wegoIP + REDIRECT_URI)
 			.append("&").append("response_type=").append(RESPONSE_TYPE);
 
+		log.info("\t + {}", LoginURL.toString());
+		
 		return LoginURL.toString();
 	} // getLoginURLToGetAuthorizationCode
 	
@@ -67,7 +70,7 @@ public class KakaoOAuth {	// https://developers.kakao.com/docs/latest/ko/kakaolo
 
 		params.add("grant_type", GRANT_TYPE);
 		params.add("client_id", clientId);
-		params.add("redirect_uri", REDIRECT_URI);
+		params.add("redirect_uri", "http://" + wegoIP + REDIRECT_URI);
 		params.add("code", authorizationCode);
 
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);

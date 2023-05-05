@@ -54,6 +54,8 @@ public class NaverOAuth {	// https://developers.naver.com/docs/login/api/api.md 
 			.append("&").append("client_id=").append(clientId)	
 			.append("&").append("redirect_uri=").append("http://" + wegoIP + REDIRECT_URI)
 			.append("&").append("state=").append(state); // 사이트 간 요청 위조(cross-site request forgery) 공격을 방지하기 위해 애플리케이션에서 생성한 상태 토큰값
+		
+		log.info("\t + {}", LoginURL.toString());
 
 		return LoginURL.toString();
 	} // getLoginURLToGetAuthorizationCode

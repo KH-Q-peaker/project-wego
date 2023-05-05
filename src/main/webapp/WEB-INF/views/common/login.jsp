@@ -21,6 +21,20 @@
         <a href="/login/kakao" class="kakao"></a>
         <a href="/login/google" class="google"></a>
       </div>
+      <details>
+      <summary>TEST</summary>
+      <div class="login-wrapper">
+        <form method="get" action="/login/tester" id="login-form">
+            <input type="text" name="id" placeholder="id"><br>
+            <input type="password" name="pw" placeholder="pw"><br>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+    </details>
+      
     </div>
   </body>
+  
+    
+  
 </html>
