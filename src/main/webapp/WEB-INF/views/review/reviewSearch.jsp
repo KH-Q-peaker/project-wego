@@ -61,15 +61,6 @@
 						<h2>❤️ 후기 글 ❤️</h2>
 					</div>
 
-					<!-- 정렬 -->
-					<div class="select-sort">
-						<button class="btn-select">정렬 기준</button>
-						<ul class="sortBy">  
-							<li class="sortByItem"><button type="button">최신순</button></li>
-							<li class="sortByItem"><button type="button">오래된순</button></li>
-							<li class="sortByItem"><button type="button">좋아요순</button></li>
-						</ul>
-					</div>
 				</div>
 
 

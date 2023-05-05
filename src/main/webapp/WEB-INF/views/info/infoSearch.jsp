@@ -61,14 +61,6 @@
 						<h2>❤️ 산 ❤️</h2>
 					</div>
 
-					<!-- 정렬 -->
-					<div class="select-sort">
-						<button class="btn-select">정렬 기준</button>
-						<ul class="sortBy">  
-							<li class="sortByItem"><button id="sort-abc" type="button">ㄱㄴㄷ순</button></li>
-							<li class="sortByItem"><button id="sort-likes" type="button">좋아요순</button></li>
-						</ul>
-					</div>
 				</div>
 
 
