@@ -61,9 +61,9 @@
 					<div class="select-sort">
 						<button class="btn-select">정렬 기준</button>
 						<ul class="sortBy">  
-							<li class="sortByItem"><button type="button">최신순</button></li>
-							<li class="sortByItem"><button type="button">오래된순</button></li>
-							<li class="sortByItem"><button type="button">좋아요순</button></li>
+							<li class="sortByItem"><button id="sort-newest" type="button">최신순</button></li>
+							<li class="sortByItem"><button id="sort-oldest" type="button">오래된순</button></li>
+							<li class="sortByItem"><button id="sort-likes" type="button">좋아요순</button></li>
 						</ul>
 					</div>
 				</div>
