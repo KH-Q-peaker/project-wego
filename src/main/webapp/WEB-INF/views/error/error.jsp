@@ -11,6 +11,6 @@
 </head>
 <body>
 	<div>${errorMessage }</div>
-	<a href="http://localhost:8080/">...메인으로 갈게요</a>
+	<a href="/">...메인으로 갈게요</a>
 </body>
 </html>

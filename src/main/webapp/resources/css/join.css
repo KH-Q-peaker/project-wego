@@ -27,23 +27,27 @@
 	border-radius: 50px;
 }
 .joinModal > .sanName{
-	font-size: 20px;
+	font-size: 18px;
 	margin: 10px;
 }
 .joinModal > .joinInfo{
 	display: flex;
 	flex-direction: column;
 	height: 100px;
+	max-width: 90%;
 	margin: 10px;
 }
 .joinInfo > li{
 	margin: 5px 0;
 	font-size: 14px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .joinModal > #ment{
-	font-size: 14px; 
-	font-weight: bold; 
-	margin: 40px 0 10px;
+	font-size: 14px;
+	font-weight: bold;
+	margin: 20px 0;
 }
 .button > input[type="button"]{
 	width: 75px;
