@@ -1,6 +1,5 @@
 function loadMoreComments() {
 
-//	let lastCommentId = $('.comments:last #commentId').val();
 	let lastCommentId =$(".comments:not(.mention)").last().find("#commentId").val();
 	console.log(lastCommentId);
 

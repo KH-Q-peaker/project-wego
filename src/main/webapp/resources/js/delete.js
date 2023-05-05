@@ -87,7 +87,7 @@ $(() => { /* 삭제 관련 */
 								$(window).off('scroll').on('scroll', scrollCommentLoading);
 						},
 						error: () => {
-							console.log('댓글로딩오류 ');/* 바꿔야됨  */
+							console.log('댓글로딩오류 ');
 						}
 					});
 					}
@@ -119,7 +119,7 @@ $(() => { /* 삭제 관련 */
 				url : url + target.targetCd,
 				type : "DELETE",
 				success : function(data){
-					window.location.replace('http://localhost:8080' + url);		 			
+					window.location.replace(url);		 			
 					hideDeleteModal();
 					setMessage(data);
 					showModal();
@@ -132,7 +132,7 @@ $(() => { /* 삭제 관련 */
 		 				setTimeout(function() {
 							window.location.href = url }, 700);
 					} else{
-			 			setMessage("⚠️ 삭제실패."); // 이거 고쳐ㅕㅕㅕㅕㅕㅕㅕㅕㅕ
+			 			setMessage("⚠️ 삭제실패."); 
 			 			console.log(data.status);
 			 			showModal();
 			 			setTimeout(hideModal, 700);
