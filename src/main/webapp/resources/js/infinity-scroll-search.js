@@ -3,29 +3,35 @@ var page = 1; // 초기 페이지 번호
 var sortNum = 0;
 sortNum = $('#data-container').children().last().attr('sortNum');
 
-var isLoading = false; // 현재 요청이 진행중인지 여부 (중복실행방지)
-
 var url = window.location.href;  // 데이터 요청 URL
+var urlPathname = window.location.pathname;
 
 var query;
 
+var isPage = true; //존재하는 페이지(데이터가 있을 경우 스크롤 이벤트 반응)
+var hasPage = true; // 데이터 존재 여부를 나타내는 변수
 
 
 // 스크롤 이벤트 핸들러
 $(window).scroll(function () {
-  var scrollTop = $(window).scrollTop();
-  var windowHeight = $(window).height();
-  var documentHeight = $(document).height();
+  console.log(hasPage);
+  if (isPage === hasPage) {
 
+    var scrollTop = $(window).scrollTop();
+    var windowHeight = $(window).height();
+    var documentHeight = $(document).height();
 
-  // 검색 쿼리가 있는 경우와 없는 경우로 나누어 처리
-      if (scrollTop + 1000 >= documentHeight - windowHeight) {
-      isLoading = true;
+    if (scrollTop + 1 >= documentHeight - windowHeight) {
+      console.log(page);
+      console.log(hasPage);
       page++;
-    
+      console.log(page);
       next_load_search();
-isLoading = false;
-}
+    } // if  
+  } else {
+    console.log("else");
+    return;
+  } // if-else
 });
 
 
@@ -36,13 +42,20 @@ function next_load_search() {
     url: url,
     data: { page: page, sortNum: sortNum, query: query },
     success: function (data) {
+      if (data.hasPage === false) {
+        hasPage = false;
+        console.log(hasPage);
 
-      // 생성된 jsp 코드를 추가
-      $('#data-container').append(data);
+        return;
+      } else {
+        hasPage = true;
+        console.log(hasPage);
+        $('#data-container').append(data);
 
-      // 마지막 아이템 ID 업데이트
-      sortNum = $('#data-container').children().last().attr('sortNum');
-    }
+        sortNum = $('#data-container').children().last().attr('sortNum');
+      } // if-else
+
+    } // success
 
   })
 }
