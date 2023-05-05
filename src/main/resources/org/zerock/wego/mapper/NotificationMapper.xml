@@ -69,6 +69,16 @@
 	  AND #{userId} != T.user_id
 	</insert>
 
+	<!-- ***************** 맨션 생성으로 생기는 알람 삽입 (중복방지)******************** -->
+	
+	<insert id="insertMentionByCommentIdAndUserId" parameterType="java.lang.Integer">
+	  INSERT INTO alarm_tb (target_gb, target_cd, user_id, contents, created_by_user_id)
+	  SELECT '댓글', T.target_cd, C.user_id, '회원님이 단 댓글에 새로운 댓글이 등록되었습니다.' AS contents, #{userId}
+	  FROM (SELECT user_id FROM comment_v WHERE comment_id = #{mentionId}) C, (SELECT comment_gb,target_cd FROM comment_v WHERE comment_id = #{commentId}) T
+	  WHERE T.comment_gb = 'MENTION'
+	</insert>
+
+
     <!-- ***************** 뱃지 생성으로 생기는 알람 삽입 (중복방지)******************** -->
             
    <insert id="insertBadgeByBadgeIdAndUserId" parameterType="java.lang.Integer">

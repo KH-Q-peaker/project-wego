@@ -8,6 +8,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+import org.zerock.wego.domain.common.CommentDTO;
+import org.zerock.wego.domain.common.NotificationDTO;
 import org.zerock.wego.domain.common.NotificationVO;
 import org.zerock.wego.exception.NotFoundPageException;
 import org.zerock.wego.exception.ServiceException;
@@ -49,6 +51,26 @@ public class NotificationService {	// POJO
 			}// try-catch
 		} //getAlarmId
 				
+		// 댓글과 멘션 작성시 알림 
+		public void registerCommentNotification(CommentDTO comment) {
+			log.debug("registerCommentNotification({}) invoked.", comment);
+
+			try {
+					if (comment.getMentionId() != null) {
+						this.notificationMapper.insertMentionByCommentIdAndUserId(comment.getCommentId(), comment.getMentionId(),comment.getUserId());
+						this.notificationMapper.insertCommentByCommentIdAndUserId(comment.getCommentId(), comment.getUserId());
+				    	 log.info("/n/n댓글과 맨션 알림들어감/n");
+
+					} else {
+						this.notificationMapper.insertCommentByCommentIdAndUserId(comment.getCommentId(), comment.getUserId());
+				    	 log.info("/n/n댓글 알림만 들어감/n");
+					} //if-else
+			
+			} catch (RuntimeException e) {
+			    throw new ServiceException(e);
+			}// try-catch
+	    }//registerCommentNotification
+		
 		// 알림 읽음
 		public void modifyStatusByAlarmId(Integer alarmId,Integer userId) throws ServiceException {
 		    try {
@@ -92,10 +114,12 @@ public class NotificationService {	// POJO
     private final List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
     
     public void addSession(WebSocketSession session) {
+    	log.info("/n >>>>>>>>>addSession 성공.");
         sessions.add(session);
     }
 
     public void removeSession(WebSocketSession session) {
+    	log.info("/n >>>>>>>>>removeSession 성공.");
         sessions.remove(session);
     }
 

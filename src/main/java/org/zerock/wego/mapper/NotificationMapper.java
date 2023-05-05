@@ -19,6 +19,9 @@ public interface NotificationMapper {
 		// 댓글 작성과 함께 알림 추가 
 		public abstract Integer insertCommentByCommentIdAndUserId(@Param("commentId")Integer commentId,@Param("userId")Integer userId);
 		
+		// 멘션 작성과 함께 알림 추가
+		public abstract Integer insertMentionByCommentIdAndUserId(@Param("commentId")Integer commentId,@Param("mentionId")Integer mentionId,@Param("userId")Integer userId);
+		
 		// 뱃지 획득(후기게시글작성)과 함께 알림 추가 
 		public abstract Integer insertBadgeByBadgeIdAndUserId(@Param("badgeId")Integer badgeId, @Param("userId")Integer userId);
 		
