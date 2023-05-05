@@ -5,7 +5,6 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 import org.zerock.wego.domain.common.FavoriteDTO;
 import org.zerock.wego.domain.common.FavoriteVO;
-import org.zerock.wego.domain.common.NotificationDTO;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.FavoriteMapper;
 import org.zerock.wego.mapper.NotificationMapper;
@@ -49,9 +48,9 @@ public class FavoriteService {
 
 		try {
 			 // 좋아요 등록 시 알림 추가
-                this.notificationMapper.insertFavoriteByTargetCdAndUserId(dto.getTargetCd(), dto.getUserId());
-
-			return this.favoriteMapper.insert(dto) == 1;
+            this.favoriteMapper.insert(dto);
+            this.notificationMapper.insertFavoriteByTargetCdAndUserId(dto.getTargetCd(), dto.getUserId());
+			return true;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch

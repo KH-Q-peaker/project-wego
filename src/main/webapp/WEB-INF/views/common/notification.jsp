@@ -27,12 +27,15 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <script src="/resources/js/header.js" defer></script>
    	<script src="/resources/js/footer.js" defer></script>
     <script src="/resources/js/top.js" defer></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+	<script>
+		var socket = new WebSocket("ws://localhost:8080/notification");
+	
+	</script>
     <script src="/resources/js/notification.js" defer></script>
     <script src="/resources/js/toggle.js" defer></script>
     
-    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.6.5/jquery.timeago.min.js"></script>
@@ -141,7 +144,6 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
 
           <c:forEach items="${notificationList}" var="notificationVO">
             <c:if test="${notificationVO.status == 'N' }">
-
               <c:if test="${notificationVO.targetGb eq '댓글'}">
                 <div class="alarm comment">
                   <h3>[댓글알림] ${notificationVO.contents}
@@ -163,7 +165,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                           <c:if test="${fn:contains(notificationVO.contents, '후기')}">
                             <p><a href="/review/${notificationVO.targetCd}"  id="notification-link" onclick="markNotificationAsRead(${notificationVO.alarmId})">${notificationVO.content}</a></p></c:if>
                       </c:otherwise>
-					          </c:choose>
+					</c:choose>
                   </div>
                 </div>
               </c:if>
@@ -176,11 +178,12 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     >${notificationVO.createdDt}</time
                   >
                   <div class="message profile">
-                    <img src="${empty createdAlarmUsers[notificationVO.createdByUserId].userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(createdAlarmUsers[notificationVO.createdByUserId].userPic, 12, 57)}" alt="User Pic">
+					 <img src="${empty createdAlarmUsers[notificationVO.createdByUserId].userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(createdAlarmUsers[notificationVO.createdByUserId].userPic, 12, 57)}" alt="User Pic">                    
+					 <h4>${createdAlarmUsers[notificationVO.createdByUserId].nickname}님이 좋아요한 글&#128149;: </h4> 
                     <c:if test="${fn:contains(notificationVO.contents, '모집')}">
-                      <p><a href="/party/${notificationVO.targetCd}"  id="notification-link" onclick="markNotificationAsRead(${notificationVO.alarmId})">${notificationVO.title}&#128149;</a></p></c:if>
+                      <p><a href="/party/${notificationVO.targetCd}"  id="notification-link" onclick="markNotificationAsRead(${notificationVO.alarmId})">${notificationVO.title}</a></p></c:if>
                     <c:if test="${fn:contains(notificationVO.contents, '후기')}">
-                      <p><a href="/review/${notificationVO.targetCd}"  id="notification-link" onclick="markNotificationAsRead(${notificationVO.alarmId})">${notificationVO.title}&#128149;</a></p></c:if>
+                      <p><a href="/review/${notificationVO.targetCd}"  id="notification-link" onclick="markNotificationAsRead(${notificationVO.alarmId})">${notificationVO.title}</a></p></c:if>
                   </div>
                 </div>
               </c:if>

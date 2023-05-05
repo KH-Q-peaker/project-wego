@@ -33,32 +33,24 @@
  	<!-- ***************** 좋아요 생성으로 생기는 알람 삽입 (중복방지)******************** -->
 				
 	<insert id="insertFavoriteByTargetCdAndUserId" parameterType="java.lang.Integer">
-	INSERT INTO admin.alarm_tb (target_gb, target_cd, user_id, contents,created_by_user_id)
-	SELECT '좋아요', T.target_cd, T.user_id, 
-		   '회원님의' ||  T.target_gb ||'글에'|| '" ' ||T.created_by_user_id || ' "' ||'님이 좋아요를 눌렀습니다.' AS contents, #{userId}
-	FROM (
-			SELECT '모집' AS target_gb, san_party_tb.san_party_id AS target_cd, san_party_tb.user_id AS user_id
-			FROM admin.san_party_tb
-			WHERE san_party_tb.san_party_id = #{targetCd} AND san_party_tb.user_id != #{userId}
-				AND NOT EXISTS (
-				SELECT 1
-				FROM admin.like_tb
-				WHERE user_id = #{userId} AND target_gb = 'SAN_PARTY' AND target_cd = san_party_tb.party_id
-				)
-			UNION ALL
-			SELECT '후기' AS target_gb, san_review_v.san_review_id AS target_cd, san_review_tb.user_id AS user_id
-			FROM admin.san_review_tb
-			WHERE san_review_tb.san_review_id = #{targetCd} AND san_review_tb.user_id != #{userId}
-				AND NOT EXISTS (
-				SELECT 1
-				FROM  admin.like_tb
-				WHERE user_id = #{userId} AND target_gb = 'SAN_REVIEW' AND target_cd = san_review_v.san_review_id
-				)
-	) AS T;
+		INSERT INTO admin.alarm_tb (target_gb, target_cd, user_id, contents,created_by_user_id)
+		SELECT '좋아요',
+		      "target_cd",
+		      "user_id", 
+		      '회원님의 ' ||  "target_gb" ||'글에 '|| (SELECT nickname FROM admin.user_tb WHERE user_id = #{userId}) || ' 님이 좋아요를 눌렀습니다.',
+		      #{userId}
+		FROM (
+				SELECT '모집' AS "target_gb", san_party_tb.san_party_id AS "target_cd", san_party_tb.user_id AS "user_id"
+				FROM admin.san_party_tb
+				WHERE san_party_tb.san_party_id = #{targetCd} AND san_party_tb.user_id != #{userId}
+				UNION ALL
+				SELECT '후기' AS "target_gb", san_review_tb.san_review_id AS "target_cd", san_review_tb.user_id AS "user_id"
+				FROM admin.san_review_tb
+				WHERE san_review_tb.san_review_id = #{targetCd} AND san_review_tb.user_id != #{userId}
+		)
 	</insert>
-	
 
-		 <!-- ***************** 댓글 생성으로 생기는 알람 삽입 (중복방지)******************** -->
+	<!-- ***************** 댓글 생성으로 생기는 알람 삽입 (중복방지)******************** -->
 				
 	<insert id="insertCommentByCommentIdAndUserId" parameterType="java.lang.Integer">
 	  INSERT INTO alarm_tb (target_gb, target_cd, user_id, contents, created_by_user_id)
@@ -76,19 +68,16 @@
 	  WHERE C.comment_id = #{commentId}	 		
 	  AND #{userId} != T.user_id
 	</insert>
-	
-	 <!-- ***************** 뱃지 생성으로 생기는 알람 삽입 (중복방지)******************** -->
-				
-	<insert id="insertBadgeByBadgeIdAndUserId" parameterType="java.lang.Integer">
-	 INSERT INTO alarm_tb (target_gb, target_cd, user_id, contents,created_by_user_id)
-	  SELECT '뱃지', B.badge_get_id, B.user_id, '축하합니다! 등산 뱃지를 획득하셨습니다!' AS contents, #{badgeId}
-	  FROM badge_get_tb B, alarm_tb A
-	  WHERE B.badge_id = #{badgeId}
-	  		AND NOT EXISTS (
-				  SELECT 1 FROM alarm_tb A
-				  WHERE A.target_cd = B.badge_get_id
-				)
-	</insert>
+
+    <!-- ***************** 뱃지 생성으로 생기는 알람 삽입 (중복방지)******************** -->
+            
+   <insert id="insertBadgeByBadgeIdAndUserId" parameterType="java.lang.Integer">
+    INSERT INTO alarm_tb (target_gb, target_cd, user_id, contents, created_by_user_id)
+	SELECT '뱃지', #{badgeId}, #{userId},'축하합니다! "' || T1.BADGE_NAME || '" 뱃지를 획득하셨습니다!', #{userId}
+	FROM badge_get_v T2
+	JOIN badge_tb T1 ON T1.BADGE_ID = T2.BADGE_ID
+	WHERE T2.BADGE_GET_ID = #{badgeId}
+   </insert>
 	
 	 <!-- ***************** 모임 취소 알림이 있는지 확인******************** -->
 	
