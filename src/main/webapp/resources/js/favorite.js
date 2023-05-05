@@ -56,13 +56,16 @@ function request(formData, target) {
     body: formData,
   })
     .then((res) => {
+      if (res.url.includes("login")) {
+        self.location = res.url;
+      } // if
       return res.json();
     })
     .then((resBody) => {
       if (resBody.state === "successed") {
         const favoriteCount = $(target).next()[0];
 
-        if (target.classList.toggle("on")) {
+        if (target.className === "favorite on") {
           favoriteCount.innerText = Number(favoriteCount.innerText) + 1;
         } else {
           favoriteCount.innerText = Number(favoriteCount.innerText) - 1;

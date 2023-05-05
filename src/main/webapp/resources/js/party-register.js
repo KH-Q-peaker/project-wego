@@ -388,14 +388,11 @@ const formCheck = () => {
 
     return false;
   } // if
-	console.log(form.elements.date.value === today);
-	console.log(form.elements.time.value);
-	console.log(form.elements.time.value < time);
-	
-	console.log("!!!!!!!")
-  if (form.elements.time.value === "" || 
-    form.elements.date.value === today && form.elements.time.value < time) {
-
+  
+  if (
+    form.elements.time.value === "" ||
+    (form.elements.date.value === today && form.elements.time.value < time)
+  ) {
     alert();
     alertWindow(selector("#time"));
 
@@ -448,6 +445,9 @@ selector(".upload input[type=submit]").onclick = (e) => {
     }
   )
     .then((res) => {
+      if (res.url.includes("login")) {
+        self.location = res.url;
+      } // if
       return res.json();
     })
     .then((resBody) => {
