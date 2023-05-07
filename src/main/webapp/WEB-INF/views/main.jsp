@@ -60,10 +60,10 @@
 					<c:forEach var="item" items="${partyList}">
 						<a href="/party/${item.sanPartyId}">
 							<div class="recruit-item">
-								<img class="user-img" src="${empty item.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.userPic, 12, 57)}" alt="img" />
+								<img class="user-img" src="${empty item.userPic ? "/resources/img/default-user.jpg" : imgBasePath += fn:substring(item.userPic, 12, 57)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>
-								<img class="recruit-img" src="${empty item.partyPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.partyPic, 12, 57)}" alt="img" />
+								<img class="recruit-img" src="${empty item.partyPic ? "/resources/img/default-party.jpg" : imgBasePath += fn:substring(item.partyPic, 12, 57)}" alt="img" />
 								<p class="recruit-title" id="title">${item.title}</p>
 								<p class="recruit-schedule-schedule">날짜:</p>
 								<p class="recruit-schedule" id="schedule">
@@ -105,11 +105,11 @@
 					<c:forEach var="item" items="${reviewList}">
 						<a href="/review/${item.sanReviewId}">
 							<div class="review-item">
-								<img class="user-img" src="${empty item.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.userPic, 12, 57)}" alt="img" />
+								<img class="user-img" src="${empty item.userPic ? "/resources/img/default-user.jpg" : imgBasePath += fn:substring(item.userPic, 12, 57)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>
 								<img class="review-img" src="${empty item.reviewPic ? 
-								"/resources/img/leaf.png" : imgBasePath += fn:substring(item.reviewPic, 12, 57)}" alt="img" />
+								"/resources/img/default-review.jpg" : imgBasePath += fn:substring(item.reviewPic, 12, 57)}" alt="img" />
 								<h3 class="review-title" id="title">${item.title}</h3>
 								<p class="review-contents" id="text">${item.contents}</p>
 								<div class="review-like">
