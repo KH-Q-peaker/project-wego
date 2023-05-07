@@ -187,7 +187,6 @@ public class ReviewController {
 
 		List<FileVO> fileList = this.fileService.getList("SAN_REVIEW", reviewId);
 
-		// TO_DO : 좋아요 바뀌면 바꿔야됨
 		favorite.setTargetGb("SAN_REVIEW");
 		favorite.setTargetCd(reviewId);
 		favorite.setUserId(userId);
