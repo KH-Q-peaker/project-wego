@@ -129,7 +129,6 @@ public class NotificationService {	// POJO
                 session.sendMessage(new TextMessage(notification.toString()));
             } catch (IOException e) {
 //                log.error("{} 에게 메시지를 보내는 동안 오류가 발생 : {}", userId, e.getMessage());
-
             }
         });
     }

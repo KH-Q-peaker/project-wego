@@ -13,9 +13,8 @@ console.log(userId); // outputs the user ID
 
 // 웹소켓 연결하기 --------------------------------------------
 
-// // const socket = new WebSocket("ws://localhost:8090/notification/732");
-var ws = new SockJS("/notification/" | userId);
-socket = ws;
+//var socket = new WebSocket("ws://localhost:8080/notification");
+
 // WebSocket 이벤트 핸들러를 설정
 // 연결이 열렸을 때
 socket.onopen = () => {

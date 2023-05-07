@@ -20,18 +20,18 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <link rel="icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="/resources/css/header.css" />
     <link rel="stylesheet" href="/resources/css/footer.css" />
-    <link rel="stylesheet" href="/resources/css/top.css" />
     <link rel="stylesheet" href="/resources/css/notification.css" />
     <link rel="stylesheet" type="text/css" href="/resources/css/delete.css"  />
     
     <script src="/resources/js/header.js" defer></script>
-   	<script src="/resources/js/footer.js" defer></script>
     <script src="/resources/js/top.js" defer></script>
+   	<script src="/resources/js/footer.js" defer></script>
     
 	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 	<script>
-		var socket = new WebSocket("ws://localhost:8080/notification");
-	
+    console.log(window.location);
+	let contextPath = window.location.host;
+	var socket = new WebSocket("ws:"+ contextPath + "/notification");
 	</script>
     <script src="/resources/js/notification.js" defer></script>
     <script src="/resources/js/toggle.js" defer></script>
@@ -42,7 +42,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.6.5/locales/jquery.timeago.ko.js"></script>
   </head>
 
-  <body class>
+  <body>
   <c:set var="imgBasePath" value="/img/" />
     <div id="total-wrap">
       <!-- hearder start -->
@@ -64,7 +64,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
           <button type="button" id="alarmSetbut">
             <span class="alarm-img"></span>
           </button>
-          <!-- 토글존 -->
+          <!-- 토글 -->
           <dialog id="alarm-set">
             <input type="checkbox" id="toggle" hidden />
 
@@ -141,7 +141,6 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
             <div class="alarm noAlarm">새로운 알림이 없습니다.</div>
           </c:if>            
           <!-- 알림 메세지 종류별 상태값 출력 (상태 수정시 닫기버튼)  -->
-
           <c:forEach items="${notificationList}" var="notificationVO">
             <c:if test="${notificationVO.status == 'N' }">
               <c:if test="${notificationVO.targetGb eq '댓글'}">
@@ -153,8 +152,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     >${notificationVO.createdDt}</time
                   >
                   <div class="message comment">
-                    <img src="${empty createdAlarmUsers[notificationVO.createdByUserId].userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(createdAlarmUsers[notificationVO.createdByUserId].userPic, 12, 57)}" alt="User Pic">
-                    <!-- <h4>${createdAlarmUsers[notificationVO.createdByUserId].nickname}님이 단 댓글 보러가기 : </h4>   무엇으로 할지 선택해줘요-->
+                    <!-- <img src="${empty notificationVO.userPic ? '/resources/img/leaf.png' : imgBasePath + notificationVO.userPic.substring(12, 57)}" alt="User Pic"> -->
+                    <img src="${empty createdAlarmUsers[notificationVO.createdByUserId].userPic ? '/resources/img/leaf.png' : imgBasePath += fn:substring(createdAlarmUsers[notificationVO.createdByUserId].userPic, 12, 57)}" alt="User Pic">
                     <h4>${createdAlarmUsers[notificationVO.createdByUserId].nickname}님 : </h4> 
                     <c:choose>
 	                    <c:when test="${notificationVO.commentStatus eq 'Y' }" >
@@ -180,7 +179,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     >${notificationVO.createdDt}</time
                   >
                   <div class="message profile">
-					 <img src="${empty createdAlarmUsers[notificationVO.createdByUserId].userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(createdAlarmUsers[notificationVO.createdByUserId].userPic, 12, 57)}" alt="User Pic">                    
+                  
+					 <img src="${empty createdAlarmUsers[notificationVO.createdByUserId].userPic ? '/resources/img/leaf.png' : imgBasePath += fn:substring(createdAlarmUsers[notificationVO.createdByUserId].userPic, 12, 57)}" alt="User Pic">                    
 					 <h4>${createdAlarmUsers[notificationVO.createdByUserId].nickname}님이 좋아요한 글&#128149;: </h4> 
                     <c:if test="${fn:contains(notificationVO.contents, '모집')}">
                       <p><a href="/party/${notificationVO.targetCd}"  id="notification-link" onclick="markNotificationAsRead(${notificationVO.alarmId})">${notificationVO.title}</a></p></c:if>
@@ -220,7 +220,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                 </div>
               </c:if>
             </c:if>
-			<!-- 아직 사용할지말지고민중 -->
+
           <div class="deleteModal">
             <input type="hidden" id="targetGb" name="targetGb" value="${targetGb }">
             <input type="hidden" id="targetCd" name="targetCd" value="${targetCd }">
