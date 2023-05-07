@@ -14,7 +14,7 @@ import org.zerock.wego.domain.review.ReviewDTO;
 public interface BadgeGetMapper {
 	
 	// 유저(=userId)가 뱃지를 획득
-	public abstract Integer insertByBadgeIdAndUserID(Integer badgeId, Integer userId);
+	public abstract Integer insertByBadgeIdAndUserID(@Param("badgeId")Integer badgeId, @Param("userId")Integer userId);
 	
 	// 유저(=userId)의 모든 뱃지 획득 목록 조회
 	public abstract LinkedBlockingDeque<BadgeGetVO> selectAllByUserId(@Param("userId")Integer userId);

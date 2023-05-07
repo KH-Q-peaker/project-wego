@@ -36,8 +36,8 @@
 	
 	<insert id="insert">
 		INSERT INTO
-		like_tb (user_Id, target_gb, target_cd, modified_dt, status)
-		VALUES (#{userId}, #{targetGb}, #{targetCd}, CURRENT_TIMESTAMP, #{status})
+		like_tb (user_Id, target_gb, target_cd, modified_dt)
+		VALUES (#{userId}, #{targetGb}, #{targetCd}, CURRENT_TIMESTAMP)
 	</insert>
 
 	<update id="update">
