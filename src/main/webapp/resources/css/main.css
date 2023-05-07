@@ -367,26 +367,6 @@ section div > h2 {
   justify-self: right;
 }
 
-/* top & chat button */
-.scrollToTop {
-  width: 50px;
-  height: 50px;
-  z-index: 5;
-  position: fixed;
-  right: 5%;
-  bottom: 12%;
-  display: none;
-}
-
-.chat {
-  width: 50px;
-  height: 50px;
-  z-index: 5;
-  position: fixed;
-  right: 5%;
-  bottom: 5%;
-  display: none;
-}
 /* Tablet*/
 @media screen and (max-width: 768px) {
   .rankers {
