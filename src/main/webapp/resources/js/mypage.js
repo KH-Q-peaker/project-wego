@@ -17,15 +17,10 @@ const menuItems = document.querySelectorAll(".content-header-menu-item");
 menuItems.forEach((item, index) => {
 	// index 매개변수 추가
 	item.addEventListener("click", () => {
-		console.log("네비가 클릭됨");
-
 		// Remove the "item-point" id from all menu items
 		menuItems.forEach((item) => item.classList.remove("item-point"));
-
 		// Add the "item-point" id to the clicked menu item
 		item.classList.add("item-point");
-		console.log(item);
-		console.log("item이 변화되었습니다.");
 	});
 });
 
@@ -165,6 +160,8 @@ window.onload = function () {
 	$("#module").animate({
 		opacity: 1
 	});
+	setFooterPosition();
+	console.log("setFooterPosition() 실행됨.");
 };
 
 
@@ -191,6 +188,8 @@ $('#climb').click(function () {
 	$("#module").animate({
 		opacity: 1
 	});
+	setFooterPosition();
+	console.log("setFooterPosition() 실행됨.");
 });
 
 $('#info').click(function () {
@@ -210,6 +209,8 @@ $('#info').click(function () {
 			$("#module").load("/profile/info");
 		}
 	});
+	setFooterPosition();
+	console.log("setFooterPosition() 실행됨.");
 });
 
 
@@ -227,7 +228,6 @@ $('#mypost').click(function () {
 		type: 'get',
 		url: '/profile/mypost',
 		success: function (data) {
-			console.log("mypost loadload");
 			$("#content1").load("/profile/mypost");
 		}
 	});
@@ -235,7 +235,6 @@ $('#mypost').click(function () {
 		type: 'get',
 		url: '/profile/mycomment',
 		success: function (data) {
-			console.log("mycomment loadload");
 			$("#content2").load("/profile/mycomment");
 		}
 	});
@@ -243,6 +242,8 @@ $('#mypost').click(function () {
 	$("#module").animate({
 		opacity: 1
 	});
+	setFooterPosition();
+	console.log("setFooterPosition() 실행됨.");
 });
 
 $('#mylike').click(function () {
@@ -264,6 +265,8 @@ $('#mylike').click(function () {
 			}, 200);
 		}
 	});
+	setFooterPosition();
+	console.log("setFooterPosition() 실행됨.");
 });
 
 //닉네임변경 및 닉네임 유효성 검사
@@ -307,11 +310,13 @@ function nicknameCheck(nickname) {
 	var engCheck = /[a-z]/;
 	var numCheck = /[0-9]/;
 	var isIsValidateName = /^[a-zA-Zㄱ-힣0-9*_]{2,20}$/;
+	var hangleCount = 0;
 
-	for (var i = 0; i < nickname.length; i++) { //한글은 2, 영문은 1로 치환
+	for (var i = 0; i < nickname.length; i++) { //한글은 3, 영문은 1로 치환
 		nick = nickname.charAt(i);
 		if (escape(nick).length > 4) {
 			nickLength += 3;
+			hangleCount ++;
 		} else {
 			nickLength += 1;
 		}//if-else
@@ -325,6 +330,11 @@ function nicknameCheck(nickname) {
 		//닉네임 빈칸 포함 안됨
 	} else if (nickname.search(/\s/) != -1) {
 		isRightText.innerText = "닉네임은 빈 칸을 포함 할 수 없습니다.";
+		noSignByRed();
+		isRightNickname = false;
+		//닉네임 1자인 경우   
+	} else if (hangleCount <= 1 || nickLength <=1) {
+		isRightText.innerText = "닉네임은 2자 이상 입력하여야 합니다.";
 		noSignByRed();
 		isRightNickname = false;
 		//닉네임 한글 1~10자, 영문 및 숫자 2~20자   
@@ -369,7 +379,7 @@ nicknameSend.addEventListener('click', function () {
 });
 
 function okSignByGreen() {
-	document.querySelector("input#nickname:focus").style.border = "3px solid #4ebc7a";
+	document.querySelector("input#nickname").style.border = "3px solid #4ebc7a";
 	document.querySelector("#isRightText").style.color = "#4ebc7a";
 	document.querySelector("#ok-sign").style.display = "inline";
 	document.querySelector("#ok-sign").style.color = "#4ebc7a";
@@ -377,7 +387,7 @@ function okSignByGreen() {
 
 }
 function noSignByRed() {
-	document.querySelector("input#nickname:focus").style.border = "3px solid #f14141";
+	document.querySelector("input#nickname").style.border = "3px solid #f14141";
 	document.querySelector("#isRightText").style.color = "#f14141";
 	document.querySelector("#no-sign").style.display = "inline";
 	document.querySelector("#no-sign").style.color = "#f14141";
