@@ -20,7 +20,7 @@ import lombok.extern.log4j.Log4j2;
 public class FavoriteService {
 
 	private final FavoriteMapper favoriteMapper;
-	private final NotificationMapper notificationMapper;
+	private final NotificationService notificationService;
 
 	
 	public Set<FavoriteVO> getUserFavoriteOnList(Integer userId) throws ServiceException {
@@ -49,7 +49,7 @@ public class FavoriteService {
 		try {
 			 // 좋아요 등록 시 알림 추가
             this.favoriteMapper.insert(dto);
-            this.notificationMapper.insertFavoriteByTargetCdAndUserId(dto.getTargetCd(), dto.getUserId());
+            this.notificationService.registerFavoriteByTargetCdAndUserId(dto);
 			return true;
 		} catch (Exception e) {
 			throw new ServiceException(e);
