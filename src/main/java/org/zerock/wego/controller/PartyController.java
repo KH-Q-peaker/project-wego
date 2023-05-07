@@ -200,7 +200,7 @@ public class PartyController {
 		favorite.setTargetCd(partyId);
 		favorite.setUserId(userId);
 
-		boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
+		boolean isFavorite = this.favoriteService.isFavorite(favorite);
 
 		LinkedBlockingDeque<CommentViewVO> comments = commentService.getCommentOffsetByTarget(pageInfo, 0);
 

@@ -19,6 +19,8 @@ var setFooterPosition = () => {
     // console.log(windowInnerHeight - footerOuterHeight);
     // console.log(totalWrapHeight - footerOuterHeight);
 
+    setTimeout(500)
+
     if (footerOffsetTop < windowInnerHeight - footerOuterHeight) {
         $("footer").css({
             "position": 'fixed',

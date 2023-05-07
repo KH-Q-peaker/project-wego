@@ -191,7 +191,7 @@ public class ReviewController {
 		favorite.setTargetCd(reviewId);
 		favorite.setUserId(userId);
 
-		boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
+		boolean isFavorite = this.favoriteService.isFavorite(favorite);
 
 		LinkedBlockingDeque<CommentViewVO> comments = this.commentService.getCommentOffsetByTarget(pageInfo, 0);
 

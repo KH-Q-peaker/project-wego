@@ -11,6 +11,13 @@
 	<jsp:include page="../head.jsp" />
 
 	<link rel="stylesheet" href="/resources/css/sanInfo-detail.css" />
+	<link rel="stylesheet" href="/resources/css/sanInfo-main.css" />
+	<link rel="stylesheet" href="/resources/css/sanInfo-weather.css" />
+	<link rel="stylesheet" href="/resources/css/sanInfo-food.css" />
+
+	<script>
+		var sanInfoId = ${sanInfoVO.sanInfoId};
+	</script>
 
 	<script src="/resources/js/favorite.js" defer></script>
 	<script src="/resources/js/sanInfo-detail.js" defer></script>	
@@ -28,27 +35,30 @@
 
 			<div class="container">
 
-				<input type="hidden" id="sanInfo" value="${sanInfoVO.sanInfoId}">
-
 				<div class="sanImg">
 					<img class="mountain-img" src="/${sanInfoVO.img}" alt="img" />
 				</div>
 
 				<div class="sanName">
-					<p class="mimoname">산이름: ${sanInfoVO.sanName}</p>
+					<span class="column">산이름</span>
+					<span class="value">${sanInfoVO.sanName}</span>
 				</div>
 
 				<div class="weather">
-					<img class="weather-image" src="./svg/sun.svg">
+					<img class="weather-image" src="/resources/svg/add-item.svg">
 				</div>
 
 				<div class="sanAddress">
-					<p class="mimoaddress">주소: ${sanInfoVO.address}</p>
+					<span class="column">주소</span>
+					<span class="value">${sanInfoVO.address}</span>
 				</div>
 
 				<div class="like">
-					<img class="heart" src="./svg/heart.svg">
-					<p class="likenum">${sanInfoVO.likeCnt}</p>
+					<c:if test="${isFavorite}">
+						<c:set var="status" value="on" />
+					</c:if>
+					<button type="button" name="favorite" class="favorite ${status}"></button>
+					<span class="likenum">${sanInfoVO.likeCnt}</span>
 				</div>
 
 				<div class="button">
@@ -60,24 +70,23 @@
 
 			<div id="content-section">
 				<ul class="content-header-menu">
-					<li class="content-header-menu-item" id="item-point">
-						<a>소개</a>
+					<li class="content-header-menu-item selected" id="overview">
+						<input id="content-link-written" type="button" class="sanInfoMenu" value="개요"/>
 					</li>
-					<li class="content-header-menu-item" id="in">
-						<a>등산로 정보</a>
+					<li class="content-header-menu-item" id="main">
+						<input id="content-link-wsritten" type="button" class="sanInfoMenu" value="상세정보"/>
 					</li>
-					<li class="content-header-menu-item" id="wea">
-						<a>날씨</a>
+					<li class="content-header-menu-item" id="weather">
+						<input id="content-link-written" type="button" class="sanInfoMenu" value="날씨"/>
 					</li>
 					<li class="content-header-menu-item active" id="food">
-						<a>주변맛집</a>
+						<input id="content-link-written" type="button" class="sanInfoMenu" value="주변맛집"/>
 					</li>
 				</ul>
 			</div>
 
 			<div id="module">
-
-
+				<!-- add contents -->
 			</div>
 
 		</section>

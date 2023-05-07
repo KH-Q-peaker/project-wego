@@ -16,31 +16,62 @@
 	<!-- 특정 유저의 뱃지 획득 내역에서 데이터를 조회 -->
 	<select id="selectAllByUserId"
 		resultType="org.zerock.wego.domain.badge.BadgeGetVO">
-
-		SELECT
-			*
-		FROM
-			badge_get_v
-		WHERE
-			user_id = #{userId}
+		
+	  	SELECT
+	  		T2.badge_get_id,
+	  		T2.user_id,
+	   		T1.badge_id,
+	   		T1.badge_name,
+	   		T1.img,
+	   		T2.created_dt,
+	   		T2.status,
+	   		T2.ranking
+	    FROM
+	    	badge_tb T1,
+	    	(
+	    		SELECT
+	    			*
+	    		FROM
+	    			badge_get_tb
+	    		WHERE
+					user_id = #{userId}
+	    	
+	    	) T2
+		WHERE 
+			T1.badge_id  = T2.badge_id
 		ORDER BY
-			badge_id, created_dt
+			T1.badge_id, T2.created_dt
 
 	</select>
 	
 	
 	<select id="selectAllPickBadgeByUserId"
 		resultType="org.zerock.wego.domain.badge.BadgeGetVO">
-
+		
 		SELECT
-			*
-		FROM
-			badge_get_v
-		WHERE
-			user_id = #{userId}
-			AND NOT status = 'N'
+	  		T2.badge_get_id,
+	  		T2.user_id,
+	   		T1.badge_id,
+	   		T1.badge_name,
+	   		T1.img,
+	   		T2.created_dt,
+	   		T2.status,
+	   		T2.ranking
+	    FROM
+	    	badge_tb T1,
+	    	(
+	    		SELECT
+	    			*
+	    		FROM
+	    			badge_get_tb
+	    		WHERE
+					user_id = #{userId}
+	    	
+	    	) T2
+		WHERE 
+			T1.badge_id  = T2.badge_id
 		ORDER BY
-			status
+			T2.status
 
 	</select>
 	
