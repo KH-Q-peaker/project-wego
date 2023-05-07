@@ -1,6 +1,7 @@
 package org.zerock.wego.service.common;
 
-import org.apache.ibatis.annotations.Param;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.mapper.WithdrawMapper;
@@ -18,7 +19,7 @@ public class WithdrawService {
 	private final WithdrawMapper withdrawMapper;
 
 	// 회원 탈퇴 1. mypage-profile에서 올린 파일 조회
-	public String getMyProfileImagePathByUserId(Integer userId)
+	public List<String> getMyProfileImagePathByUserId(Integer userId)
 			throws ServiceException {
 		log.trace("getMyProfileImagePathByUserId() invoked.");
 
@@ -30,7 +31,7 @@ public class WithdrawService {
 	} // isImageRegister
 
 	// 회원 탈퇴 2. 모집게시판에서 내가 올린 파일 조회
-	public String getMyPartyImagePathByUserId(Integer userId)
+	public List<String> getMyPartyImagePathByUserId(Integer userId)
 			throws ServiceException {
 		log.trace("getMyProfileImagePathByUserId() invoked.");
 
@@ -42,7 +43,7 @@ public class WithdrawService {
 	} // isImageRegister
 	
 	// 회원 탈퇴 3. 리뷰게시판에서 내가 올린 파일 조회
-	public String getMyReviewImagePathByUserId(Integer userId)
+	public List<String> getMyReviewImagePathByUserId(Integer userId)
 			throws ServiceException {
 		log.trace("getMyProfileImagePathByUserId() invoked.");
 

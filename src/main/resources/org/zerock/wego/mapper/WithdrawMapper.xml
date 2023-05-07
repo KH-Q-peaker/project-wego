@@ -27,19 +27,19 @@
     
     <!-- 회원 탈퇴 4. mypage-profile에서 올린 파일 테이블데이터 삭제 -->
     <delete id="deleteMyProfileImageFileList">
-		DELETE * FROM file_tb
+		DELETE FROM file_tb
 		WHERE target_gb = 'USER_PROFILE' AND target_cd = #{userId}
     </delete>
     
     <!-- 회원 탈퇴 5. 모집게시판에서 내가 올린 파일 테이블데이터 삭제 -->
     <delete id="deleteMyPartyImageFileList">
-		SELECT * FROM file_tb
+		DELETE FROM file_tb
 		WHERE target_gb = 'SAN_PARTY' AND target_cd IN (SELECT san_party_id FROM san_party_tb WHERE user_id = #{userId} )
     </delete>
     
     <!-- 회원 탈퇴 6. 리뷰게시판에서 내가 올린 파일 테이블데이터 삭제 -->
     <delete id="deleteMyReviewImageFileList">
-		SELECT * FROM file_tb
+		DELETE FROM file_tb
 		where target_gb = 'SAN_REVIEW' AND target_cd IN (SELECT san_review_id FROM san_review_tb WHERE user_id = #{userId} )
     </delete>
     
