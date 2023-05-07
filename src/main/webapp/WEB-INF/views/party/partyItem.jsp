@@ -7,8 +7,8 @@
 	<c:forEach var="item" items="${partySortList}">
 		<a href="/party/${item.sanPartyId}">
 			<div class="recruit-item" id="${item.sortNum}">
-				<img class="user-img" src="${empty item.userPic ? "/resources/img/default-user.jpg" : imgBasePath += fn:substring(item.userPic, 12, 57)}" alt="img" />
-				<p class="user-name" id="userName">${item.nickName}</p>
+				<img class="user-img" id="${item.userId}" src="${empty item.userPic ? "/resources/img/default-user.jpg" : imgBasePath += fn:substring(item.userPic, 12, 57)}" alt="img" />
+				<p class="user-name"  id="${item.userId}">${item.nickName}</p>
 				<p class="mountain-name" id="mountainName">${item.sanName}</p>
 				<img class="recruit-img" src="${empty item.partyPic ? "/resources/img/default-party.jpg" : imgBasePath += fn:substring(item.partyPic, 12, 57)}" alt="img" />
 				<p class="recruit-title" id="title">${item.title}</p>

@@ -44,9 +44,9 @@ public class SanInfoController {
 	private final FavoriteService favoriteService;
 
 	@GetMapping("")
-	public String showSanInfo(@SessionAttribute(value = "__AUTH__", required = false) UserVO auth, BoardDTO dto,
+	public String showSanInfo(@SessionAttribute(value = SessionConfig.AUTH_KEY_NAME, required = false) UserVO auth, BoardDTO dto,
 			Model model) throws ControllerException {
-		log.trace("showSanInfo(dto, model) invoked.{}", dto);
+		log.trace("showSanInfo(auth, dto, model) invoked.{}", dto);
 
 		try {
 			if (auth != null) {
@@ -68,9 +68,9 @@ public class SanInfoController {
 	} // showSanInfo
 
 	@PostMapping("")
-	public String addSanInfo(@SessionAttribute(value = "__AUTH__", required = false) UserVO auth, BoardDTO dto,
+	public String addSanInfo(@SessionAttribute(value = SessionConfig.AUTH_KEY_NAME, required = false) UserVO auth, BoardDTO dto,
 			Model model) throws ControllerException {
-		log.trace("addSanInfo(dto, model) invoked.", model);
+		log.trace("addSanInfo(auth, dto, model) invoked.", model);
 
 		try {
 			if (auth != null) {
@@ -93,9 +93,9 @@ public class SanInfoController {
 	} // addSanInfo
 
 	@GetMapping("/search")
-	public String showSanInfoSearchResult(@SessionAttribute(value = "__AUTH__", required = false) UserVO auth,
+	public String showSanInfoSearchResult(@SessionAttribute(value = SessionConfig.AUTH_KEY_NAME, required = false) UserVO auth,
 			BoardSearchDTO dto, Model model) throws ControllerException {
-		log.trace("showSanInfoSearchResult(dto, model) invoked.");
+		log.trace("showSanInfoSearchResult(auth, dto, model) invoked.");
 
 		try {
 			if (auth != null) {
@@ -103,8 +103,9 @@ public class SanInfoController {
 				model.addAttribute("favoriteList", favoriteList);
 			} // if
 
+			String query = dto.getQuery();
 			List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSearchSortAbcList(dto);
-			if (sanInfoSortList == null || sanInfoSortList.isEmpty()) {
+			if (sanInfoSortList == null || sanInfoSortList.isEmpty() || query == null || query.isEmpty() || query.trim().isEmpty()) {
 				List<SanInfoViewSortVO> sanInfoSuggestion = this.sanInfoService.getSanInfoSuggestion();
 				model.addAttribute("sanInfoSuggestion", sanInfoSuggestion);
 			
@@ -112,7 +113,6 @@ public class SanInfoController {
 			} else {
 				model.addAttribute("sanInfoSortList", sanInfoSortList);
 
-				String query = dto.getQuery();
 				double pageCount = Math.ceil(this.sanInfoService.getTotalCountByQuery(query) / dto.getAmount());
 				int maxPage = (int)pageCount;
 				model.addAttribute("maxPage", maxPage);
@@ -125,9 +125,9 @@ public class SanInfoController {
 	} // showSanInfoSearchResult
 
 	@PostMapping("/search")
-	public String addSanInfoSearchResult(@SessionAttribute(value = "__AUTH__", required = false) UserVO auth,
+	public String addSanInfoSearchResult(@SessionAttribute(value = SessionConfig.AUTH_KEY_NAME, required = false) UserVO auth,
 			BoardSearchDTO dto, Model model) throws ControllerException {
-		log.trace("addSanInfoSearchResult(dto, model) invoked.");
+		log.trace("addSanInfoSearchResult(auth, dto, model) invoked.");
 
 		try {
 			if (auth != null) {

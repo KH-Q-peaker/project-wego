@@ -1,11 +1,10 @@
-// 변수 초기화
-var page = 1;
+var page = 2;
 var sortNum = 0;
 sortNum = $('#data-container').children().last().attr('sortNum');
 
 var maxPage = parseInt(document.getElementById("maxPage").getAttribute("boardMaxPage"));
 
-var url = window.location.href;  // 데이터 요청 URL
+var url = window.location.href;
 var urlPathname = window.location.pathname;
 
 var orderBy;
@@ -15,9 +14,7 @@ if (urlPathname === '/info') {
   orderBy = 'newest';
 } // if-else
 
-
-var isPage = true; //존재하는 페이지(데이터가 있을 경우 스크롤 이벤트 반응)
-var hasPage = true; // 데이터 존재 여부를 나타내는 변수
+var isLoading = false;
 
 // 스크롤 이벤트 핸들러
 $(window).scroll(function () {
@@ -26,8 +23,8 @@ $(window).scroll(function () {
   var documentHeight = $(document).height();
 
   if (page <= maxPage) {
-    if (scrollTop + 500 >= documentHeight - windowHeight) {
-      page++;
+    if (scrollTop + 500 >= documentHeight - windowHeight && !isLoading) {
+      isLoading = true;
       next_load();
     } // if  
   } else {
@@ -47,9 +44,11 @@ function next_load() {
 
       sortNum = $('#data-container').children().last().attr('sortNum');
 
-    } // success
-
-  })
+    }, complete: function () {
+      isLoading = false;
+      setTimeout(function () { page++; }, 1000);
+    }
+  });
 }
 
 
@@ -64,18 +63,15 @@ $('#sort-abc, #sort-likes, #sort-newest, #sort-oldest').on('click', function () 
   orderBy = $(this).data('orderBy');
   page = 1;
   sortNum = 0;
-  hasPage = true;
-
-  console.log(orderBy);
 
   $.ajax({
     type: "POST",
     url: url,
     data: { page: page, sortNum: sortNum, orderBy: orderBy },
     success: function (data) {
-
+	  page++;
       // 부모 요소 가져오기
-      const parent = document.getElementById('data-container');
+      var parent = document.getElementById('data-container');
 
       // 부모 요소에서 자식 요소를 모두 제거
       while (parent.firstChild) {
