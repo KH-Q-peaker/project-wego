@@ -86,7 +86,7 @@
 	SELECT '뱃지', #{badgeId}, #{userId},'축하합니다! "' || T1.BADGE_NAME || '" 뱃지를 획득하셨습니다!', #{userId}
 	FROM badge_get_v T2
 	JOIN badge_tb T1 ON T1.BADGE_ID = T2.BADGE_ID
-	WHERE T2.BADGE_GET_ID = #{badgeId}
+	WHERE T2.BADGE_ID = #{badgeId} AND T2.USER_ID = #{userId}
    </insert>
 	
 	 <!-- ***************** 모임 취소 알림이 있는지 확인******************** -->
