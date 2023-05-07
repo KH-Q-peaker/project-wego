@@ -83,7 +83,7 @@
 		resultType="org.zerock.wego.domain.info.SanInfoViewSortVO">
 		SELECT * 
 		FROM san_info_v_like
-		WHERE sortNum BETWEEN 1 AND 4;
+		WHERE ROWNUM &lt;= 4
 	</select>
 
 	<select id="selectRandom10"

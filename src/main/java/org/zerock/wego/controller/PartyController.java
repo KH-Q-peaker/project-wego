@@ -238,7 +238,7 @@ public class PartyController {
 	}// removeById
 
 	@GetMapping(path = "/modify/{partyId}")
-	public String modify(@SessionAttribute("SessionConfig.AUTH_KEY_NAME") UserVO auth,
+	public String modify(@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO auth,
 			@PathVariable("partyId") Integer partyId, Model model) throws ControllerException {
 		log.trace("modify(auth, partyId, model) invoked.");
 

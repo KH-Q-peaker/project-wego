@@ -108,11 +108,11 @@
       	FETCH NEXT #{amount} ROWS ONLY
 	</select> -->
 	
-	<select id="selectReviewSuggestion"
-		resultType="org.zerock.wego.domain.party.PartyViewVO">
+	<select id="selectPartySuggestion"
+		resultType="org.zerock.wego.domain.party.PartyViewSortVO">
 		SELECT * 
-		FROM san_party_v_like 
-		WHERE sortNum BETWEEN 1 AND 4;
+		FROM san_party_v_like
+		WHERE ROWNUM &lt;= 4
 	</select>  	
 
 	<select id="selectRandom10"
