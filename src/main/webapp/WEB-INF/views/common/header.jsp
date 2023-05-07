@@ -46,7 +46,10 @@
 				<c:otherwise>
 				<!-- 로그인 상태 -->
 					<img id="userImg" class="user-profile-img"
-						src="/resources/img/leaf.jpg" alt="회원 프로필 이미지" />
+						src="${
+						empty sessionScope.__AUTH__.userPic ? 
+						"/resources/img/default-user.jpg" : 
+						imgBasePath += fn:substring(sessionScope.__AUTH__.userPic, 12, 57)}" alt="회원 프로필 이미지" />
 				</c:otherwise>
 			</c:choose>
 			
