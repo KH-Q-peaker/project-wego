@@ -53,8 +53,8 @@
 		resultType="org.zerock.wego.domain.party.PartyViewSortVO">
 		SELECT * 
 		FROM san_party_v_like
-		<if test="lastItemId != null">
-        	WHERE sort_num &gt; #{lastItemId}
+		<if test="sortNum != null">
+        	WHERE sort_num &gt; #{sortNum}
 		</if>
    		OFFSET ( #{page} - 1 ) * #{amount} ROWS
       	FETCH NEXT #{amount} ROWS ONLY
@@ -66,7 +66,8 @@
 		FROM san_party_v_newest
 		WHERE
 			(
-			title LIKE '%'||#{query}||'%'
+			san_name LIKE '%'||#{query}||'%'
+			OR title LIKE '%'||#{query}||'%'
 			OR contents LIKE '%'||#{query}||'%'
 			)
 			<if test="sortNum != null">

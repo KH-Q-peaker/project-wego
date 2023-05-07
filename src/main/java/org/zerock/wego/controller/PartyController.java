@@ -30,7 +30,6 @@ import org.zerock.wego.domain.common.FavoriteVO;
 import org.zerock.wego.domain.common.FileDTO;
 import org.zerock.wego.domain.common.PageInfo;
 import org.zerock.wego.domain.common.UserVO;
-import org.zerock.wego.domain.info.SanInfoViewSortVO;
 import org.zerock.wego.domain.party.JoinDTO;
 import org.zerock.wego.domain.party.PartyDTO;
 import org.zerock.wego.domain.party.PartyViewSortVO;
@@ -71,9 +70,9 @@ public class PartyController {
 	private final ChatService chatService;
 
 	@GetMapping("")
-	public String showParty(@SessionAttribute(value = "__AUTH__", required = false) UserVO auth, BoardDTO dto,
+	public String showParty(@SessionAttribute(value = SessionConfig.AUTH_KEY_NAME, required = false) UserVO auth, BoardDTO dto,
 			Model model) throws ControllerException {
-		log.trace("showParty({}) invoked.", model);
+		log.trace("showParty(auth, dto, model) invoked.", model);
 
 		try {
 			if (auth != null) {
@@ -95,9 +94,9 @@ public class PartyController {
 	} // showParty
 
 	@PostMapping("")
-	public String addParty(@SessionAttribute(value = "__AUTH__", required = false) UserVO auth, BoardDTO dto,
+	public String addParty(@SessionAttribute(value = SessionConfig.AUTH_KEY_NAME, required = false) UserVO auth, BoardDTO dto,
 			Model model) throws ControllerException {
-		log.trace("addParty(dto, model) invoked.", model);
+		log.trace("addParty(auth, dto, model) invoked.", model);
 
 		try {
 			if (auth != null) {
@@ -123,10 +122,10 @@ public class PartyController {
 	} // addParty
 
 	@GetMapping("/search")
-	public String showPartySearchResult(@SessionAttribute(value = "__AUTH__", required = false)UserVO auth,
+	public String showPartySearchResult(@SessionAttribute(value = SessionConfig.AUTH_KEY_NAME, required = false) UserVO auth,
 			BoardSearchDTO dto, Model model
 			) throws ControllerException {
-		log.trace("showPartySearchResult(dto, model) invoked.");
+		log.trace("showPartySearchResult(auth, dto, model) invoked.");
 
 		try {
 			if (auth != null) {
@@ -134,8 +133,9 @@ public class PartyController {
 				model.addAttribute("favoriteList", favoriteList);
 			} // if
 
+			String query = dto.getQuery();
 			List<PartyViewSortVO> partySortList = this.partyService.getSearchSortNewestList(dto);
-			if (partySortList == null || partySortList.isEmpty()) {
+			if (partySortList == null || partySortList.isEmpty() || query == null || query.isEmpty() || query.trim().isEmpty()) {
 				List<PartyViewSortVO> partySuggestion = this.partyService.getPartySuggestion();
 				model.addAttribute("partySuggestion", partySuggestion);
 				
@@ -143,7 +143,6 @@ public class PartyController {
 			} else {
 				model.addAttribute("partySortList", partySortList);
 				
-				String query = dto.getQuery();
 				double pageCount = Math.ceil(this.sanInfoService.getTotalCountByQuery(query) / dto.getAmount());
 				int maxPage = (int)pageCount;
 				model.addAttribute("maxPage", maxPage);
@@ -156,9 +155,9 @@ public class PartyController {
 	} // showPartySearchResult
 
 	@PostMapping("/search")
-	public String addPartySearchResult(@SessionAttribute(value = "__AUTH__", required = false) UserVO auth,
+	public String addPartySearchResult(@SessionAttribute(value = SessionConfig.AUTH_KEY_NAME, required = false) UserVO auth,
 			BoardSearchDTO dto, Model model) throws ControllerException {
-		log.trace("addPartySearchResult(dto, model) invoked.");
+		log.trace("addPartySearchResult(auth, dto, model) invoked.");
 
 		try {
 			if (auth != null) {

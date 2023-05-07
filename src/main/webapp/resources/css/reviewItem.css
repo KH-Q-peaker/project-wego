@@ -31,19 +31,23 @@
 	border-radius: 50%;
 	justify-self: left;
 }
+.user-img:hover {
+	border: 2px solid #14ab2c;
+}
 .review-item>.user-name {
 	grid-area: reviewUserName;
 	font-size: 14px;
 	margin: 0;
+	width: 100px;
+	text-align: left;
 	justify-self: left;
-	display: block;
-	display: -webkit-box;
-	overflow: hidden;
+	display: inline-block;
 	white-space: nowrap;
-	white-space: normal;
-	-webkit-line-clamp: 1;
-	-webkit-box-orient: vertical;
+	overflow: hidden;
 	text-overflow: ellipsis;
+}
+.user-name:hover {
+	color: #14ab2c;
 }
 .review-item>.mountain-name {
 	grid-area: reviewMountainName;

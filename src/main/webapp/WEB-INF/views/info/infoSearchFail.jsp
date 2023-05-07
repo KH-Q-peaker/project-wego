@@ -29,6 +29,7 @@
 <script src="/resources/js/top.js" defer></script>
 <script src="/resources/js/favorite.js" defer></script>
 <script src="/resources/js/board-type.js" defer></script>
+<script src="/resources/js/board-href.js" defer></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>

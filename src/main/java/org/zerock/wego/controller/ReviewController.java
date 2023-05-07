@@ -66,9 +66,9 @@ public class ReviewController {
 	private final BadgeGetService badgeGetService;
 
 	@GetMapping("")
-	public String showReview(@SessionAttribute(value = "__AUTH__", required = false) UserVO auth, BoardDTO dto,
+	public String showReview(@SessionAttribute(value = SessionConfig.AUTH_KEY_NAME, required = false) UserVO auth, BoardDTO dto,
 			Model model) throws ControllerException {
-		log.trace("showReview(dto, model) invoked.");
+		log.trace("showReview(auth, dto, model) invoked.");
 
 		try {
 			if (auth != null) {
@@ -90,9 +90,9 @@ public class ReviewController {
 	} // showReview
 
 	@PostMapping("")
-	public String addReview(@SessionAttribute(value = "__AUTH__", required = false) UserVO auth, BoardDTO dto,
+	public String addReview(@SessionAttribute(value = SessionConfig.AUTH_KEY_NAME, required = false) UserVO auth, BoardDTO dto,
 			Model model) throws ControllerException {
-		log.trace("addReview(dto, model) invoked.", model);
+		log.trace("addReview(auth, dto, model) invoked.", model);
 
 		try {
 			if (auth != null) {
@@ -118,9 +118,9 @@ public class ReviewController {
 	} // addReview
 
 	@GetMapping("/search")
-	public String showReviewSearchResult(@SessionAttribute(value = "__AUTH__", required = false) UserVO auth,
+	public String showReviewSearchResult(@SessionAttribute(value = SessionConfig.AUTH_KEY_NAME, required = false) UserVO auth,
 			BoardSearchDTO dto, Model model) throws ControllerException {
-		log.trace("showReviewSearchResult(dto, model) invoked.");
+		log.trace("showReviewSearchResult(auth, dto, model) invoked.");
 
 		try {
 			if (auth != null) {
@@ -128,8 +128,9 @@ public class ReviewController {
 				model.addAttribute("favoriteList", favoriteList);
 			} // if
 
+			String query = dto.getQuery();
 			List<ReviewViewSortVO> reviewSortList = this.reviewService.getSearchSortNewestList(dto);
-			if (reviewSortList == null || reviewSortList.isEmpty()) {
+			if (reviewSortList == null || reviewSortList.isEmpty() || query == null || query.isEmpty() || query.trim().isEmpty()) {
 				List<ReviewViewSortVO> reviewSuggestion = this.reviewService.getReviewSuggestion();
 				model.addAttribute("reviewSuggestion", reviewSuggestion);
 				
@@ -137,7 +138,6 @@ public class ReviewController {
 			} else {
 				model.addAttribute("reviewSortList", reviewSortList);
 				
-				String query = dto.getQuery();
 				double pageCount = Math.ceil(this.sanInfoService.getTotalCountByQuery(query) / dto.getAmount());
 				int maxPage = (int)pageCount;
 				model.addAttribute("maxPage", maxPage);
@@ -150,9 +150,9 @@ public class ReviewController {
 	} // showReviewSearchResult
 
 	@PostMapping("/search")
-	public String addReviewSearchResult(@SessionAttribute(value = "__AUTH__", required = false) UserVO auth,
+	public String addReviewSearchResult(@SessionAttribute(value = SessionConfig.AUTH_KEY_NAME, required = false) UserVO auth,
 			BoardSearchDTO dto, Model model) throws ControllerException {
-		log.trace("addReviewSearchResult(dto, model) invoked.");
+		log.trace("addReviewSearchResult(auth, dto, model) invoked.");
 
 		try {
 			if (auth != null) {

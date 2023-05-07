@@ -30,6 +30,7 @@
 <script src="/resources/js/favorite.js" defer></script>
 <script src="/resources/js/board-type.js" defer></script>
 <script src="/resources/js/infinity-scroll.js" defer></script>
+<script src="/resources/js/board-href.js" defer></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
@@ -71,8 +72,8 @@
 					<c:forEach var="item" items="${reviewSortList}">
 						<a href="/review/${item.sanReviewId}">
 							<div class="review-item" id="${item.sortNum}">
-								<img class="user-img" src="${empty item.userPic ? "/resources/img/default-user.jpg" : imgBasePath += fn:substring(item.userPic, 12, 57)}" alt="img" />
-								<p class="user-name" id="userName">${item.nickName}</p>
+								<img class="user-img" id="${item.userId}" src="${empty item.userPic ? "/resources/img/default-user.jpg" : imgBasePath += fn:substring(item.userPic, 12, 57)}" alt="img" />
+								<p class="user-name" id="${item.userId}">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>
 								<img class="review-img" src="${empty item.reviewPic ? "/resources/img/default-review.jpg" : imgBasePath += fn:substring(item.reviewPic, 12, 57)}" alt="img" />
 								<h3 class="review-title" id="title">${item.title}</h3>
