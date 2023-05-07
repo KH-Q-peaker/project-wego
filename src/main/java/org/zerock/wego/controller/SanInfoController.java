@@ -2,21 +2,34 @@ package org.zerock.wego.controller;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.LinkedBlockingDeque;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.zerock.wego.config.SessionConfig;
 import org.zerock.wego.domain.common.BoardDTO;
 import org.zerock.wego.domain.common.BoardSearchDTO;
+import org.zerock.wego.domain.common.CommentViewVO;
+import org.zerock.wego.domain.common.FavoriteDTO;
 import org.zerock.wego.domain.common.FavoriteVO;
+import org.zerock.wego.domain.common.FileVO;
+import org.zerock.wego.domain.common.PageInfo;
 import org.zerock.wego.domain.common.UserVO;
 import org.zerock.wego.domain.info.SanInfoViewSortVO;
+import org.zerock.wego.domain.info.SanInfoViewVO;
+import org.zerock.wego.domain.review.ReviewViewVO;
+import org.zerock.wego.exception.AccessBlindException;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.service.common.FavoriteService;
 import org.zerock.wego.service.info.SanInfoService;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -130,5 +143,22 @@ public class SanInfoController {
 			throw new ControllerException(e);
 		} // try-catch
 	} // addSanInfoSearchResult
+	
+
+	@GetMapping(path = "/{sanInfoId}")
+	public String showDetailById(@PathVariable("sanInfoId") Integer saInfoId,
+//			@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO authUser,
+			Model model) {
+		log.trace("showDetail({}, authUser, model) invoked.", saInfoId);
+		
+//		FavoriteDTO favoriteDTO = FavoriteDTO.findBySanInfoIdAndUserId(saInfoId, authUser.getUserId());
+		
+		model.addAttribute("sanInfoVO", this.sanInfoService.getById(saInfoId));
+//		model.addAttribute("isFavorite", this.favoriteService.isFavoriteInfo(favoriteDTO));
+		
+		
+		return "/info/detail";
+	} // showDetail
+	
 
 } // end class
