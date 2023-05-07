@@ -80,7 +80,7 @@ public class ReviewController {
 			model.addAttribute("reviewSortList", reviewSortList);
 
 			return "review/review";
-		} catch (RuntimeException e) {
+		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
 	} // showReview
@@ -98,20 +98,34 @@ public class ReviewController {
 
 			if (dto.getOrderBy().equals("like")) {
 				List<ReviewViewSortVO> reviewSortList = this.reviewService.getSortLikeList(dto);
-				model.addAttribute("reviewSortList", reviewSortList);
+				
+				if(reviewSortList.size() == 0 || reviewSortList == null) {
+					model.addAttribute("hasPage", false);
+				} else {
+					model.addAttribute("reviewSortList", reviewSortList);
+				} // if-else
 
-				return "review/reviewItem";
 			} else if (dto.getOrderBy().equals("oldest")) {
 				List<ReviewViewSortVO> reviewSortList = this.reviewService.getSortOldestList(dto);
-				model.addAttribute("reviewSortList", reviewSortList);
+				
+				if(reviewSortList.size() == 0 || reviewSortList == null) {
+					model.addAttribute("hasPage", false);
+				} else {
+					model.addAttribute("reviewSortList", reviewSortList);
+				} // if-else
 
-				return "review/reviewItem";
 			} else {
 				List<ReviewViewSortVO> reviewSortList = this.reviewService.getSortNewestList(dto);
-				model.addAttribute("reviewSortList", reviewSortList);
-
-				return "review/reviewItem";
-			}
+				
+				if(reviewSortList.size() == 0 || reviewSortList == null) {
+					model.addAttribute("hasPage", false);
+				} else {
+					model.addAttribute("reviewSortList", reviewSortList);
+				} // if-else
+				
+			} // else-if
+			
+			return "review/reviewItem";
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
@@ -152,7 +166,11 @@ public class ReviewController {
 			} // if
 
 			List<ReviewViewSortVO> reviewSortList = this.reviewService.getSearchSortNewestList(dto);
-			model.addAttribute("reviewSortList", reviewSortList);
+			if(reviewSortList.size() == 0 || reviewSortList == null) {
+				model.addAttribute("hasPage", false);
+			} else {
+				model.addAttribute("reviewSortList", reviewSortList);
+			} // if-else
 
 			return "review/reviewItem";
 		} catch (Exception e) {

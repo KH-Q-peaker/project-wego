@@ -102,20 +102,34 @@ public class PartyController {
 
 			if (dto.getOrderBy().equals("like")) {
 				List<PartyViewSortVO> partySortList = this.partyService.getSortLikeList(dto);
-				model.addAttribute("partySortList", partySortList);
 
-				return "party/partyItem";
+				if(partySortList.size() == 0 || partySortList == null) {
+					model.addAttribute("hasPage", false);
+				} else {
+					model.addAttribute("partySortList", partySortList);
+				} // if-else
+				
 			} else if (dto.getOrderBy().equals("oldest")) {
 				List<PartyViewSortVO> partySortList = this.partyService.getSortOldestList(dto);
-				model.addAttribute("partySortList", partySortList);
-
-				return "party/partyItem";
+				
+				if(partySortList.size() == 0 || partySortList == null) {
+					model.addAttribute("hasPage", false);
+				} else {
+					model.addAttribute("partySortList", partySortList);
+				} // if-else
+				
 			} else {
 				List<PartyViewSortVO> partySortList = this.partyService.getSortNewestList(dto);
-				model.addAttribute("partySortList", partySortList);
-
-				return "party/partyItem";
+				
+				if(partySortList.size() == 0 || partySortList == null) {
+					model.addAttribute("hasPage", false);
+				} else {
+					model.addAttribute("partySortList", partySortList);
+				} // if-else
+				
 			} // else-if
+
+			return "party/partyItem";
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
@@ -157,7 +171,11 @@ public class PartyController {
 			} // if
 
 			List<PartyViewSortVO> partySortList = this.partyService.getSearchSortNewestList(dto);
-			model.addAttribute("partySortList", partySortList);
+			if(partySortList.size() == 0 || partySortList == null) {
+				model.addAttribute("hasPage", false);
+			} else {
+				model.addAttribute("partySortList", partySortList);
+			} // if-else
 			
 			return "party/partyItem";
 		} catch (Exception e) {

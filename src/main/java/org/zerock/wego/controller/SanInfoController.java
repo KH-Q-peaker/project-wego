@@ -1,5 +1,6 @@
 package org.zerock.wego.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.zerock.wego.domain.common.BoardDTO;
 import org.zerock.wego.domain.common.BoardSearchDTO;
-import org.zerock.wego.domain.common.FavoriteDTO;
 import org.zerock.wego.domain.common.FavoriteVO;
 import org.zerock.wego.domain.common.UserVO;
 import org.zerock.wego.domain.info.SanInfoViewSortVO;
@@ -64,15 +64,25 @@ public class SanInfoController {
 
 			if (dto.getOrderBy().equals("like")) {
 				List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSortLikeList(dto);
-				model.addAttribute("sanInfoSortList", sanInfoSortList);
+				
+				// 전체 쿼리의 행수를 받아서 페이징을 처리해야할까?
+				if(sanInfoSortList.size() == 0 || sanInfoSortList == null) {
+					model.addAttribute("hasPage", false);
+				} else {
+					model.addAttribute("sanInfoSortList", sanInfoSortList);
+				} // if-else
 
-				return "info/infoItem";
 			} else {
 				List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSortAbcList(dto);
-				model.addAttribute("sanInfoSortList", sanInfoSortList);
-
-				return "info/infoItem";
-			} // else-if
+				
+				if(sanInfoSortList.size() == 0 || sanInfoSortList == null) {
+					model.addAttribute("hasPage", false);
+				} else {
+					model.addAttribute("sanInfoSortList", sanInfoSortList);
+				} // if-else
+			} // if
+			
+			return "info/infoItem";
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
@@ -113,9 +123,13 @@ public class SanInfoController {
 			} // if
 
 			List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSearchSortAbcList(dto);
-			model.addAttribute("sanInfoSortList", sanInfoSortList);
-
-			return "info/infoItem";
+			if(sanInfoSortList.size() == 0 || sanInfoSortList == null) {
+				model.addAttribute("hasPage", false);
+			} else {
+				model.addAttribute("sanInfoSortList", sanInfoSortList);
+			} // if-else
+			
+			return "info/infoItem";			
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
