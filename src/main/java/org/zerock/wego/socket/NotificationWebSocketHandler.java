@@ -1,5 +1,6 @@
 package org.zerock.wego.socket;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.socket.CloseStatus;
@@ -8,23 +9,18 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import org.zerock.wego.service.common.NotificationService;
 
-import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Component
-@AllArgsConstructor
-//@NoArgsConstructor
+@NoArgsConstructor
 @RequestMapping("/notification")
 public class NotificationWebSocketHandler extends TextWebSocketHandler {
 
-    private final NotificationService notificationService;
+	@Autowired
+    private NotificationService notificationService;
 
-   
-    // Add a no-argument constructor
-    public NotificationWebSocketHandler() {
-        this.notificationService = null;
-    }
     
   //서버에 접속이 성공 했을때
     @Override

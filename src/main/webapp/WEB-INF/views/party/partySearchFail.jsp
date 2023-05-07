@@ -21,7 +21,6 @@
 <link rel="stylesheet" href="/resources/css/footer.css" />
 <link rel="stylesheet" href="/resources/css/partyItem.css?after" />
 <link rel="stylesheet" href="/resources/css/searchFail.css?after" />
-<link rel="stylesheet" href="/resources/css/remote.css?after" />
 <link rel="stylesheet" href="/resources/css/sort.css?after" />
 
 <script src="/resources/js/header.js" defer></script>

@@ -82,8 +82,7 @@
 			<!--뱃지모음라인===== -->
 			<div class="badge-collection">
 				<div class="badge-header">
-					<span>Badge Collection</span> <span> <a
-						class="badge-setting" href="/badge/${vo.userId}"><img
+					<a class="badge-setting" href="/badge/${vo.userId}"><span>Badge Collection</span><img
 							src="/resources/svg/badgeset.png" alt="" /></a>
 					</span>
 				</div>

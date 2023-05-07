@@ -47,6 +47,9 @@ h2 {
 }
 .profile-image-button img:hover {
   cursor: pointer;
+  z-index: 1;
+    transform: scale(1.15);
+    transition: all 400ms ease;
 }
 .profile-image-button > img {
   width: 50px;
@@ -519,7 +522,15 @@ ion-icon#no-sign {
 .badge-item5 {
   grid-area: badge-item5;
 }
-
+a.badge-setting {
+  line-height: 15px;
+  display: flex;
+  align-items: center;
+}
+.badge-setting span {
+  color: #fff;
+  padding-bottom: 10px;
+}
 .sanBadge {
   display: inline-block;
   width: 100px;

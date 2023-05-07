@@ -19,21 +19,22 @@ var hasPage = true; // 데이터 존재 여부를 나타내는 변수
 
 // 스크롤 이벤트 핸들러
 $(window).scroll(function () {
-	console.log(hasPage);
+  console.log(hasPage);
   if (isPage === hasPage) {
-	
-  var scrollTop = $(window).scrollTop();
-  var windowHeight = $(window).height();
-  var documentHeight = $(document).height();
 
-  if (scrollTop + 1 >= documentHeight - windowHeight) {
-	console.log(page);
-	console.log(hasPage);
-    page++;
-    console.log(page);
-    next_load();
-  } // if  
+    var scrollTop = $(window).scrollTop();
+    var windowHeight = $(window).height();
+    var documentHeight = $(document).height();
+
+    if (scrollTop + 1 >= documentHeight - windowHeight) {
+      console.log(page);
+      console.log(hasPage);
+      page++;
+      console.log(page);
+      next_load();
+    } // if  
   } else {
+    console.log("else");
     return;
   } // if-else
 });
@@ -45,25 +46,26 @@ function next_load() {
     url: url,
     data: { page: page, sortNum: sortNum, orderBy: orderBy },
     success: function (data) {
-		
-		
-		// if 조건식이 문제  (여기서 그냥 잡아버리는것이 있음! (그리고 sanInfoSort가 아닌 경우를 생각해서 밨에서 변수를 만들어서 접근해야하지 않을까..?))
-		if (!data.sanInfoSortList || data.sanInfoSortList === "" || data.sanInfoSortList.length === 0) {
-		hasPage = false;
-        return;
-  } else {
-	console.log(hasPage);
-      // 생성된 jsp 코드를 추가
-      $('#data-container').append(data);
 
-      // 마지막 아이템 ID 업데이트
-      sortNum = $('#data-container').children().last().attr('sortNum');
-      
-      // 로딩로직 추가해!!!!!!@@@@@@@@@@@@@@@@@@@@@@@@@22
-  }
-  
+
+      // if 조건식이 문제  (여기서 그냥 잡아버리는것이 있음! (그리고 sanInfoSort가 아닌 경우를 생각해서 밨에서 변수를 만들어서 접근해야하지 않을까..?))
+      if (!data.sanInfoSortList || data.sanInfoSortList === "" || data.sanInfoSortList.length === 0) {
+        hasPage = false;
+        console.log("걸렸어!!!");
+        return;
+      } else {
+        console.log(hasPage);
+        // 생성된 jsp 코드를 추가
+        $('#data-container').append(data);
+
+        // 마지막 아이템 ID 업데이트
+        sortNum = $('#data-container').children().last().attr('sortNum');
+
+        // 로딩로직 추가해!!!!!!@@@@@@@@@@@@@@@@@@@@@@@@@22
+      }
+
     } // success
-  
+
   })
 }
 
@@ -77,7 +79,10 @@ $('#sort-oldest').data('orderBy', 'oldest');
 $('#sort-abc, #sort-likes, #sort-newest, #sort-oldest').on('click', function () {
   // 클릭한 버튼의 orderBy 값을 가져옵니다.
   orderBy = $(this).data('orderBy');
-
+  page = 1;
+  sortNum = 0;
+  hasPage = true;
+  
   console.log(orderBy);
 
   // 서버로 GET 요청 보내기
@@ -94,7 +99,7 @@ $('#sort-abc, #sort-likes, #sort-newest, #sort-oldest').on('click', function () 
       while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
       } // while
-      
+
       // 생성된 jsp 코드를 추가
       $('#data-container').append(data);
 
