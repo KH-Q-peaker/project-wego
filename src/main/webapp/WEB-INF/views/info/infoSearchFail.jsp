@@ -77,10 +77,10 @@
 				<div class="suggestion-item">
 					
 					<!-- Item -->
-					<c:forEach var="item" items="${sanInfoSortList}">
+					<c:forEach var="item" items="${sanInfoSuggestion}">
 						<a href="/info/${item.sanInfoId}">
 							<div class="mountain-item" id="${item.sortNum}">
-								<img class="mountain-img" src="${item.img}" alt="img" />
+								<img class="mountain-img" src="/${item.img}" alt="img" />
 								<h3 class="mountain-name" id="mountainName">${item.sanName}</h3>
 								<p class="mountain-contents" id="text">${item.details}</p>
 								<div class="mountain-like">

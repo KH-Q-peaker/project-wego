@@ -50,7 +50,17 @@ public class NotificationService {	// POJO
 				throw new ServiceException(e);
 			}// try-catch
 		} //getAlarmId
-				
+		
+		public void registerBadgeNotification(Integer badgeId, Integer userId) {
+
+		    log.debug("registerBadgeNotification({},{})", badgeId,userId);
+		    try {
+			    this.notificationMapper.insertBadgeByBadgeIdAndUserId(badgeId, userId);
+
+			}catch (Exception e) {
+				throw new ServiceException(e);
+			}// try-catch
+		}
 		// 댓글과 멘션 작성시 알림 
 		public void registerCommentNotification(CommentDTO comment) {
 			log.debug("registerCommentNotification({}) invoked.", comment);

@@ -79,8 +79,12 @@ public class ReviewController {
 			List<ReviewViewSortVO> reviewSortList = this.reviewService.getSortNewestList(dto);
 			model.addAttribute("reviewSortList", reviewSortList);
 
+			double pageCount = Math.ceil(this.sanInfoService.getTotalCount() / dto.getAmount());
+			int maxPage = (int)pageCount;
+			model.addAttribute("maxPage", maxPage);
+			
 			return "review/review";
-		} catch (RuntimeException e) {
+		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
 	} // showReview
@@ -99,19 +103,15 @@ public class ReviewController {
 			if (dto.getOrderBy().equals("like")) {
 				List<ReviewViewSortVO> reviewSortList = this.reviewService.getSortLikeList(dto);
 				model.addAttribute("reviewSortList", reviewSortList);
-
-				return "review/reviewItem";
 			} else if (dto.getOrderBy().equals("oldest")) {
 				List<ReviewViewSortVO> reviewSortList = this.reviewService.getSortOldestList(dto);
 				model.addAttribute("reviewSortList", reviewSortList);
-
-				return "review/reviewItem";
 			} else {
 				List<ReviewViewSortVO> reviewSortList = this.reviewService.getSortNewestList(dto);
 				model.addAttribute("reviewSortList", reviewSortList);
-
-				return "review/reviewItem";
-			}
+			} // else-if
+			
+			return "review/reviewItem";
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
@@ -130,9 +130,18 @@ public class ReviewController {
 
 			List<ReviewViewSortVO> reviewSortList = this.reviewService.getSearchSortNewestList(dto);
 			if (reviewSortList == null || reviewSortList.isEmpty()) {
+				List<ReviewViewSortVO> reviewSuggestion = this.reviewService.getReviewSuggestion();
+				model.addAttribute("reviewSuggestion", reviewSuggestion);
+				
 				return "review/reviewSearchFail";
 			} else {
 				model.addAttribute("reviewSortList", reviewSortList);
+				
+				String query = dto.getQuery();
+				double pageCount = Math.ceil(this.sanInfoService.getTotalCountByQuery(query) / dto.getAmount());
+				int maxPage = (int)pageCount;
+				model.addAttribute("maxPage", maxPage);
+				
 				return "review/reviewSearch";
 			} // if-else
 		} catch (Exception e) {
@@ -218,7 +227,8 @@ public class ReviewController {
 	}// removeReview
 
 	@GetMapping(path = "/modify/{reviewId}")
-	public String modify(@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO auth,
+	public String modify(
+			@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO auth,
 			@PathVariable("reviewId") Integer reviewId, Model model) throws Exception {
 		log.trace("modify(auth, reviewId, model) invoked.");
 
@@ -242,7 +252,8 @@ public class ReviewController {
 	} // modify
 
 	@PostMapping("/modify")
-	public ResponseEntity<Map<String, String>> modify(@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO auth,
+	public ResponseEntity<Map<String, String>> modify(
+			@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO auth,
 			Integer sanReviewId, String sanName,
 			@RequestParam(value = "imgFiles", required = false) List<MultipartFile> newImageFiles,
 			@RequestParam(value = "oldImgFiles", required = false) String oldImageFiles,
@@ -294,22 +305,13 @@ public class ReviewController {
 
 	@PostMapping("/register")
 	public ResponseEntity<Map<String, String>> register(
-			@SessionAttribute(name = SessionConfig.AUTH_KEY_NAME, required = false) UserVO auth, String sanName,
+			@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO auth, String sanName,
 			@RequestParam(value = "imgFiles", required = false) List<MultipartFile> imageFiles, ReviewDTO reviewDTO,
 			BindingResult bindingResult, FileDTO fileDTO) throws ControllerException {
 		log.trace("register(auth, sanName, imageFiles, reviewDTO, bindingResult, fileDTO) invoked.");
 
 		try {
 			Map<String, String> state = new HashMap<>();
-
-			log.info("*****register - auth: {}", auth);
-
-			if (auth == null) {
-				state.put("state", "logout");
-				state.put("redirectUrl", "/login");
-
-				return new ResponseEntity<>(state, HttpStatus.OK);
-			} // if
 
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 

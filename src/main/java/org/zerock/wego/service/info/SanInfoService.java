@@ -21,7 +21,27 @@ import lombok.extern.log4j.Log4j2;
 public class SanInfoService {
 
 	private final SanInfoMapper sanInfoMapper;
+	
+	public Double getTotalCount() throws ServiceException {
+		log.trace("getTotalCount() invoked.");
 
+		try {
+			return this.sanInfoMapper.selectTotalCount();
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	} // getTotalCount
+	
+	public Double getTotalCountByQuery(String query) throws ServiceException {
+		log.trace("getTotalCount() invoked.");
+		try {
+			return this.sanInfoMapper.selectTotalCountByQuery(query);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	} // getTotalCount
+	
+	
 	public List<SanInfoViewVO> getList() throws ServiceException {
 		log.trace("getList() invoked.");
 
@@ -71,6 +91,16 @@ public class SanInfoService {
 //			throw new ServiceException(e);
 //		} // try-catch
 //	} // getSearchSortLikeList
+
+	public List<SanInfoViewSortVO> getSanInfoSuggestion() throws ServiceException {
+		log.trace("getSanInfoSuggestion() invoked.");
+
+		try {
+			return this.sanInfoMapper.selectSanInfoSuggestion();
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	} // getSanInfoSuggestion
 
 	public Set<SanInfoViewVO> getRandom10List() throws ServiceException {
 		log.trace("getRandom10List() invoked.");

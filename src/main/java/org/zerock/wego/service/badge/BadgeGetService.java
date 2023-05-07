@@ -5,10 +5,9 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 import org.springframework.stereotype.Service;
 import org.zerock.wego.domain.badge.BadgeGetVO;
-import org.zerock.wego.domain.common.NotificationDTO;
 import org.zerock.wego.exception.OperationFailException;
 import org.zerock.wego.mapper.BadgeGetMapper;
-import org.zerock.wego.mapper.NotificationMapper;
+import org.zerock.wego.service.common.NotificationService;
 import org.zerock.wego.service.common.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,18 +22,16 @@ public class BadgeGetService {
 
 	private final BadgeGetMapper badgeGetMapper;
 	private final UserService userService;
-	private final NotificationMapper notificationMapper;
-
+	private final NotificationService notificationService;
 	// 뱃지 획득
 	public boolean register(Integer badgeId, Integer userId) {
 		log.trace("register({}, {}) invoked", badgeId, userId);
 		
 		this.userService.isExistById(userId);
-		this.badgeGetMapper.insertByBadgeIdAndUserID(badgeId, userId);
-		 // 알림 추가
-	    log.debug(">>>>>>>>>>> {}의 후기글작성으로 등산뱃지를 획득해서 알림이 갑니다.", userId);
-	    this.notificationMapper.insertBadgeByBadgeIdAndUserId(badgeId, userId);
-	    return true;
+     	this.badgeGetMapper.insertByBadgeIdAndUserID(badgeId, userId);
+     	this.notificationService.registerBadgeNotification(badgeId,userId);
+     	return true;
+
 	} // register
 
 	// 유저가 뱃지를 갖고 있니?

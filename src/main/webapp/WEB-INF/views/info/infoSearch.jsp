@@ -68,7 +68,7 @@
 					<c:forEach var="item" items="${sanInfoSortList}">
 						<a href="/info/${item.sanInfoId}">
 							<div class="mountain-item" id="${item.sortNum}">
-								<img class="mountain-img" src="${item.img}" alt="img" />
+								<img class="mountain-img" src="/${item.img}" alt="img" />
 								<h3 class="mountain-name" id="mountainName">${item.sanName}</h3>
 								<p class="mountain-contents" id="text">${item.details}</p>
 								<div class="mountain-like">
@@ -89,7 +89,7 @@
 					</c:forEach>
 				</div>
 
-
+				<div id="maxPage" boardMaxPage="${maxPage}" style="display:none;"></div>
 			</div>
 		</section>
 		<!-- main end -->

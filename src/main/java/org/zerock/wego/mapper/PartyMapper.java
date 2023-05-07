@@ -15,7 +15,8 @@ import org.zerock.wego.domain.party.PartyViewVO;
 public interface PartyMapper {
 
 	@Select("SELECT count(san_party_id) FROM san_party_v WHERE san_party_id > 0")
-	public abstract Integer selectTotalCount();
+	public abstract Double selectTotalCount();
+	public abstract Double selectTotalCountByQuery(String query);
 	
 	public abstract List<PartyViewVO> selectAll();
 	
@@ -27,7 +28,7 @@ public interface PartyMapper {
 //	public abstract List<PartyViewSortVO> selectSearchPartyByQueryOrderByOldest(BoardDTO dto, String query);
 //	public abstract List<PartyViewSortVO> selectSearchPartyByQueryOrderByLike(BoardDTO dto, String query);
 
-	public abstract List<PartyViewVO> selectPartySuggestion();
+	public abstract List<PartyViewSortVO> selectPartySuggestion();
 	
 	
 	public abstract Set<PartyViewVO> selectRandom10();

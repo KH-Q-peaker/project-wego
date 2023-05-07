@@ -57,6 +57,10 @@ public class SanInfoController {
 			List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSortAbcList(dto);
 			model.addAttribute("sanInfoSortList", sanInfoSortList);
 
+			double pageCount = Math.ceil(this.sanInfoService.getTotalCount() / dto.getAmount());
+			int maxPage = (int)pageCount;
+			model.addAttribute("maxPage", maxPage);
+			
 			return "info/info";
 		} catch (Exception e) {
 			throw new ControllerException(e);
@@ -77,14 +81,12 @@ public class SanInfoController {
 			if (dto.getOrderBy().equals("like")) {
 				List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSortLikeList(dto);
 				model.addAttribute("sanInfoSortList", sanInfoSortList);
-
-				return "info/infoItem";
 			} else {
 				List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSortAbcList(dto);
 				model.addAttribute("sanInfoSortList", sanInfoSortList);
-
-				return "info/infoItem";
-			} // else-if
+			} // if-else
+			
+			return "info/infoItem";
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
@@ -103,9 +105,18 @@ public class SanInfoController {
 
 			List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSearchSortAbcList(dto);
 			if (sanInfoSortList == null || sanInfoSortList.isEmpty()) {
+				List<SanInfoViewSortVO> sanInfoSuggestion = this.sanInfoService.getSanInfoSuggestion();
+				model.addAttribute("sanInfoSuggestion", sanInfoSuggestion);
+			
 				return "info/infoSearchFail";
 			} else {
 				model.addAttribute("sanInfoSortList", sanInfoSortList);
+
+				String query = dto.getQuery();
+				double pageCount = Math.ceil(this.sanInfoService.getTotalCountByQuery(query) / dto.getAmount());
+				int maxPage = (int)pageCount;
+				model.addAttribute("maxPage", maxPage);
+				
 				return "info/infoSearch";
 			} // if-else
 		} catch (Exception e) {
@@ -126,8 +137,8 @@ public class SanInfoController {
 
 			List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSearchSortAbcList(dto);
 			model.addAttribute("sanInfoSortList", sanInfoSortList);
-
-			return "info/infoItem";
+			
+			return "info/infoItem";			
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
