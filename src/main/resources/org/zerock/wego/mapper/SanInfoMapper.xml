@@ -6,6 +6,19 @@
 
 <mapper namespace="org.zerock.wego.mapper.SanInfoMapper">
 	
+	<select id="selectTotalCountByQuery"
+		resultType="java.lang.Double">
+		SELECT count(san_info_id)
+		FROM san_info_v
+		WHERE
+			san_info_id > 0
+			AND
+			(
+			san_name LIKE '%'||#{query}||'%'
+			OR details LIKE '%'||#{query}||'%'
+			)
+	</select>
+	
 	<select id="selectAll"
 		resultType="org.zerock.wego.domain.info.SanInfoViewVO">
 		SELECT * 
@@ -69,7 +82,8 @@
 	<select id="selectSanInfoSuggestion"
 		resultType="org.zerock.wego.domain.info.SanInfoViewSortVO">
 		SELECT * 
-		FROM san_info_v
+		FROM san_info_v_like
+		WHERE ROWNUM &lt;= 4
 	</select>
 
 	<select id="selectRandom10"

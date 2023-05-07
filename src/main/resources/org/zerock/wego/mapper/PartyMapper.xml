@@ -7,6 +7,19 @@
   
   <mapper namespace = "org.zerock.wego.mapper.PartyMapper">
   
+  	<select id="selectTotalCountByQuery"
+		resultType="java.lang.Double">
+		SELECT count(san_party_id)
+		FROM san_party_v
+		WHERE
+			san_party_id > 0
+			AND
+			(
+			title LIKE '%'||#{query}||'%'
+			OR contents LIKE '%'||#{query}||'%'
+			)
+	</select>
+	
   	<select id="selectAll"
 		resultType="org.zerock.wego.domain.party.PartyViewVO">
 		SELECT * 
@@ -95,11 +108,11 @@
       	FETCH NEXT #{amount} ROWS ONLY
 	</select> -->
 	
-	<select id="selectReviewSuggestion"
-		resultType="org.zerock.wego.domain.party.PartyViewVO">
+	<select id="selectPartySuggestion"
+		resultType="org.zerock.wego.domain.party.PartyViewSortVO">
 		SELECT * 
-		FROM san_party_v 
-		ORDER BY created_Dt DESC
+		FROM san_party_v_like
+		WHERE ROWNUM &lt;= 4
 	</select>  	
 
 	<select id="selectRandom10"
