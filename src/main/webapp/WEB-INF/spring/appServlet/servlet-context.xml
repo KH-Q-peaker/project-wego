@@ -7,9 +7,9 @@
 	xmlns:websocket="http://www.springframework.org/schema/websocket"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
-		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
-		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
@@ -28,7 +28,7 @@
 		base-package="org.zerock.wego.exception" />
 	<context:component-scan
 		base-package="org.zerock.wego.interceptor" />
-		<context:component-scan
+	<context:component-scan
 		base-package="org.zerock.wego.socket" />
 	<context:component-scan
 			base-package="org.zerock.wego.smtp" />
@@ -92,15 +92,15 @@
 		<beans:property name="preserveFilename" value="true" />
 		<beans:property name="uploadTempDir" value="file:/opt/upload/temp" />
 	</beans:bean>
-		
+
 	<!-- websocket handler -->
-	<beans:bean id="notificationWebSocketHandler"
+	<beans:bean id="NotificationWebSocketHandler"
 		class="org.zerock.wego.socket.NotificationWebSocketHandler"/>
-		<websocket:handlers>
-			<websocket:mapping handler="notificationWebSocketHandler" path="/notification" />
-			<websocket:handshake-interceptors>
-		         <beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
-		      </websocket:handshake-interceptors>
-			<websocket:sockjs websocket-enabled="true"/>
-		</websocket:handlers>
-	</beans:beans>
+	<websocket:handlers>
+		<websocket:mapping handler="NotificationWebSocketHandler" path="/notification" />
+		<websocket:handshake-interceptors>
+	         <beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+	      </websocket:handshake-interceptors>
+		<websocket:sockjs websocket-enabled="true"/>
+	</websocket:handlers>
+</beans:beans>
