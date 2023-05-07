@@ -65,7 +65,8 @@
 		FROM san_review_v_newest
 		WHERE
 			(
-			title LIKE '%'||#{query}||'%'
+			san_name LIKE '%'||#{query}||'%'
+			OR title LIKE '%'||#{query}||'%'
 			OR contents LIKE '%'||#{query}||'%'
 			)
 			<if test="sortNum != null">
