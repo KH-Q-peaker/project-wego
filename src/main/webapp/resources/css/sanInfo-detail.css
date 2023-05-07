@@ -1,0 +1,251 @@
+@charset "utf-8";
+
+.container {
+  display: grid;
+
+  
+
+  justify-content: space-around;
+  justify-items: stretch;
+
+  margin: 0 0 32px;
+  padding: 20px;
+
+  grid-template-columns: auto auto auto auto;
+  grid-template-rows: auto auto auto auto;
+  grid-column-gap: 2%;
+  grid-row-gap: 1%;
+
+  justify-content: space-around;
+  justify-items: stretch;
+
+  background-color: rgba(78, 197, 61, 0.4);
+
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
+  border: 0;
+  border-radius: 10px;
+}
+
+
+.sanImg{
+
+
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 5;
+
+  width: 250px;
+  height: 250px;
+
+}
+.sanImg img{
+	
+	width: 250px;
+  height: 250px;
+  border-radius: 50%;
+	
+}
+
+.sanName{
+  grid-column-start: 2;
+  grid-column-end: 4;
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+.weather{
+  grid-column-start: 4;
+  grid-column-end: 5;
+  grid-row-start: 1;
+  grid-row-end: 2;
+
+}
+.sanAddress{
+  grid-column-start: 2;
+  grid-column-end: 4;
+  grid-row-start: 2;
+  grid-row-end: 3;
+
+}
+.like{
+  grid-column-start: 2;
+  grid-column-end: 4;
+  grid-row-start: 3;
+  grid-row-end: 4;
+}
+.button{
+  grid-column-start: 2;
+  grid-column-end: 4;
+  grid-row-start: 4;
+  grid-row-end: 5;
+}
+.button > #party{
+  
+
+}
+.button > #review{
+
+}
+.button > button{
+
+  margin: 10px 5px;
+  padding: 5px 14px;
+
+  font-size: 20px !important;
+
+  background-color: rgba(78, 197, 61, 1);
+  border-radius: 10px;
+  border-style: none;
+  color: white;
+
+  transition: all 400ms ease;
+}
+
+.button > button:hover{
+
+  color: rgba(78, 197, 61, 1);
+  background-color: white;
+
+  z-index: 2;
+  transition: all 600ms ease;
+
+}
+
+
+
+
+
+.content-header-menu > a {
+  text-decoration: none;
+}
+#content-section {
+  position: relative;
+  text-align: center;
+}
+.content-header-menu {
+  line-height: 50px;
+  margin-top: 32px;
+  margin-bottom: 32px;
+  background: #fff;
+  border-radius: 15px;
+  position: relative;
+  display: grid;
+  box-shadow: 0 4px 4px rgb(0 0 0 / 25%), 0 4px 4px rgb(0 0 0 / 22%);
+  grid-template-columns: auto auto auto auto;
+  margin-left: 17%;
+  margin-right: 17%;
+}
+.content-header-menu-item {
+  display: inline-block;
+  justify-content: center;
+  border-radius: 15px;
+}
+
+.content-header-menu li:hover {
+  background-color: #7ccf144a;
+  border-radius: 15px;
+  padding: 0px 10px;
+  z-index: 1;
+  transform: scale(1);
+  transition: all 400ms ease;
+}
+.content-header-menu li:active {
+  background: rgba(78, 197, 61, 0.75);
+  border-radius: 15px;
+  padding: 0px 10px;
+}
+.content-header-menu #item-point {
+  font-weight: bold;
+  background-color: rgba(78, 197, 61, 0.75);
+  border-radius: 15px;
+}
+.content-header-menu a:active {
+  color: #fff;
+  font-weight: bold;
+}
+.content-header-menu #item-point a {
+  color: #fff;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 768px) {
+  .content-header-menu {
+    width: auto;
+    line-height: 45px;
+    grid-template-columns: auto auto;
+  }
+  .cotents {
+    
+    font-size: 13px;
+    min-height: max-content;
+  }
+  .profile-image {
+    height: 180px;
+}
+.weather-image {
+  height: 90px;
+}
+ 
+
+
+}
+@media screen and (max-width: 426px){
+
+  .content-header-menu li:hover {
+    font-weight: bold;
+    color: #fff;
+    background-color: #7ccf144a;
+    border-radius: 150px;
+    padding: 1px 23px;
+    z-index: 1;
+    /* transition: 0.7s; */
+    transform: scale(1.1);
+    transition: all 400ms ease;
+}
+.san {
+  width: 240px;
+  height: 100px;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+.sanin{
+  font-size: 16px;
+}
+.profile-image {
+  height: 120px;
+  margin: auto;
+}
+.weather-image {
+  height: 60px;
+  margin-top: 30%;
+}
+.mimoname{
+  font-size: 12px;
+}
+.mimoaddress{
+  font-size: 12px;
+}
+.heart{
+  height: 40px;
+}
+.likenum{
+  font-size: 12px;
+}
+.content-header-menu{
+  width: 90%;
+  margin-left: 5%;
+}
+.cotents{
+  width: 86%;
+  margin-left: 2%;
+}
+#mozip{
+  font-size: 12px;
+
+}
+#hugis{
+  font-size: 12px;
+}
+
+}
