@@ -10,23 +10,20 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<title>Wego 유저페이지</title>
+<title>Wego-Userpage</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="shortcut icon" href="/resources/ico/favicon.ico"
-	type="image/x-icon" />
+<meta name="description" content="등산멤버 모집 커뮤니티" />
 <link rel="icon" href="/resources/ico/favicon.ico" type="image/x-icon" />
 <link rel="stylesheet" href="/resources/css/header.css" />
-<link rel="stylesheet" href="/resources/css/footer.css" />
 <link rel="stylesheet" href="/resources/css/usercomment.css" />
-
 <link rel="stylesheet" href="/resources/css/userpageindex.css" />
 <link rel="stylesheet" href="/resources/css/userposts.css" />
-<link rel="stylesheet" href="/resources/css/top.css" />
+<link rel="stylesheet" href="/resources/css/footer.css" />
 
 <script src="/resources/js/header.js" defer></script>
-<script src="/resources/js/top.js" defer></script>
 <script src="/resources/js/footer.js" defer></script>
+<script src="/resources/js/top.js" defer></script>
 <script src="/resources/js/userpage.js" defer></script>
 
 <script
