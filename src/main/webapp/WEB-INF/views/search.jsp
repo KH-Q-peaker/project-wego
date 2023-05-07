@@ -62,10 +62,10 @@
 							<a href="/party/${item.sanPartyId}">
 							<div class="recruit-item">
 								<img class="user-img" src="${empty item.userPic ? 
-								"/resources/img/leaf.png" : imgBasePath += fn:substring(item.userPic, 12, 57)}" alt="img" />
+								"/resources/img/default-user.jpg" : imgBasePath += fn:substring(item.userPic, 12, 57)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>
-								<img class="recruit-img" src="${empty item.partyPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.partyPic, 12, 57)}
+								<img class="recruit-img" src="${empty item.partyPic ? "/resources/img/default-party.jpg" : imgBasePath += fn:substring(item.partyPic, 12, 57)}
 								" alt="img" />
 								<p class="recruit-title" id="title">${item.title}</p>
 								<p class="recruit-schedule-schedule">날짜:</p>
@@ -115,7 +115,7 @@
 										<h3 id="itemTitle">${item.title}</h3>
 										<div class="itemDetail">
 											<p id="itemContent">${item.contents}</p>
-											<img id="itemImg" src="${empty item.reviewPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.reviewPic, 12, 57)}
+											<img id="itemImg" src="${empty item.reviewPic ? "/resources/img/default-review.jpg" : imgBasePath += fn:substring(item.reviewPic, 12, 57)}
 											" alt="img" />
 										</div>
 									</div>
