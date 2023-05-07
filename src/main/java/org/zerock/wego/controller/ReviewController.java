@@ -227,7 +227,8 @@ public class ReviewController {
 	}// removeReview
 
 	@GetMapping(path = "/modify/{reviewId}")
-	public String modify(@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO auth,
+	public String modify(
+			@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO auth,
 			@PathVariable("reviewId") Integer reviewId, Model model) throws Exception {
 		log.trace("modify(auth, reviewId, model) invoked.");
 
@@ -251,7 +252,8 @@ public class ReviewController {
 	} // modify
 
 	@PostMapping("/modify")
-	public ResponseEntity<Map<String, String>> modify(@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO auth,
+	public ResponseEntity<Map<String, String>> modify(
+			@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO auth,
 			Integer sanReviewId, String sanName,
 			@RequestParam(value = "imgFiles", required = false) List<MultipartFile> newImageFiles,
 			@RequestParam(value = "oldImgFiles", required = false) String oldImageFiles,
@@ -303,22 +305,13 @@ public class ReviewController {
 
 	@PostMapping("/register")
 	public ResponseEntity<Map<String, String>> register(
-			@SessionAttribute(name = SessionConfig.AUTH_KEY_NAME, required = false) UserVO auth, String sanName,
+			@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO auth, String sanName,
 			@RequestParam(value = "imgFiles", required = false) List<MultipartFile> imageFiles, ReviewDTO reviewDTO,
 			BindingResult bindingResult, FileDTO fileDTO) throws ControllerException {
 		log.trace("register(auth, sanName, imageFiles, reviewDTO, bindingResult, fileDTO) invoked.");
 
 		try {
 			Map<String, String> state = new HashMap<>();
-
-			log.info("*****register - auth: {}", auth);
-
-			if (auth == null) {
-				state.put("state", "logout");
-				state.put("redirectUrl", "/login");
-
-				return new ResponseEntity<>(state, HttpStatus.OK);
-			} // if
 
 			Integer sanId = this.sanInfoService.getIdBySanName(sanName);
 
