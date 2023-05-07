@@ -1,6 +1,5 @@
 package org.zerock.wego.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -45,6 +44,10 @@ public class SanInfoController {
 			List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSortAbcList(dto);
 			model.addAttribute("sanInfoSortList", sanInfoSortList);
 
+			double pageCount = Math.ceil(this.sanInfoService.getTotalCount() / dto.getAmount());
+			int maxPage = (int)pageCount;
+			model.addAttribute("maxPage", maxPage);
+			
 			return "info/info";
 		} catch (Exception e) {
 			throw new ControllerException(e);
@@ -64,23 +67,11 @@ public class SanInfoController {
 
 			if (dto.getOrderBy().equals("like")) {
 				List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSortLikeList(dto);
-				
-				// 전체 쿼리의 행수를 받아서 페이징을 처리해야할까?
-				if(sanInfoSortList.size() == 0 || sanInfoSortList == null) {
-					model.addAttribute("hasPage", false);
-				} else {
-					model.addAttribute("sanInfoSortList", sanInfoSortList);
-				} // if-else
-
+				model.addAttribute("sanInfoSortList", sanInfoSortList);
 			} else {
 				List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSortAbcList(dto);
-				
-				if(sanInfoSortList.size() == 0 || sanInfoSortList == null) {
-					model.addAttribute("hasPage", false);
-				} else {
-					model.addAttribute("sanInfoSortList", sanInfoSortList);
-				} // if-else
-			} // if
+				model.addAttribute("sanInfoSortList", sanInfoSortList);
+			} // if-else
 			
 			return "info/infoItem";
 		} catch (Exception e) {
@@ -101,9 +92,18 @@ public class SanInfoController {
 
 			List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSearchSortAbcList(dto);
 			if (sanInfoSortList == null || sanInfoSortList.isEmpty()) {
+				List<SanInfoViewSortVO> sanInfoSuggestion = this.sanInfoService.getSanInfoSuggestion();
+				model.addAttribute("sanInfoSuggestion", sanInfoSuggestion);
+			
 				return "info/infoSearchFail";
 			} else {
 				model.addAttribute("sanInfoSortList", sanInfoSortList);
+
+				String query = dto.getQuery();
+				double pageCount = Math.ceil(this.sanInfoService.getTotalCountByQuery(query) / dto.getAmount());
+				int maxPage = (int)pageCount;
+				model.addAttribute("maxPage", maxPage);
+				
 				return "info/infoSearch";
 			} // if-else
 		} catch (Exception e) {
@@ -123,11 +123,7 @@ public class SanInfoController {
 			} // if
 
 			List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSearchSortAbcList(dto);
-			if(sanInfoSortList.size() == 0 || sanInfoSortList == null) {
-				model.addAttribute("hasPage", false);
-			} else {
-				model.addAttribute("sanInfoSortList", sanInfoSortList);
-			} // if-else
+			model.addAttribute("sanInfoSortList", sanInfoSortList);
 			
 			return "info/infoItem";			
 		} catch (Exception e) {

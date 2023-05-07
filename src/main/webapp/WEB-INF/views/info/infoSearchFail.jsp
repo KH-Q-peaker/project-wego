@@ -77,7 +77,7 @@
 				<div class="suggestion-item">
 					
 					<!-- Item -->
-					<c:forEach var="item" items="${sanInfoSortList}">
+					<c:forEach var="item" items="${sanInfoSuggestion}">
 						<a href="/info/${item.sanInfoId}">
 							<div class="mountain-item" id="${item.sortNum}">
 								<img class="mountain-img" src="${item.img}" alt="img" />

@@ -79,6 +79,10 @@ public class ReviewController {
 			List<ReviewViewSortVO> reviewSortList = this.reviewService.getSortNewestList(dto);
 			model.addAttribute("reviewSortList", reviewSortList);
 
+			double pageCount = Math.ceil(this.sanInfoService.getTotalCount() / dto.getAmount());
+			int maxPage = (int)pageCount;
+			model.addAttribute("maxPage", maxPage);
+			
 			return "review/review";
 		} catch (Exception e) {
 			throw new ControllerException(e);
@@ -98,31 +102,13 @@ public class ReviewController {
 
 			if (dto.getOrderBy().equals("like")) {
 				List<ReviewViewSortVO> reviewSortList = this.reviewService.getSortLikeList(dto);
-				
-				if(reviewSortList.size() == 0 || reviewSortList == null) {
-					model.addAttribute("hasPage", false);
-				} else {
-					model.addAttribute("reviewSortList", reviewSortList);
-				} // if-else
-
+				model.addAttribute("reviewSortList", reviewSortList);
 			} else if (dto.getOrderBy().equals("oldest")) {
 				List<ReviewViewSortVO> reviewSortList = this.reviewService.getSortOldestList(dto);
-				
-				if(reviewSortList.size() == 0 || reviewSortList == null) {
-					model.addAttribute("hasPage", false);
-				} else {
-					model.addAttribute("reviewSortList", reviewSortList);
-				} // if-else
-
+				model.addAttribute("reviewSortList", reviewSortList);
 			} else {
 				List<ReviewViewSortVO> reviewSortList = this.reviewService.getSortNewestList(dto);
-				
-				if(reviewSortList.size() == 0 || reviewSortList == null) {
-					model.addAttribute("hasPage", false);
-				} else {
-					model.addAttribute("reviewSortList", reviewSortList);
-				} // if-else
-				
+				model.addAttribute("reviewSortList", reviewSortList);
 			} // else-if
 			
 			return "review/reviewItem";
@@ -144,9 +130,18 @@ public class ReviewController {
 
 			List<ReviewViewSortVO> reviewSortList = this.reviewService.getSearchSortNewestList(dto);
 			if (reviewSortList == null || reviewSortList.isEmpty()) {
+				List<ReviewViewSortVO> reviewSuggestion = this.reviewService.getReviewSuggestion();
+				model.addAttribute("reviewSuggestion", reviewSuggestion);
+				
 				return "review/reviewSearchFail";
 			} else {
 				model.addAttribute("reviewSortList", reviewSortList);
+				
+				String query = dto.getQuery();
+				double pageCount = Math.ceil(this.sanInfoService.getTotalCountByQuery(query) / dto.getAmount());
+				int maxPage = (int)pageCount;
+				model.addAttribute("maxPage", maxPage);
+				
 				return "review/reviewSearch";
 			} // if-else
 		} catch (Exception e) {
@@ -166,11 +161,7 @@ public class ReviewController {
 			} // if
 
 			List<ReviewViewSortVO> reviewSortList = this.reviewService.getSearchSortNewestList(dto);
-			if(reviewSortList.size() == 0 || reviewSortList == null) {
-				model.addAttribute("hasPage", false);
-			} else {
-				model.addAttribute("reviewSortList", reviewSortList);
-			} // if-else
+			model.addAttribute("reviewSortList", reviewSortList);
 
 			return "review/reviewItem";
 		} catch (Exception e) {

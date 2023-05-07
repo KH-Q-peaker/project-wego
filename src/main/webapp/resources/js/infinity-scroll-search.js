@@ -3,6 +3,8 @@ var page = 1; // 초기 페이지 번호
 var sortNum = 0;
 sortNum = $('#data-container').children().last().attr('sortNum');
 
+var maxPage = parseInt(document.getElementById("maxPage").getAttribute("boardMaxPage"));
+console.log(maxPage);
 var url = window.location.href;  // 데이터 요청 URL
 var urlPathname = window.location.pathname;
 
@@ -14,22 +16,16 @@ var hasPage = true; // 데이터 존재 여부를 나타내는 변수
 
 // 스크롤 이벤트 핸들러
 $(window).scroll(function () {
-  console.log(hasPage);
-  if (isPage === hasPage) {
-
     var scrollTop = $(window).scrollTop();
     var windowHeight = $(window).height();
     var documentHeight = $(document).height();
 
-    if (scrollTop + 1 >= documentHeight - windowHeight) {
-      console.log(page);
-      console.log(hasPage);
+if (page <= maxPage) { 
+    if (scrollTop + 500 >= documentHeight - windowHeight) {
       page++;
-      console.log(page);
       next_load_search();
     } // if  
-  } else {
-    console.log("else");
+} else {
     return;
   } // if-else
 });
@@ -42,18 +38,9 @@ function next_load_search() {
     url: url,
     data: { page: page, sortNum: sortNum, query: query },
     success: function (data) {
-      if (data.hasPage === false) {
-        hasPage = false;
-        console.log(hasPage);
-
-        return;
-      } else {
-        hasPage = true;
-        console.log(hasPage);
         $('#data-container').append(data);
 
         sortNum = $('#data-container').children().last().attr('sortNum');
-      } // if-else
 
     } // success
 

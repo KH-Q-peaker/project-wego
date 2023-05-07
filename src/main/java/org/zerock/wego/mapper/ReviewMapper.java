@@ -15,7 +15,8 @@ import org.zerock.wego.domain.review.ReviewViewVO;
 public interface ReviewMapper {
 
 	@Select("SELECT count(san_review_id) FROM san_review_v WHERE san_review_id > 0")
-	public abstract Integer selectTotalCount();
+	public abstract Double selectTotalCount();
+	public abstract Double selectTotalCountByQuery(String query);
 	
 	public abstract List<ReviewViewVO> selectAll();	
 	
@@ -27,7 +28,7 @@ public interface ReviewMapper {
 //	public abstract List<ReviewViewSortVO> selectSearchReviewByQueryOrderByOldest(BoardDTO dto, String query);
 //	public abstract List<ReviewViewSortVO> selectSearchReviewByQueryOrderByLike(BoardDTO dto, String query);
 
-	public abstract List<ReviewViewVO> selectReviewSuggestion();
+	public abstract List<ReviewViewSortVO> selectReviewSuggestion();
 	
 	
 	public abstract Set<ReviewViewVO> selectRandom10(); // 10개의 게시글 랜덤 조회

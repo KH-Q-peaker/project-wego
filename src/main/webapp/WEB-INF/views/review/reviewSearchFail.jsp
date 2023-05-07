@@ -77,7 +77,7 @@
 				<div class="suggestion-item">
 					
 					<!-- Item -->
-					<c:forEach var="item" items="${reviewSortList}">
+					<c:forEach var="item" items="${reviewSuggestion}">
 						<a href="/review/${item.sanReviewId}">
 							<div class="review-item" id="${item.sortNum}">
 								<img class="user-img" src="${empty item.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(item.userPic, 12, 57)}" alt="img" />

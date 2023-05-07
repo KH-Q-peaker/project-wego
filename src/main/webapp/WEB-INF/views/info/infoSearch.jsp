@@ -89,7 +89,7 @@
 					</c:forEach>
 				</div>
 
-
+				<div id="maxPage" boardMaxPage="${maxPage}" style="display:none;"></div>
 			</div>
 		</section>
 		<!-- main end -->
