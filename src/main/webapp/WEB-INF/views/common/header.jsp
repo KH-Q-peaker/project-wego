@@ -35,14 +35,6 @@
 				<!-- 비로그인 상태 -->
 					<button class="login-btn" onclick="location.href='/login'"></button>
 				</c:when>
-				<c:when test="${sessionScope.__AUTH__.userPic != null}">
-				<!-- 로그인 상태 -->
-					<img id="userImg" class="user-profile-img"
-						src="${
-						empty sessionScope.__AUTH__.userPic ? 
-						"/resources/img/default-user.jpg" : 
-						imgBasePath += fn:substring(sessionScope.__AUTH__.userPic, 12, 57)}" alt="회원 프로필 이미지" />
-				</c:when>
 				<c:otherwise>
 				<!-- 로그인 상태 -->
 					<img id="userImg" class="user-profile-img"
