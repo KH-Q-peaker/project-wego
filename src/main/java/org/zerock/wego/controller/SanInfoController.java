@@ -10,18 +10,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.zerock.wego.config.SessionConfig;
 import org.zerock.wego.domain.common.BoardDTO;
 import org.zerock.wego.domain.common.BoardSearchDTO;
 import org.zerock.wego.domain.common.CommentViewVO;
+import org.zerock.wego.domain.common.Criteria;
 import org.zerock.wego.domain.common.FavoriteDTO;
 import org.zerock.wego.domain.common.FavoriteVO;
 import org.zerock.wego.domain.common.FileVO;
+import org.zerock.wego.domain.common.PageDTO;
 import org.zerock.wego.domain.common.PageInfo;
 import org.zerock.wego.domain.common.UserVO;
 import org.zerock.wego.domain.info.SanInfoViewSortVO;
 import org.zerock.wego.domain.info.SanInfoViewVO;
+import org.zerock.wego.domain.profile.ProfileVO;
 import org.zerock.wego.domain.review.ReviewViewVO;
 import org.zerock.wego.exception.AccessBlindException;
 import org.zerock.wego.exception.ControllerException;
@@ -146,19 +150,77 @@ public class SanInfoController {
 	
 
 	@GetMapping(path = "/{sanInfoId}")
-	public String showDetailById(@PathVariable("sanInfoId") Integer saInfoId,
-//			@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO authUser,
+	public String showDetailById(
+			@PathVariable("sanInfoId")Integer saInfoId,
+			@SessionAttribute(value = SessionConfig.AUTH_KEY_NAME, required = false) UserVO authUser,
 			Model model) {
 		log.trace("showDetail({}, authUser, model) invoked.", saInfoId);
 		
-//		FavoriteDTO favoriteDTO = FavoriteDTO.findBySanInfoIdAndUserId(saInfoId, authUser.getUserId());
+		if(authUser != null) {
+			FavoriteDTO favoriteDTO = FavoriteDTO.findBySanInfoIdAndUserId(saInfoId, authUser.getUserId());
+			
+			model.addAttribute("isFavorite", this.favoriteService.isFavorite(favoriteDTO));
+		} // if
 		
 		model.addAttribute("sanInfoVO", this.sanInfoService.getById(saInfoId));
-//		model.addAttribute("isFavorite", this.favoriteService.isFavoriteInfo(favoriteDTO));
-		
 		
 		return "/info/detail";
 	} // showDetail
 	
+	
+	@GetMapping(path = "/overview/{sanInfoId}")
+	public String addOverview(@PathVariable("sanInfoId")Integer saInfoId, Model model) {
+		log.trace("addOverview({}, model) invoked.", saInfoId);
+
+		try {
+			model.addAttribute("sanInfoVO", this.sanInfoService.getById(saInfoId));
+			
+			return "/info/overview";
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	} // postsByProfile
+	
+	
+	@GetMapping(path = "/main/{sanInfoId}")
+	public String addMain(@PathVariable("sanInfoId")Integer saInfoId, Model model) {
+		log.trace("addMain({}, model) invoked.", saInfoId);
+		
+		try {
+			model.addAttribute("sanInfoVO", this.sanInfoService.getById(saInfoId));
+			
+			return "/info/main";
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	} // postsByProfile
+
+	
+	@GetMapping(path = "/weather/{sanInfoId}")
+	public String addWeather(@PathVariable("sanInfoId")Integer saInfoId, Model model) {
+		log.trace("addWeather({}, model) invoked.", saInfoId);
+
+		try {
+			model.addAttribute("sanInfoVO", this.sanInfoService.getById(saInfoId));
+			
+			return "/info/weather";
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	} // postsByProfile
+
+	
+	@GetMapping(path = "/food/{sanInfoId}")
+	public String addFood(@PathVariable("sanInfoId")Integer saInfoId, Model model) {
+		log.trace("addFood({}, model) invoked.", saInfoId);
+
+		try {
+			model.addAttribute("sanInfoVO", this.sanInfoService.getById(saInfoId));
+			
+			return "/info/food";
+		} catch (Exception e) {
+			throw new ControllerException(e);
+		} // try-catch
+	} // postsByProfile
 
 } // end class

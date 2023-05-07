@@ -30,7 +30,6 @@ import org.zerock.wego.domain.common.FavoriteVO;
 import org.zerock.wego.domain.common.FileDTO;
 import org.zerock.wego.domain.common.PageInfo;
 import org.zerock.wego.domain.common.UserVO;
-import org.zerock.wego.domain.info.SanInfoViewSortVO;
 import org.zerock.wego.domain.party.JoinDTO;
 import org.zerock.wego.domain.party.PartyDTO;
 import org.zerock.wego.domain.party.PartyViewSortVO;
@@ -202,7 +201,7 @@ public class PartyController {
 		favorite.setTargetCd(partyId);
 		favorite.setUserId(userId);
 
-		boolean isFavorite = this.favoriteService.isFavoriteInfo(favorite);
+		boolean isFavorite = this.favoriteService.isFavorite(favorite);
 
 		LinkedBlockingDeque<CommentViewVO> comments = commentService.getCommentOffsetByTarget(pageInfo, 0);
 

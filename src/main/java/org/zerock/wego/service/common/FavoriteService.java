@@ -33,11 +33,17 @@ public class FavoriteService {
 		} // try-catch
 	} // getList
 
-	public boolean isFavoriteInfo(FavoriteDTO dto) throws ServiceException {
+	public boolean isFavorite(FavoriteDTO dto) throws ServiceException {
 		log.trace("isFavoriteInfo({}) invoked.", dto);
 
 		try {
-			return this.favoriteMapper.isFavoriteInfo(dto) == 1;
+			FavoriteVO favoriteVO = this.favoriteMapper.select(dto);
+			
+			if(favoriteVO == null) {
+				return false;
+			}
+			
+			return favoriteVO.getStatus().equals("Y");
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch

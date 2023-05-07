@@ -15,9 +15,9 @@
 			AND status = 'Y'
 	</select>
 
-	<select id="isFavoriteInfo" 
-		resultType="Integer">
-		SELECT count(user_id)
+	<select id="select" 
+		resultType="org.zerock.wego.domain.common.FavoriteVO">
+		SELECT *
 		FROM like_tb
 		WHERE
 			user_id = #{userId}

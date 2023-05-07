@@ -1,70 +1,121 @@
-var sanInfo = document.querySelector("#sanInfo").value;
+$(() => {
 
-window.onload = function(){
-	console.log("loadload");
+    loadOverview();
+    removeSearch();
 
-		
-		$.ajax({
-        type: 'get',
-        url: '/info/'+sanInfo+'/information',
-        success: function(data){
-            $("#module").load("/info/"+sanInfo+"/information");
-	            
+    $('li#overview').on({
+        click: function () {
+            if (!$(this).hasClass("selected")) {
+                changeSelected(this);
+                loadOverview();
+            }
         }
-	   });
-	
-};
-$('#in').click(function(){
-		
-		var module1 = document.querySelector("#module");
-		module1.innerHTML = '<div class="cotents"></div>';
-		$.ajax({
-        type: 'get',
-        url: '/info/'+sanInfo+'/Sandeail',
-        success: function(data){
-            $("#module").load("/info/"+sanInfo+"/Sandeail");
-        }
-	   });
-	   
-});
 
-$('#wea').click(function(){
-		
-		var module1 = document.querySelector("#module");
-		module1.innerHTML = '<div class="cotents"></div>';
-		$.ajax({
-        type: 'get',
-        url: '/info/'+sanInfo+'/SanWeather',
-        success: function(data){
-            $("#module").load("/info/"+sanInfo+"/SanWeather");
+    })
+    $('li#main').on({
+        click: function () {
+            if (!$(this).hasClass("selected")) {
+                changeSelected(this);
+                loadMain();
+            }
         }
-	   });
-	   
-});
+    })
+    $('li#weather').on({
+        click: function () {
+            if (!$(this).hasClass("selected")) {
+                changeSelected(this);
+                loadWeather();
+            }
+        }
+    })
+    $('li#food').on({
+        click: function () {
+            if (!$(this).hasClass("selected")) {
+                changeSelected(this);
+                loadFood();
+            }
+        }
+    })
 
-$('#food').click(function(){
-		
-		var module1 = document.querySelector("#module");
-		module1.innerHTML = '<div class="cotents"></div>';
-		$.ajax({
-        type: 'get',
-        url: '/info/'+sanInfo+'/SanKakaoMap',
-        success: function(data){
-            $("#module").load("/info/"+sanInfo+"/SanKakaoMap");
-        }
-	   });
-	   
-});
-$('#item-point').click(function(){
-		
-		var module1 = document.querySelector("#module");
-		module1.innerHTML = '<div class="cotents"></div>';
-		$.ajax({
-        type: 'get',
-        url: '/info/'+sanInfo+'/information',
-        success: function(data){
-            $("#module").load("/info/"+sanInfo+"/information");
-        }
-	   });
-	   
-});
+}) // .jquery
+var changeSelected = (clickElement) => {
+    $(".content-header-menu-item").removeClass("selected");
+    $(clickElement).addClass("selected");
+}
+
+var loadOverview = () => {
+    $.ajax({
+        type: "GET",
+        url: `overview/${sanInfoId}`,
+        error: function () {
+
+        }, // error
+
+        success: function (data) {
+            document.querySelector("#module").style.opacity = "0";
+            $("#module").animate({
+                opacity: 1,
+            });
+            $("#module").html(data);
+            console.log("모듈에 작성 글 데이터 넣기 성공 ");
+            setTimeout(setFooterPosition(), 500);
+        } // success
+    });
+}
+var loadMain = () => {
+    $.ajax({
+        type: "GET",
+        url: `main/${sanInfoId}`,
+        error: function () {
+
+        }, // error
+
+        success: function (data) {
+            document.querySelector("#module").style.opacity = "0";
+            $("#module").animate({
+                opacity: 1,
+            });
+            $("#module").html(data);
+            console.log("모듈에 작성 글 데이터 넣기 성공 ");
+            setTimeout(setFooterPosition(), 500);
+        } // success
+    });
+}
+var loadWeather = () => {
+    $.ajax({
+        type: "GET",
+        url: `weather/${sanInfoId}`,
+        error: function () {
+
+        }, // error
+
+        success: function (data) {
+            document.querySelector("#module").style.opacity = "0";
+            $("#module").animate({
+                opacity: 1,
+            });
+            $("#module").html(data);
+            console.log("모듈에 작성 글 데이터 넣기 성공 ");
+            setTimeout(setFooterPosition(), 500);
+        } // success
+    });
+}
+var loadFood = () => {
+    $.ajax({
+        type: "GET",
+        url: `food/${sanInfoId}`,
+        error: function () {
+
+        }, // error
+
+        success: function (data) {
+            document.querySelector("#module").style.opacity = "0";
+            $("#module").animate({
+                opacity: 1,
+            });
+            $("#module").html(data);
+            console.log("모듈에 작성 글 데이터 넣기 성공 ");
+            setTimeout(setFooterPosition(), 500);
+        } // success
+    });
+}

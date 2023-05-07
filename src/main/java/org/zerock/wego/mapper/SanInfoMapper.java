@@ -3,6 +3,7 @@ package org.zerock.wego.mapper;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.ibatis.annotations.Select;
 import org.zerock.wego.domain.common.BoardDTO;
 import org.zerock.wego.domain.common.BoardSearchDTO;
 import org.zerock.wego.domain.info.SanInfoViewSortVO;

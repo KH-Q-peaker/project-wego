@@ -9,7 +9,7 @@ import org.zerock.wego.domain.common.FavoriteVO;
 public interface FavoriteMapper {
 	
 	public abstract Set<FavoriteVO> getUserFavoriteOnList(Integer userId);
-	public abstract Integer isFavoriteInfo(FavoriteDTO dto);
+	public abstract FavoriteVO select(FavoriteDTO dto);
 	public abstract Integer insert(FavoriteDTO dto);
 	public abstract Integer update(FavoriteDTO dto);
 	

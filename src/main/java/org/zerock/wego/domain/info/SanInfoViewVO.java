@@ -13,8 +13,8 @@ public class SanInfoViewVO {
 	private String reason; 
 	private String overview; 
 	private String details; 
-	private Integer lon; 
-	private Integer lat; 
+	private Double lon; 
+	private Double lat; 
 	private String img; 
 	private Integer likeCnt;
 

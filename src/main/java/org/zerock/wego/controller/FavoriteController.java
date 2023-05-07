@@ -43,7 +43,7 @@ public class FavoriteController {
 			
 			dto.setUserId(auth.getUserId());
 			
-			boolean isFavoriteInfo = this.service.isFavoriteInfo(dto);
+			boolean isFavoriteInfo = this.service.isFavorite(dto);
 			log.info("isFavoriteInfo: {}", isFavoriteInfo);
 			
 			if (isFavoriteInfo) { 
