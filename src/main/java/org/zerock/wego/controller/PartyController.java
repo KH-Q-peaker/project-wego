@@ -249,7 +249,8 @@ public class PartyController {
 	} // modify
 
 	@PostMapping("/modify")
-	public ResponseEntity<Map<String, String>> modify(@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO auth,
+	public ResponseEntity<Map<String, String>> modify(
+			@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO auth,
 			Integer sanPartyId, String sanName,
 			@RequestParam(value = "imgFile", required = false) List<MultipartFile> imageFiles, PartyDTO partyDTO,
 			BindingResult bindingResult, FileDTO fileDTO) throws ControllerException {
@@ -301,7 +302,8 @@ public class PartyController {
 	} // register
 
 	@PostMapping("/register")
-	public ResponseEntity<Map<String, String>> register(@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO auth,
+	public ResponseEntity<Map<String, String>> register(
+			@SessionAttribute(SessionConfig.AUTH_KEY_NAME) UserVO auth,
 			String sanName, @RequestParam(value = "imgFile", required = false) List<MultipartFile> imageFiles,
 			PartyDTO partyDTO, BindingResult bindingResult, FileDTO fileDTO, JoinDTO joinDTO, ChatRoomDTO roomDTO)
 			throws ControllerException {
