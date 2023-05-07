@@ -197,7 +197,6 @@ public class PartyController {
 
 		boolean isJoin = this.joinService.isJoin(join);
 
-		// TO_DO : 좋아요구현되면 바꾸기
 		favorite.setTargetGb("SAN_PARTY");
 		favorite.setTargetCd(partyId);
 		favorite.setUserId(userId);

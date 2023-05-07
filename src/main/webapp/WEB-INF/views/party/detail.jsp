@@ -63,7 +63,7 @@
 					<img src=" ${empty party.userPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(party.userPic, 12, 57)}" alt="" class="userpic" />
 					<a class="username" href="/profile/${party.userId}">${party.nickName}</a>
 					<div class="likeCnt">
-						<input class="like ${isLike ? 'fill' : '' }" type="button" value="" /><label>${party.likeCnt }</label>
+						<input class="like ${isFavorite ? 'fill' : '' }" type="button" value="" /><label>${party.likeCnt }</label>
 					</div>
 					<img src="${empty party.partyPic ? "/resources/img/leaf.png" : imgBasePath += fn:substring(party.partyPic, 12, 57) }" alt="" class="partyImg" />
 					<div class="partyInfo">
