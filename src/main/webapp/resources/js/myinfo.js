@@ -301,7 +301,6 @@ if (typeof area0 == 'undefined') {
   });
 
   // 변경한 내용최종 전송
-  console.log("---------------- 1 ---------------------");
   let modal1 = document.querySelector(".myinfo-update");
   let upload = document.querySelector("#upload");
   let restart = document.querySelector("#restart");

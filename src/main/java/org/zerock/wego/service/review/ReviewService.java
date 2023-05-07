@@ -36,6 +36,25 @@ public class ReviewService {
 	private final CommentService commentService;
 	private final BadgeGetService badgeGetService;
 
+	public Double getTotalCount() throws ServiceException {
+		log.trace("getTotalCount() invoked.");
+
+		try {
+			return this.reviewMapper.selectTotalCount();
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	} // getTotalCount
+	
+	public Double getTotalCountByQuery(String query) throws ServiceException {
+		log.trace("getTotalCount() invoked.");
+		try {
+			return this.reviewMapper.selectTotalCountByQuery(query);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	} // getTotalCount
+	
 	public List<ReviewViewVO> getList() throws ServiceException {
 		log.trace("getList() invoked.");
 
@@ -106,6 +125,16 @@ public class ReviewService {
 //		} // try-catch
 //	} // getSearchSortLikeList
 
+	public List<ReviewViewSortVO> getReviewSuggestion() throws ServiceException {
+		log.trace("getReviewSuggestion() invoked.");
+
+		try {
+			return this.reviewMapper.selectReviewSuggestion();
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	} // getReviewSuggestion
+	
 	public Set<ReviewViewVO> getRandom10List() throws ServiceException {
 		log.trace("getRandom10List() invoked.");
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerock.wego.domain.common.BoardDTO;
 import org.zerock.wego.domain.common.BoardSearchDTO;
+import org.zerock.wego.domain.info.SanInfoViewSortVO;
 import org.zerock.wego.domain.party.PartyDTO;
 import org.zerock.wego.domain.party.PartyViewSortVO;
 import org.zerock.wego.domain.party.PartyViewVO;
@@ -38,6 +39,25 @@ public class PartyService {
 	private final NotificationMapper notificationMapper;
 	private final JoinMapper joinMapper;
 
+	public Double getTotalCount() throws ServiceException {
+		log.trace("getTotalCount() invoked.");
+
+		try {
+			return this.partyMapper.selectTotalCount();
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	} // getTotalCount
+	
+	public Double getTotalCountByQuery(String query) throws ServiceException {
+		log.trace("getTotalCount() invoked.");
+		try {
+			return this.partyMapper.selectTotalCountByQuery(query);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	} // getTotalCount
+	
 	public List<PartyViewVO> getList() throws ServiceException {
 		log.trace("getList() invoked.");
 
@@ -108,6 +128,16 @@ public class PartyService {
 //			throw new ServiceException(e);
 //		} // try-catch
 //	} // getSearchSortLikeList
+	
+	public List<PartyViewSortVO> getPartySuggestion() throws ServiceException {
+		log.trace("getPartySuggestion() invoked.");
+
+		try {
+			return this.partyMapper.selectPartySuggestion();
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		} // try-catch
+	} // getPartySuggestion
 
 	public Set<PartyViewVO> getRandom10List() throws ServiceException {
 		log.trace("getRandom10List() invoked.");

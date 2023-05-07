@@ -30,6 +30,7 @@ import org.zerock.wego.domain.common.FavoriteVO;
 import org.zerock.wego.domain.common.FileDTO;
 import org.zerock.wego.domain.common.PageInfo;
 import org.zerock.wego.domain.common.UserVO;
+import org.zerock.wego.domain.info.SanInfoViewSortVO;
 import org.zerock.wego.domain.party.JoinDTO;
 import org.zerock.wego.domain.party.PartyDTO;
 import org.zerock.wego.domain.party.PartyViewSortVO;
@@ -83,6 +84,10 @@ public class PartyController {
 			List<PartyViewSortVO> partySortList = this.partyService.getSortNewestList(dto);
 			model.addAttribute("partySortList", partySortList);
 
+			double pageCount = Math.ceil(this.sanInfoService.getTotalCount() / dto.getAmount());
+			int maxPage = (int)pageCount;
+			model.addAttribute("maxPage", maxPage);
+			
 			return "party/party";
 		} catch (Exception e) {
 			throw new ControllerException(e);
@@ -103,19 +108,15 @@ public class PartyController {
 			if (dto.getOrderBy().equals("like")) {
 				List<PartyViewSortVO> partySortList = this.partyService.getSortLikeList(dto);
 				model.addAttribute("partySortList", partySortList);
-
-				return "party/partyItem";
 			} else if (dto.getOrderBy().equals("oldest")) {
 				List<PartyViewSortVO> partySortList = this.partyService.getSortOldestList(dto);
 				model.addAttribute("partySortList", partySortList);
-
-				return "party/partyItem";
 			} else {
 				List<PartyViewSortVO> partySortList = this.partyService.getSortNewestList(dto);
 				model.addAttribute("partySortList", partySortList);
-
-				return "party/partyItem";
 			} // else-if
+
+			return "party/partyItem";
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
@@ -135,9 +136,18 @@ public class PartyController {
 
 			List<PartyViewSortVO> partySortList = this.partyService.getSearchSortNewestList(dto);
 			if (partySortList == null || partySortList.isEmpty()) {
+				List<PartyViewSortVO> partySuggestion = this.partyService.getPartySuggestion();
+				model.addAttribute("partySuggestion", partySuggestion);
+				
 				return "party/partySearchFail";
 			} else {
 				model.addAttribute("partySortList", partySortList);
+				
+				String query = dto.getQuery();
+				double pageCount = Math.ceil(this.sanInfoService.getTotalCountByQuery(query) / dto.getAmount());
+				int maxPage = (int)pageCount;
+				model.addAttribute("maxPage", maxPage);
+				
 				return "party/partySearch";
 			} // if-else
 		} catch (Exception e) {

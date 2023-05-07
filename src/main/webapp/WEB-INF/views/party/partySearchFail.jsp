@@ -77,7 +77,7 @@
 				<div class="suggestion-item">
 					
 					<!-- Item -->
-					<c:forEach var="item" items="${partySortList}">
+					<c:forEach var="item" items="${partySuggestion}">
 						<a href="/party/${item.sanPartyId}">
 							<div class="recruit-item" id="${item.sortNum}">
 								<img class="user-img" src="${empty item.userPic ? "/resources/img/default-user.jpg" : imgBasePath += fn:substring(item.userPic, 12, 57)}" alt="img" />
