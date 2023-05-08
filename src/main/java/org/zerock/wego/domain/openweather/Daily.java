@@ -33,8 +33,8 @@ public class Daily {
     private Long clouds;
     private Double pop;
     private Double uvi;
-    private Rain rain;
-	private Snow snow;		
+    private Double rain;
+	private Double snow;	
     private List<Weather> weather;
     
 } // end class

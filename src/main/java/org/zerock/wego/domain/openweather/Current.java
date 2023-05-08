@@ -29,8 +29,8 @@ public class Current {
 	private Long windDeg;
 	@JsonProperty("wind_gust")
 	private Double windGust;
-	private Rain rain;
-	private Snow snow;
+	private Double rain;
+	private Double snow;
 	@JsonProperty("weather")
 	private List<Weather> weather;
 
