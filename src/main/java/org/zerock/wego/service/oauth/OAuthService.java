@@ -16,9 +16,7 @@ import org.zerock.wego.domain.oauth.kakao.KakaoUserInfoDTO;
 import org.zerock.wego.domain.oauth.naver.NaverOAuthTokenDTO;
 import org.zerock.wego.domain.oauth.naver.NaverUserInfoDTO;
 import org.zerock.wego.exception.LoginException;
-import org.zerock.wego.oauth.GoogleOAuth;
-import org.zerock.wego.oauth.KakaoOAuth;
-import org.zerock.wego.oauth.NaverOAuth;
+import org.zerock.wego.service.oauth.LoginService;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
