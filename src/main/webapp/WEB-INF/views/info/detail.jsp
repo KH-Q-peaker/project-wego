@@ -19,7 +19,7 @@
 		var sanInfoId = ${sanInfoVO.sanInfoId};
 	</script>
 
-	<script src="/resources/js/favorite.js" defer></script>
+	<script src="/resources/js/favorite-info-detail.js" defer></script>
 	<script src="/resources/js/sanInfo-detail.js" defer></script>	
 
 </head>
@@ -54,11 +54,12 @@
 					<span class="value">${sanInfoVO.address}</span>
 				</div>
 
+				<input id="sanInfoId" type="hidden" value="${sanInfoVO.sanInfoId}">
 				<div class="like">
 					<c:if test="${isFavorite}">
-						<c:set var="status" value="on" />
+						<c:set var="status" value=" on" />
 					</c:if>
-					<button type="button" name="favorite" class="favorite ${status}"></button>
+					<button type="button" name="favorite" class="favorite${status}"></button>
 					<span class="likenum">${sanInfoVO.likeCnt}</span>
 				</div>
 
