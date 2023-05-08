@@ -45,11 +45,72 @@
     
     <!-- 회원 탈퇴 7. 나와 관련된 데이터 테이블 삭제 -->
     <!-- #{tableName}에 들어갈 목록: ALARM_TB, BADGE_GET_TB, CHAT_TB, COMMENT_TB, JOIN_TB, LIKE_TB,
-    REPORT_TB, SAN_PARTY_TB, SAN_REVIEW_TB, USER_TB -->
+    REPORT_TB, SAN_PARTY_TB, SAN_REVIEW_TB, USER_TB 
     <delete id="deleteAllTableByMe">
    		DELETE 
 		FROM #{tableName}
 		WHERE user_id=#{userId}
+	</delete>-->
+	
+	<delete id="deleteAlarmTableByMe">
+   		DELETE 
+		FROM alarm_tb
+		WHERE user_id=#{userId}
 	</delete>
+	
+	<delete id="deleteBadgeGetTableByMe">
+   		DELETE 
+		FROM badge_get_tb
+		WHERE user_id=#{userId}
+	</delete>
+	
+	<delete id="deleteChatTableByMe">
+   		DELETE 
+		FROM chat_tb
+		WHERE user_id=#{userId}
+	</delete>
+	
+	<delete id="deleteCommentTableByMe">
+   		DELETE 
+		FROM comment_tb
+		WHERE user_id=#{userId}
+	</delete>
+	
+	<delete id="deleteJoinTableByMe">
+   		DELETE 
+		FROM join_tb
+		WHERE user_id=#{userId}
+	</delete>
+	
+	<delete id="deleteLikeTableByMe">
+   		DELETE 
+		FROM like_tb
+		WHERE user_id=#{userId}
+	</delete>
+	
+	<delete id="deleteReportTableByMe">
+   		DELETE 
+		FROM report_tb
+		WHERE user_id=#{userId}
+	</delete>
+	
+	<delete id="deleteSanPartyTableByMe">
+   		DELETE 
+		FROM san_party_tb
+		WHERE user_id=#{userId}
+	</delete>
+	
+	<delete id="deleteSanReviewTableByMe">
+   		DELETE 
+		FROM san_review_tb
+		WHERE user_id=#{userId}
+	</delete>
+    
+    <delete id="deleteUserTableByMe">
+   		DELETE 
+		FROM user_tb
+		WHERE user_id=#{userId}
+	</delete>
+    
     
 </mapper>
