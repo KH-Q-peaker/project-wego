@@ -14,6 +14,7 @@ import org.zerock.wego.domain.oauth.kakao.KakaoOAuthTokenDTO;
 import org.zerock.wego.domain.oauth.kakao.KakaoUserInfoDTO;
 import org.zerock.wego.domain.oauth.naver.NaverOAuthTokenDTO;
 import org.zerock.wego.domain.oauth.naver.NaverUserInfoDTO;
+import org.zerock.wego.domain.openweather.OpenWeatherMapDTO;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,6 +27,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @NoArgsConstructor
 
+@Component
 public class WeatherService { // https://openweathermap.org/api/one-call-3#how
 	// sample
 	// https://api.openweathermap.org/data/3.0/onecall?lat=33.3766655632143&lon=126.54222094512&appid={open.weather.api.key}&lang=kr&units=metric 
@@ -40,7 +42,7 @@ public class WeatherService { // https://openweathermap.org/api/one-call-3#how
 
 	
 	// 위도 경도로 현제 날씨만 조회
-	public String getCurrentByLatLon(double lat, double lon) {
+	public OpenWeatherMapDTO getCurrentByLatLon(double lat, double lon) throws JsonProcessingException {
 		log.trace("getCurrent({}, {}) invoked.", lat, lon);
 		
 		StringBuffer requestURL = new StringBuffer(REQUEST_URL);
@@ -53,9 +55,7 @@ public class WeatherService { // https://openweathermap.org/api/one-call-3#how
 			.append("&").append("lat=").append(lat)
 			.append("&").append("lon=").append(lon);
 		
-		request(requestURL.toString());
-
-		return requestURL.toString();
+		return parseDTO(request(requestURL.toString()).getBody());
 	} // getCurrentByLatLon
 	
 	// Access Token으로 유저 정보 요청
@@ -78,18 +78,19 @@ public class WeatherService { // https://openweathermap.org/api/one-call-3#how
 
 		
 		// 요청을 DTO로 변환
-		public NaverUserInfoDTO parseDTO(String response) throws JsonProcessingException {
+		public OpenWeatherMapDTO parseDTO(String response) throws JsonProcessingException {
 			log.trace("parseDTO({}) invoked.", response);
 
 			ObjectMapper objectMapper = new ObjectMapper();
 			
-			NaverUserInfoDTO naverUserInfoDTO = objectMapper.readValue(response, NaverUserInfoDTO.class);
+			OpenWeatherMapDTO openWeatherMapDTO = objectMapper.readValue(response, OpenWeatherMapDTO.class);
+			
+			log.info("\t + {}",openWeatherMapDTO);
 
-			return naverUserInfoDTO;		
+			return openWeatherMapDTO;		
 		} // parseDTO
 	
 
-	// 인가 코드로 Access Token 요청
 	
 
 	

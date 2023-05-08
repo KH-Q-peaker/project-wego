@@ -68,8 +68,8 @@
 .weather img {
   display: inline-block;
 
-  width: 33px;
-  height: 33px;
+  width: 50px;
+  height: 50px;
 }
 
 .sanAddress {

@@ -29,8 +29,10 @@ import org.zerock.wego.domain.profile.ProfileVO;
 import org.zerock.wego.domain.review.ReviewViewVO;
 import org.zerock.wego.exception.AccessBlindException;
 import org.zerock.wego.exception.ControllerException;
+import org.zerock.wego.exception.OperationFailException;
 import org.zerock.wego.service.common.FavoriteService;
 import org.zerock.wego.service.info.SanInfoService;
+import org.zerock.wego.service.info.WeatherService;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,6 +48,7 @@ import lombok.extern.log4j.Log4j2;
 public class SanInfoController {
 	private final SanInfoService sanInfoService;
 	private final FavoriteService favoriteService;
+	private final WeatherService weatherService;
 
 	@GetMapping("")
 	public String showSanInfo(@SessionAttribute(value = SessionConfig.AUTH_KEY_NAME, required = false) UserVO auth, BoardDTO dto,
@@ -64,7 +67,7 @@ public class SanInfoController {
 			double pageCount = Math.ceil(this.sanInfoService.getTotalCount() / dto.getAmount());
 			int maxPage = (int)pageCount;
 			model.addAttribute("maxPage", maxPage);
-			
+
 			return "info/info";
 		} catch (Exception e) {
 			throw new ControllerException(e);
@@ -89,7 +92,7 @@ public class SanInfoController {
 				List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSortAbcList(dto);
 				model.addAttribute("sanInfoSortList", sanInfoSortList);
 			} // if-else
-			
+
 			return "info/infoItem";
 		} catch (Exception e) {
 			throw new ControllerException(e);
@@ -112,7 +115,7 @@ public class SanInfoController {
 			if (sanInfoSortList == null || sanInfoSortList.isEmpty() || query == null || query.isEmpty() || query.trim().isEmpty()) {
 				List<SanInfoViewSortVO> sanInfoSuggestion = this.sanInfoService.getSanInfoSuggestion();
 				model.addAttribute("sanInfoSuggestion", sanInfoSuggestion);
-			
+
 				return "info/infoSearchFail";
 			} else {
 				model.addAttribute("sanInfoSortList", sanInfoSortList);
@@ -120,7 +123,7 @@ public class SanInfoController {
 				double pageCount = Math.ceil(this.sanInfoService.getTotalCountByQuery(query) / dto.getAmount());
 				int maxPage = (int)pageCount;
 				model.addAttribute("maxPage", maxPage);
-				
+
 				return "info/infoSearch";
 			} // if-else
 		} catch (Exception e) {
@@ -141,13 +144,13 @@ public class SanInfoController {
 
 			List<SanInfoViewSortVO> sanInfoSortList = this.sanInfoService.getSearchSortAbcList(dto);
 			model.addAttribute("sanInfoSortList", sanInfoSortList);
-			
+
 			return "info/infoItem";			
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
 	} // addSanInfoSearchResult
-	
+
 
 	@GetMapping(path = "/{sanInfoId}")
 	public String showDetailById(
@@ -155,68 +158,77 @@ public class SanInfoController {
 			@SessionAttribute(value = SessionConfig.AUTH_KEY_NAME, required = false) UserVO authUser,
 			Model model) {
 		log.trace("showDetail({}, authUser, model) invoked.", saInfoId);
-		
-		if(authUser != null) {
-			FavoriteDTO favoriteDTO = FavoriteDTO.findBySanInfoIdAndUserId(saInfoId, authUser.getUserId());
+
+		try {
+			if(authUser != null) {
+				FavoriteDTO favoriteDTO = FavoriteDTO.findBySanInfoIdAndUserId(saInfoId, authUser.getUserId());
+
+				model.addAttribute("isFavorite", this.favoriteService.isFavorite(favoriteDTO));
+			} // if
+
+			SanInfoViewVO sanInfoViewVO = this.sanInfoService.getById(saInfoId);
+
+			model.addAttribute("currentWeather", weatherService.getCurrentByLatLon(sanInfoViewVO.getLat(), sanInfoViewVO.getLon()));
+			model.addAttribute("sanInfoVO", sanInfoViewVO);
+
+		} catch (JsonProcessingException e) {
 			
-			model.addAttribute("isFavorite", this.favoriteService.isFavorite(favoriteDTO));
-		} // if
-		
-		model.addAttribute("sanInfoVO", this.sanInfoService.getById(saInfoId));
+			throw new OperationFailException(e);
+		} // try-catch
 		
 		return "/info/detail";
 	} // showDetail
-	
-	
+
+
 	@GetMapping(path = "/overview/{sanInfoId}")
 	public String addOverview(@PathVariable("sanInfoId")Integer saInfoId, Model model) {
 		log.trace("addOverview({}, model) invoked.", saInfoId);
 
 		try {
 			model.addAttribute("sanInfoVO", this.sanInfoService.getById(saInfoId));
-			
+
 			return "/info/overview";
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
 	} // postsByProfile
-	
-	
+
+
 	@GetMapping(path = "/main/{sanInfoId}")
 	public String addMain(@PathVariable("sanInfoId")Integer saInfoId, Model model) {
 		log.trace("addMain({}, model) invoked.", saInfoId);
-		
+
 		try {
 			model.addAttribute("sanInfoVO", this.sanInfoService.getById(saInfoId));
-			
+
 			return "/info/main";
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
 	} // postsByProfile
 
-	
+
 	@GetMapping(path = "/weather/{sanInfoId}")
 	public String addWeather(@PathVariable("sanInfoId")Integer saInfoId, Model model) {
 		log.trace("addWeather({}, model) invoked.", saInfoId);
 
 		try {
 			model.addAttribute("sanInfoVO", this.sanInfoService.getById(saInfoId));
-			
+
 			return "/info/weather";
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
 	} // postsByProfile
 
-	
+
 	@GetMapping(path = "/food/{sanInfoId}")
 	public String addFood(@PathVariable("sanInfoId")Integer saInfoId, Model model) {
 		log.trace("addFood({}, model) invoked.", saInfoId);
 
 		try {
 			model.addAttribute("sanInfoVO", this.sanInfoService.getById(saInfoId));
-			
+
 			return "/info/food";
 		} catch (Exception e) {
 			throw new ControllerException(e);
