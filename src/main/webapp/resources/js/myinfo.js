@@ -428,8 +428,10 @@ if (typeof area0 == 'undefined') {
     tx = txObj.value;
     var withdraw3h2 = document.getElementById("withdraw3h2");
     if (tx == "회원탈퇴") {
-      withdraw3h2.innerHTML = "We go 회원탈퇴 처리가<br>완료되었습니다.";
-
+      withdraw3h2.innerHTML = "회원 탈퇴시<br>회원정보 및 작성한 글과 댓글,<br>획득한 뱃지, 설정항목 등<br>모두 삭제되며, <br>복구가 불가능합니다.<br><br>이에 동의하신다면<br>확인버튼을 눌러주세요.";
+      withdwawyes3.onclick = function () {
+			window.location.href = "/withdrawal";
+  	  };
     } else {
       withdraw3h2.innerHTML = "입력하신 문구가 일치하지 않습니다.<br>다시 입력해주세요.";
     }
