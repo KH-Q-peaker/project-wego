@@ -31,7 +31,7 @@ import lombok.extern.log4j.Log4j2;
 public class WeatherService { // https://openweathermap.org/api/one-call-3#how
 	// sample
 	// https://api.openweathermap.org/data/3.0/onecall?lat=33.3766655632143&lon=126.54222094512&appid={open.weather.api.key}&lang=kr&units=metric 
-	
+
 	@Value("${open.weather.api.key}")
 	private String appId;	
 
@@ -40,59 +40,70 @@ public class WeatherService { // https://openweathermap.org/api/one-call-3#how
 	private final String LANG = "kr";	// 언어설정
 	private final String UNITS = "metric";	// 단위설정
 
-	
-	// 위도 경도로 현제 날씨만 조회
+
+	// 위도 경도로 현재 날씨만 조회
 	public OpenWeatherMapDTO getCurrentByLatLon(double lat, double lon) throws JsonProcessingException {
 		log.trace("getCurrent({}, {}) invoked.", lat, lon);
-		
+
 		StringBuffer requestURL = new StringBuffer(REQUEST_URL);
 
 		requestURL	// 파라미터 설정
-			.append("appid=").append(appId)
-			.append("&").append("lang=").append(LANG)	
-			.append("&").append("units=").append(UNITS)
-			.append("&").append("exclude=").append(EXCLUDE[1] + "," + EXCLUDE[2] + "," + EXCLUDE[3] + "," + EXCLUDE[4])
-			.append("&").append("lat=").append(lat)
-			.append("&").append("lon=").append(lon);
-		
+		.append("appid=").append(appId)
+		.append("&").append("lang=").append(LANG)	
+		.append("&").append("units=").append(UNITS)
+		.append("&").append("exclude=").append(EXCLUDE[1] + "," + EXCLUDE[2] + "," + EXCLUDE[3] + "," + EXCLUDE[4])
+		.append("&").append("lat=").append(lat)
+		.append("&").append("lon=").append(lon);
+
 		return parseDTO(request(requestURL.toString()).getBody());
 	} // getCurrentByLatLon
-	
-	// Access Token으로 유저 정보 요청
-		public ResponseEntity<String> request(String URL) {
-			log.trace("requestUserInfo({}) invoked.", URL);
 
-			HttpHeaders headers = new HttpHeaders();
-			RestTemplate restTemplate = new RestTemplate();
-			
-			HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(headers);
-			
-			ResponseEntity<String> response = restTemplate.exchange(
-					URL,
-					HttpMethod.GET,
-					request, 
-					String.class);
-
-			return response;
-		} // request
-
+	// 위도 경도로 현재 날씨만 조회
+	public OpenWeatherMapDTO getForecastByLatLon(double lat, double lon) throws JsonProcessingException {
+		log.trace("getForecastByLatLon({}, {}) invoked.", lat, lon);
 		
-		// 요청을 DTO로 변환
-		public OpenWeatherMapDTO parseDTO(String response) throws JsonProcessingException {
-			log.trace("parseDTO({}) invoked.", response);
-
-			ObjectMapper objectMapper = new ObjectMapper();
-			
-			OpenWeatherMapDTO openWeatherMapDTO = objectMapper.readValue(response, OpenWeatherMapDTO.class);
-			
-			log.info("\t + {}",openWeatherMapDTO);
-
-			return openWeatherMapDTO;		
-		} // parseDTO
-	
-
-	
+		StringBuffer requestURL = new StringBuffer(REQUEST_URL);
+		
+		requestURL	// 파라미터 설정
+		.append("appid=").append(appId)
+		.append("&").append("lang=").append(LANG)	
+		.append("&").append("units=").append(UNITS)
+		.append("&").append("exclude=").append(EXCLUDE[0] + "," + EXCLUDE[1])
+		.append("&").append("lat=").append(lat)
+		.append("&").append("lon=").append(lon);
+		
+		return parseDTO(request(requestURL.toString()).getBody());
+	} // getForecastByLatLon
 
 	
+	public ResponseEntity<String> request(String URL) {
+		log.trace("requestUserInfo({}) invoked.", URL);
+
+		HttpHeaders headers = new HttpHeaders();
+		RestTemplate restTemplate = new RestTemplate();
+
+		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(headers);
+
+		ResponseEntity<String> response = restTemplate.exchange(
+				URL,
+				HttpMethod.GET,
+				request, 
+				String.class);
+
+		return response;
+	} // request
+
+
+	public OpenWeatherMapDTO parseDTO(String response) throws JsonProcessingException {
+		log.trace("parseDTO({}) invoked.", response);
+
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		OpenWeatherMapDTO openWeatherMapDTO = objectMapper.readValue(response, OpenWeatherMapDTO.class);
+
+		log.info("\t + {}",openWeatherMapDTO);
+
+		return openWeatherMapDTO;		
+	} // parseDTO
 
 } // end class

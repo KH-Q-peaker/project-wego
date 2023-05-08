@@ -18,7 +18,6 @@ $(() =>{
 				},
 				success : function(){
 					let likeCnt = parseInt($(".likeCnt").children('label').text());
-					console.log(likeCnt);
 					if(isLike){
 						$(".likeCnt").children('label').text(likeCnt - 1);
 					} else{

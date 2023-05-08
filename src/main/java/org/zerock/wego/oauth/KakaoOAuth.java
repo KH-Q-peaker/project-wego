@@ -46,7 +46,7 @@ public class KakaoOAuth {	// https://developers.kakao.com/docs/latest/ko/kakaolo
 		StringBuffer LoginURL = new StringBuffer(AUTHORIZE_REQUEST_URL);
 
 		LoginURL	// 파라미터 설정
-			.append("client_id=").append(clientId)	
+			.append("client_id=").append(clientId)
 			.append("&").append("redirect_uri=").append("http://" + wegoIP + REDIRECT_URI)
 			.append("&").append("response_type=").append(RESPONSE_TYPE);
 

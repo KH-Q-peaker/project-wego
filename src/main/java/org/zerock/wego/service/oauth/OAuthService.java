@@ -1,8 +1,12 @@
 package org.zerock.wego.service.oauth;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.zerock.wego.domain.common.UserDTO;
 import org.zerock.wego.domain.common.UserVO;
 import org.zerock.wego.domain.oauth.google.GoogleOAuthTokenDTO;
@@ -12,7 +16,6 @@ import org.zerock.wego.domain.oauth.kakao.KakaoUserInfoDTO;
 import org.zerock.wego.domain.oauth.naver.NaverOAuthTokenDTO;
 import org.zerock.wego.domain.oauth.naver.NaverUserInfoDTO;
 import org.zerock.wego.exception.LoginException;
-import org.zerock.wego.exception.ServiceException;
 import org.zerock.wego.oauth.GoogleOAuth;
 import org.zerock.wego.oauth.KakaoOAuth;
 import org.zerock.wego.oauth.NaverOAuth;
@@ -102,6 +105,10 @@ public class OAuthService {
 		KakaoOAuthTokenDTO kakaoOAuthTokenDTO = this.getKakaoAccessToken(authorizationCode);
 		KakaoUserInfoDTO kakaoUserInfoDTO = this.getKakaoUserInfo(kakaoOAuthTokenDTO);
 
+		ServletRequestAttributes servletRequestAttribute = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+	    HttpSession session = servletRequestAttribute.getRequest().getSession(true);
+	    session.setAttribute("KAKAO_ACCESS_TOKEN", kakaoOAuthTokenDTO.getAccess_token());
+		
 		String targetSocialId = kakaoUserInfoDTO.getKakao_account().getEmail();
 
 		boolean isAlreadySignUp = loginService.isSignUp(targetSocialId);

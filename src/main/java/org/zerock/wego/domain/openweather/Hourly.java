@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class Hourly {
 
-	private Long timestamp;
+	private Long dt;
 	private Double temp;
 	@JsonProperty("feels_like")
 	private Double feelsLike;
@@ -27,8 +27,8 @@ public class Hourly {
 	private Long windDeg;
 	@JsonProperty("wind_gust")
 	private Double windGust;
-	private Rain rain;
-	private Snow snow;
+	private Double rain;
+	private Double snow;
 	private List<Weather> weather;
 
 	@JsonProperty("pop")

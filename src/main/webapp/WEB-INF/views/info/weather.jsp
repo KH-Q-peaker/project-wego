@@ -5,8 +5,7 @@
 
 <div class="contentsbox">
 
-            <div>${sanInfoVO.reason}</div>
-            <div>${sanInfoVO.height}</div>
-            <div>${sanInfoVO.details}</div>
+    <c:forEach var="hourly" items="${forecastHourlys}"></c:forEach>
+    <c:forEach var="daily" items="${forecastDailys}"></c:forEach>
 
 </div>

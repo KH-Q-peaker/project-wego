@@ -25,6 +25,7 @@ import org.zerock.wego.domain.common.PageInfo;
 import org.zerock.wego.domain.common.UserVO;
 import org.zerock.wego.domain.info.SanInfoViewSortVO;
 import org.zerock.wego.domain.info.SanInfoViewVO;
+import org.zerock.wego.domain.openweather.OpenWeatherMapDTO;
 import org.zerock.wego.domain.profile.ProfileVO;
 import org.zerock.wego.domain.review.ReviewViewVO;
 import org.zerock.wego.exception.AccessBlindException;
@@ -168,7 +169,7 @@ public class SanInfoController {
 
 			SanInfoViewVO sanInfoViewVO = this.sanInfoService.getById(saInfoId);
 
-			model.addAttribute("currentWeather", weatherService.getCurrentByLatLon(sanInfoViewVO.getLat(), sanInfoViewVO.getLon()));
+			model.addAttribute("currentWeatherIcon", weatherService.getCurrentByLatLon(sanInfoViewVO.getLat(), sanInfoViewVO.getLon()).getCurrent().getWeather().get(0).getIcon());
 			model.addAttribute("sanInfoVO", sanInfoViewVO);
 
 		} catch (JsonProcessingException e) {
@@ -213,12 +214,18 @@ public class SanInfoController {
 		log.trace("addWeather({}, model) invoked.", saInfoId);
 
 		try {
-			model.addAttribute("sanInfoVO", this.sanInfoService.getById(saInfoId));
+			SanInfoViewVO sanInfoViewVO = this.sanInfoService.getById(saInfoId);
+			OpenWeatherMapDTO forecast = weatherService.getForecastByLatLon(sanInfoViewVO.getLat(), sanInfoViewVO.getLon());
+			log.info("\t + forecast {}",forecast);
+			model.addAttribute("forecastHourlys", forecast.getHourly());
+			model.addAttribute("forecastDailys", forecast.getDaily());
 
-			return "/info/weather";
-		} catch (Exception e) {
-			throw new ControllerException(e);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();			
+			throw new OperationFailException(e);
 		} // try-catch
+		
+		return "/info/weather";
 	} // postsByProfile
 
 

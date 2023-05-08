@@ -17,7 +17,6 @@ $(document).ready(function () {
 });
 
 function connectWs() {
-  console.log("웹소캣연결성공.");
 
   // // 웹소켓 연결하기 --------------------------------------------
   console.log(window.location);

@@ -14,6 +14,22 @@
 			user_id = ${userId} 
 			AND status = 'Y'
 	</select>
+	
+	<!-- *********** 존재여부 ************ -->
+	<select id="isExist" 
+			resultType = "java.lang.Boolean">
+		SELECT
+        	CASE WHEN 
+        	EXISTS (
+            	SELECT 1 
+            	FROM like_tb
+            	WHERE target_gb = #{targetGb}
+            	AND target_cd = #{targetCd}
+            	AND user_id = #{userId}
+        		) 
+        		THEN 1 ELSE 0 END AS exist
+    	FROM dual
+	</select>
 
 	<select id="select" 
 		resultType="org.zerock.wego.domain.common.FavoriteVO">

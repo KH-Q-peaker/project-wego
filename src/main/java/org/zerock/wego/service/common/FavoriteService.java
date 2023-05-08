@@ -32,7 +32,12 @@ public class FavoriteService {
 			throw new ServiceException(e);
 		} // try-catch
 	} // getList
-
+	
+	public boolean isExist(FavoriteDTO dto) throws ServiceException {
+		
+		return this.favoriteMapper.isExist(dto);
+	}// isExist
+	
 	public boolean isFavorite(FavoriteDTO dto) throws ServiceException {
 		log.trace("isFavoriteInfo({}) invoked.", dto);
 
