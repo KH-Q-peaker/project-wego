@@ -57,7 +57,7 @@ public class LoginController {
 		String testerID = wegoConfig.getPropertiesBean().getProperty("test.id");
 		String testerPW = wegoConfig.getPropertiesBean().getProperty("test.pw");
 		
-		if(id.equals("testerID") && pw.equals("testerPW")) {
+		if(id.equals(testerID) && pw.equals(testerPW)) {
 		
 			model.addAttribute(SessionConfig.AUTH_KEY_NAME, this.loginService.socialLogin("izp1024@naver.com"));
 		} // if
