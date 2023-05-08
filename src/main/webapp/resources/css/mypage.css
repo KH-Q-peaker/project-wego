@@ -15,14 +15,6 @@
     animation: spin 1s ease-in-out infinite;
     -webkit-animation: spin 1s ease-in-out infinite;
 }
-/*
-.content1 {
-  margin-bottom: 15px;
-}
-.content2 {
-  margin-bottom: 15px;
-}
-*/
 table {
 	margin-bottom: 15px;
 }

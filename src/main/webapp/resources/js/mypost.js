@@ -1,9 +1,3 @@
-if (typeof post_data_page == 'undefined') {
-	const post_data_page = document.getElementById('postCurrPageNum');
-		var myPostCurrPage = post_data_page.getAttribute('data-mypost-page');
-		if (myPostCurrPage == 1) {
-			$('.myPostPage1').addClass("currPage");
-		}
 
 	function selectClickCurrPage() {
 		var currPage = event.target.innerText;
@@ -37,4 +31,3 @@ if (typeof post_data_page == 'undefined') {
 			}//success
 		});//ajax
 	} //selectClickCurrPageNext
-}
