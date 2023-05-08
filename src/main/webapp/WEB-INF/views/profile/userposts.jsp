@@ -85,4 +85,9 @@
 		</div>
 	</div>
 </div>
-
+<script>
+	var userPostsCurrPage = "${__UserPostsCurrPage__}"
+	if (userPostsCurrPage == 1) {
+		$('.userPostsPage1').addClass("currPage");
+	}
+</script>

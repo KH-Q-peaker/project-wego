@@ -48,8 +48,8 @@ h2 {
 .profile-image-button img:hover {
   cursor: pointer;
   z-index: 1;
-    transform: scale(1.15);
-    transition: all 400ms ease;
+  transform: scale(1.15);
+  transition: all 400ms ease;
 }
 .profile-image-button > img {
   width: 50px;
@@ -64,20 +64,17 @@ h2 {
   border-radius: 50%;
   box-shadow: 0 14px 28px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 22%);
 }
-
 .profile-image > img {
   width: 100%;
   height: 100%;
   border-radius: 50%;
   background: rgb(220, 237, 195);
 }
-
 .div-name-setting {
   position: relative;
   /*width: 130px;*/
   /* height: 30px; */
 }
-
 .div-name-setting > .nickname {
   margin: 5px 20px 5px 20px;
   font-weight: bold;
@@ -87,7 +84,6 @@ h2 {
   overflow-wrap: break-word;
   word-break: break-all;
 }
-
 .name-setting img {
     position: absolute;
     /* left: 75%; */
@@ -225,8 +221,6 @@ h2 {
   background: url(../svg/cancle.svg);
   background-repeat: no-repeat;
 }
-
-
 .file-upload .form-control:before {
   content: attr(data-message);
   width: 100%;
@@ -257,7 +251,6 @@ body.dragged .file-upload .form-control input[type="file"] {
   width: 200vw;
   z-index: 10002;
 }
-
 body:after {
   content: 'You can drop the file. :-)';
   font-size: 2em;
@@ -433,16 +426,6 @@ input#nickname:focus {
   border-radius: 10px;
 }
 .nickname-input .ion {
-  /*position: relative;
-  align-items: center;
-  display: flex;
-  left: 250px;
-  bottom: 40px;
-  width: 60px;
-  justify-content: space-between;
-  font-size: 30px;*/
-  /* padding-left: 30px; */
-  /* padding-bottom: 30px; */
   position: relative;
   display: inline;
   align-items: center;

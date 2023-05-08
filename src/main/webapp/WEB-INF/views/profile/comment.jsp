@@ -94,3 +94,9 @@
 		</div>
 	</div>
 </div>
+<script>
+    var commentCurrPage = "${__CommentCurrPage__}";
+    if (commentCurrPage == 1) {
+        $('.commentPage1').addClass("currPage");
+    }
+</script>

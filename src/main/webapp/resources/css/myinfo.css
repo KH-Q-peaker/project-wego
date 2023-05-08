@@ -7,11 +7,9 @@
   position: relative;
   border-radius: 15px;
 }
-
 .contents > h2 {
   text-align: center;
 }
-
 .my-location p {
   font-size: large;
   margin-right: 20px;
@@ -28,7 +26,6 @@
 .my-city > label {
   margin: 5px 5px;
 }
-
 select[name="sido1"] {
   width: fit-content;
   height: 40px;
@@ -41,7 +38,6 @@ select[name="sido1"] {
   z-index: 1;
   background-color: #ffffff00;
 }
-
 select[name="gugun1"] {
   width: fit-content;
   height: 40px;
@@ -95,9 +91,7 @@ select[name="gugun1"] {
   width: 200px;
   border-radius: 35px;
   padding: 20px;
-  /* margin: 0 10px; */
   text-align: center;
-  /* background-color: rgb(0 0 0 / 22%); */
 }
 /* 내취향 */
 .my-taste-pick {
@@ -141,7 +135,6 @@ input[type="radio"] + label {
   width: 100px;
   text-align: center;
 }
-
 input[name="user-taste-pick"] + label {
   display: inline-block;
   box-sizing: border-box;
@@ -162,7 +155,6 @@ input[name="user-taste-pick"] + label {
 	display: block;
 	margin: 0 auto;
 }
-
 .radio-items {
   display: inline-flex;
   border-radius: 10px;
@@ -200,7 +192,6 @@ input[type="radio"]:checked + label {
   width: 100px;
   text-align: center;
 }
-
 .myinfo {
   display: flex;
   justify-content: space-between;
@@ -244,7 +235,6 @@ input[type="radio"]:checked + label {
   margin: 10px 10px;
   cursor: pointer;
 }
-
 .myinfo-update {
   width: 300px;
   border-radius: 10px;
@@ -305,7 +295,6 @@ input[type="radio"]:checked + label {
   top: 50%;
   left: 50%;
   height: 150px;
-
   transform: translate(-50%, -50%);
 }
 .myinfo-update .upload > input {
@@ -350,11 +339,9 @@ input[type="radio"]:checked + label {
 .withdraw-text,
 .withdraw-text2 {
   box-sizing: border-box;
-  width: 320px;
   padding: 30px 15px 30px 15px;
   text-align: center;
   border-radius: 10px;
-  height: 200px;
   background-color: #d9d9d9;
 }
 .withdraw-text h2,
@@ -364,16 +351,21 @@ input[type="radio"]:checked + label {
   font-weight: 500;
   text-align: center;
   margin-top: 0;
-  margin-bottom: 32px;
+  margin-bottom: 40px;
+}
+.withdraw-text h2 {
+	color:white;
+	font-size: 20px;
 }
 .withdraw-text3 h2 {
+  font-size: 16px;
   line-height: 200%;
 }
 .withdraw-box p {
   text-align: left;
   font-size: 12px;
   line-height: 250%;
-  color: white;
+  color: black;
 }
 .withdwaw-button {
   display: flex;
@@ -429,14 +421,10 @@ input[type="radio"]:checked + label {
   border: 0px;
   background-color: #d9d9d9;
 }
-
 /* 나의위치 안보이게하려면.. */
 .my-city {
   display: none;
-  /* display: inline-flex;
-  height: 40px;*/
 }
-
 @media screen and (min-width: 426px) and (max-width: 768px) {
   .cotents {
     min-height: max-content;
@@ -453,7 +441,6 @@ input[type="radio"]:checked + label {
     border-radius: 35px;
     padding: 10px;
     text-align: center;
-    /* background-color: #4ec53d; */
   }
   .radio-items > p {
     font-size: large;
@@ -497,6 +484,30 @@ input[type="radio"]:checked + label {
   }
   .my-city select {
     position: relative;
+  }
+  .withdraw-text3 h2 {
+    font-size: 14px;
+    line-height: 160%;
+  }
+  .withdraw-box, .withdraw-box2, .withdraw-box3 {
+    width: 300px;
+    padding: 40px 20px;
+  }
+  .withdwaw-no, .withdwaw-yes, .withdwaw-no2, .withdwaw-yes2 {
+    width: 120px;
+  }
+  .withdraw-text3 h2 {
+    font-size: 14px;
+    line-height: 160%;
+  }
+  .withdraw-text h2 {
+    font-size: 16px;
+  }
+  .withdraw-text2 h2{
+  	font-size: 14px;
+  }
+  .withdraw-text2 input {
+    width: 220px;
   }
 }
 

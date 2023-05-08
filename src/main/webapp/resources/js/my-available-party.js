@@ -1,11 +1,5 @@
-if (typeof data_availPage_page == 'undefined') {
-    const data_availPage_page = document.getElementById('availPageNum');
-	    var aCurrPage = document.querySelector('#availcurrPage').value;
-	    if (aCurrPage == 1) {
-	        $('.availablePartyPage1').addClass("currPage");
-	    }
 
-    function selectClickAvailableCurrPage() {
+   function selectClickAvailableCurrPage() {
         console.log("********", event.target.innerText);
         var currPage = event.target.innerText;
         $.ajax({
@@ -41,4 +35,3 @@ if (typeof data_availPage_page == 'undefined') {
             }
         });//ajax
     }
-}

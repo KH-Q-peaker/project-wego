@@ -20,7 +20,7 @@
 
 		<div class="nickname-input">
 			<input id="nickname" type="text" name="nickname" placeholder="등산쟁이"
-				value="${vo.nickname}" oninput="testtest()"> <span
+				value="${vo.nickname}" oninput="inputNicknameCheck()"> <span
 				class="ion"><ion-icon name="checkmark-circle-outline"
 					id="ok-sign"></ion-icon> <ion-icon name="close-circle-outline"
 					id="no-sign"></ion-icon></span>
@@ -67,7 +67,6 @@
 			</div>
 	</form>
 
-
 	<div class="main-wrap">
 		<div class="profile-image-button">
 			<img src="/resources/svg/setting.svg" alt="프로필사진변경" />
@@ -82,9 +81,8 @@
 			<!--뱃지모음라인===== -->
 			<div class="badge-collection">
 				<div class="badge-header">
-					<a class="badge-setting" href="/badge/${vo.userId}"><span>Badge Collection</span><img
-							src="/resources/svg/badgeset.png" alt="" /></a>
-					</span>
+					<a class="badge-setting" href="/badge/${vo.userId}"><span>Badge
+							Collection</span><img src="/resources/svg/badgeset.png" alt="" /></a> </span>
 				</div>
 
 				<!--적용 -->

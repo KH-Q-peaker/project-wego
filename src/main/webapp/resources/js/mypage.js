@@ -24,10 +24,8 @@ menuItems.forEach((item, index) => {
 	});
 });
 
-
 //프로필 변경시 로딩 화면
 var _showPage = function () {
-	console.log("_showPage invoked");
 	var loader = $("div.loader");
 	var container = $("div.container");
 	loader.css("display", "block");
@@ -45,37 +43,24 @@ profileimagebutton.addEventListener('click', function () {
 	});
 });
 
-
 // 이미지 추가 버튼 클릭 이벤트
 selector(".profile-image-button").addEventListener("click", () => {
 	$('#document_file').on('change', function (event) {
-
-		//imgPath=null;
-		//console.log("parseInt($fileUpload.get(0).files.length): "+ parseInt($fileUpload.get(0).files.length));
-
 		if (!(document.getElementById('document_file').files[0])) {
 			fileText.innerHTML = "여기로 이미지를 드래그하거나 <br> 파일을 업로드 하세요. (최대 20MB)";
 		} else {
-
 			const selectedFile = document.getElementById('document_file').files[0];
-			console.log("fileName:{}", event.target.files[0].name);
 			selectedFile.type = "file";
 			selectedFile.accept = ".jpg, .jpeg, .png";
 
-
 			// 파일형식 체크
 			var check2 = isRightFile(event);
-			console.log("check:{}", check);
-
 			// 업로드 파일 용량 체크
 			var check = isFileMaxSize(event);
-
 			// 위 조건을 모두 통과할 경우
 			isReadyUpload = true;
 			if ((check && check2)) {
-				console.log("check : fileName:{}", event.target.files[0].name);
 				var fileName = event.target.files[0].name;
-
 				if (fileName) {
 					fileText.innerHTML = `<p>${fileName}</p>`;
 				}
@@ -92,7 +77,6 @@ selector(".profile-image-button").addEventListener("click", () => {
 	selector(".add-profile-image").style.display = "block";
 });//addEventListener
 
-
 // 이미지 추가 취소 버튼 클릭 이벤트
 selector(".add-profile-image .cancel").addEventListener("click", () => {
 	selector(".add-profile-image").style.display = "none";
@@ -101,7 +85,6 @@ selector(".add-profile-image .cancel").addEventListener("click", () => {
 
 // 업로드 파일 용량 체크
 const isFileMaxSize = (event) => {
-	console.log("isFileMaxSize() invoked");
 	if (event.target.files[0].size < 20971520) {
 		return true;
 	} else {
@@ -109,7 +92,6 @@ const isFileMaxSize = (event) => {
    <p>최대 업로드 용량은 20MB입니다.<br>
     현재 파일의 용량은 ${Math.floor((file[0].size / 1048576) * 10) / 10}입니다.
     </p>`;
-		console.log("event.target.files[0].size:{}", event.target.files[0].size);
 		isReadyUpload = false;
 		return false;
 	}
@@ -117,8 +99,6 @@ const isFileMaxSize = (event) => {
 
 // 파일형식 체크
 const isRightFile = (event) => {
-	console.log("isRightFile() invoked");
-	console.log(event.target.files[0].type);
 	if (
 		event.target.files[0].type == "image/jpeg" ||
 		event.target.files[0].type == "image/png" ||
@@ -131,16 +111,13 @@ const isRightFile = (event) => {
     <p>업로드 가능한 파일 형식은<br>
     .jpg, .jpeg, .png입니다.
     </p>`;
-		console.log("event.target.files[0].type:{}", event.target.files[0].type);
 		isReadyUpload = false;
 		return false;
 	}
 };
 
-
 //메인 페이지 로드
 window.onload = function () {
-
 	$.ajax({
 		type: 'get',
 		url: '/profile/partyList',
@@ -148,7 +125,6 @@ window.onload = function () {
 			$("#content1").load("/profile/partyList");
 		}
 	});
-
 	$.ajax({
 		type: 'get',
 		url: '/profile/pastPartyList',
@@ -160,6 +136,7 @@ window.onload = function () {
 	$("#module").animate({
 		opacity: 1
 	});
+	setTimeout(setFooterPosition(), 500);
 };
 
 
@@ -186,8 +163,7 @@ $('#climb').click(function () {
 	$("#module").animate({
 		opacity: 1
 	});
-	setFooterPosition();
-	console.log("setFooterPosition() 실행됨.");
+	setTimeout(setFooterPosition(), 500);
 });
 
 $('#info').click(function () {
@@ -207,8 +183,7 @@ $('#info').click(function () {
 			$("#module").load("/profile/info");
 		}
 	});
-	setFooterPosition();
-	console.log("setFooterPosition() 실행됨.");
+	setTimeout(setFooterPosition(), 500);
 });
 
 
@@ -217,7 +192,6 @@ $('#mypost').click(function () {
 	module1.innerHTML = '<div class="cotents"> \
 	    <div class="content1" id="content1"> </div>\
 	    <div class="content2" id="content2"> </div></div>';
-
 	var module1 = document.querySelector("#module");
 	module1.innerHTML = '<div class="cotents"> \
 	    <div class="content1" id="content1"> </div>\
@@ -240,8 +214,7 @@ $('#mypost').click(function () {
 	$("#module").animate({
 		opacity: 1
 	});
-	setFooterPosition();
-	console.log("setFooterPosition() 실행됨.");
+	setTimeout(setFooterPosition(), 500);
 });
 
 $('#mylike').click(function () {
@@ -263,8 +236,7 @@ $('#mylike').click(function () {
 			}, 200);
 		}
 	});
-	setFooterPosition();
-	console.log("setFooterPosition() 실행됨.");
+	setTimeout(setFooterPosition(), 500);
 });
 
 //닉네임변경 및 닉네임 유효성 검사
@@ -274,14 +246,12 @@ var original_nickname = document.getElementById('nickname').value;
 var isRightText = document.querySelector("#isRightText");
 var isRightNickname = false;
 
-function testtest() {
-	console.log("test");
+function inputNicknameCheck() {
 	var nickname = document.getElementById('nickname').value;
 	$.ajax({
 		url: '/profile/nicknameCheck',
 		data: { "nickname": nickname },
 		success: function (data) {
-			console.log("success function({}) invoked", data);
 			nicknameCheck(nickname);
 			if (isRightNickname && (nickname == original_nickname)) {
 				isRightText.innerText = "같은 닉네임입니다.";
@@ -301,7 +271,6 @@ function testtest() {
 }
 
 function nicknameCheck(nickname) {
-	console.log("nicknameCheck({}) invoked", nickname);
 	var nickname = document.getElementById('nickname').value;
 	var nickLength = 0;
 
@@ -361,7 +330,6 @@ nicknameSend.addEventListener('click', function () {
 			url: '/profile/changeNickname',
 			data: { "nickname": nickname },
 			success: function (data) {
-				console.log("내가 바꾼 닉네임은?" + data);
 
 				if (data != "") {
 					var nicknameText = document.querySelector(".nickname");
