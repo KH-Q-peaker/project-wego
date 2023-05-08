@@ -360,5 +360,49 @@ function noSignByRed() {
 	document.querySelector("#ok-sign").style.display = "none";
 }
 
+var userId = document.querySelector("#userId").value;
+
+$(()=>{
+
+	addPickBadge();
+  
+  }) // jquery 
+  
+  var addPickBadge = () => {
+	$.ajax({
+		type: "GET",
+		url: `/badge/pick-list/json/${userId}`,
+		error: function () {
+  
+		}, // error
+  
+		success: function (badgePickList) {
+  
+			addPickBadgeItem(badgePickList);
+		} // success
+	});
+  }
+  
+  var addPickBadgeItem = (badgePickList) => {
+	let preBadgeId = 0;
+  
+	for (let idx = 0; idx < badgePickList.length; idx++) {
+  
+		let nowPickBadge = badgePickList[idx];
+		let nowPickBadgeId = nowPickBadge.badgeId;
+		let nowPickBadgeName = nowPickBadge.badgeName;
+		let nowPickBadgeimg = nowPickBadge.img;
+  
+		if (preBadgeId != nowPickBadgeId) {
+  
+			let pcikBadgeHTML = `<div class='item pick' id = '${nowPickBadgeId}' > <div class="sanBadge"  style="background-image: url(${nowPickBadgeimg});"></div></div>`;
+  
+			preBadgeId = nowPickBadgeId;
+  
+			$(".badge-collection").append(pcikBadgeHTML);
+		} // if
+  
+	}
+  }
 
 

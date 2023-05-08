@@ -21,3 +21,4 @@ public class OpenWeatherMapDTO {
 	private List<Alerts> alerts;
 	
 } // end class
+	

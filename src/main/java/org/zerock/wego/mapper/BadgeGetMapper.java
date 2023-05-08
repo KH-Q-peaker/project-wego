@@ -19,7 +19,7 @@ public interface BadgeGetMapper {
 	// 유저(=userId)의 모든 뱃지 획득 목록 조회
 	public abstract LinkedBlockingDeque<BadgeGetVO> selectAllByUserId(@Param("userId")Integer userId);
 	
-	// 유저(=userId)의 모든 뱃지 획득 목록 조회
+	// 유저(=userId)의 모든 대표 뱃지 목록 조회
 	public abstract LinkedBlockingDeque<BadgeGetVO> selectAllPickBadgeByUserId(@Param("userId")Integer userId);
 	
 	// 유저(=userId)가 선택한 대표 뱃지(pickBadgeId)를 선택된 순서(pickSequence)에 맞게 대표뱃지 설정

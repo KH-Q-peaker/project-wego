@@ -64,22 +64,7 @@
 								</span>
 							</div>
 
-							<!--적용 -->
-							<div class="badge-item1" id="1003">
-								<div class="sanBadge"></div>
-							</div>
-							<div class="badge-item2" id="1">
-								<div class="sanBadge"></div>
-							</div>
-							<div class="badge-item3" id="4">
-								<div class="sanBadge"></div>
-							</div>
-							<div class="badge-item4" id="5">
-								<div class="sanBadge"></div>
-							</div>
-							<div class="badge-item5" id="93">
-								<div class="sanBadge"></div>
-							</div>
+							<!-- 뱃지자리 -->
 						</div>
 					</div>
 					<%--</c:forEach>--%>

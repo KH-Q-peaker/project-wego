@@ -39,6 +39,7 @@ import org.zerock.wego.domain.profile.ProfileVO;
 import org.zerock.wego.domain.review.ReviewViewVO;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.exception.ServiceException;
+import org.zerock.wego.service.badge.BadgeGetService;
 import org.zerock.wego.service.common.FavoriteService;
 import org.zerock.wego.service.profile.ProfileService;
 
@@ -52,6 +53,7 @@ import lombok.extern.log4j.Log4j2;
 public class ProfileController {
 	private ProfileService profileService;
 	private FavoriteService favoriteService;
+	private BadgeGetService badgeGetService;
 
 	@GetMapping("")
 	public String getMypage(@SessionAttribute("__AUTH__") UserVO user, Model model) throws ControllerException {
@@ -69,6 +71,7 @@ public class ProfileController {
 					String[] pathArray = path.split("upload");
 					log.info("pathArray[1]:" + pathArray[1]);
 					model.addAttribute("UserPicName", pathArray[1]);
+					badgeGetService.getPickBadgeDequeByUserId(userId);
 				}//if
 			}//if
 			model.addAttribute("vo", vo);
