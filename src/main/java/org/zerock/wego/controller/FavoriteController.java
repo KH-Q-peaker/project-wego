@@ -23,7 +23,7 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("/")
 @RestController
 public class FavoriteController {
-	private FavoriteService service;
+	private FavoriteService favoriteService;
 	
 	@PostMapping("/favorite")
 	public Map<String, String> favorite(
@@ -43,13 +43,13 @@ public class FavoriteController {
 			
 			dto.setUserId(auth.getUserId());
 			
-			boolean isFavoriteInfo = this.service.isFavorite(dto);
+			boolean isFavoriteInfo = this.favoriteService.isExist(dto);
 			log.info("isFavoriteInfo: {}", isFavoriteInfo);
 			
 			if (isFavoriteInfo) { 
-				this.service.modify(dto);
+				this.favoriteService.modify(dto);
 			} else { 
-				this.service.register(dto);
+				this.favoriteService.register(dto);
 			} // if-else
 			
 			state.put("state", "successed");
