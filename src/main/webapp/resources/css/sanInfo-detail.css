@@ -63,8 +63,13 @@
   grid-row-start: 1;
   grid-row-end: 2;
 
+  flex-direction: column !important;
 }
+.weather span {
+  display: inline-block;
 
+  font-size: 12px;
+}
 .weather img {
   display: inline-block;
 

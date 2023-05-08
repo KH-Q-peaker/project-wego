@@ -45,7 +45,8 @@
 				</div>
 
 				<div class="weather">
-					<img class="weather-image" src="https://openweathermap.org/img/wn/${currentWeather.current.weather.get(0).icon}.png">
+					<span>현재 날씨</span>
+					<img class="weather-image" src="https://openweathermap.org/img/wn/${currentWeatherIcon}.png">
 				</div>
 
 				<div class="sanAddress">
@@ -62,8 +63,8 @@
 				</div>
 
 				<div class="button">
-					<button id="party" onclick="location.href='/party/search?query=${sanInfoVO.sanName}'">등산모집</button>
 					<button id="review" onclick="location.href='/review/search?query=${sanInfoVO.sanName}'">등산후기</button>
+					<button id="party" onclick="location.href='/party/search?query=${sanInfoVO.sanName}'">등산모집</button>
 				</div>
 
 			</div>
