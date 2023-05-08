@@ -199,9 +199,15 @@ section div > h2 {
 }
 
 .recruit-item > .user-name {
-  grid-area: recruitUserName;
-  font-size: 14px;
-  justify-self: left;
+    grid-area: recruitUserName;
+    font-size: 14px;
+    width: 100px;
+    text-align: left;
+    justify-self: left;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .recruit-item > .mountain-name {
@@ -308,10 +314,16 @@ section div > h2 {
 }
 
 .review-item > .user-name {
-  grid-area: reviewUserName;
-  font-size: 14px;
-  margin: 0;
-  justify-self: left;
+    grid-area: reviewUserName;
+    font-size: 14px;
+    margin: 0;
+    width: 100px;
+    text-align: left;
+    justify-self: left;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .review-item > .mountain-name {
