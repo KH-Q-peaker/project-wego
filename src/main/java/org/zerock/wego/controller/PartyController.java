@@ -22,14 +22,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.zerock.wego.config.SessionConfig;
 import org.zerock.wego.domain.chat.ChatRoomDTO;
-import org.zerock.wego.domain.common.BoardDTO;
-import org.zerock.wego.domain.common.BoardSearchDTO;
-import org.zerock.wego.domain.common.CommentViewVO;
-import org.zerock.wego.domain.common.FavoriteDTO;
-import org.zerock.wego.domain.common.FavoriteVO;
-import org.zerock.wego.domain.common.FileDTO;
-import org.zerock.wego.domain.common.PageInfo;
-import org.zerock.wego.domain.common.UserVO;
+import org.zerock.wego.domain.common.*;
 import org.zerock.wego.domain.party.JoinDTO;
 import org.zerock.wego.domain.party.PartyDTO;
 import org.zerock.wego.domain.party.PartyViewSortVO;
@@ -284,13 +277,24 @@ public class PartyController {
 			boolean isModifySuccess = this.partyService.modify(partyDTO);
 			log.info("isModifySuccess: {}", isModifySuccess);
 
+
 			if (imageFiles != null) {
-				List<String> oldImageFiles = Arrays
-						.asList(this.fileService.getList("SAN_PARTY", partyDTO.getSanPartyId()).get(0).getFileName());
+				boolean isChangeImgeSuccess = false;
+
+				List<FileVO> oldImageFiles = this.fileService.getList("SAN_PARTY", partyDTO.getSanPartyId());
 				List<String> order = Arrays.asList(imageFiles.get(0).getOriginalFilename());
-				boolean isChangeImgeSuccess = this.fileService.isChangeImage(imageFiles, oldImageFiles, order,
-						"SAN_PARTY", partyDTO.getSanPartyId(), fileDTO);
+
+				if(oldImageFiles.isEmpty()) {
+					isChangeImgeSuccess = this.fileService.isChangeImage(imageFiles, null, order,
+							"SAN_PARTY", partyDTO.getSanPartyId(), fileDTO);
+				} else {
+					List<String> oldFileName = Arrays.asList(oldImageFiles.get(0).getFileName());
+					isChangeImgeSuccess = this.fileService.isChangeImage(imageFiles, oldFileName, order,
+							"SAN_PARTY", partyDTO.getSanPartyId(), fileDTO);
+				}
+
 				log.info("isChangeImgeSuccess: {}", isChangeImgeSuccess);
+
 			} // if
 
 			state.put("state", "successed");
