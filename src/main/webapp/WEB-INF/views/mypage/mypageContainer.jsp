@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-
 <div class="mypage-container">
 	<!-- form 필수값 검증 후 값이 없는 경우 알림 -->
 	<!-- <form action="#" method="post"> -->
@@ -84,23 +83,9 @@
 					<a class="badge-setting" href="/badge/${vo.userId}"><span>Badge
 							Collection</span><img src="/resources/svg/badgeset.png" alt="" /></a> </span>
 				</div>
+				<input type="hidden" id="userId" value="${vo.userId}" />
 
-				<!--적용 -->
-				<div class="badge-item1" id="1003">
-					<div class="sanBadge"></div>
-				</div>
-				<div class="badge-item2" id="1">
-					<div class="sanBadge"></div>
-				</div>
-				<div class="badge-item3" id="4">
-					<div class="sanBadge"></div>
-				</div>
-				<div class="badge-item4" id="5">
-					<div class="sanBadge"></div>
-				</div>
-				<div class="badge-item5" id="93">
-					<div class="sanBadge"></div>
-				</div>
+				<!-- 뱃지자리 -->
 			</div>
 		</div>
 	</div>

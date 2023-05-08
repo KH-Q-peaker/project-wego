@@ -115,6 +115,12 @@
     background-size: contain;
 
 }
+#rankers .item .userProfile{
+	display: flex;
+	flex-direction: column;
+    align-items: center;
+}
+
 #rankers .item .rankerPic, #rankers .item .rankerPic img{
     display: inline-block;
 
@@ -210,13 +216,13 @@
 
     width: 90px;
 }
-.rankingList .item .userProfile span#pic{
+.rankingList .item .userProfile span#pic, .rankingList .item .userProfile span#pic img{
     width: 40px;
     height: 40px;
 
     border-radius: 50%;
     
-    background-color: #fff;
+    background-color: #fff;	
 }
 .rankingList .item .userProfile span#name{
     justify-content: flex-start;
