@@ -295,7 +295,7 @@ public class ProfileController {
 	@PostMapping("/image")
 	String saveProfileImage(@RequestParam(value = "part", required = false) MultipartFile part,
 			@SessionAttribute("__AUTH__") UserVO user, HttpServletRequest req,
-			Model model,ModelAndView modelAndView) throws ControllerException {
+			ModelAndView modelAndView) throws ControllerException {
 
 		log.trace("saveProfileImage({},{},req) invoked.", part,user);
 
@@ -331,10 +331,9 @@ public class ProfileController {
 				UserVO userVO = profileService.getUserById(userId);
 				profileService.updateUserPicByUserDTO(dto2);
 				modelAndView.addObject(SessionConfig.AUTH_KEY_NAME, userVO);
-				model.addAttribute("PROFILE_USER_PIC",userVO.getUserPic());
 			}//if
 			
-			return "/mypage/mypage";
+			return "redirect: /profile/";
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		}
