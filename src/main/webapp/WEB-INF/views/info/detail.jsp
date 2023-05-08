@@ -45,7 +45,7 @@
 				</div>
 
 				<div class="weather">
-					<img class="weather-image" src="/resources/svg/add-item.svg">
+					<img class="weather-image" src="https://openweathermap.org/img/wn/${currentWeather.current.weather.get(0).icon}.png">
 				</div>
 
 				<div class="sanAddress">
