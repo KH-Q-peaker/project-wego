@@ -24,17 +24,17 @@
 <script src="/resources/js/header.js" defer></script>
 <script src="/resources/js/footer.js" defer></script>
 <script src="/resources/js/top.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
 <script src="/resources/js/userpage.js" defer></script>
 
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
 </head>
 <body>
 	<div class="total-wrap">
 		<!-- hearder start -->
 		<%@include file="/WEB-INF/views/common/header.jsp"%>
+		<c:set var="imgBasePath" value="/img/" />
+		
 		<!-- hearder end -->
 		<!-- main start -->
 		<section>
@@ -42,8 +42,7 @@
 			<div class="mypage-container">
 				<!--  프로필 메인  -->
 				<div class="profile">
-					<img class="profile-image" src="${getUserInfoList.userPic}"
-						alt="img" />
+					<img class="profile-image"src="${empty getUserInfoList.userPic ? '/resources/img/default-user.jpg' : imgBasePath += fn:substring(getUserInfoList.userPic, 12, 57)}" alt="img" />
 					<!--  사진  옆라인 -->
 					<div class="name-badge-setting">
 						<div class="div-name-setting" id="user-info">
