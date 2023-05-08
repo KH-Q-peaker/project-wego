@@ -39,7 +39,6 @@ import org.zerock.wego.domain.profile.ProfileVO;
 import org.zerock.wego.domain.review.ReviewViewVO;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.exception.ServiceException;
-import org.zerock.wego.service.badge.BadgeGetService;
 import org.zerock.wego.service.common.FavoriteService;
 import org.zerock.wego.service.profile.ProfileService;
 
