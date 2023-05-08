@@ -14,7 +14,7 @@
 	<link rel="stylesheet" href="/resources/css/sanInfo-main.css" />
 	<link rel="stylesheet" href="/resources/css/sanInfo-weather.css" />
 	<link rel="stylesheet" href="/resources/css/sanInfo-food.css" />
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ㅜㅜㅜㅜ&libraries=services"></script>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c9dfa495780e1b0fdb9ce6347b76a75b&libraries=services"></script>
 	<script>
 		var sanInfoId = ${sanInfoVO.sanInfoId};
 	</script>
