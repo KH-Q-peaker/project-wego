@@ -262,10 +262,8 @@ if (typeof area0 == 'undefined') {
       "합천군",
     ];
     var area16 = ["서귀포시", "제주시", "남제주군", "북제주군"];
-
     var addressValue = document.querySelector("#address").value;
     const addressArray = addressValue.split(' ');
-    console.log("시/도: " + addressArray[0] + " 시/구/군: " + addressArray[1]);
 
     // 시/도 선택 박스 초기화
     $("select[name=sido1]").each(function () {
@@ -284,13 +282,11 @@ if (typeof area0 == 'undefined') {
     });//each
 
     // 시/도 선택시 구/군 설정
-
     $("select[name=sido1]").change(function () {
       var area =
         "area" + $("option", $(this)).index($("option:selected", $(this))); // 선택지역의 구군 Array
       var $gugun = $(this).next(); // 선택영역 군구 객체
       $("option", $gugun).remove(); // 구군 초기화
-
       if (area == "area0") $gugun.append("<option value=''>구/군 선택</option>");
       else {
         $.each(eval(area), function () {
@@ -305,26 +301,13 @@ if (typeof area0 == 'undefined') {
   let upload = document.querySelector("#upload");
   let restart = document.querySelector("#restart");
 
-
-
   restart.addEventListener("click", () => {
     modal1.style.display = "none";
   });
 
   upload.addEventListener("click", () => {
     modal1.style.display = "block";
-
-    //로그 test
-    console.log(
-      "My Info 위치 submit test : ",
-      document.querySelector("select[name=sido1]").value
-    );
-    console.log(
-      "My Info 시군구 submit test : ",
-      document.querySelector("select[name=gugun1]").value
-    );
   });
-
 
   // 사용자 info정보 나타내기
   const data_san_range = document.querySelector('.radio-items-on');
@@ -344,9 +327,6 @@ if (typeof area0 == 'undefined') {
 
   $(":radio[name='preferences']").radioSelect(sanRange1);
   $(":radio[name='user-taste-pick']").radioSelect(sanTaste1);
-
-
-  console.log(sanRange1, sanTaste1);
 
   // 나의 취향 submit
   var setButton = document.querySelector("#setButton");
@@ -386,7 +366,6 @@ if (typeof area0 == 'undefined') {
 
     form.submit();
   });
-
 
   //회원탈퇴 모달창
   var withdrawbox = document.querySelector(".withdraw-box");
@@ -428,8 +407,10 @@ if (typeof area0 == 'undefined') {
     tx = txObj.value;
     var withdraw3h2 = document.getElementById("withdraw3h2");
     if (tx == "회원탈퇴") {
-      withdraw3h2.innerHTML = "We go 회원탈퇴 처리가<br>완료되었습니다.";
-
+      withdraw3h2.innerHTML = "회원 탈퇴시<br>회원정보 및 작성한 글과 댓글,<br>획득한 뱃지, 설정항목 등<br>모두 삭제되며, <br>복구가 불가능합니다.<br><br>이에 동의하신다면<br>확인버튼을 눌러주세요.";
+      withdwawyes3.onclick = function () {
+			window.location.href = "/withdrawal";
+  	  };
     } else {
       withdraw3h2.innerHTML = "입력하신 문구가 일치하지 않습니다.<br>다시 입력해주세요.";
     }

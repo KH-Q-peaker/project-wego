@@ -44,11 +44,11 @@ public class FavoriteService {
 		try {
 			FavoriteVO favoriteVO = this.favoriteMapper.select(dto);
 			
-			if(favoriteVO == null) {
+			if(favoriteVO == null || (favoriteVO.getStatus()=='N')) {
 				return false;
 			}
 			
-			return favoriteVO.getStatus().equals("Y");
+			return (favoriteVO.getStatus()=='Y');
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch

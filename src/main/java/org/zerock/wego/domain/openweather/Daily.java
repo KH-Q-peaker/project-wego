@@ -1,5 +1,6 @@
 package org.zerock.wego.domain.openweather;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,7 +11,7 @@ import lombok.Data;
 @Data
 public class Daily {
 
-	private Long dt;
+	private Timestamp dt;
 	private Long sunrise;
 	private Long sunset;
     private Long moonrise;

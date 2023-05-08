@@ -1,5 +1,6 @@
 package org.zerock.wego.domain.openweather;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,7 +11,7 @@ import lombok.Data;
 @Data
 public class Hourly {
 
-	private Long dt;
+	private Timestamp dt;
 	private Double temp;
 	@JsonProperty("feels_like")
 	private Double feelsLike;
@@ -30,7 +31,6 @@ public class Hourly {
 	private Double rain;
 	private Double snow;
 	private List<Weather> weather;
-
 	@JsonProperty("pop")
 	private Double precipitationProbability;
 }

@@ -1,9 +1,3 @@
-if (typeof comment_data_page == 'undefined') {
-	const comment_data_page = document.getElementById('commentCurrPageNum');
-		var myCommentCurrPage = comment_data_page.getAttribute('data-comment-page');
-		if (myCommentCurrPage == 1) {
-			$('.myCommentPage1').addClass("currPage");
-		}
 
 	function selectClickCurrPage1() {
 		var currPage = event.target.innerText;
@@ -38,4 +32,3 @@ if (typeof comment_data_page == 'undefined') {
 			}//success
 		});//ajax
 	} //selectClickCurrPageNext
-}

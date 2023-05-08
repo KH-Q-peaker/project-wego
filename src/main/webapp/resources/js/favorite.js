@@ -42,34 +42,24 @@ window.addEventListener("click", (e) => {
 
     if (e.target.classList.toggle("on")) {
       formData.set("status", "Y");
+      favoriteCount.innerText = Number(favoriteCount.innerText) + 1;
     } else {
       formData.set("status", "N");
+      favoriteCount.innerText = Number(favoriteCount.innerText) - 1;
     } // if-else
 
-    setTimeout(() => request(formData, e.target), 1000);
+    setTimeout(() => request(formData), 1000);
   } // if
 });
 
-function request(formData, target) {
+function request(formData) {
   fetch("/favorite", {
     method: "POST",
     body: formData,
+  }).then((res) => {
+    if (res.url.includes("login")) {
+      self.location = res.url;
+    } // if
   })
-    .then((res) => {
-      if (res.url.includes("login")) {
-        self.location = res.url;
-      } // if
-      return res.json();
-    })
-    .then((resBody) => {
-      if (resBody.state === "successed") {
-        const favoriteCount = $(target).next()[0];
-
-        if (target.className === "favorite on") {
-          favoriteCount.innerText = Number(favoriteCount.innerText) + 1;
-        } else {
-          favoriteCount.innerText = Number(favoriteCount.innerText) - 1;
-        } // if-else
-      } // if
-    });
 }
+

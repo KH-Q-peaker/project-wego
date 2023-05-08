@@ -29,7 +29,7 @@
 	width: 30px;
 	height: 30px;
 	border-radius: 50%;
-	justify-self: left;
+	justify-self: center;
 }
 .user-img:hover {
 	border: 2px solid #14ab2c;

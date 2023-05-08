@@ -195,7 +195,7 @@ section div > h2 {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  justify-self: left;
+  justify-self: center;
 }
 
 .recruit-item > .user-name {
@@ -310,7 +310,7 @@ section div > h2 {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  justify-self: left;
+  justify-self: center;
 }
 
 .review-item > .user-name {
@@ -377,6 +377,14 @@ section div > h2 {
   grid-area: reviewDate;
   font-size: 12px;
   justify-self: right;
+}
+
+.user-img:hover {
+    border: 2px solid #14ab2c;
+}
+
+.user-name:hover {
+    color: #14ab2c;
 }
 
 /* Tablet*/

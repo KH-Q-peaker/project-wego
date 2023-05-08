@@ -14,7 +14,7 @@ if (urlPathname === '/info') {
   orderBy = 'newest';
 } // if-else
 
-var isLoading = false;
+var isLoading = true;
 
 // 스크롤 이벤트 핸들러
 $(window).scroll(function () {
@@ -23,8 +23,8 @@ $(window).scroll(function () {
   var documentHeight = $(document).height();
 
   if (page <= maxPage) {
-    if (scrollTop + 500 >= documentHeight - windowHeight && !isLoading) {
-      isLoading = true;
+    if (scrollTop + 1000 >= documentHeight - windowHeight && isLoading === true) {
+      isLoading = false;
       next_load();
     } // if  
   } else {
@@ -40,13 +40,16 @@ function next_load() {
     url: url,
     data: { page: page, sortNum: sortNum, orderBy: orderBy },
     success: function (data) {
+		
       $('#data-container').append(data);
 
       sortNum = $('#data-container').children().last().attr('sortNum');
 
     }, complete: function () {
-      isLoading = false;
-      setTimeout(function () { page++; }, 1000);
+      setTimeout(function () { 
+		page++; 
+	    isLoading = true;
+      }, 500);
     }
   });
 }

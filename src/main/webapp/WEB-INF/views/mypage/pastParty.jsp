@@ -4,8 +4,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <script src="/resources/js/my-past-party.js" defer></script>
-<div id="pastPartyModule">
 
+<div id="pastPartyModule">
 	<h2>지난 등산 일정 ⛰</h2>
 	<table class="middle">
 		<thead>
@@ -22,11 +22,9 @@
 				<tr>
 					<td class="t1">${NoParty.sanName}</td>
 					<td class="t2"><a href="/party/${NoParty.sanPartyId}">
-								${NoParty.title}</a>
-					</td>
+							${NoParty.title}</a></td>
 					<td class="t3"><fmt:formatDate pattern="yyyy-MM-dd"
-						value="${NoParty.partyDt}"></fmt:formatDate>
-					</td>
+							value="${NoParty.partyDt}"></fmt:formatDate></td>
 					<td class="t4">${NoParty.partyCount}/${NoParty.partyMax}</td>
 					<td class="t5">
 						<button class="chatting-off">채팅입장</button>
@@ -55,8 +53,7 @@
 					data-past-page="${__pCurrPage__}" id="pastPageNum"
 					onclick="selectClickPastCurrPage()"><span
 					data-temp=" ${pastPage.cri.setCurrPage(pageNum)}">${pageNum}</span>
-					<input
-					type="hidden" id="pastcurrPage" value="${__pCurrPage__}">
+					<input type="hidden" id="pastcurrPage" value="${__pCurrPage__}">
 				</li>
 			</c:forEach>
 
@@ -72,3 +69,10 @@
 		</ul>
 	</div>
 </div>
+
+<script>
+	var pCurrPage = "${__pCurrPage__}";
+	if (pCurrPage == 1) {
+		$('.pastPartyPage1').addClass("currPage");
+	}
+</script>
