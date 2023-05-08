@@ -84,7 +84,7 @@
    <insert id="insertBadgeByBadgeIdAndUserId" parameterType="java.lang.Integer">
     INSERT INTO alarm_tb (target_gb, target_cd, user_id, contents, created_by_user_id)
 	SELECT '뱃지', #{badgeId}, #{userId},'축하합니다! "' || T1.BADGE_NAME || '" 뱃지를 획득하셨습니다!', #{userId}
-	FROM badge_get_v T2
+	FROM badge_get_tb T2
 	JOIN badge_tb T1 ON T1.BADGE_ID = T2.BADGE_ID
 	WHERE T2.BADGE_ID = #{badgeId} AND T2.USER_ID = #{userId}
    </insert>
