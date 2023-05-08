@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 import org.zerock.wego.config.SessionConfig;
 
 import lombok.NoArgsConstructor;
@@ -25,7 +26,7 @@ public class AuthInterceptor
 		log.trace("preHandle(req, res, handler) invoked \n \t\t\t\t>>>>>>>> requestURI : {}", req.getRequestURI());
 
 		HttpSession session = req.getSession(false);
-
+		
 		//		===================================================== 로그인 확인.
 		if (session == null && req.getMethod().equals("GET")) {
 			

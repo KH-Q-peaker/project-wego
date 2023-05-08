@@ -7,6 +7,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +36,7 @@ private final KakaoService kakaoService;
 private final OAuthService oAuthService;
 
 @GetMapping("")
-public String myAccountWithdrawal(@SessionAttribute(value = "__AUTH__", required = false) UserVO auth, Model model)
+public String myAccountWithdrawal(@SessionAttribute(value = "__AUTH__", required = false) UserVO auth, HttpServletRequest req, Model model)
 		throws ControllerException {
 	
 		log.trace("myAccountWithdrawal({}, {}) invoked.", auth, model);
@@ -139,11 +141,12 @@ public String myAccountWithdrawal(@SessionAttribute(value = "__AUTH__", required
 	//			withdrawService.deleteAllTableByMeByTableNameAndUserId(tableName, userId);
 	//		}//for
 			
-			//authorizationCode 세션에 저장해서 불러오기
+			
 			//카카오 연결해제
-			String authorizationCode = "";
-			KakaoOAuthTokenDTO dto = oAuthService.getKakaoAccessToken(authorizationCode);
-			kakaoService.unlinkKakao(dto.getAccess_token());
+			String kakaoAccessToken = (String)req.getSession().getAttribute("KAKAO_ACCESS_TOKEN");
+			log.info("############################################kakaoAccessToken:{}",kakaoAccessToken);
+			
+			kakaoService.unlinkKakao(kakaoAccessToken);
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
