@@ -58,7 +58,7 @@
 					</div>
 				</div>
 				<div class="contents">
-					<img src="${review.userPic}" alt="" class="userpic" />
+					<img src="${empty review.userPic ? '/resources/img/default-user.jpg' : imgBasePath += fn:substring(party.userPic, 12, 57)}" alt="" class="userpic" />
 					<a class="username" href="/profile/${review.userId}">${review.nickName}</a>
 					<div class="likeCnt">
 						<input class="like ${isFavorite ? 'fill' : '' }" type="button" value="" />︎<label> ${review.likeCnt }</label>
