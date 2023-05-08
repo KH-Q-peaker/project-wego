@@ -38,8 +38,8 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.6.5/jquery.timeago.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.6.5/locales/jquery.timeago.ko.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.6.5/jquery.timeago.min.js"defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.6.5/locales/jquery.timeago.ko.js"defer></script>
   </head>
 
   <body>
@@ -153,7 +153,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   >
                   <div class="message comment">
                     <!-- <img src="${empty notificationVO.userPic ? '/resources/img/leaf.png' : imgBasePath + notificationVO.userPic.substring(12, 57)}" alt="User Pic"> -->
-                    <img src="${empty createdAlarmUsers[notificationVO.createdByUserId].userPic ? '/resources/img/leaf.png' : imgBasePath += fn:substring(createdAlarmUsers[notificationVO.createdByUserId].userPic, 12, 57)}" alt="User Pic">
+                    <img src="${empty createdAlarmUsers[notificationVO.createdByUserId].userPic ? '/resources/img/default_user.png' : imgBasePath += fn:substring(createdAlarmUsers[notificationVO.createdByUserId].userPic, 12, 57)}" alt="User Pic">
                     <h4>${createdAlarmUsers[notificationVO.createdByUserId].nickname}님 : </h4> 
                     <c:choose>
 	                    <c:when test="${notificationVO.commentStatus eq 'Y' }" >
