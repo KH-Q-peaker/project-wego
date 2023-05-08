@@ -48,7 +48,7 @@ window.addEventListener("click", (e) => {
       favoriteCount.innerText = Number(favoriteCount.innerText) - 1;
     } // if-else
 
-    setTimeout(() => request(formData, e.target), 1000);
+    setTimeout(() => request(formData), 1000);
   } // if
 });
 
