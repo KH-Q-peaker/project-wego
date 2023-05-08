@@ -28,18 +28,14 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
    	<script src="/resources/js/footer.js" defer></script>
     
 	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-	<script>
-    console.log(window.location);
-	let contextPath = window.location.host;
-	var socket = new WebSocket("ws:"+ contextPath + "/notification");
-	</script>
     <script src="/resources/js/notification.js" defer></script>
     <script src="/resources/js/toggle.js" defer></script>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.0/jquery-migrate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.6.5/jquery.timeago.min.js"defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.6.5/locales/jquery.timeago.ko.js"defer></script>
+    
   </head>
 
   <body>
@@ -152,8 +148,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     >${notificationVO.createdDt}</time
                   >
                   <div class="message comment">
-                    <!-- <img src="${empty notificationVO.userPic ? '/resources/img/leaf.png' : imgBasePath + notificationVO.userPic.substring(12, 57)}" alt="User Pic"> -->
-                    <img src="${empty createdAlarmUsers[notificationVO.createdByUserId].userPic ? '/resources/img/default_user.png' : imgBasePath += fn:substring(createdAlarmUsers[notificationVO.createdByUserId].userPic, 12, 57)}" alt="User Pic">
+                    <img src="${empty createdAlarmUsers[notificationVO.createdByUserId].userPic ? "/resources/img/default_user.jpg" : imgBasePath += fn:substring(createdAlarmUsers[notificationVO.createdByUserId].userPic, 12, 57)}" alt="User Pic">
                     <h4>${createdAlarmUsers[notificationVO.createdByUserId].nickname}님 : </h4> 
                     <c:choose>
 	                    <c:when test="${notificationVO.commentStatus eq 'Y' }" >
@@ -180,7 +175,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   >
                   <div class="message profile">
                   
-					 <img src="${empty createdAlarmUsers[notificationVO.createdByUserId].userPic ? '/resources/img/leaf.png' : imgBasePath += fn:substring(createdAlarmUsers[notificationVO.createdByUserId].userPic, 12, 57)}" alt="User Pic">                    
+					 <img src="${empty createdAlarmUsers[notificationVO.createdByUserId].userPic ? "/resources/img/default_user.jpg" : imgBasePath += fn:substring(createdAlarmUsers[notificationVO.createdByUserId].userPic, 12, 57)}" alt="User Pic">                    
 					 <h4>${createdAlarmUsers[notificationVO.createdByUserId].nickname}님이 좋아요한 글&#128149;: </h4> 
                     <c:if test="${fn:contains(notificationVO.contents, '모집')}">
                       <p><a href="/party/${notificationVO.targetCd}"  id="notification-link" onclick="markNotificationAsRead(${notificationVO.alarmId})">${notificationVO.title}</a></p></c:if>

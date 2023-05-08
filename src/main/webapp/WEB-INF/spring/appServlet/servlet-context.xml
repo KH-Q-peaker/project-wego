@@ -93,14 +93,4 @@
 		<beans:property name="uploadTempDir" value="file:/opt/upload/temp" />
 	</beans:bean>
 
-	<!-- websocket handler -->
-	<beans:bean id="NotificationWebSocketHandler"
-		class="org.zerock.wego.socket.NotificationWebSocketHandler"/>
-	<websocket:handlers>
-		<websocket:mapping handler="NotificationWebSocketHandler" path="/notification" />
-		<websocket:handshake-interceptors>
-	         <beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
-	      </websocket:handshake-interceptors>
-		<websocket:sockjs websocket-enabled="true"/>
-	</websocket:handlers>
 </beans:beans>
