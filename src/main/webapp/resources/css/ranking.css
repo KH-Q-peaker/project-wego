@@ -71,6 +71,8 @@
 
     justify-content: center;
     justify-items: center;
+    
+    margin: 0px 0 25px 0;
 }
 .rankers .title {
     box-sizing: border-box;
@@ -176,6 +178,11 @@
     background-repeat: no-repeat;
     background-size: contain;
 
+}
+#ranker .item .rankerProfile{
+	display: flex;
+	flex-direction: column;
+    align-items: center;
 }
 #ranker .item .rankerProfile .rankerPic, #ranker .item .rankerProfile .rankerPic img{
     display: inline-block;
