@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import org.zerock.wego.config.SessionConfig;
 import org.zerock.wego.domain.common.Criteria;
 import org.zerock.wego.domain.common.FavoriteVO;
 import org.zerock.wego.domain.common.FileDTO;
@@ -292,7 +294,8 @@ public class ProfileController {
 
 	@PostMapping("/image")
 	String saveProfileImage(@RequestParam(value = "part", required = false) MultipartFile part,
-			@SessionAttribute("__AUTH__") UserVO user, HttpServletRequest req) throws ControllerException {
+			@SessionAttribute("__AUTH__") UserVO user, HttpServletRequest req,
+			Model model,ModelAndView modelAndView) throws ControllerException {
 
 		log.trace("saveProfileImage({},{},req) invoked.", part,user);
 
@@ -325,10 +328,13 @@ public class ProfileController {
 						.uuid(uuid).path(path).build();
 				profileService.saveUserPictureInFileTbByFileDTO(dto);
 				UserDTO dto2 = UserDTO.updateUserPicByUserIdAndUserPic(userId, path);
+				UserVO userVO = profileService.getUserById(userId);
 				profileService.updateUserPicByUserDTO(dto2);
+				modelAndView.addObject(SessionConfig.AUTH_KEY_NAME, userVO);
+				model.addAttribute("PROFILE_USER_PIC",userVO.getUserPic());
 			}//if
 			
-			return "redirect: /profile/";
+			return "/mypage/mypage";
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		}
