@@ -53,7 +53,6 @@ import lombok.extern.log4j.Log4j2;
 public class ProfileController {
 	private ProfileService profileService;
 	private FavoriteService favoriteService;
-	private BadgeGetService badgeGetService;
 
 	@GetMapping("")
 	public String getMypage(@SessionAttribute("__AUTH__") UserVO user, Model model) throws ControllerException {
@@ -71,7 +70,6 @@ public class ProfileController {
 					String[] pathArray = path.split("upload");
 					log.info("pathArray[1]:" + pathArray[1]);
 					model.addAttribute("UserPicName", pathArray[1]);
-					badgeGetService.getPickBadgeDequeByUserId(userId);
 				}//if
 			}//if
 			model.addAttribute("vo", vo);
