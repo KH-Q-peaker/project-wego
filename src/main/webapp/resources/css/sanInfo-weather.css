@@ -1,0 +1,30 @@
+@charset "utf-8";
+
+.contentsbox > div {
+
+  margin: 0 0 25px 0;
+
+}
+.contentsbox#weather .title{
+  display: inline-block;
+}
+
+.hourly .items {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-auto-flow: column;
+  gap: 10px;
+  overflow: scroll;
+  white-space: nowrap;
+  user-select: none;
+  padding-bottom: 32px;
+  scroll-behavior: auto;
+}
+.hourly .item{
+  display: grid;
+
+  grid-template-rows: auto auto auto;
+
+  align-items: center;
+  justify-items: center;
+}
