@@ -25,7 +25,7 @@ public class AuthInterceptor
 		log.trace("preHandle(req, res, handler) invoked \n \t\t\t\t>>>>>>>> requestURI : {}", req.getRequestURI());
 
 		HttpSession session = req.getSession(false);
-
+		
 		//		===================================================== 로그인 확인.
 		if (session == null && req.getMethod().equals("GET")) {
 			

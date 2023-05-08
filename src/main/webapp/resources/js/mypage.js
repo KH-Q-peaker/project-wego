@@ -160,8 +160,6 @@ window.onload = function () {
 	$("#module").animate({
 		opacity: 1
 	});
-	setFooterPosition();
-	console.log("setFooterPosition() 실행됨.");
 };
 
 
@@ -333,7 +331,7 @@ function nicknameCheck(nickname) {
 		noSignByRed();
 		isRightNickname = false;
 		//닉네임 1자인 경우   
-	} else if (hangleCount <= 1 || nickLength <=1) {
+	} else if (hangleCount <= 1 && nickname.length <= 1) {
 		isRightText.innerText = "닉네임은 2자 이상 입력하여야 합니다.";
 		noSignByRed();
 		isRightNickname = false;

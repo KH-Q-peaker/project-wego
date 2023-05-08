@@ -26,7 +26,7 @@ implements HandlerInterceptor{
 		
 		if(modelAndView != null) {
 			UserVO authUserVO = (UserVO) modelAndView.getModelMap().getAttribute(SessionConfig.AUTH_KEY_NAME);
-
+			
 			if(authUserVO != null) {
 
 				modelAndView.getModelMap().remove(SessionConfig.AUTH_KEY_NAME);
