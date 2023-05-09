@@ -21,6 +21,7 @@ import org.zerock.wego.domain.common.UserVO;
 import org.zerock.wego.exception.ControllerException;
 import org.zerock.wego.service.common.NotificationService;
 import org.zerock.wego.service.common.UserService;
+import org.zerock.wego.socket.NotificationWebSocketHandler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -32,9 +33,10 @@ import lombok.extern.log4j.Log4j2;
 @Controller
 public class NotificationController { // 알림 컨트롤러
 	
+	private final NotificationWebSocketHandler notificationWebSocketHandler;
 	private final NotificationService notificationService;
 	private final UserService userService;
-	
+
 	@GetMapping("")
     public String showPage(@SessionAttribute("__AUTH__")UserVO user, Model model) throws ControllerException {
     	log.trace("showNotificationPage() invoked.");

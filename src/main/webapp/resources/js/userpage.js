@@ -34,7 +34,7 @@ function getUserPosts() {
           opacity: 1,
         });
         $("#module").html(data);
-        setTimeout(setFooterPosition(), 500);
+         setTimeout(setFooterPosition(), 500);
       }
     },
     error: function (jqXHR, textStatus, errorThrown) {
@@ -60,7 +60,7 @@ function getUserComments() {
           opacity: 1,
         });
         $("#module").html(data);
-        setTimeout(setFooterPosition(), 500);
+         setTimeout(setFooterPosition(), 500);
       }
     },
     error: function (jqXHR, textStatus, errorThrown) {

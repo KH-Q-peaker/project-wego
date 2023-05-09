@@ -2,14 +2,12 @@ package org.zerock.wego.service.common;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.socket.WebSocketSession;
 import org.zerock.wego.domain.common.CommentDTO;
 import org.zerock.wego.domain.common.FavoriteDTO;
+import org.zerock.wego.domain.common.NotificationDTO;
 import org.zerock.wego.domain.common.NotificationVO;
 import org.zerock.wego.exception.NotFoundPageException;
 import org.zerock.wego.exception.ServiceException;
@@ -30,7 +28,7 @@ public class NotificationService {	// POJO
 	private final NotificationMapper notificationMapper;
 	private final JoinMapper joinMapper;
 	@Autowired
-    private NotificationWebSocketHandler webSocketHandler;
+    private NotificationWebSocketHandler notificationWebSocketHandler;
 
 	// 유저코드 알림목록 조회
 	public List<NotificationVO> getAllByUserId(Integer userId) throws ServiceException {
@@ -53,6 +51,11 @@ public class NotificationService {	// POJO
 			throw new ServiceException(e);
 		}// try-catch
 	} //getAlarmId
+
+    // 알림 메시지 전송
+    public void sendNotification(Integer userId, String message) {
+        notificationWebSocketHandler.sendMessageToUser(userId, message);
+    } // sendNotification
 	
 	// 좋아요과 함께 알림 추가 
 	public void registerFavoriteByTargetCdAndUserId(FavoriteDTO favorite) {
@@ -75,7 +78,7 @@ public class NotificationService {	// POJO
 				} else {
 					this.notificationMapper.insertCommentByCommentIdAndUserId(comment.getCommentId(), comment.getUserId());
 				} //if-else
-		
+				
 		} catch (RuntimeException e) {
 		    throw new ServiceException(e);
 		}// try-catch
@@ -95,15 +98,11 @@ public class NotificationService {	// POJO
 	public void removeNotificationById(Integer partyId) throws RuntimeException {
 		log.debug("removeNotificationById({},{})", partyId);
 	    try {
-	    	// 모집글에 참여한 사용자의 ID 가져오기
-			List<Integer> userIds = joinMapper.selectUserIdsBySanPartyId(partyId);
+			List<Integer> userIds = joinMapper.selectUserIdsBySanPartyId(partyId); 	// 모집글에 참여한 사용자의 ID 가져오기
 
-			// 해당 모집글에 참여한 사용자에 대한 알림 생성
-			for (Integer userId : userIds) {
-				// 사용자에게 삭제 후 알림을 이미 받았는지 확인
-				if (!notificationMapper.isExistsPartyDeletionNotification(userId, partyId)) {
-					// 그렇지 않은 경우 새 알림 만들기
-					log.trace(">>>>>>>>>> 모집글삭제로 인해 취소알림이 긴급으로 갑니다!");
+			for (Integer userId : userIds) {// 사용자에게 삭제 후 알림을 이미 받았는지 확인
+				if (!notificationMapper.isExistsPartyDeletionNotification(userId, partyId)) { // 그렇지 않은 경우 새 알림 만들기
+					log.trace(">>>>>>>>>> 모집글삭제로 인해 취소알림이 긴급으로 갑니다");
 					notificationMapper.insertPartyDeletionByPartyIdAndUserId(partyId, userId);
 				}
 			}			
@@ -150,35 +149,4 @@ public class NotificationService {	// POJO
 		}// try-catch
 	} // removeAlarm
 	
-	private final Set<WebSocketSession> sessions = ConcurrentHashMap.newKeySet();	// 웹소캣
-	
-    public void addSession(WebSocketSession webSocketsession, Integer userId) {
-      webSocketHandler.addSession(webSocketsession, userId);
-    }
-
-    public void removeSession(WebSocketSession webSocketsession) {
-      webSocketHandler.removeSession(webSocketsession);
-    }
-
-    public void sendMessageToUser(Integer userId, String message) {
-      webSocketHandler.sendMessageToUser(userId, message);
-    }
-
-    // 로그인 성공 시 WebSocket 세션 추가를 처리하는 메서드
-    public void handleLoginSuccess(Integer userId, WebSocketSession webSocketsession) {
-      addSession(webSocketsession, userId);
-    }
-
-    // 알림 메시지 전송 메서드
-    public void sendNotification(Integer userId, String notificationMessage) {
-      sendMessageToUser(userId, notificationMessage);
-    }
-
-    // 알림 서비스에서 이 메서드를 호출하여 WebSocket 세션을 제거할 수 있도록 함
-    public void handleLogout(Integer userId) {
-        WebSocketSession webSocketSession = webSocketHandler.getSessionByUserId(userId);
-        if (webSocketSession != null) {
-            removeSession(webSocketSession);
-        }
-    }
 } // end class
