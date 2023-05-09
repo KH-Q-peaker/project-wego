@@ -4,7 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%@ page import="java.time.LocalDateTime" %>
-<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.time.format.DateTimeFormatter" %
 
 <div class="contentsbox" id="weather">
     <div class="hourly">
