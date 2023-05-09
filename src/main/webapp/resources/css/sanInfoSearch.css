@@ -75,6 +75,9 @@ img {
 		grid-template-areas: "resultLine resultLine resultLine"
 			"infoSearchBoard infoSearchBoard selectSort";
 	}
+	.data-container {
+		grid-template-columns: repeat(3, 1fr);
+	}
 }
 
 @media screen and (max-width: 426px) {
@@ -85,5 +88,8 @@ img {
 	.info-search-board {
 		grid-area: infoSearchBoard;
 		justify-self: center;
+	}
+	.data-container {
+		grid-template-columns: repeat(1, 1fr);
 	}
 }

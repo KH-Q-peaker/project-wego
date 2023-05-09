@@ -72,6 +72,9 @@ img {
 		grid-template-areas: "resultLine resultLine resultLine"
 			"reviewSearchBoard reviewSearchBoard selectSort";
 	}
+	.data-container {
+		grid-template-columns: repeat(3, 1fr);
+	}
 }
 
 @media screen and (max-width: 426px) {
@@ -82,5 +85,8 @@ img {
 	.review-search-board {
 		grid-area: reviewSearchBoard;
 		justify-self: center;
+	}
+	.data-container {
+		grid-template-columns: repeat(1, 1fr);
 	}
 }
