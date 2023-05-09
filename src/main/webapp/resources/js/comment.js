@@ -1,7 +1,6 @@
 function loadMoreComments() {
 
 	let lastCommentId =$(".comments:not(.mention)").last().find("#commentId").val();
-	console.log(lastCommentId);
 
 	$.ajax({
 		url: "/comment/load",
