@@ -35,7 +35,6 @@
 	    			badge_get_tb
 	    		WHERE
 					user_id = #{userId}
-	    	
 	    	) T2
 		WHERE 
 			T1.badge_id  = T2.badge_id
@@ -66,7 +65,7 @@
 	    			badge_get_tb
 	    		WHERE
 					user_id = #{userId}
-	    	
+					AND NOT status = 'N'
 	    	) T2
 		WHERE 
 			T1.badge_id  = T2.badge_id
