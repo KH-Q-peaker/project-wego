@@ -53,6 +53,9 @@ img {
         grid-template-areas:
         "reviewBoard reviewBoard selectSort";
     }
+    .data-container {
+		grid-template-columns: repeat(3, 1fr);
+	}
 }
 
 @media screen and (max-width: 426px) {
@@ -62,10 +65,12 @@ img {
         "reviewBoard"
         "selectSort";
     }
-
     .review-board {
         grid-area: reviewBoard;
     
         justify-self: center;
     }
+   	.data-container {
+		grid-template-columns: repeat(1, 1fr);
+	}
 }

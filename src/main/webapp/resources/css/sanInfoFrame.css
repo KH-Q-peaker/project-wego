@@ -47,6 +47,9 @@ img {
 		grid-template-columns: repeat(3, 1fr);
 		grid-template-areas: "infoBoard infoBoard selectSort";
 	}
+	.data-container {
+		grid-template-columns: repeat(3, 1fr);
+	}
 }
 
 @media screen and (max-width: 426px) {
@@ -57,5 +60,8 @@ img {
 	.info-board {
 		grid-area: infoBoard;
 		justify-self: center;
+	}
+	.data-container {
+		grid-template-columns: repeat(1, 1fr);
 	}
 }

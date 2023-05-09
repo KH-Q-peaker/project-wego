@@ -66,14 +66,13 @@ $('#sort-abc, #sort-likes, #sort-newest, #sort-oldest').on('click', function () 
   orderBy = $(this).data('orderBy');
   page = 1;
   sortNum = 0;
-
+  isLoading = false;
+  
   $.ajax({
     type: "POST",
     url: url,
     data: { page: page, sortNum: sortNum, orderBy: orderBy },
     success: function (data) {
-	  page++;
-      // 부모 요소 가져오기
       var parent = document.getElementById('data-container');
 
       // 부모 요소에서 자식 요소를 모두 제거
@@ -81,11 +80,15 @@ $('#sort-abc, #sort-likes, #sort-newest, #sort-oldest').on('click', function () 
         parent.removeChild(parent.firstChild);
       } // while
 
-      // 생성된 jsp 코드를 추가
       $('#data-container').append(data);
 
-      // 마지막 아이템 ID 업데이트
       sortNum = $('#data-container').children().last().attr('sortNum');
+      
+    }, complete: function () {
+      setTimeout(function () { 
+		page++; 
+	    isLoading = true;
+      }, 500);
     }
   });
 })

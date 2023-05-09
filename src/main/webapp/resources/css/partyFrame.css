@@ -48,6 +48,9 @@ img {
 		grid-template-columns: repeat(3, 1fr);
 		grid-template-areas: "recruitBoard recruitBoard selectSort";
 	}
+	.data-container {
+		grid-template-columns: repeat(3, 1fr);
+	}
 }
 
 @media screen and (max-width: 426px) {
@@ -58,5 +61,8 @@ img {
 	.recruit-board {
 		grid-area: recruitBoard;
 		justify-self: center;
+	}
+	.data-container {
+		grid-template-columns: repeat(1, 1fr);
 	}
 }
