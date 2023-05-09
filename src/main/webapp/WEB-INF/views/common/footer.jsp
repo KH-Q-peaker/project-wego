@@ -18,7 +18,7 @@
 		</address>
 		<div class="support">
 			<span class="link-bar"> <a
-				href="https://www.figma.com/file/4Gfranq8Iqz4pSebwzUc1W/Final-project?node-id=0%3A1&t=UILOPhDRyS6LJiQW-1"
+				href="https://www.figma.com/file/4Gfranq8Iqz4pSebwzUc1W/Final-project?type=design&node-id=0%3A1&t=knivKX1pR5HAgIEC-1"
 				target="_blank"></a> <a
 				href="https://github.com/KH-Q-peaker?tab=repositories"
 				target="_blank"></a>
