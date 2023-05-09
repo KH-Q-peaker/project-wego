@@ -2,18 +2,25 @@
 
 .contentsbox > div {
 
-  margin: 0 0 25px 0;
+  margin: 0 0 32px 0;
 
 }
 .contentsbox#weather .title{
   display: inline-block;
-}
 
+  margin: 0px 0px 18px;
+  padding: 15px;
+
+  font-weight: bold;
+  font-size: 20px;
+  
+}
 .hourly .items {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-auto-flow: column;
   gap: 10px;
+  padding: 0 25px;
   overflow: scroll;
   white-space: nowrap;
   user-select: none;
@@ -27,4 +34,71 @@
 
   align-items: center;
   justify-items: center;
+
+  border: 1px solid #3ec5f1;
+  border-radius: 10px;
+  padding: 10px 5px;
+  
+  background-color: rgba(62, 197, 241, 0.1);
+}
+.hourly .item > *{
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 64px;
+  margin: 5px 0;
+}
+.hourly .item #hour{
+  font-weight: bold;
+  font-size: 12px;
+}
+.hourly .item #icon{
+  margin: 10px 0;
+
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #fff;
+}
+.hourly .item #temp{
+  
+}
+.daily .column{
+  display: flex;
+
+  justify-content: space-around;
+  align-items: center;
+
+  font-size: 15px !important;
+}
+.daily .row{
+  display: flex;
+
+  justify-content: space-around;
+  align-items: center;
+
+  font-size: 18px;
+}
+.daily span{
+  display: flex;
+
+  
+}
+.daily #id{
+  width: 80px;
+}
+.daily #icon{
+  width: 50px;
+  height: 50px;
+}
+.daily #min{
+  width: 50px;
+}
+.daily #max{
+  width: 50px;
+}
+.daily #pop{
+  width: 65px;
 }
