@@ -14,13 +14,14 @@
 	<link rel="stylesheet" href="/resources/css/sanInfo-main.css" />
 	<link rel="stylesheet" href="/resources/css/sanInfo-weather.css" />
 	<link rel="stylesheet" href="/resources/css/sanInfo-food.css" />
-
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c9dfa495780e1b0fdb9ce6347b76a75b&libraries=services"></script>
 	<script>
 		var sanInfoId = ${sanInfoVO.sanInfoId};
 	</script>
 
 	<script src="/resources/js/favorite-info-detail.js" defer></script>
 	<script src="/resources/js/sanInfo-detail.js" defer></script>	
+<!-- 	<script src="/resources/js/sanInfo-food.js" defer></script>	 -->
 
 </head>
 
@@ -69,7 +70,6 @@
 				</div>
 
 			</div>
-
 			<div id="content-section">
 				<ul class="content-header-menu">
 					<li class="content-header-menu-item selected" id="overview">
