@@ -12,7 +12,6 @@
       <link rel="stylesheet" href="/resources/css/footer.css" />
       <link rel="stylesheet" href="/resources/css/myPageindex.css" />
       <link rel="stylesheet" href="/resources/css/mypage.css" />
-      <link rel="stylesheet" href="/resources/css/top.css" />
       <link rel="stylesheet" href="/resources/css/userposts.css" />
       
       <script src="/resources/js/header.js" defer></script>

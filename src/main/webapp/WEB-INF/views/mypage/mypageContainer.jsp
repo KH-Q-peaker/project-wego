@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<c:set var="imgBasePath" value="/img/" />
 <div class="mypage-container">
 	<!-- form 필수값 검증 후 값이 없는 경우 알림 -->
 	<!-- <form action="#" method="post"> -->
@@ -43,7 +44,9 @@
 		enctype="multipart/form-data">
 		<div class="profile">
 			<div class="profile-image">
-				<img id="profileImage" src="/img${UserPicName}" alt="">
+				<img id="profileImage" src="${empty UserPicName ?
+				"/resources/img/default-user.jpg" :
+				imgBasePath += fn:substring(UserPicName, 12, 57)}" alt="">
 			</div>
 
 			<div class="add-profile-image">
