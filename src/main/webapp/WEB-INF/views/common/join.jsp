@@ -9,6 +9,7 @@
 <link type="text/css" rel="stylesheet" href="/resources/css/join.css"/>
 </head>
 <body>
+<c:set var="imgBasePath" value="/img/" />
 	<div class="joinModal">
 		<img src=" ${empty party.partyPic ? "/resources/img/default-party.jpg" : imgBasePath += fn:substring(party.partyPic, 12, 57)}" alt="" class="userpic" />
 		<div class="sanName">${party.sanName }</div>
