@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.zerock.wego.domain.common.UserVO;
-import org.zerock.wego.domain.oauth.kakao.KakaoOAuthTokenDTO;
 import org.zerock.wego.exception.ControllerException;
+import org.zerock.wego.oauth.NaverOAuth;
 import org.zerock.wego.service.common.WithdrawService;
 import org.zerock.wego.service.oauth.KakaoService;
 import org.zerock.wego.service.oauth.OAuthService;
@@ -34,6 +34,7 @@ public class WithdrawController {
 private final WithdrawService withdrawService;
 private final KakaoService kakaoService;
 private final OAuthService oAuthService;
+private final NaverOAuth naverOAuth;
 
 @GetMapping("")
 public String myAccountWithdrawal(@SessionAttribute(value = "__AUTH__", required = false) UserVO auth, HttpServletRequest req, Model model)
@@ -126,31 +127,22 @@ public String myAccountWithdrawal(@SessionAttribute(value = "__AUTH__", required
 					withdrawService.deleteMyPartyImageFileTableListByUserId(userId);
 			Integer deleteMyReviewImageTable = 
 					withdrawService.deleteMyReviewImageFileTableListByUserId(userId);
-			log.info("1:{}, 2:{}, 3:{}",deleteMyProfileImageTable,deleteMyPartyImageTable,deleteMyReviewImageTable);
 			
-	    	//5. userId를 사용하는 테이블에서 userId와 관련된 모든 테이블 레코드 삭제
-		    //#{tableName}에 들어갈 목록: ALARM_TB, BADGE_GET_TB, CHAT_TB, COMMENT_TB, JOIN_TB, LIKE_TB,
-		    //REPORT_TB, SAN_PARTY_TB, SAN_REVIEW_TB, USER_TB
+			//5. 모든 테이블에서 userId와 관련된 데이터 삭제
+			withdrawService.deleteAllTableByMeByTableNameAndUserId(userId);
 			
-			// 이것은 거의 모든 테이블에서 자신의 정보가 삭제되므로,
-			// 소셜로그인 연결해제 이후에 실행해야 함.
-	//		String[] tableArray = {"ALARM_TB", "BADGE_GET_TB", "CHAT_TB", "COMMENT_TB", "JOIN_TB", "LIKE_TB",
-	//			    "REPORT_TB", "SAN_PARTY_TB", "SAN_REVIEW_TB", "USER_TB"};
-	//		for(int i = 0; i <tableArray.length; i++) {
-	//			String tableName = tableArray[i];
-	//			withdrawService.deleteAllTableByMeByTableNameAndUserId(tableName, userId);
-	//		}//for
-			
-			
-			//카카오 연결해제
+			//6. 소셜로그인 연결해제 : 카카오 연결해제
 			String kakaoAccessToken = (String)req.getSession().getAttribute("KAKAO_ACCESS_TOKEN");
-			log.info("############################################kakaoAccessToken:{}",kakaoAccessToken);
-			
 			kakaoService.unlinkKakao(kakaoAccessToken);
+			//6. 소셜로그인 연결해제 : 네이버 연결해제
+			String naverAccessToken = (String)req.getSession().getAttribute("NAVER_ACCESS_TOKEN");
+			naverOAuth.unlinkNaver(naverAccessToken);
+			
+			return "redirect:/login/logout";
+			
 		} catch (Exception e) {
 			throw new ControllerException(e);
 		} // try-catch
-        return "";
     }//myAccountWithdrawal
 
 }// end class

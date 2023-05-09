@@ -474,7 +474,8 @@ ion-icon#no-sign {
   border-radius: 10px;
   box-shadow: 0px 5px 10px rgb(185 185 185 / 15%), 0px 5px 10px rgb(185 185 185 / 15%);
   height: auto;
-  gap: 5px;
+  width: 600px;
+  gap: 15px;
   display: grid;
   grid-template-rows: 35px 100px;
   grid-template-columns: repeat(5, 1fr);
@@ -520,6 +521,13 @@ a.badge-setting {
   height: 100px;
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 1);
+}
+
+@media screen and (max-width: 935px) {
+	.badge-collection {
+		width: 540px;
+		gap: 0px;
+	}
 }
 
 /* 모바일일때  */
@@ -668,12 +676,15 @@ a.badge-setting {
   .nickname-input .ion {
     left: 230px;
   }
+  .badge-collection {
+    width: 400px;
+    gap: 15px;
+  }
 }
 @media screen and (max-width: 425px) {
   .nickname-input {
     width: 350px;
   }
-
   .nickname-input input {
     width: 65%;
   }
@@ -690,5 +701,9 @@ a.badge-setting {
   }
   .nickname-input .ion {
     display: none;
+  }
+  .badge-collection {
+   width: 350px;
+   gap: 5px;
   }
 }

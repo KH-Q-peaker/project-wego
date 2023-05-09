@@ -1,10 +1,3 @@
-if (typeof currPageNum1 == "undefined") {
-  const currPageNum1 = document.getElementById("currPageNum");
-  var userPostsCurrPage = currPageNum1.getAttribute("data-curr-page");
-  console.log("userPostsCurrPage:{}", userPostsCurrPage);
-  if (userPostsCurrPage == 1) {
-    $(".userPostsPage1").addClass("currPage");
-  }
 
   function selectClickCurrPage() {
     var currPage = event.target.innerText;
@@ -47,4 +40,3 @@ if (typeof currPageNum1 == "undefined") {
       }, //success
     }); //ajax
   } //selectClickCurrPageNext
-}

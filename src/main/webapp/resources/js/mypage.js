@@ -136,7 +136,7 @@ window.onload = function () {
 	$("#module").animate({
 		opacity: 1
 	});
-	setTimeout(setFooterPosition(), 500);
+	setTimeout(setFooterPosition, 500);
 };
 
 
@@ -163,7 +163,7 @@ $('#climb').click(function () {
 	$("#module").animate({
 		opacity: 1
 	});
-	setTimeout(setFooterPosition(), 500);
+	setTimeout(setFooterPosition, 500);
 });
 
 $('#info').click(function () {
@@ -183,7 +183,7 @@ $('#info').click(function () {
 			$("#module").load("/profile/info");
 		}
 	});
-	setTimeout(setFooterPosition(), 500);
+	setTimeout(setFooterPosition, 500);
 });
 
 
@@ -214,7 +214,7 @@ $('#mypost').click(function () {
 	$("#module").animate({
 		opacity: 1
 	});
-	setTimeout(setFooterPosition(), 500);
+	setTimeout(setFooterPosition, 500);
 });
 
 $('#mylike').click(function () {
@@ -236,7 +236,7 @@ $('#mylike').click(function () {
 			}, 200);
 		}
 	});
-	setTimeout(setFooterPosition(), 500);
+	setTimeout(setFooterPosition, 500);
 });
 
 //닉네임변경 및 닉네임 유효성 검사
