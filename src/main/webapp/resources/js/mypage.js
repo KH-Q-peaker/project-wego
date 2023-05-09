@@ -198,7 +198,6 @@ $("#info").click(function () {
 });
 
 
-});
 
 $("#mypost").click(function () {
   var module1 = document.querySelector("#module");
