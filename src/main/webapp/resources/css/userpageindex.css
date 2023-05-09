@@ -139,7 +139,8 @@ h2 {
   border-radius: 10px;
   box-shadow: 0px 5px 10px rgb(185 185 185 / 15%), 0px 5px 10px rgb(185 185 185 / 15%);
   height: auto;
-  gap: 5px;
+  width: 600px;
+  gap: 15px;
   display: grid;
   grid-template-rows: 35px 100px;
   grid-template-columns: repeat(5, 1fr);
@@ -244,6 +245,13 @@ input.profileMenu {
   font-weight: bold !important ;
 }
 
+@media screen and (max-width: 935px) {
+	.badge-collection {
+		width: 540px;
+		gap: 0px;
+	}
+}
+
 /* 모바일일때  */
 @media screen and (max-width: 838px) {
   .mypage-container {
@@ -267,7 +275,6 @@ input.profileMenu {
     height: 150px;
     background-size: contain;
   }
-
   /* 작아졌을떄~ */
   .name-badge-setting {
     width: auto;
@@ -323,5 +330,16 @@ input.profileMenu {
     left: 120%;
     font-size: 15px;
     top: 12%;
+  }
+  .badge-collection {
+    width: 400px;
+    gap: 15px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .badge-collection {
+   width: 350px;
+   gap: 5px;
   }
 }

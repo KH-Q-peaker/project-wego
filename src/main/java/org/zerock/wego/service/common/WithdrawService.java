@@ -93,12 +93,23 @@ public class WithdrawService {
 	// 회원 탈퇴 7. 나와 관련된 데이터 테이블 삭제
 	// #{tableName}에 들어갈 목록: ALARM_TB, BADGE_GET_TB, CHAT_TB, COMMENT_TB, JOIN_TB, LIKE_TB,
 	// REPORT_TB, SAN_PARTY_TB, SAN_REVIEW_TB, USER_TB
-	public Integer deleteAllTableByMeByTableNameAndUserId(String tableName, Integer userId)
+	public Integer deleteAllTableByMeByTableNameAndUserId(Integer userId)
 			throws ServiceException {
 		log.trace("deleteAllTableByMeByTableNameAndUserId() invoked.");
 
 		try {			
-			return this.withdrawMapper.deleteAllTableByMe(tableName, userId);
+			Integer result = this.withdrawMapper.deleteAlarmTableByMe(userId)
+					+ this.withdrawMapper.deleteBadgeGetTableByMe(userId)
+					+ this.withdrawMapper.deleteChatTableByMe(userId)
+					+ this.withdrawMapper.deleteCommentTableByMe(userId)
+					+ this.withdrawMapper.deleteJoinTableByMe(userId)
+					+ this.withdrawMapper.deleteLikeTableByMe(userId)
+					+ this.withdrawMapper.deleteReportTableByMe(userId)
+					+ this.withdrawMapper.deleteSanPartyTableByMe(userId)
+					+ this.withdrawMapper.deleteSanReviewTableByMe(userId)
+					+ this.withdrawMapper.deleteUserTableByMe(userId);
+			
+			return result;
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		} // try-catch

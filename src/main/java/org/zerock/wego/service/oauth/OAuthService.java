@@ -170,6 +170,10 @@ public class OAuthService {
 		NaverOAuthTokenDTO naverOAuthTokenDTO = this.getNaverAccessToken(authorizationCode, state);
 		NaverUserInfoDTO naverUserInfoDTO = this.getNaverUserInfo(naverOAuthTokenDTO);
 
+		ServletRequestAttributes servletRequestAttribute = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+	    HttpSession session = servletRequestAttribute.getRequest().getSession(true);
+	    session.setAttribute("NAVER_ACCESS_TOKEN", naverOAuthTokenDTO.getAccess_token());
+		
 		String targetSocialId = naverUserInfoDTO.getResponse().getEmail();
 
 		boolean isAlreadySignUp = loginService.isSignUp(targetSocialId);

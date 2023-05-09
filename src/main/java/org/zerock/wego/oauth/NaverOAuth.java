@@ -1,5 +1,10 @@
 package org.zerock.wego.oauth;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +24,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.AllArgsConstructor;
+import lombok.Cleanup;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -133,5 +139,37 @@ public class NaverOAuth {	// https://developers.naver.com/docs/login/api/api.md 
 
 		return naverUserInfoDTO;		
 	} // getUserInfo
+	
+	// 탈퇴하기
+		public void unlinkNaver(String accessToken) {
+
+			String requestURL = TOKEN_REQUEST_URL;
+
+			try {
+
+				URL url = new URL(requestURL);
+
+				@Cleanup("disconnect")
+				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+				// 요청 헤더에 포함될 내용
+				conn.setRequestMethod("POST");
+				conn.setRequestProperty("grant_type", GRANT_TYPE[2]);
+				conn.setRequestProperty("client_id", clientId);
+				conn.setRequestProperty("client_secret", clientSecret);
+				conn.setRequestProperty("access_token", accessToken);
+				conn.connect();
+
+				// 응답 코드
+				int responseCode = conn.getResponseCode();
+				log.info("responseCode = {}", responseCode);
+
+				BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+				log.info("unlink = {}", br.readLine());
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}// unlinkKakao
 
 } // end class

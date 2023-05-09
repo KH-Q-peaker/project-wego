@@ -123,25 +123,27 @@ const isRightFile = (event) => {
 
 //메인 페이지 로드
 window.onload = function () {
-  $.ajax({
-    type: "get",
-    url: "/profile/partyList",
-    success: function (data) {
-      $("#content1").load("/profile/partyList");
-    },
-  });
-  $.ajax({
-    type: "get",
-    url: "/profile/pastPartyList",
-    success: function (data) {
-      $("#content2").load("/profile/pastPartyList");
-    },
-  });
-  document.getElementById("module").style.opacity = "0";
-  $("#module").animate({
-    opacity: 1,
-  });
-  setTimeout(setFooterPosition, 500);
+
+	$.ajax({
+		type: 'get',
+		url: '/profile/partyList',
+		success: function (data) {
+			$("#content1").load("/profile/partyList");
+		}
+	});
+	$.ajax({
+		type: 'get',
+		url: '/profile/pastPartyList',
+		success: function (data) {
+			$("#content2").load("/profile/pastPartyList");
+		}
+	});
+	document.getElementById("module").style.opacity = "0";
+	$("#module").animate({
+		opacity: 1
+	});
+	setTimeout(setFooterPosition, 500);
+
 };
 
 $("#climb").click(function () {
@@ -150,25 +152,26 @@ $("#climb").click(function () {
     '<div class="cotents"> \
 	    <div class="content1" id="content1"> </div>\
 	    <div class="content2" id="content2"> </div></div>';
-  $.ajax({
-    type: "get",
-    url: "/profile/partyList",
-    success: function (data) {
-      $("#content1").load("/profile/partyList");
-    },
-  });
-  $.ajax({
-    type: "get",
-    url: "/profile/pastPartyList",
-    success: function (data) {
-      $("#content2").load("/profile/pastPartyList");
-    },
-  });
-  document.getElementById("module").style.opacity = "0";
-  $("#module").animate({
-    opacity: 1,
-  });
-  setTimeout(setFooterPosition, 500);
+
+	$.ajax({
+		type: 'get',
+		url: '/profile/partyList',
+		success: function (data) {
+			$("#content1").load("/profile/partyList");
+		}
+	});
+	$.ajax({
+		type: 'get',
+		url: '/profile/pastPartyList',
+		success: function (data) {
+			$("#content2").load("/profile/pastPartyList");
+		}
+	});
+	document.getElementById("module").style.opacity = "0";
+	$("#module").animate({
+		opacity: 1
+	});
+	setTimeout(setFooterPosition, 500);
 
 });
 
@@ -178,19 +181,22 @@ $("#info").click(function () {
     '<div class="cotents"> \
 	    <div class="content1" id="content1"> </div>\
 	    <div class="content2" id="content2"> </div></div>';
-  $.ajax({
-    async: true,
-    type: "get",
-    url: "/profile/info",
-    success: function (data) {
-      document.getElementById("module").style.opacity = "0";
-      $("#module").animate({
-        opacity: 1,
-      });
-      $("#module").load("/profile/info");
-    },
-  });
-  setTimeout(setFooterPosition, 500);
+
+	$.ajax({
+		async: true,
+		type: 'get',
+		url: '/profile/info',
+		success: function (data) {
+			document.getElementById("module").style.opacity = "0";
+			$("#module").animate({
+				opacity: 1
+			});
+			$("#module").load("/profile/info");
+		}
+	});
+	setTimeout(setFooterPosition, 500);
+});
+
 
 });
 
@@ -205,25 +211,26 @@ $("#mypost").click(function () {
     '<div class="cotents"> \
 	    <div class="content1" id="content1"> </div>\
 	    <div class="content2" id="content2"> </div></div>';
-  $.ajax({
-    type: "get",
-    url: "/profile/mypost",
-    success: function (data) {
-      $("#content1").load("/profile/mypost");
-    },
-  });
-  $.ajax({
-    type: "get",
-    url: "/profile/mycomment",
-    success: function (data) {
-      $("#content2").load("/profile/mycomment");
-    },
-  });
-  document.getElementById("module").style.opacity = "0";
-  $("#module").animate({
-    opacity: 1,
-  });
-  setTimeout(setFooterPosition, 500);
+
+	$.ajax({
+		type: 'get',
+		url: '/profile/mypost',
+		success: function (data) {
+			$("#content1").load("/profile/mypost");
+		}
+	});
+	$.ajax({
+		type: 'get',
+		url: '/profile/mycomment',
+		success: function (data) {
+			$("#content2").load("/profile/mycomment");
+		}
+	});
+	document.getElementById("module").style.opacity = "0";
+	$("#module").animate({
+		opacity: 1
+	});
+	setTimeout(setFooterPosition, 500);
 
 });
 
@@ -233,21 +240,23 @@ $("#mylike").click(function () {
     '<div class="my-like cotents"> \
 	    <div class="content1" id="content1"> </div>\
 	    <div class="content2" id="content2"> </div></div>';
-  $.ajax({
-    async: true,
-    type: "get",
-    url: "/profile/mylike",
-    success: function (data) {
-      document.getElementById("module").style.opacity = "0";
-      $(".cotents").load("/profile/mylike");
-      setTimeout(function () {
-        $("#module").animate({
-          opacity: 1,
-        });
-      }, 200);
-    },
-  });
-  setTimeout(setFooterPosition, 500);
+
+
+	$.ajax({
+		async: true,
+		type: 'get',
+		url: '/profile/mylike',
+		success: function (data) {
+			document.getElementById("module").style.opacity = "0";
+			$(".cotents").load("/profile/mylike");
+			setTimeout(function () {
+				$("#module").animate({
+					opacity: 1
+				})
+			}, 200);
+		}
+	});
+	setTimeout(setFooterPosition, 500);
 
 });
 
