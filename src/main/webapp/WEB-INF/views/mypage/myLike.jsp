@@ -7,6 +7,7 @@
     <script src="/resources/js/favorite.js" defer></script>
     <script src="/resources/js/main.js" defer></script>
     <link rel="stylesheet" href="/resources/css/main.css" />
+    <script src="/resources/js/board-href.js" defer></script>
     
    <style>
 	    .my-like.cotents {
@@ -15,6 +16,7 @@
 		}
     </style> 
     
+    <c:set var="imgBasePath" value="/img/" />
     <div>
     	<div class="mountain-info">
 				<h2>❤️ 산 ❤️</h2>
@@ -22,7 +24,7 @@
 					<c:forEach var="item" items="${sanInfoList}">
 						<a href="/info/${item.sanInfoId}">
 							<div class="mountain-item">
-								<img class="mountain-img" src="/img/${fn:substring(item.img, 10, 55)}" alt="img" />
+								<img class="mountain-img" src="${item.img}" alt="img" />
 								<h3 class="mountain-name" id="mountainName">${item.sanName}</h3>
 								<p class="mountain-contents" id="text">${item.details}</p>
 								<div class="mountain-like">
@@ -49,10 +51,10 @@
 					<c:forEach var="item" items="${partyList}">
 						<a href="/party/${item.sanPartyId}">
 							<div class="recruit-item">
-								<img class="user-img" src="/img/${fn:substring(item.userPic, 10, 55)}" alt="img" />
+								<img class="user-img" src="${empty item.userPic ? "/resources/img/default-user.jpg" : imgBasePath += fn:substring(item.userPic, 12, 57)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>
-								<img class="recruit-img" src="/img/${fn:substring(item.partyPic, 10, 55)}" alt="img" />
+								<img class="recruit-img" src="${empty item.partyPic ? "/resources/img/default-party.jpg" : imgBasePath += fn:substring(item.partyPic, 12, 57)}" alt="img" />
 								<p class="recruit-title" id="title">${item.title}</p>
 								<p class="recruit-schedule-schedule">날짜:</p>
 								<p class="recruit-schedule" id="schedule">
@@ -94,10 +96,11 @@
 					<c:forEach var="item" items="${reviewList}">
 						<a href="/review/${item.sanReviewId}">
 							<div class="review-item">
-								<img class="user-img" src="/img/${fn:substring(item.userPic, 10, 55)}" alt="img" />
+								<img class="user-img" src="${empty item.userPic ? "/resources/img/default-user.jpg" : imgBasePath += fn:substring(item.userPic, 12, 57)}" alt="img" />
 								<p class="user-name" id="userName">${item.nickName}</p>
 								<p class="mountain-name" id="mountainName">${item.sanName}</p>
-								<img class="review-img" src="/img/defaultImg.png" alt="img" />
+								<img class="review-img" src="${empty item.reviewPic ? 
+								"/resources/img/default-review.jpg" : imgBasePath += fn:substring(item.reviewPic, 12, 57)}" alt="img" />
 								<h3 class="review-title" id="title">${item.title}</h3>
 								<p class="review-contents" id="text">${item.contents}</p>
 								<div class="review-like">

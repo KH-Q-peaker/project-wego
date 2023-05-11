@@ -44,9 +44,7 @@
 		enctype="multipart/form-data">
 		<div class="profile">
 			<div class="profile-image">
-				<img id="profileImage" src="${empty UserPicName ?
-				"/resources/img/default-user.jpg" :
-				imgBasePath += fn:substring(UserPicName, 12, 57)}" alt="">
+				<img id="profileImage" src="/img${UserPicName}" alt="">
 			</div>
 
 			<div class="add-profile-image">
