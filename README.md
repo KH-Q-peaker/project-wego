@@ -20,7 +20,7 @@
 
 - "Wego"는 등산과 트레킹을 즐기는 사람들을 위한 종합적인 서비스로, 등산로 안내와 주변 정보 제공으로 등산 계획을 도와주고, 커뮤니티를 통해 사용자들끼리 소통과 정보 공유를 할 수 있으며, 챌린지와 랭킹 시스템을 통해 등산에 대한 동기부여를 제공합니다.
 
-[프로젝트 설명서] [Wego기획안.pdf](https://github.com/uniyunnnn/project-wego-jiyun/files/11447150/Wego기획안.pdf)
+[프로젝트 설명서] [Wego기획안.pdf](https://github.com/uniyunnnn/project-wego-jiyun/files/11447150/_.pdf)
 <br/>
 
 ---
