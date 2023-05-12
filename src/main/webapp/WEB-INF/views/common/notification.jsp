@@ -148,7 +148,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                     >${notificationVO.createdDt}</time
                   >
                   <div class="message comment">
-                    <img src="${empty createdAlarmUsers[notificationVO.createdByUserId].userPic ? "/resources/img/default_user.jpg" : imgBasePath += fn:substring(createdAlarmUsers[notificationVO.createdByUserId].userPic, 12, 57)}" alt="User Pic">
+                    <img src="${empty createdAlarmUsers[notificationVO.createdByUserId].userPic ? "/resources/img/default-user.jpg" : imgBasePath += fn:substring(createdAlarmUsers[notificationVO.createdByUserId].userPic, 12, 57)}" alt="User Pic">
                     <h4>${createdAlarmUsers[notificationVO.createdByUserId].nickname}님 : </h4> 
                     <c:choose>
 	                    <c:when test="${notificationVO.commentStatus eq 'Y' }" >
@@ -175,7 +175,7 @@ uri="http://java.sun.com/jsp/jstl/functions"%>
                   >
                   <div class="message profile">
                   
-					 <img src="${empty createdAlarmUsers[notificationVO.createdByUserId].userPic ? "/resources/img/default_user.jpg" : imgBasePath += fn:substring(createdAlarmUsers[notificationVO.createdByUserId].userPic, 12, 57)}" alt="User Pic">                    
+					 <img src="${empty createdAlarmUsers[notificationVO.createdByUserId].userPic ? "/resources/img/default-user.jpg" : imgBasePath += fn:substring(createdAlarmUsers[notificationVO.createdByUserId].userPic, 12, 57)}" alt="User Pic">                    
 					 <h4>${createdAlarmUsers[notificationVO.createdByUserId].nickname}님이 좋아요한 글&#128149;: </h4> 
                     <c:if test="${fn:contains(notificationVO.contents, '모집')}">
                       <p><a href="/party/${notificationVO.targetCd}"  id="notification-link" onclick="markNotificationAsRead(${notificationVO.alarmId})">${notificationVO.title}</a></p></c:if>
