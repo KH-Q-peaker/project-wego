@@ -44,8 +44,8 @@
 ## 팀원 소개 역할 및 담당기능
 >    | 이름        | 역할                     |
 >    |:-----------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
->    |송인구 (Team Leader)| - 랭킹 및 뱃지시스템 Frontend / Backend<br/> - 산정보API :산이름 위치 산 정보내용 조회<br/> - OpenWeather API 산 날씨 예보 조회<br/> - 카카오, 네이버, 구글 API 활용 한 소셜 로그인기능구현<br/> - 총괄Project Manager<br/> - 코드컨벤션 조직화<br/> - 로고제작<br/> - 깃 관리<br/> - AWS 서버 배포|
->    |한은혜| 1. 메인 페이지<br/>- 산 정보, 모집, 후기 게시판의 각 게시글 랜덤 10개 출력<br/> 2. 통합 검색 페이지<br/>- 산 정보, 후기, 모집 게시글에 대한 통합검색<br/>- 제목과 내용에서 검색 키워드와 일치하는 글 조회<br/> 3. 등반 후기 게시판<br/>- 후기 글 작성 및 수정<br/>- 글 최대 1500자, 이미지 최대 5장 첨부<br/> 4. 등반 멤버 모집 게시판의 작성 및 수정<br/>- 모집 글 작성 및 수정<br/>- 이미지 최대 1장 첨부 <br/> 5. 좋아요(❤) 기능<br/>- 회원 한정 좋아요 클릭<br/>- 산 정보, 후기, 모집 각 게시글의 회원들의 좋아요 수 반영|
+> |송인구 (Team Leader)|- Project Manager 역할 <br> -- 깃 PR 관리 <br> -- 코드 컨벤션 작성 <br> - 뱃지/랭킹 기능 구현 Frontend / Backend <br> - 로그인 시스템 구현 Backend <br> -- Google, Kakao, Naver 소셜 로그인 <br> -- Interceptor를 통한 로그인 페이지 이동 <br> - 산림청 API Parsing 및 DB 저장 <br> - 산정보 상세 페이지 조회 Backend <br> - AWS EC2, Tomcat9 를 통한 서비스 배포 |
+>    |한은혜| - 메인 페이지<br/>-- 산 정보, 모집, 후기 게시판의 각 게시글 랜덤 10개 출력<br/> - 통합 검색 페이지<br/>-- 산 정보, 후기, 모집 게시글에 대한 통합검색<br/>-- 제목과 내용에서 검색 키워드와 일치하는 글 조회<br/> - 등반 후기 게시판<br/>-- 후기 글 작성 및 수정<br/>-- 글 최대 1500자, 이미지 최대 5장 첨부<br/> - 등반 멤버 모집 게시판의 작성 및 수정<br/>-- 모집 글 작성 및 수정<br/>-- 이미지 최대 1장 첨부 <br/> - 좋아요(❤) 기능<br/>-- 회원 한정 좋아요 클릭<br/>-- 산 정보, 후기, 모집 각 게시글의 회원들의 좋아요 수 반영|
 >    |이신영| - 산 정보게시판, 모집 게시판, 후기 게시판 메인 Frontend / Backend<br/> - 비동기 무한스크롤 기능<br/> - 비동기 게시글 정렬 <br/> - 검색어 일치하는 검색결과 반환 및 비동기 무한스크롤<br/> - 목록 좋아요반영<br/> - 산상세정보페이지에 좋아요 기능추가 |
 >    |김지윤| - 마이페이지 유저페이지 Frontend<br/>- 유저페이지 Backend <br/>- 작성글과 댓글 목록 최신순으로 PageNation 기능<br/>- 알림 Backend<br/>- 알림요소 5가지(댓글,좋아요,대댓글,취소,뱃지획득)이벤트처리<br/>- 알림삭제 및 읽음 상호작용 |
 >    |오태경| 산 상세정보 페이지 Frontend |
@@ -82,7 +82,7 @@
 ## 주요 자료
 -   [NOTION🖋️](https://hellou8363.notion.site/Final-Project-7dfc2482bc6f474cacbeff6998aecb66)
 -   [FIGMA🎨](https://www.figma.com/file/4Gfranq8Iqz4pSebwzUc1W/Final-project?type=design&node-id=0%3A1&t=knivKX1pR5HAgIEC-1)
--   ![wegoERD🗜](https://github.com/uniyunnnn/project-wego-jiyun/assets/103082984/31e02e52-6e1c-49e4-971a-514255de0b3c)
+-   [wegoERD🗜](https://github.com/uniyunnnn/project-wego-jiyun/assets/103082984/31e02e52-6e1c-49e4-971a-514255de0b3c)
 -   [wego코드컨밴션🛠](https://github.com/uniyunnnn/project-wego-jiyun/files/11452797/wego.pdf)
 
 <br/>
@@ -109,6 +109,10 @@
 
 ## 배포 주소
 >  + http://3.25.135.222/
+> 
+>     + Test Login (Login 화면에서 test 클릭)
+>     + ID : tester
+>     + PW : wegotester1024
 <br/>
 
 ---
