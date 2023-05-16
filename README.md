@@ -21,7 +21,7 @@
 - "Wego"는 등산과 트레킹을 즐기는 사람들을 위한 종합적인 서비스로, 등산로 안내와 주변 정보 제공으로 등산 계획을 도와주고, 커뮤니티를 통해 사용자들끼리 소통과 정보 공유를 할 수 있으며, 챌린지와 랭킹 시스템을 통해 등산에 대한 동기부여를 제공합니다.
 ![wego기획안첫화면](https://github.com/uniyunnnn/project-wego-jiyun/assets/103082984/8a538c60-402e-4313-8c83-1b355dfee7eb)
 
-[프로젝트 설명서] [Wego기획안.pdf](https://github.com/uniyunnnn/project-wego-jiyun/files/11447150/_.pdf)
+[프로젝트 설명서] [Wego기획안.pdf](https://github.com/javahasooingu/project-wego-ingu/blob/main/etc/wego-plan.pdf)
 <br/>
 
 ---
@@ -82,8 +82,8 @@
 ## 주요 자료
 -   [NOTION🖋️](https://hellou8363.notion.site/Final-Project-7dfc2482bc6f474cacbeff6998aecb66)
 -   [FIGMA🎨](https://www.figma.com/file/4Gfranq8Iqz4pSebwzUc1W/Final-project?type=design&node-id=0%3A1&t=knivKX1pR5HAgIEC-1)
--   [wegoERD🗜](https://github.com/uniyunnnn/project-wego-jiyun/assets/103082984/31e02e52-6e1c-49e4-971a-514255de0b3c)
--   [wego코드컨밴션🛠](https://github.com/uniyunnnn/project-wego-jiyun/files/11452797/wego.pdf)
+-   [wegoERD🗜](https://github.com/javahasooingu/project-wego-ingu/blob/main/etc/ERD)
+-   [wego코드컨밴션🛠](https://github.com/javahasooingu/project-wego-ingu/blob/main/etc/wego-code-convention.pdf)
 
 <br/>
 
@@ -91,21 +91,34 @@
 
 
 ## 기술 스택
->    + 사용 언어 및 프레임워크
->        + `java(jdk17)` `jsp` `jstl` `EL`
->        + `spring framework`
->    + 웹 표준 및 프론트
->        + `html5` `css3` `JavaScript`
->        + `ajax` `jquery` 
->    + DB
->        + `Oracle` `mybatis` `hickariCP`
->    + API
->        + `KakaoMap` `Kakao` `NAVER` `산림청 API` `OpenWeather`
->    + Server
->        + `Maven` `Apache Tomcat` 
->    + 툴 과 배포 
->        + `eclipse jee` `vscode` `dbeaver`
->        + `AWS` `git(svn)`
+
+
+
+
+
+
+
+
+>    + 사용 언어 및 프레임워크<br>
+>        + <img src="https://img.shields.io/badge/JAVA.v17-ff9306?style=flat-square&logo=openJDK&logoColor=FFFFFF"/>
+>           <img src="https://img.shields.io/badge/Spring.v5.3-6DB33F?style=flat-square&logo=Spring&logoColor=FFFFFF"/>
+>    + 웹 표준 및 프론트<br>
+>      + <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=HTML5&logoColor=FFFFFF"/>
+>        <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=CSS3&logoColor=FFFFFF"/>
+>        <img src="https://img.shields.io/badge/javascript-F7DF1E?style=flat-square&logo=javascript&logoColor=ffffff"/>
+>        <img src="https://img.shields.io/badge/jquery-0769AD?style=flat-square&logo=jquery&logoColor=FFFFFF"/>
+>    + DB<br>
+>        + <img src="https://img.shields.io/badge/oracleSQL-F80000?style=flat-square&logo=oracle&logoColor=FFFFFF"/> 
+>           <img src="https://img.shields.io/badge/mybatis-fff?style=flat-square&logo=&logoColor=FFFFFF"/>
+>           <img src="https://img.shields.io/badge/hickariCP-000?style=flat-square&logo=&logoColor=FFFFFF"/>
+>        `mybatis` `hickariCP`
+>    + Server, 배포<br>
+>        + <img src="https://img.shields.io/badge/AmazonEC2-FF9900?style=flat-square&logo=amazonec2&logoColor=ffffff"/>
+>           <img src="https://img.shields.io/badge/tomcat.v9.0-F8DC75?style=flat-square&logo=apachetomcat&logoColor=000000"/>
+>    + Tool, 버전관리 <br>
+>      + <img src="https://img.shields.io/badge/eclipseide-2C2255?style=flat-square&logo=eclipseide&logoColor=fff"/>
+>        <img src="https://img.shields.io/badge/VScode-007ACC?style=flat-square&logo=visualstudiocode&logoColor=fff"/>
+>        <img src="https://img.shields.io/badge/git-F05032?style=flat-square&logo=git&logoColor=FFFFFF"/>
 
 ## 배포 주소
 >  + http://3.25.135.222/
