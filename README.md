@@ -21,7 +21,7 @@
 - "Wego"는 등산과 트레킹을 즐기는 사람들을 위한 종합적인 서비스로, 등산로 안내와 주변 정보 제공으로 등산 계획을 도와주고, 커뮤니티를 통해 사용자들끼리 소통과 정보 공유를 할 수 있으며, 챌린지와 랭킹 시스템을 통해 등산에 대한 동기부여를 제공합니다.
 ![wego기획안첫화면](https://github.com/uniyunnnn/project-wego-jiyun/assets/103082984/8a538c60-402e-4313-8c83-1b355dfee7eb)
 
-[프로젝트 설명서] [Wego기획안.pdf](https://github.com/uniyunnnn/project-wego-jiyun/files/11447150/_.pdf)
+[프로젝트 설명서] [Wego기획안.pdf](https://github.com/javahasooingu/project-wego-ingu/blob/main/etc/wego-plan.pdf)
 <br/>
 
 ---
@@ -44,8 +44,8 @@
 ## 팀원 소개 역할 및 담당기능
 >    | 이름        | 역할                     |
 >    |:-----------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
->    |송인구 (Team Leader)| - 랭킹 및 뱃지시스템 Frontend / Backend<br/> - 산정보API :산이름 위치 산 정보내용 조회<br/> - OpenWeather API 산 날씨 예보 조회<br/> - 카카오, 네이버, 구글 API 활용 한 소셜 로그인기능구현<br/> - 총괄Project Manager<br/> - 코드컨벤션 조직화<br/> - 로고제작<br/> - 깃 관리<br/> - AWS 서버 배포|
->    |한은혜| 1. 메인 페이지<br/>- 산 정보, 모집, 후기 게시판의 각 게시글 랜덤 10개 출력<br/> 2. 통합 검색 페이지<br/>- 산 정보, 후기, 모집 게시글에 대한 통합검색<br/>- 제목과 내용에서 검색 키워드와 일치하는 글 조회<br/> 3. 등반 후기 게시판<br/>- 후기 글 작성 및 수정<br/>- 글 최대 1500자, 이미지 최대 5장 첨부<br/> 4. 등반 멤버 모집 게시판의 작성 및 수정<br/>- 모집 글 작성 및 수정<br/>- 이미지 최대 1장 첨부 <br/> 5. 좋아요(❤) 기능<br/>- 회원 한정 좋아요 클릭<br/>- 산 정보, 후기, 모집 각 게시글의 회원들의 좋아요 수 반영|
+> |송인구 (Team Leader)|- Project Manager 역할 <br> -- 깃 PR 관리 <br> -- 코드 컨벤션 작성 <br> - 뱃지/랭킹 기능 구현 Frontend / Backend <br> - 로그인 시스템 구현 Backend <br> -- Google, Kakao, Naver 소셜 로그인 <br> -- Interceptor를 통한 로그인 페이지 이동 <br> - 산림청 API Parsing 및 DB 저장 <br> - 산정보 상세 페이지 조회 Backend <br> - AWS EC2, Tomcat9 를 통한 서비스 배포 |
+>    |한은혜| - 메인 페이지<br/>-- 산 정보, 모집, 후기 게시판의 각 게시글 랜덤 10개 출력<br/> - 통합 검색 페이지<br/>-- 산 정보, 후기, 모집 게시글에 대한 통합검색<br/>-- 제목과 내용에서 검색 키워드와 일치하는 글 조회<br/> - 등반 후기 게시판<br/>-- 후기 글 작성 및 수정<br/>-- 글 최대 1500자, 이미지 최대 5장 첨부<br/> - 등반 멤버 모집 게시판의 작성 및 수정<br/>-- 모집 글 작성 및 수정<br/>-- 이미지 최대 1장 첨부 <br/> - 좋아요(❤) 기능<br/>-- 회원 한정 좋아요 클릭<br/>-- 산 정보, 후기, 모집 각 게시글의 회원들의 좋아요 수 반영|
 >    |이신영| - 산 정보게시판, 모집 게시판, 후기 게시판 메인 Frontend / Backend<br/> - 비동기 무한스크롤 기능<br/> - 비동기 게시글 정렬 <br/> - 검색어 일치하는 검색결과 반환 및 비동기 무한스크롤<br/> - 목록 좋아요반영<br/> - 산상세정보페이지에 좋아요 기능추가 |
 >    |김지윤| - 마이페이지 유저페이지 Frontend<br/>- 유저페이지 Backend <br/>- 작성글과 댓글 목록 최신순으로 PageNation 기능<br/>- 알림 Backend<br/>- 알림요소 5가지(댓글,좋아요,대댓글,취소,뱃지획득)이벤트처리<br/>- 알림삭제 및 읽음 상호작용 |
 >    |오태경| 산 상세정보 페이지 Frontend |
@@ -82,8 +82,8 @@
 ## 주요 자료
 -   [NOTION🖋️](https://hellou8363.notion.site/Final-Project-7dfc2482bc6f474cacbeff6998aecb66)
 -   [FIGMA🎨](https://www.figma.com/file/4Gfranq8Iqz4pSebwzUc1W/Final-project?type=design&node-id=0%3A1&t=knivKX1pR5HAgIEC-1)
--   ![wegoERD🗜](https://github.com/uniyunnnn/project-wego-jiyun/assets/103082984/31e02e52-6e1c-49e4-971a-514255de0b3c)
--   [wego코드컨밴션🛠](https://github.com/uniyunnnn/project-wego-jiyun/files/11452797/wego.pdf)
+-   [wegoERD🗜](https://github.com/javahasooingu/project-wego-ingu/blob/main/etc/wego-erd.pdf)
+-   [wego코드컨밴션🛠](https://github.com/javahasooingu/project-wego-ingu/blob/main/etc/wego-code-convention.pdf)
 
 <br/>
 
@@ -91,24 +91,40 @@
 
 
 ## 기술 스택
->    + 사용 언어 및 프레임워크
->        + `java(jdk17)` `jsp` `jstl` `EL`
->        + `spring framework`
->    + 웹 표준 및 프론트
->        + `html5` `css3` `JavaScript`
->        + `ajax` `jquery` 
->    + DB
->        + `Oracle` `mybatis` `hickariCP`
->    + API
->        + `KakaoMap` `Kakao` `NAVER` `산림청 API` `OpenWeather`
->    + Server
->        + `Maven` `Apache Tomcat` 
->    + 툴 과 배포 
->        + `eclipse jee` `vscode` `dbeaver`
->        + `AWS` `git(svn)`
+
+
+
+
+
+
+
+
+>    + 사용 언어 및 프레임워크<br>
+>        + <img src="https://img.shields.io/badge/JAVA.v17-ff9306?style=flat-square&logo=openJDK&logoColor=FFFFFF"/>
+>           <img src="https://img.shields.io/badge/Spring.v5.3-6DB33F?style=flat-square&logo=Spring&logoColor=FFFFFF"/>
+>    + 웹 표준 및 프론트<br>
+>      + <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=HTML5&logoColor=FFFFFF"/>
+>        <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=CSS3&logoColor=FFFFFF"/>
+>        <img src="https://img.shields.io/badge/javascript-F7DF1E?style=flat-square&logo=javascript&logoColor=ffffff"/>
+>        <img src="https://img.shields.io/badge/jquery-0769AD?style=flat-square&logo=jquery&logoColor=FFFFFF"/>
+>    + DB<br>
+>        + <img src="https://img.shields.io/badge/oracleSQL-F80000?style=flat-square&logo=oracle&logoColor=FFFFFF"/> 
+>           <img src="https://img.shields.io/badge/mybatis-fff?style=flat-square&logo=&logoColor=FFFFFF"/>
+>           <img src="https://img.shields.io/badge/hickariCP-000?style=flat-square&logo=&logoColor=FFFFFF"/>
+>    + Server, 배포<br>
+>        + <img src="https://img.shields.io/badge/AmazonEC2-FF9900?style=flat-square&logo=amazonec2&logoColor=ffffff"/>
+>           <img src="https://img.shields.io/badge/tomcat.v9.0-F8DC75?style=flat-square&logo=apachetomcat&logoColor=000000"/>
+>    + Tool, 버전관리 <br>
+>      + <img src="https://img.shields.io/badge/eclipseide-2C2255?style=flat-square&logo=eclipseide&logoColor=fff"/>
+>        <img src="https://img.shields.io/badge/VScode-007ACC?style=flat-square&logo=visualstudiocode&logoColor=fff"/>
+>        <img src="https://img.shields.io/badge/git-F05032?style=flat-square&logo=git&logoColor=FFFFFF"/>
 
 ## 배포 주소
 >  + http://3.25.135.222/
+> 
+>     + Test Login (Login 화면에서 test 클릭)
+>     + ID : tester
+>     + PW : wegotester1024
 <br/>
 
 ---
