@@ -82,7 +82,7 @@
 ## 주요 자료
 -   [NOTION🖋️](https://hellou8363.notion.site/Final-Project-7dfc2482bc6f474cacbeff6998aecb66)
 -   [FIGMA🎨](https://www.figma.com/file/4Gfranq8Iqz4pSebwzUc1W/Final-project?type=design&node-id=0%3A1&t=knivKX1pR5HAgIEC-1)
--   [wegoERD🗜](https://github.com/javahasooingu/project-wego-ingu/blob/main/etc/ERD)
+-   [wegoERD🗜](https://github.com/javahasooingu/project-wego-ingu/blob/main/etc/wego-erd.pdf)
 -   [wego코드컨밴션🛠](https://github.com/javahasooingu/project-wego-ingu/blob/main/etc/wego-code-convention.pdf)
 
 <br/>
