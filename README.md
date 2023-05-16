@@ -111,7 +111,6 @@
 >        + <img src="https://img.shields.io/badge/oracleSQL-F80000?style=flat-square&logo=oracle&logoColor=FFFFFF"/> 
 >           <img src="https://img.shields.io/badge/mybatis-fff?style=flat-square&logo=&logoColor=FFFFFF"/>
 >           <img src="https://img.shields.io/badge/hickariCP-000?style=flat-square&logo=&logoColor=FFFFFF"/>
->        `mybatis` `hickariCP`
 >    + Server, 배포<br>
 >        + <img src="https://img.shields.io/badge/AmazonEC2-FF9900?style=flat-square&logo=amazonec2&logoColor=ffffff"/>
 >           <img src="https://img.shields.io/badge/tomcat.v9.0-F8DC75?style=flat-square&logo=apachetomcat&logoColor=000000"/>
