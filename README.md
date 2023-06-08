@@ -21,7 +21,7 @@
 - "Wego"는 등산과 트레킹을 즐기는 사람들을 위한 종합적인 서비스로, 등산로 안내와 주변 정보 제공으로 등산 계획을 도와주고, 커뮤니티를 통해 사용자들끼리 소통과 정보 공유를 할 수 있으며, 챌린지와 랭킹 시스템을 통해 등산에 대한 동기부여를 제공합니다.
 ![wego기획안첫화면](https://github.com/uniyunnnn/project-wego-jiyun/assets/103082984/8a538c60-402e-4313-8c83-1b355dfee7eb)
 
-[프로젝트 설명서] [Wego기획안.pdf](https://github.com/javahasooingu/project-wego-ingu/blob/main/etc/wego-plan.pdf)
+[프로젝트 설명서] [Wego기획안.pdf](https://github.com/KH-Q-peaker/project-wego/blob/main/etc/wego-plan.pdf)
 <br/>
 
 ---
@@ -82,8 +82,8 @@
 ## 주요 자료
 -   [NOTION🖋️](https://hellou8363.notion.site/Final-Project-7dfc2482bc6f474cacbeff6998aecb66)
 -   [FIGMA🎨](https://www.figma.com/file/4Gfranq8Iqz4pSebwzUc1W/Final-project?type=design&node-id=0%3A1&t=knivKX1pR5HAgIEC-1)
--   [wegoERD🗜](https://github.com/javahasooingu/project-wego-ingu/blob/main/etc/wego-erd.pdf)
--   [wego코드컨밴션🛠](https://github.com/javahasooingu/project-wego-ingu/blob/main/etc/wego-code-convention.pdf)
+-   [wegoERD🗜](https://github.com/KH-Q-peaker/project-wego/blob/main/etc/wego-erd.pdf)
+-   [wego코드컨밴션🛠](https://github.com/KH-Q-peaker/project-wego/blob/main/etc/wego-code-convention.pdf)
 
 <br/>
 
